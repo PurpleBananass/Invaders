@@ -14,7 +14,16 @@ Please list your team name and members in the table below. In addition, submit y
 
 | No. | Name                                | Members                                                                                                                                                                              | Requirements      |
 |-----|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| 0   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| 0   | [Instructors](https://github.com/PurpleBananass/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| sound   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| two-player   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| records   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| 6   | [₩<3](https://github.com/fabiantran5200/Invaders_Currency) | [Fabian Tran](https://github.com/fabiantran5200), [Josia Sean Audric Santoso](https://github.com/josia-santoso), [TIAN JIMING](github.com/TIANjiming07), [QI HAIYUE](github.com/KlayQi), [XING RUITONG](github.com/XINGRUITONG) | [Instruct students](requirements/instruct.md) |
+| item   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| level   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| main   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| gameplay   | [TeamHUD](https://github.com/erin330/team9) | [Soomin Kim](https://github.com/erin330/main), [Hyeontae Kim](https://github.com/kht9938/myrepo), [Yousang Park](https://github.com/eddylily/resume), [Sophie Jasmin Darandik](https://github.com/sophiejasmin), [Zequn Dang](https://github.com/ShawnCodingShit1), [Nick Klaus Edgar Decker] | [Gameplay HUD](requirements/gameplayHUD.md)
+| player&enemy   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
 |     |                                     |                                                                                                                                                                                      |                   |
 
 
@@ -38,4 +47,3 @@ Note that you should install the following resources in order to run the game.
 
 
 - [Space Invaders Regular (font)](http://www.fonts2u.com/space-invaders-regular.font) - &copy; kylemaoin 2010
-  11
