@@ -7,7 +7,7 @@
     - Youngseo Lee
     - Heonhee Jeoung
     - Ayeong Choi
-# Requrements: LevelDesignSystem
+# Requirements: LevelDesignSystem
 - Adjust difficulty by adding obstacles.
 - Adjust gun details.
 - Control the enemy’s attack method.
