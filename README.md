@@ -14,7 +14,7 @@ Please list your team name and members in the table below. In addition, submit y
 
 | No. | Name                                | Members                                                                                                                                                                              | Requirements      |
 |-----|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| 0   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| 0   | [Instructors](https://github.com/PurpleBananass/PurpleBananass) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
 |     |                                     |                                                                                                                                                                                      |                   |
 
 
