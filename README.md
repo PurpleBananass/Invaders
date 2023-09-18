@@ -27,6 +27,7 @@ Please list your team name and members in the table below. In addition, submit y
 |              |                                                            |                                                                                                                                                                                                                                                                                                                                                                 |                                               |
 
 
+
 ## Screenshots
 
 Title Screen               |  Game Screen              | Score Screen
