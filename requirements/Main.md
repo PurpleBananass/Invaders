@@ -39,4 +39,6 @@ Main Menu
 
   - Displaying Product List
   - Purchase and Payment System
-    
+
+    Team Request
+    Not yet.
