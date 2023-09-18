@@ -23,9 +23,8 @@ Please list your team name and members in the table below. In addition, submit y
 | level   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
 | 7   | [Main](https://github.com/khj0998/Invaders) | [Hojin Go](https://github.com/khj0998/khj0998), [Yuna Park](https://github.com/yuna0833/yuna0833), [Seowon Jang](https://github.com/jangseowon03/jangseowon03), [Junyoung Ahn](https://github.com/Ahnjunyoung1110/AhnJunYoung1110), [Seojun Hong](https://github.com/myunghong/myunghong) | [Main Menu](requirements/Main.md) |
 | 9   | [TeamHUD](https://github.com/erin330/team9) | [Soomin Kim](https://github.com/erin330/main), [Hyeontae Kim](https://github.com/kht9938/myrepo), [Yousang Park](https://github.com/eddylily/resume), [Sophie Jasmin Darandik](https://github.com/sophiejasmin), [Zequn Dang](https://github.com/ShawnCodingShit1), [Nick Klaus Edgar Decker] | [Gameplay HUD](requirements/gameplayHUD.md) |
-| player&enemy   | [Instructors](https://github.com/Verssae/Invaders) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Hansae Ju](https://github.com/Verssae/Verssae), [Joonwoo Lee](https://github.com/PurpleBananass/PurpleBananass) | [Instruct students](requirements/instruct.md) |
+| 9 | [annoyingpotatoes](https://github.com/math-odd/annoyingpotatoes/)         | [Seyoon Kwon](https://github.com/math-odd/math-odd/), [Junghyun Choi](https://github.com/jungchoib/jungchoib/), [Dong-jin Seong](https://github.com/yaho1231/yaho1231/), [Kwang-min jung](https://github.com/jukanmi/jukanmi/), [Hyeonsu Kim](https://github.com/plmokn5w/plmokn5w)                                                                                                                                                                            | [Player & Enemy Ship Variety](requirements/annoyingPotatoes.md) |
 |     |                                     |                                                                                                                                                                                      |                   |
-
 
 ## Screenshots
 
@@ -33,17 +32,16 @@ Title Screen               |  Game Screen              | Score Screen
 :-------------------------:|:-------------------------:|:---------
 ![image](https://user-images.githubusercontent.com/69495129/136980139-7ad6adab-3f11-4711-b0a6-341080aa3361.png)   |  ![image](https://user-images.githubusercontent.com/69495129/136980236-c5d9ef85-f09a-47a7-b9d9-948f7b624002.png)|![image](https://user-images.githubusercontent.com/69495129/136980681-93dcadaf-08cb-48d8-90c9-68c651a115c9.png)
 
-
 ## Development
 
 - IDE : IntelliJ IDEA
 
 ## System Requirements
+
 Requires Java 7 or better.
 
 ### Resources
 
 Note that you should install the following resources in order to run the game.
-
 
 - [Space Invaders Regular (font)](http://www.fonts2u.com/space-invaders-regular.font) - &copy; kylemaoin 2010
