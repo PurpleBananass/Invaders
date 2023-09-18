@@ -139,7 +139,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * First part of the drawing process. Initialices buffers, draws the
+	 * First part of the drawing process. Initialize buffers, draws the
 	 * background and prepares the images.
 	 * 
 	 * @param screen
@@ -175,7 +175,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws an entity, using the apropiate image.
+	 * Draws an entity, using the appropriate image.
 	 * 
 	 * @param entity
 	 *            Entity to be drawn.
