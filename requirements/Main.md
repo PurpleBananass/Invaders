@@ -1,15 +1,29 @@
 # Team <MAIN>
+/*
+Team Leader: Go Hojin
+Team Member: Ahn Junyoung, Hong Seojun, Jang seowon, Park Yuna
 
-팀장: 고호진
-팀원: 박윤아 안준영 장서원 홍서준
+Main Menu
 
-메인 메뉴 만들기
+1.Team Introduction
+  team's goal:
+    To implement smoothly
 
-1. 메뉴 창 - 장서원
-2. 설정 창 - 고호진
-3. 게임 시작 전 설정 창 -홍서준
-4. 업적 창 - 박윤아
-5. 상점 창 - 안준영
 
-REGUESTMENT:
-Not yet.
+2.Team Requirements
+  Main Menu
+
+
+3.Detailed Requirements
+
+  a. Menu Screen_(Jang Seowon)
+    Making a first screen of the game.
+    There are buttons like settings, shop, achivements etc.
+    
+  b. Settings Screen_(Go Hojin)
+    Graphic settings, game play settings
+    Save changes
+    To set initial setting
+    
+  c. Pre-game Preparation Screen_(Ahn Junyoung)
+    
