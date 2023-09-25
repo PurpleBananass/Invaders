@@ -157,9 +157,8 @@ public class GameScreen extends Screen {
 
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
-			if (!this.ship.isDestroyed()) { /* 키 수정 필요 */
+			if (!this.ship.isDestroyed()) { /* 1p key 수정 완료 */
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
-
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
 
 				boolean isRightBorder = this.ship.getPositionX()
@@ -173,32 +172,32 @@ public class GameScreen extends Screen {
 				if (moveLeft && !isLeftBorder) {
 					this.ship.moveLeft();
 				}
-				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
+				if (inputManager.isKeyDown(KeyEvent.VK_UP))
 					if (this.ship.shoot(this.bullets))
 						this.bulletsShot++;
 			}
-			
-			/* 두 번째 함선 이동 제어 */
-			if (!this.ship2.isDestroyed() /* && 2player 전환 bool값 */) { /* 키 수정 필요 */
-				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
 
-				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
+			/* 두 번째 함선 이동 제어 */
+			if (!this.ship2.isDestroyed() /* && 2player 전환 bool값 */) { /* 2p key 수정 완료 */
+				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
+				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
 
 				boolean isRightBorder = this.ship2.getPositionX()
-					+ this.ship2.getWidth() + this.ship2.getSpeed() > this.width - 1;
+						+ this.ship2.getWidth() + this.ship2.getSpeed() > this.width - 1;
 				boolean isLeftBorder = this.ship2.getPositionX()
-					- this.ship2.getSpeed() < 1;
+						- this.ship2.getSpeed() < 1;
 
 				if (moveRight && !isRightBorder) {
-				this.ship2.moveRight();
+					this.ship2.moveRight();
 				}
 				if (moveLeft && !isLeftBorder) {
-				this.ship2.moveLeft();
+					this.ship2.moveLeft();
 				}
-				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-				if (this.ship2.shoot(this.bullets))
-					this.bulletsShot++;
+				if (inputManager.isKeyDown(KeyEvent.VK_W))
+					if (this.ship2.shoot(this.bullets))
+						this.bulletsShot++;
 			}
+
 
 
 			if (this.enemyShipSpecial != null) {
@@ -329,7 +328,7 @@ public class GameScreen extends Screen {
 						this.ship2.destroy();
 						this.lives--;
 						this.logger.info("Hit on player ship 2, " + this.lives
-							+ " lives remaining.");
+								+ " lives remaining.");
 					}
 				}
 
