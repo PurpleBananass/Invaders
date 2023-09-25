@@ -47,3 +47,4 @@ Note that you should install the following resources in order to run the game.
 
 
 - [Space Invaders Regular (font)](http://www.fonts2u.com/space-invaders-regular.font) - &copy; kylemaoin 2010
+ Hello!
