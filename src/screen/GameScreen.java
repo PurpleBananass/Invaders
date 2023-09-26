@@ -44,10 +44,10 @@ public class GameScreen extends Screen {
 	private int level;
 	/** Formation of enemy ships. */
 	private EnemyShipFormation enemyShipFormation;
-	/** Player's ship. */
+
+	/** First Player's ship. */
 	private Ship ship;
-	
-	/* 2player용 2번째 함선 객체 생성 */
+	/** Second Player's ship. **/
 	private Ship ship2;
 	
 	/** Bonus enemy ship that appears sometimes. */
@@ -115,9 +115,9 @@ public class GameScreen extends Screen {
 
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
+
+		// 1p와 2p 생성 (시작 위치 설정)
 		this.ship = new Ship(this.width / 2 + 50, this.height - 30);
-		
-		/* 2player 함선 객체 생성 */
 		this.ship2 = new Ship(this.width / 2 - 30, this.height - 30);
 	
 		// Appears each 10-30 seconds.
@@ -157,7 +157,8 @@ public class GameScreen extends Screen {
 
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
-			if (!this.ship.isDestroyed()) { /* 1p key 수정 완료 */
+			// 1p's play-key
+			if (!this.ship.isDestroyed()) {
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
 
@@ -177,8 +178,8 @@ public class GameScreen extends Screen {
 						this.bulletsShot++;
 			}
 
-			/* 두 번째 함선 이동 제어 */
-			if (!this.ship2.isDestroyed() /* && 2player 전환 bool값 */) { /* 2p key 수정 완료 */
+			// 2p's play-key
+			if (!this.ship2.isDestroyed() /* && 2player 전환 bool값 */) {
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
 
@@ -198,14 +199,11 @@ public class GameScreen extends Screen {
 						this.bulletsShot++;
 			}
 
-
-
 			if (this.enemyShipSpecial != null) {
 				if (!this.enemyShipSpecial.isDestroyed())
 					this.enemyShipSpecial.move(2, 0);
 				else if (this.enemyShipSpecialExplosionCooldown.checkFinished())
 					this.enemyShipSpecial = null;
-
 			}
 			if (this.enemyShipSpecial == null
 					&& this.enemyShipSpecialCooldown.checkFinished()) {
@@ -251,10 +249,10 @@ public class GameScreen extends Screen {
 		drawManager.drawEntity(this.ship, this.ship.getPositionX(),
 				this.ship.getPositionY());
 		/* if(2player 전환 bool값) */
-
 		/* 화면에 2player 함선 생성 */
 		drawManager.drawEntity(this.ship2, this.ship2.getPositionX(),
-        this.ship2.getPositionY());
+        		this.ship2.getPositionY());
+
 		if (this.enemyShipSpecial != null)
 			drawManager.drawEntity(this.enemyShipSpecial,
 					this.enemyShipSpecial.getPositionX(),
@@ -314,7 +312,7 @@ public class GameScreen extends Screen {
 					if (!this.ship.isDestroyed()) {
 						this.ship.destroy();
 						this.lives--;
-						this.logger.info("Hit on player ship, " + this.lives
+						this.logger.info("Hit on player1 ship, " + this.lives
 								+ " lives remaining.");
 					}
 				}
@@ -327,7 +325,7 @@ public class GameScreen extends Screen {
 					if (!this.ship2.isDestroyed()) {
 						this.ship2.destroy();
 						this.lives--;
-						this.logger.info("Hit on player ship 2, " + this.lives
+						this.logger.info("Hit on player2 ship, " + this.lives
 								+ " lives remaining.");
 					}
 				}
