@@ -12,6 +12,7 @@ import screen.GameScreen;
 import screen.HighScoreScreen;
 import screen.ScoreScreen;
 import screen.Screen;
+import screen.Shop;
 import screen.TitleScreen;
 
 /**
@@ -172,8 +173,19 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
 				break;
+			case 4:
+				// Shop
+				currentScreen = new Shop(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " Shop screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing Shop screen.");
+			case 5:
+				//settings
 			default:
 				break;
+
+				
 			}
 
 		} while (returnCode != 0);

@@ -1,25 +1,30 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+
+import java.io.IOException;
+import java.util.List;
+
 import engine.Cooldown;
 import engine.Core;
-
+import engine.Score;
+import engine.Shopitem;
+import engine.FileManager;
 /**
- * Implements the title screen.
+ * Implements the Shop screen, it shows items can buy.
  * 
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  * 
  */
-public class TitleScreen extends Screen {
+public class Shop extends Screen {
 
-	/** Milliseconds between changes in user selection. */
-	private static final int SELECTION_TIME = 200;
-	
+	/** List of past high scores. */
+	private List<Shopitem> items;
 	/** Time between changes in user selection. */
 	private Cooldown selectionCooldown;
-	
-	private boolean SoundSelect = true;
-
+	/** Milliseconds between changes in user selection. */
+	private static final int SELECTION_TIME = 200;
+	private int option = 0;
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 * 
@@ -30,13 +35,18 @@ public class TitleScreen extends Screen {
 	 * @param fps
 	 *            Frames per second, frame rate at which the game is run.
 	 */
-	public TitleScreen(final int width, final int height, final int fps) {
+	public Shop(final int width, final int height, final int fps) {
 		super(width, height, fps);
 
-		// Defaults to play.
-		this.returnCode = 2;
+		this.returnCode = 1;
 		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
+
+		try {
+			this.items = Core.getFileManager().loadShop();
+		} catch (NumberFormatException | IOException e) {
+			logger.warning("Couldn't load Shop items!");
+		}
 	}
 
 	/**
@@ -61,48 +71,22 @@ public class TitleScreen extends Screen {
 				&& this.inputDelay.checkFinished()) {
 			if (inputManager.isKeyDown(KeyEvent.VK_UP)
 					|| inputManager.isKeyDown(KeyEvent.VK_W)) {
-				previousMenuItem();
+				previousItem();
 				this.selectionCooldown.reset();
 			}
 			if (inputManager.isKeyDown(KeyEvent.VK_DOWN)
 					|| inputManager.isKeyDown(KeyEvent.VK_S)) {
-				nextMenuItem();
+				nextItem();
 				this.selectionCooldown.reset();
 			}
-			if (inputManager.isKeyDown(KeyEvent.VK_F)) {
-				changeSound();
+			if (inputManager.isKeyDown(KeyEvent.VK_ENTER)) {
+				buyItem();
 				this.selectionCooldown.reset();
 			}
-			if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-				this.isRunning = false;
 		}
-	}
-
-	/**
-	 * Shifts the focus to the next menu item.
-	 */
-	private void nextMenuItem() {
-		if (this.returnCode == 5)
-			this.returnCode = 0;
-		else if (this.returnCode == 0)
-			this.returnCode = 2;
-		else
-			this.returnCode++;
-	}
-	private void changeSound() {
-		SoundSelect = !SoundSelect;
-	}
-
-	/**
-	 * Shifts the focus to the previous menu item.
-	 */
-	private void previousMenuItem() {
-		if (this.returnCode == 0)
-			this.returnCode = 5;
-		else if (this.returnCode == 2)
-			this.returnCode = 0;
-		else
-			this.returnCode--;
+		if (inputManager.isKeyDown(KeyEvent.VK_SPACE)
+				&& this.inputDelay.checkFinished())
+			this.isRunning = false;
 	}
 
 	/**
@@ -111,9 +95,30 @@ public class TitleScreen extends Screen {
 	private void draw() {
 		drawManager.initDrawing(this);
 
-		drawManager.drawTitle(this);
-		drawManager.drawMenu(this, this.returnCode, SoundSelect);
+		drawManager.drawShopMenu(this);
+		drawManager.drawItems(this, this.items,option);
 
 		drawManager.completeDrawing(this);
 	}
+	private void nextItem() {
+		if (option == 3)
+			option = 0;
+		else
+			option++;
+	}
+	private void previousItem() {
+		if (option == 0)
+			option = 3;
+		else
+			option--;
+	}
+	private void buyItem() {
+		try {
+			FileManager.buyItemLead(option);
+		}
+		catch(IOException e) {
+			logger.info("Fail to buy item");
+		}
+	}
+	
 }

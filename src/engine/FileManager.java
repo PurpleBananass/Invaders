@@ -1,5 +1,4 @@
 package engine;
-
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.BufferedReader;
@@ -8,11 +7,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import engine.DrawManager.SpriteType;
 
 /**
@@ -217,6 +218,8 @@ public final class FileManager {
 		Collections.sort(highScores);
 		return highScores;
 	}
+	
+	
 
 	/**
 	 * Saves user high scores to disk.
@@ -268,4 +271,98 @@ public final class FileManager {
 				bufferedWriter.close();
 		}
 	}
+
+
+/**
+ * Loads Shop from file, and returns a sorted list of  item name, price and Purchase or not 
+ * value.
+ * 
+ * @return Sorted list of item name - price - Purchase or not.
+ * @throws IOException
+ *             In case of loading problems.
+ */
+		public List<Shopitem> loadShop() throws IOException {
+
+			List<Shopitem> items = new ArrayList<Shopitem>();
+			InputStream inputStream = null;
+			BufferedReader reader = null;
+
+			try {
+				inputStream = FileManager.class.getClassLoader()
+						.getResourceAsStream("items");
+				reader = new BufferedReader(new InputStreamReader(inputStream));
+
+				Shopitem iitems = null;
+				String itemname = reader.readLine();
+				String price = reader.readLine();
+				String buyornot = reader.readLine();
+				
+				while ((itemname != null) && (price != null) && (buyornot != null)) {
+					iitems = new Shopitem(itemname, Integer.parseInt(price), Boolean.parseBoolean(buyornot));
+					items.add(iitems);
+					itemname = reader.readLine();
+					price = reader.readLine();
+					buyornot = reader.readLine();
+			}
+		} 	finally {
+				if (inputStream != null)
+					inputStream.close();
+		}
+
+		return items;
+	}
+		public static void buyItemLead(int option) throws IOException {
+	        String filePath = "res/items"; // 원본 파일
+	        File tempFile = new File("temp.txt"); // 임시 파일
+	        
+	        BufferedReader reader = null;
+	        BufferedWriter writer = null;
+
+	        try {
+	            reader = new BufferedReader(new FileReader(filePath));
+	            writer = new BufferedWriter(new FileWriter(tempFile));
+
+	            String line;
+	            int lineCount = 0;
+	            while ((line = reader.readLine()) != null) {
+	                lineCount++;
+	                if (lineCount == (option * 3-1)) {
+	                    // 해당 라인에 도달하면 "false"를 "true"로 변경
+	                    line = line.replace("false", "true");
+	                }
+	                writer.write(line);
+	                writer.newLine();
+	            }
+	        } catch (IOException e) {
+	            // 예외 처리
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                if (reader != null)
+	                    reader.close();
+	                if (writer != null) {
+	                    writer.close();
+	                }
+	            } catch (IOException e) {
+	                // 예외 처리
+	                e.printStackTrace();
+	            }
+	        }
+
+	        // 임시 파일을 원본 파일로 변경
+	        File originalFile = new File(filePath); // 원본 파일
+	        if (originalFile.exists()) {
+	            originalFile.delete();
+	        }
+	        if (tempFile.renameTo(originalFile)) {
+	            System.out.println("파일 내용 변경 완료.");
+	        } else {
+	            System.err.println("파일 이름 변경 실패.");
+	        }
+	    }
+		
 }
+
+
+
+

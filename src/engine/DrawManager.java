@@ -1,6 +1,8 @@
 package engine;
 
 import java.awt.Color;
+import java.awt.*;
+import javax.swing.*;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
@@ -139,7 +141,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * First part of the drawing process. Initialize buffers, draws the
+	 * First part of the drawing process. Initialices buffers, draws the
 	 * background and prepares the images.
 	 * 
 	 * @param screen
@@ -175,7 +177,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws an entity, using the appropriate image.
+	 * Draws an entity, using the apropiate image.
 	 * 
 	 * @param entity
 	 *            Entity to be drawn.
@@ -285,10 +287,13 @@ public final class DrawManager {
 		String titleString = "Invaders";
 		String instructionsString =
 				"select with w+s / arrows, confirm with space";
+		String selectSound = "To change the sound, press F";
 
 		backBufferGraphics.setColor(Color.GRAY);
-		drawCenteredRegularString(screen, instructionsString,
+		drawCenteredRegularString(screen, selectSound,
 				screen.getHeight() / 2);
+		drawCenteredRegularString(screen, instructionsString,
+				screen.getHeight() /2 - fontRegularMetrics.getHeight()*3/2);
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 3);
@@ -302,29 +307,54 @@ public final class DrawManager {
 	 * @param option
 	 *            Option selected.
 	 */
-	public void drawMenu(final Screen screen, final int option) {
+	public void drawMenu(final Screen screen, final int option, final boolean soundSelect) {
 		String playString = "Play";
 		String highScoresString = "High scores";
+		String shopString = "Shop";
+		String settingString = "Setting";
 		String exitString = "exit";
-
+		String soundOn = "Sound: on";
+		String soundOff = "Sound: off";
+		
+		if (soundSelect) {
+			backBufferGraphics.setColor(Color.WHITE);
+			drawLeftRegularString(screen, soundOn,15);}
+		else {
+			backBufferGraphics.setColor(Color.WHITE);
+			drawLeftRegularString(screen, soundOff,15);}
+			
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, playString,
-				screen.getHeight() / 3 * 2);
+				screen.getHeight() / 3 * 2 - fontRegularMetrics.getHeight());
 		if (option == 3)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, highScoresString, screen.getHeight()
-				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+				/ 3 * 2 + fontRegularMetrics.getHeight());
+
+		if (option == 4)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, shopString, screen.getHeight() / 3
+				* 2 + fontRegularMetrics.getHeight() * 3);
+
+		if (option == 5)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, settingString, screen.getHeight() / 3
+				* 2 + fontRegularMetrics.getHeight() * 5);
 		if (option == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString, screen.getHeight() / 3
-				* 2 + fontRegularMetrics.getHeight() * 4);
+				* 2 + fontRegularMetrics.getHeight() * 7);
 	}
 
 	/**
@@ -463,7 +493,6 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, instructionsString,
 				screen.getHeight() / 5);
 	}
-
 	/**
 	 * Draws high scores.
 	 * 
@@ -486,6 +515,53 @@ public final class DrawManager {
 			i++;
 		}
 	}
+	/**
+	 * Draws Shop screen title and instructions.
+	 * 
+	 * @param screen
+	 *            Screen to draw on.
+	 */
+	public void drawShopMenu(final Screen screen) {
+		String shopString = "Shop";
+		String instructionsString = "Press Space to return";
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, shopString, screen.getHeight() / 8);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, instructionsString,
+				screen.getHeight() / 5);
+	}
+	/**
+	 * Draws items.
+	 * 
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param items
+	 *            List of items.
+	 */
+	public void drawItems(final Screen screen,
+			final List<Shopitem> items, final int option) {
+		
+		int i = 0;
+		String itemString = "";
+
+		for (Shopitem shopitems : items) {
+
+			if (option == i)
+				backBufferGraphics.setColor(Color.GREEN);
+			else if (!shopitems.gettrue())
+				backBufferGraphics.setColor(Color.GRAY);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			itemString = String.format("%s   %04d", shopitems.getname(),
+			        shopitems.getprice());
+			drawCenteredRegularString(screen, itemString, screen.getHeight()
+					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
+			i++;
+			}
+	}
+
 
 	/**
 	 * Draws a centered string on regular font.
@@ -502,6 +578,21 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.drawString(string, screen.getWidth() / 2
 				- fontRegularMetrics.stringWidth(string) / 2, height);
+	}
+	/**
+	 * Draws a leftside string on regular font.
+	 * 
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param string
+	 *            String to draw.
+	 * @param height
+	 *            Height of the drawing.
+	 */
+	public void drawLeftRegularString(final Screen screen,
+			final String string, final int height) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString(string, 0, height);
 	}
 
 	/**
