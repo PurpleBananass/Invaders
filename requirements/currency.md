@@ -10,8 +10,8 @@
     - To contribute to the whole project and not be a hindrance
  
 ### Role of each team member:
-        Fabian Tran: Revive with Currency
-        Josia Santoso: Bonus money when highscore
+        Fabian Tran: Revive with Currency/Login
+        Josia Santoso: Bonus money when highscore/Login
         Tian Jiming: Money is collectible as drops when killing enemies
         Qi Haiyue: Conversion Logic(bonus money at the end based on score achieved)
         Xing Ruitong: Display money real time ingame

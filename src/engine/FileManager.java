@@ -2,19 +2,14 @@ package engine;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -266,6 +261,84 @@ public final class FileManager {
 		} finally {
 			if (bufferedWriter != null)
 				bufferedWriter.close();
+		}
+	}
+	public Player loadPlayer(char[] name) throws IOException {
+
+		Player player = null;
+		int amountOfItems = 0;
+
+		String jarPath = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, "UTF-8");
+
+		String playerPath = new File(jarPath).getParent() + File.separator + "accounts";
+		String currentPlayerPath = new File(jarPath).getParent() + File.separator + "currentPlayer";
+
+		File playerFile = new File(playerPath);
+		File currentPlayerFile = new File(currentPlayerPath);
+		currentPlayerFile.createNewFile();
+
+
+
+		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(playerFile), Charset.forName("UTF-8")));
+			 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentPlayerFile, false), Charset.forName("UTF-8")))) {
+
+			String loadedName = bufferedReader.readLine();
+			String currency = bufferedReader.readLine();
+
+			while ((loadedName != null) && (currency != null)) {
+				if (loadedName.equals(String.valueOf(name))) {
+					player = new Player(loadedName, Integer.parseInt(currency));
+					logger.info(String.valueOf(player.getCurrency()));
+					bufferedWriter.write(loadedName);
+					bufferedWriter.newLine();
+					bufferedWriter.write(currency);
+					bufferedWriter.newLine();
+					for (int i = 0; i < amountOfItems; i++) {
+						bufferedWriter.write(bufferedReader.readLine());
+						bufferedWriter.newLine();
+					}
+					bufferedWriter.flush();
+					break;
+				}else {
+					loadedName = bufferedReader.readLine();
+					currency = bufferedReader.readLine();
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			// create new player if player not found.
+			logger.info("Account list not found.");
+		}
+
+		return player;
+	}
+	public void saveNewPlayer(final char[] name) throws IOException {
+		// Get the path to the JAR file.
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+		// Construct the path to the player file.
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
+
+		// Create the player file if it doesn't exist.
+		File playerFile = playerPath.toFile();
+		if (!playerFile.exists() && !playerFile.createNewFile()) {
+			logger.warning("Failed to create new player file at: " + playerPath);
+			return;
+		}
+
+		// Write the new player data to the file.
+		try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
+			logger.info("Creating new user with name: " + String.valueOf(name));
+			bufferedWriter.write(String.valueOf(name));
+			bufferedWriter.newLine();
+			bufferedWriter.write("0");
+			bufferedWriter.newLine();
+		} catch (IOException e) {
+			logger.warning("Failed to write new player data to file: " + e.getMessage());
+			throw e; // Re-throw the exception after logging it.
 		}
 	}
 }
