@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Color;
 import java.util.Set;
+import java.util.*;
 
 import engine.Cooldown;
 import engine.Core;
@@ -27,6 +28,8 @@ public class Ship extends Entity {
 	/** Time spent inactive between hits. */
 	private Cooldown destructionCooldown;
 
+	public boolean Invincible;
+
 	/**
 	 * Constructor, establishes the ship's properties.
 	 * 
@@ -37,10 +40,11 @@ public class Ship extends Entity {
 	 */
 	public Ship(final int positionX, final int positionY) {
 		super(positionX, positionY, 13 * 2, 8 * 2, Color.GREEN);
-
 		this.spriteType = SpriteType.Ship;
 		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
+
+		this.Invincible = false;
 	}
 
 	/**
@@ -109,5 +113,28 @@ public class Ship extends Entity {
 	 */
 	public final int getSpeed() {
 		return SPEED;
+	}
+
+	public final boolean isInvincible() {
+		return this.Invincible;
+	}
+
+	public final void runInvincible() {
+
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				Invincible = false;
+				changeColor(Color.GREEN);
+				timer.cancel();
+			}
+		};
+
+		if (!this.isInvincible()) {
+			this.Invincible = true;
+			this.changeColor(Color.BLUE);
+			timer.schedule(task, 10000);
+		}
+
 	}
 }
