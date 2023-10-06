@@ -336,7 +336,7 @@ public class GameScreen extends Screen {
 					if (!this.ship2.isDestroyed()) {
 						this.ship2.destroy();
 						this.lives2--;
-						this.logger.info("Hit on player2 ship, " + this.lives
+						this.logger.info("Hit on player2 ship, " + this.lives2
 								+ " lives remaining.");
 					}
 				}
