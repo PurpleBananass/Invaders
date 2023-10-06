@@ -1,5 +1,6 @@
 package screen;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -116,9 +117,10 @@ public class GameScreen extends Screen {
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
 
-		// 1p와 2p 생성 (시작 위치 설정)
-		this.ship = new Ship(this.width / 2 + 50, this.height - 30);
-		this.ship2 = new Ship(this.width / 2 - 30, this.height - 30);
+		this.ship = new Ship(this.width / 2 + 50, this.height - 30, Color.GREEN);
+
+		/* 2player 함선 객체 생성 */
+		this.ship2 = new Ship(this.width / 2 - 30, this.height - 30, Color.RED);
 	
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
@@ -320,7 +322,7 @@ public class GameScreen extends Screen {
 				/* 2player 함선 총알 피격 처리
 				2player 생명 따로 처리 필요 */
 				
-				if (/*2player 전환 bool 값 && */ checkCollision(bullet, this.ship) && !this.levelFinished) {
+				if (/*2player 전환 bool 값 && */ checkCollision(bullet, this.ship2) && !this.levelFinished) {
 					recyclable.add(bullet);
 					if (!this.ship2.isDestroyed()) {
 						this.ship2.destroy();
