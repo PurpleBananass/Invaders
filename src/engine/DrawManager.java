@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.lang.Integer;
 
 import screen.Screen;
 import entity.Entity;
@@ -573,10 +574,10 @@ public final class DrawManager {
 				- fontRegularMetrics.stringWidth(string) / 2 , height);
 	}
 
-	public void drawThreeQuarterRegularString(final Screen screen,
-										  final String string, final int height) {
+	public void drawSevenTenthRegularString(final Screen screen,
+											final String string, final int height) {
 		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.drawString(string, screen.getWidth() / 4 * 3
+		backBufferGraphics.drawString(string, screen.getWidth() / 10 * 7
 				- fontRegularMetrics.stringWidth(string) / 2 , height);
 	}
 
@@ -654,10 +655,62 @@ public final class DrawManager {
 
 	}
 
-	public void drawSettingDetail(final Screen screen, final int option, final boolean selected){
+
+	public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
+								  int volume, boolean bgmon, int frameSize) {
+
+
+		if (option == 0 && selected)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+
+		backBufferGraphics.drawRect(screen.getWidth() / 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() / 8 * 12,
+				screen.getWidth() / 4, fontRegularMetrics.getHeight());
+		backBufferGraphics.fillRect(screen.getWidth() / 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() / 8 * 12,
+				screen.getWidth() / 4 * volume / 100, fontRegularMetrics.getHeight());
+		backBufferGraphics.drawString(Integer.toString(volume), screen.getWidth() / 4 * 3
+				+ fontRegularMetrics.stringWidth("A") * 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+
+		if (option == 1 && selected)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+
+		if(bgmon) drawSevenTenthRegularString(screen,"ON",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+		else drawSevenTenthRegularString(screen,"OFF",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+
+		if (option == 2 && selected){
+			backBufferGraphics.setFont(fontRegular);
+
+			if(frameSize == 1) backBufferGraphics.setColor(Color.GREEN);
+			else backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString("1", screen.getWidth() / 10 * 6
+					- fontRegularMetrics.stringWidth("1") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+
+			if(frameSize == 2) backBufferGraphics.setColor(Color.GREEN);
+			else backBufferGraphics.setColor(Color.WHITE);
+			drawSevenTenthRegularString(screen,"2",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+
+			if(frameSize == 3) backBufferGraphics.setColor(Color.GREEN);
+			else backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString("3", screen.getWidth() / 10 * 8
+					- fontRegularMetrics.stringWidth("3") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+		}
+		else {
+			backBufferGraphics.setColor(Color.WHITE);
+			drawSevenTenthRegularString(screen,Integer.toString(frameSize),screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+		}
+
+
+
+		if (option == 3)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+
 
 
 	}
-
 
 }

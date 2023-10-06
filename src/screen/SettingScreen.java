@@ -25,10 +25,13 @@ public class SettingScreen extends Screen {
     private boolean selected =false;
 
     /** Sound Volume  */
-    private int soundVolume = 100;
+    private int soundVolume = 80;
 
     /** Check BGM is On/Off  */
     private boolean bgmOn =true;
+
+    /** Frame Size*/
+    private int frameSize = 1;
 
     /**
      * Constructor, establishes the properties of the screen.
@@ -85,12 +88,12 @@ public class SettingScreen extends Screen {
                 selected = true;
                 this.selectionCooldown.reset();
             }
-            if(inputManager.isKeyDown(KeyEvent.VK_UP)
-                    || inputManager.isKeyDown(KeyEvent.VK_W) && selected){
+            if((inputManager.isKeyDown(KeyEvent.VK_UP)
+                    || inputManager.isKeyDown(KeyEvent.VK_W)) && selected){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(soundVolume < 100) soundVolume += 2;
+                        if(soundVolume < 100) soundVolume ++;
                         break;
                     /** BGM On/Off */
                     case 1:
@@ -99,6 +102,8 @@ public class SettingScreen extends Screen {
                         break;
                     /** Frame Size Setting */
                     case 2:
+                        if(frameSize<3) frameSize++;
+                        this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */
                     case 3:
@@ -108,12 +113,12 @@ public class SettingScreen extends Screen {
                 }
             }
 
-            if(inputManager.isKeyDown(KeyEvent.VK_DOWN)
-                    || inputManager.isKeyDown(KeyEvent.VK_S) && selected){
+            if((inputManager.isKeyDown(KeyEvent.VK_DOWN)
+                    || inputManager.isKeyDown(KeyEvent.VK_S)) && selected){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(soundVolume >0) soundVolume -= 2;
+                        if(soundVolume >0) soundVolume --;
                         break;
                     /** BGM On/Off */
                     case 1:
@@ -122,6 +127,8 @@ public class SettingScreen extends Screen {
                         break;
                     /** Frame Size Setting */
                     case 2:
+                        if(frameSize>1) frameSize--;
+                        this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */
                     case 3:
@@ -169,7 +176,7 @@ public class SettingScreen extends Screen {
         drawManager.initDrawing(this);
 
         drawManager.drawSetting(this, itemCode, selected);
-        drawManager.drawSettingDetail(this, itemCode, selected);
+        drawManager.drawSettingDetail(this, itemCode, selected, soundVolume, bgmOn, frameSize);
 
         drawManager.completeDrawing(this);
     }
