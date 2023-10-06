@@ -48,7 +48,7 @@ public class GameScreen extends Screen {
 
 	/** First Player's ship. */
 	private Ship ship;
-	/* 2player용 2번째 함선 객체 생성 */
+	/** Second Player's ship. **/
 	private Ship ship2;
 
 	/** Bonus enemy ship that appears sometimes. */
@@ -63,12 +63,10 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 	/** Current score. */
 	private int score;
-	/** Player lives left. */
+	/** First Player's lives left. */
 	private int lives;
-
-	/* 2player의 live */
+	/** Second Player's lives left. */
 	private int lives2;
-
 	/** Total bullets shot by the player. */
 	private int bulletsShot;
 	/** Total ships destroyed by the player. */
@@ -282,7 +280,7 @@ public class GameScreen extends Screen {
 
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
-		drawManager.drawLives2(this, this.lives2 );
+		drawManager.drawLives2(this, this.lives2);
 
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
 
@@ -350,7 +348,6 @@ public class GameScreen extends Screen {
 			} else {
 				for (EnemyShip enemyShip : this.enemyShipFormation)
 					if (!enemyShip.isDestroyed()
-							/* 1player의 점수 + */
 							&& checkCollision(bullet, enemyShip)) {
 						this.score += enemyShip.getPointValue();
 						this.shipsDestroyed++;
@@ -367,9 +364,6 @@ public class GameScreen extends Screen {
 					this.enemyShipSpecialExplosionCooldown.reset();
 					recyclable.add(bullet);
 				}
-
-
-
 			}
 		this.bullets.removeAll(recyclable);
 		BulletPool.recycle(recyclable);
