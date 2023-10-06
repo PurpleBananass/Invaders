@@ -439,7 +439,7 @@ public final class FileManager {
 				.getCodeSource().getLocation().getPath();
 		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
 
-		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer.txt");
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
 
 		if (!Files.exists(playerPath)) {
 			logger.warning("Player file not found at: " + playerPath);
