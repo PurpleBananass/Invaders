@@ -287,16 +287,13 @@ public final class DrawManager {
 		String titleString = "Invaders";
 		String instructionsString =
 				"select with w+s / arrows, confirm with space";
-		String selectSound = "To change the sound, press F";
 
 		backBufferGraphics.setColor(Color.GRAY);
-		drawCenteredRegularString(screen, selectSound,
-				screen.getHeight() / 2);
 		drawCenteredRegularString(screen, instructionsString,
-				screen.getHeight() /2 - fontRegularMetrics.getHeight()*3/2);
+				screen.getHeight() /2 - fontRegularMetrics.getHeight()*3/2-fontRegularMetrics.getHeight()*2);
 
 		backBufferGraphics.setColor(Color.GREEN);
-		drawCenteredBigString(screen, titleString, screen.getHeight() / 3);
+		drawCenteredBigString(screen, titleString, screen.getHeight() / 3-fontRegularMetrics.getHeight()*2);
 	}
 
 	/**
@@ -307,54 +304,52 @@ public final class DrawManager {
 	 * @param option
 	 *            Option selected.
 	 */
-	public void drawMenu(final Screen screen, final int option, final boolean soundSelect) {
+	public void drawMenu(final Screen screen, final int option) {
 		String playString = "Play";
 		String highScoresString = "High scores";
 		String shopString = "Shop";
 		String settingString = "Setting";
 		String exitString = "exit";
-		String soundOn = "Sound: on";
-		String soundOff = "Sound: off";
-		
-		if (soundSelect) {
-			backBufferGraphics.setColor(Color.WHITE);
-			drawLeftRegularString(screen, soundOn,15);}
-		else {
-			backBufferGraphics.setColor(Color.WHITE);
-			drawLeftRegularString(screen, soundOff,15);}
-			
+		String achievementString = "Achievements";
+
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, playString,
-				screen.getHeight() / 3 * 2 - fontRegularMetrics.getHeight());
+				screen.getHeight() / 3 * 2 -fontRegularMetrics.getHeight()*3-fontRegularMetrics.getHeight()*2);
 		if (option == 3)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, highScoresString, screen.getHeight()
-				/ 3 * 2 + fontRegularMetrics.getHeight());
+				/ 3 * 2 + fontRegularMetrics.getHeight()-fontRegularMetrics.getHeight()*2-fontRegularMetrics.getHeight()*2);
 
 		if (option == 4)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, shopString, screen.getHeight() / 3
-				* 2 + fontRegularMetrics.getHeight() * 3);
+				* 2 + fontRegularMetrics.getHeight() * 3-fontRegularMetrics.getHeight()*2-fontRegularMetrics.getHeight()*2);
 
 		if (option == 5)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, settingString, screen.getHeight() / 3
-				* 2 + fontRegularMetrics.getHeight() * 5);
+				* 2 + fontRegularMetrics.getHeight() * 3-fontRegularMetrics.getHeight()*2);
+		if (option == 6)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, achievementString, screen.getHeight() / 3
+				* 2 + fontRegularMetrics.getHeight() * 5-fontRegularMetrics.getHeight()*2);
 		if (option == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString, screen.getHeight() / 3
-				* 2 + fontRegularMetrics.getHeight() * 7);
+				* 2 + fontRegularMetrics.getHeight() * 7-fontRegularMetrics.getHeight()*2);
 	}
 
 	/**

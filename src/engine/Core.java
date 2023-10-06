@@ -182,6 +182,9 @@ public final class Core {
 				LOGGER.info("Closing Shop screen.");
 			case 5:
 				//settings
+				break;
+			case 6:
+				//Achievements
 			default:
 				break;
 
