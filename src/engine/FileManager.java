@@ -341,4 +341,125 @@ public final class FileManager {
 			throw e; // Re-throw the exception after logging it.
 		}
 	}
+
+	//Overwrites the content of currentPlayer.txt to accounts.txt.
+	public void updateAccounts() throws IOException {
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
+
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			return;
+		}
+
+		StringBuilder inputBuffer = new StringBuilder();
+		try (BufferedReader bufferedReader = Files.newBufferedReader(playerPath, StandardCharsets.UTF_8)) {
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				inputBuffer.append(line).append('\n');
+			}
+		} catch (IOException e) {
+			logger.warning("Failed to read player data from file: " + e.getMessage());
+			throw e;
+		}
+
+		Path currentPlayerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		try (BufferedReader currentBufferedReader = Files.newBufferedReader(currentPlayerPath, StandardCharsets.UTF_8)) {
+			String loadedName = currentBufferedReader.readLine();
+			String currency = currentBufferedReader.readLine();
+
+			if (loadedName == null || currency == null) {
+				logger.warning("Invalid data in current player file");
+				return;
+			}
+
+			Player player = loadPlayer(loadedName.toCharArray());
+			String inputStr = inputBuffer.toString().replace(
+					loadedName + "\n" + player.getCurrency() + "\n",
+					loadedName + "\n" + currency + "\n");
+
+			try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8)) {
+				bufferedWriter.write(inputStr);
+				logger.info("Successfully changed amount of player: " + loadedName + " to " + currency);
+			} catch (IOException e) {
+				logger.warning("Failed to write updated player data to file: " + e.getMessage());
+				throw e;
+			}
+		} catch (IOException e) {
+			logger.warning("Failed to read current player data from file: " + e.getMessage());
+			throw e;
+		}
+	}
+
+	public void updateCurrencyOfCurrentPlayer(int difference) throws IOException {
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			return;
+		}
+
+		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+		if (lines.size() < 2) {
+			logger.warning("Invalid data in current player file");
+			return;
+		}
+
+		String loadedName = lines.get(0);
+		int currentCurrency;
+		try {
+			currentCurrency = Integer.parseInt(lines.get(1));
+		} catch (NumberFormatException e) {
+			logger.warning("Invalid currency value in current player file");
+			return;
+		}
+
+		int newBalance = currentCurrency + difference;
+		lines.set(1, String.valueOf(newBalance));
+
+		try {
+			Files.write(playerPath, lines, StandardCharsets.UTF_8);
+			logger.info("Successfully changed amount of player: " + loadedName + " to " + newBalance);
+		} catch (IOException e) {
+			logger.warning("Failed to write updated player data to file: " + e.getMessage());
+			throw e;
+		}
+	}
+
+	public int getCurrentPlayerCurrency() throws IOException {
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer.txt");
+
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			throw new FileNotFoundException("Player file not found at: " + playerPath);
+		}
+
+		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+		if (lines.size() < 2) {
+			logger.warning("Invalid data in current player file");
+			throw new IOException("Invalid data in current player file");
+		}
+
+		int currency;
+		try {
+			currency = Integer.parseInt(lines.get(1));
+		} catch (NumberFormatException e) {
+			logger.warning("Invalid currency value in current player file");
+			throw new NumberFormatException("Invalid currency value in current player file");
+		}
+
+		return currency;
+	}
 }
