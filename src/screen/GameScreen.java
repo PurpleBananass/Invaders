@@ -104,20 +104,16 @@ public class GameScreen extends Screen {
 		this.bonusLife = bonusLife;
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
-		this.lives = gameState.getLivesRemaining();
-		/* player1의 bonus life */
-		if (this.bonusLife)
+		this.lives = gameState.getLivesRemaining1p();
+		this.lives2 = gameState.getLivesRemaining2p();
+
+		if (this.bonusLife) {
 			this.lives++;
-		/* player2의 bonus life */
-		this.lives2 = gameState.getLivesRemaining();
-		if (this.bonusLife)
 			this.lives2++;
+		}
 
 		this.bulletsShot = gameState.getBulletsShot();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
-
-		this.lives2 = 3;
-		/* 2player의 초기 생명력 */
 	}
 
 	/**
@@ -399,8 +395,13 @@ public class GameScreen extends Screen {
 	 *
 	 * @return Current game state.
 	 */
-	public final GameState getGameState() {
+	public final GameState getGameState1p() {
 		return new GameState(this.level, this.score, this.lives,
+				this.bulletsShot, this.shipsDestroyed);
+	}
+
+	public final GameState getGameState2p() {
+		return new GameState(this.level, this.score, this.lives, this.lives2,
 				this.bulletsShot, this.shipsDestroyed);
 	}
 }
