@@ -312,7 +312,12 @@ public final class DrawManager {
 		String settingString = "Setting";
 		String exitString = "exit";
 		String achievementString = "Achievements";
+		String check = "check";
 
+		if (Core.check){
+			backBufferGraphics.setColor(Color.WHITE);
+			drawLeftRegularString(screen, check, 150);
+		}
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
 		else

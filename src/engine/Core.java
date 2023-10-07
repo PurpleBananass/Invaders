@@ -22,6 +22,7 @@ import screen.SettingScreen;
  */
 public final class Core {
 
+	public  static boolean check = true;
 	/** Width of current screen. */
 	private static final int WIDTH = 448;
 	/** Height of current screen. */
