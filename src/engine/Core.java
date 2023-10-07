@@ -172,8 +172,25 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
 				break;
+			case 4:
+				// Shop
+				LOGGER.info("There's no shop yet");
+				returnCode = 1;
+				break;
+			case 5:
+				//settings
+				LOGGER.info("There's no settings yet");
+				returnCode = 1;
+				break;
+			case 6:
+				//Achievements
+				LOGGER.info("There's no achievements yet");
+				returnCode = 1;
+				break;
 			default:
 				break;
+
+				
 			}
 
 		} while (returnCode != 0);

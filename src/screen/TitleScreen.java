@@ -1,7 +1,6 @@
 package screen;
 
 import java.awt.event.KeyEvent;
-
 import engine.Cooldown;
 import engine.Core;
 
@@ -18,6 +17,7 @@ public class TitleScreen extends Screen {
 	
 	/** Time between changes in user selection. */
 	private Cooldown selectionCooldown;
+
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -77,7 +77,7 @@ public class TitleScreen extends Screen {
 	 * Shifts the focus to the next menu item.
 	 */
 	private void nextMenuItem() {
-		if (this.returnCode == 3)
+		if (this.returnCode == 6)
 			this.returnCode = 0;
 		else if (this.returnCode == 0)
 			this.returnCode = 2;
@@ -85,12 +85,13 @@ public class TitleScreen extends Screen {
 			this.returnCode++;
 	}
 
+
 	/**
 	 * Shifts the focus to the previous menu item.
 	 */
 	private void previousMenuItem() {
 		if (this.returnCode == 0)
-			this.returnCode = 3;
+			this.returnCode = 6;
 		else if (this.returnCode == 2)
 			this.returnCode = 0;
 		else

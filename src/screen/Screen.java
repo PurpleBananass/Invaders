@@ -42,6 +42,8 @@ public class Screen {
 	protected boolean isRunning;
 	/** What kind of screen goes next. */
 	protected int returnCode;
+	
+	protected boolean soundSelect;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -64,6 +66,7 @@ public class Screen {
 		this.inputDelay = Core.getCooldown(INPUT_DELAY);
 		this.inputDelay.reset();
 		this.returnCode = 0;
+		this.soundSelect = true;
 	}
 
 	/**
