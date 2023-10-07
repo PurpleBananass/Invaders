@@ -399,7 +399,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		int[] dy = {-1, 1, -1, 0, 1, -1, 0, 1};
 		for (int i = 0; i < this.enemyShips.size(); i++){
 			for (int j = 0; j < this.enemyShips.get(i).size(); j++) {
-				if (this.enemyShips.get(i).get(j) == destroyedShip && isBomb) {
+				if (this.enemyShips.get(i).get(j) == destroyedShip && true) {
 					destroyedByBombEnemyShips.add(this.enemyShips.get(i).get(j));
 					this.enemyShips.get(i).get(j).destroy();
 					this.logger.info("Destroyed ship in ("
