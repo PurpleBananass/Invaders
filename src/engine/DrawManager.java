@@ -510,52 +510,6 @@ public final class DrawManager {
 			i++;
 		}
 	}
-	/**
-	 * Draws Shop screen title and instructions.
-	 * 
-	 * @param screen
-	 *            Screen to draw on.
-	 */
-	public void drawShopMenu(final Screen screen) {
-		String shopString = "Shop";
-		String instructionsString = "Press Space to return";
-
-		backBufferGraphics.setColor(Color.GREEN);
-		drawCenteredBigString(screen, shopString, screen.getHeight() / 8);
-
-		backBufferGraphics.setColor(Color.GRAY);
-		drawCenteredRegularString(screen, instructionsString,
-				screen.getHeight() / 5);
-	}
-	/**
-	 * Draws items.
-	 * 
-	 * @param screen
-	 *            Screen to draw on.
-	 * @param items
-	 *            List of items.
-	 */
-	public void drawItems(final Screen screen,
-			final List<Shopitem> items, final int option) {
-		
-		int i = 0;
-		String itemString = "";
-
-		for (Shopitem shopitems : items) {
-
-			if (option == i)
-				backBufferGraphics.setColor(Color.GREEN);
-			else if (!shopitems.gettrue())
-				backBufferGraphics.setColor(Color.GRAY);
-			else
-				backBufferGraphics.setColor(Color.WHITE);
-			itemString = String.format("%s   %04d", shopitems.getname(),
-			        shopitems.getprice());
-			drawCenteredRegularString(screen, itemString, screen.getHeight()
-					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
-			i++;
-			}
-	}
 
 
 	/**
