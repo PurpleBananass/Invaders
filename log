@@ -1,28 +1,22 @@
-[INFO|5:18:02]: Started loading resources. 
-[FINE|5:18:02]: Sprite Ship loaded. 
-[FINE|5:18:02]: Sprite ShipDestroyed loaded. 
-[FINE|5:18:02]: Sprite Bullet loaded. 
-[FINE|5:18:02]: Sprite EnemyBullet loaded. 
-[FINE|5:18:02]: Sprite EnemyShipA1 loaded. 
-[FINE|5:18:02]: Sprite EnemyShipA2 loaded. 
-[FINE|5:18:02]: Sprite EnemyShipB1 loaded. 
-[FINE|5:18:02]: Sprite EnemyShipB2 loaded. 
-[FINE|5:18:02]: Sprite EnemyShipC1 loaded. 
-[FINE|5:18:02]: Sprite EnemyShipC2 loaded. 
-[FINE|5:18:02]: Sprite EnemyShipSpecial loaded. 
-[FINE|5:18:02]: Sprite Explosion loaded. 
-[INFO|5:18:02]: Finished loading the sprites. 
-[INFO|5:18:02]: Finished loading the fonts. 
-[INFO|5:18:02]: Starting 448x520 title screen at 60 fps. 
-[INFO|5:18:03]: Closing title screen. 
-[INFO|5:18:03]: Loading default high scores. 
-[INFO|5:18:03]: Starting 448x520 high score screen at 60 fps. 
-[INFO|5:18:05]: Closing high score screen. 
-[INFO|5:18:05]: Starting 448x520 title screen at 60 fps. 
-[INFO|5:18:06]: Closing title screen. 
-[INFO|5:18:06]: There's no shop yet 
-[INFO|5:18:06]: Starting 448x520 title screen at 60 fps. 
-[INFO|5:18:09]: Closing title screen. 
-[INFO|5:18:09]: There's no achievements yet 
-[INFO|5:18:09]: Starting 448x520 title screen at 60 fps. 
-[INFO|5:18:11]: Closing title screen. 
+[INFO|7:16:34]: Started loading resources. 
+[FINE|7:16:34]: Sprite Ship loaded. 
+[FINE|7:16:34]: Sprite ShipDestroyed loaded. 
+[FINE|7:16:34]: Sprite Bullet loaded. 
+[FINE|7:16:34]: Sprite EnemyBullet loaded. 
+[FINE|7:16:34]: Sprite EnemyShipA1 loaded. 
+[FINE|7:16:34]: Sprite EnemyShipA2 loaded. 
+[FINE|7:16:34]: Sprite EnemyShipB1 loaded. 
+[FINE|7:16:34]: Sprite EnemyShipB2 loaded. 
+[FINE|7:16:34]: Sprite EnemyShipC1 loaded. 
+[FINE|7:16:34]: Sprite EnemyShipC2 loaded. 
+[FINE|7:16:34]: Sprite EnemyShipSpecial loaded. 
+[FINE|7:16:34]: Sprite Explosion loaded. 
+[INFO|7:16:34]: Finished loading the sprites. 
+[INFO|7:16:34]: Finished loading the fonts. 
+[INFO|7:16:34]: Starting 448x520 title screen at 60 fps. 
+[INFO|7:16:36]: Closing title screen. 
+[INFO|7:16:36]: Loading default high scores. 
+[INFO|7:16:36]: Starting 448x520 high score screen at 60 fps. 
+[INFO|7:16:40]: Saving user settings. 
+[INFO|7:16:40]: Closing setting screen. 
+[INFO|7:16:40]: Starting 448x520 title screen at 60 fps. 
