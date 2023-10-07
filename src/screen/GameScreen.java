@@ -14,6 +14,8 @@ import entity.EnemyShip;
 import entity.EnemyShipFormation;
 import entity.Entity;
 import entity.Ship;
+import entity.Item;
+import entity.ItemPool;
 
 /**
  * Implements the game screen, where the action happens.
@@ -56,6 +58,8 @@ public class GameScreen extends Screen {
 	private Cooldown screenFinishedCooldown;
 	/** Set of all bullets fired by on screen ships. */
 	private Set<Bullet> bullets;
+
+	private Set<Item> items;
 	/** Current score. */
 	private int score;
 	/** Player lives left. */
@@ -120,6 +124,8 @@ public class GameScreen extends Screen {
 				.getCooldown(BONUS_SHIP_EXPLOSION);
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
+		this.items = new HashSet<Item>();
+
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -197,6 +203,7 @@ public class GameScreen extends Screen {
 
 		manageCollisions();
 		cleanBullets();
+		updateItems();
 		draw();
 
 		if ((this.enemyShipFormation.isEmpty() || this.lives == 0)
@@ -228,6 +235,10 @@ public class GameScreen extends Screen {
 		for (Bullet bullet : this.bullets)
 			drawManager.drawEntity(bullet, bullet.getPositionX(),
 					bullet.getPositionY());
+
+		for (Item item : this.items)
+			drawManager.drawEntity(item, item.getPositionX(),
+					item.getPositionY());
 
 		// Interface.
 		drawManager.drawScore(this, this.score);
@@ -265,6 +276,18 @@ public class GameScreen extends Screen {
 		BulletPool.recycle(recyclable);
 	}
 
+	private void updateItems() {
+		Set<Item> recyclable = new HashSet<Item>();
+		for (Item item : this.items) {
+			item.update();
+			if (item.getPositionY() < SEPARATION_LINE_HEIGHT
+					|| item.getPositionY() > this.height)
+				recyclable.add(item);
+		}
+		this.items.removeAll(recyclable);
+		ItemPool.recycle(recyclable);
+	}
+
 	/**
 	 * Manages collisions between bullets and ships.
 	 */
@@ -287,7 +310,12 @@ public class GameScreen extends Screen {
 							&& checkCollision(bullet, enemyShip)) {
 						this.score += enemyShip.getPointValue();
 						this.shipsDestroyed++;
+						if(enemyShip.hasItem()){
+							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY()));
+							this.logger.info("몇 개 ? " + items.size());
+						}
 						this.enemyShipFormation.destroy(enemyShip);
+
 						recyclable.add(bullet);
 					}
 				if (this.enemyShipSpecial != null

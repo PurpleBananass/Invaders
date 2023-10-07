@@ -22,7 +22,6 @@ public final class ItemPool {
             pool.remove(item);
             item.setPositionX(positionX - item.getWidth() / 2);
             item.setPositionY(positionY);
-            item.setSprite();
         } else {
             item = new Item(positionX, positionY);
             item.setPositionX(positionX - item.getWidth() / 2);

@@ -27,7 +27,7 @@ public class Item extends Entity {
      */
     public Item(final int positionX, final int positionY) {
         super(positionX, positionY, 30, 30, Color.YELLOW);
-        this.speed = 50;
+        this.speed = 5;
         setSprite();
     }
 
@@ -35,10 +35,7 @@ public class Item extends Entity {
      * Sets correct sprite for the item, based on speed.
      */
     public final void setSprite() {
-        if (this.isGet)
-            this.spriteType = SpriteType.DroppedItem;
-        else
-            this.spriteType = SpriteType.AcquiredItem;
+        this.spriteType = SpriteType.Item;
     }
 
     /**

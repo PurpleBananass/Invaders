@@ -53,6 +53,7 @@ public class EnemyShip extends Entity {
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
 		this.isDestroyed = false;
+		this.hasItem = itemGenerator();
 
 		switch (this.spriteType) {
 		case EnemyShipA1:
@@ -158,7 +159,7 @@ public class EnemyShip extends Entity {
 
 
 	/**
-	 * Enemyship에 랜덤으로 아이템 생성*/
+	 * 랜덤으로 Item을 가진 EnemyShip 생성*/
 	private boolean itemGenerator(){
 		int bound = 10000;
 		int rand_int = new Random().nextInt(bound);
@@ -168,7 +169,7 @@ public class EnemyShip extends Entity {
 			return false;
 	}
 
-	/** 적이 아이템을 지닌 객체인지 확인 */
+	/** EnemyShip이 아이템을 지닌 객체인지 확인 */
 	public final boolean hasItem(){
 		return this.hasItem;
 	}
