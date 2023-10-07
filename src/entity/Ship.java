@@ -17,15 +17,19 @@ public class Ship extends Entity {
 
 	/** Time between shots. */
 	private static final int SHOOTING_INTERVAL = 750;
-	/** Speed of the bullets shot by the ship. */
-	private static final int BULLET_SPEED = -6;
-	/** Movement of the ship for each unit of time. */
-	private static final int SPEED = 2;
+	/** Original speed of the bullets shot by the ship. */
+	private static final int ORIGINAL_BULLET_SPEED = -6;
+	/** Original movement of the ship for each unit of time. */
+	private static final int ORIGINAL_SPEED = 2;
 	
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
 	/** Time spent inactive between hits. */
 	private Cooldown destructionCooldown;
+	/** Speed of the bullet. */
+	private int BULLET_SPEED;
+	/** Speed of the ship. */
+	private int SPEED;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -41,6 +45,8 @@ public class Ship extends Entity {
 		this.spriteType = SpriteType.Ship;
 		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
+		this.SPEED = ORIGINAL_SPEED;
+		this.BULLET_SPEED = ORIGINAL_BULLET_SPEED;
 	}
 
 	/**
@@ -98,9 +104,7 @@ public class Ship extends Entity {
 	 * 
 	 * @return True if the ship is currently destroyed.
 	 */
-	public final boolean isDestroyed() {
-		return !this.destructionCooldown.checkFinished();
-	}
+	public final boolean isDestroyed() {return !this.destructionCooldown.checkFinished();}
 
 	/**
 	 * Getter for the ship's speed.
@@ -110,4 +114,35 @@ public class Ship extends Entity {
 	public final int getSpeed() {
 		return SPEED;
 	}
+
+	/**
+	 * Getter for the ship's speed.
+	 *
+	 * @return Speed of the ship.
+	 */
+	public final void setSpeed(int sp) {this.SPEED = sp;}
+
+	/**
+	 * Re-Setter for the ship's speed.
+	 */
+	public final void resetSpeed() {this.SPEED = ORIGINAL_SPEED;}
+
+	/**
+	 * Getter for the ship's shooting frequency speed.
+	 *
+	 * @return Ship's shooting frequency speed.
+	 */
+	public final Cooldown getShootingInterval() {return this.shootingCooldown;}
+
+	/**
+	 * Setter for the ship's shooting frequency speed.
+	 *
+	 * @return Speed of the ship's shooting frequency.
+	 */
+	public final void setShootingInterval(int cldwn) {this.shootingCooldown = Core.getCooldown(cldwn);}
+
+	/**
+	 * Re-Setter for the ship's shooting frequency speed.
+	 */
+	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);}
 }
