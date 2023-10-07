@@ -157,11 +157,7 @@ public class SettingScreen extends Screen {
                 }
             }
 
-            if (inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
-                    || inputManager.isKeyDown(KeyEvent.VK_SPACE) && selected) {
-                selected = false;
-                this.selectionCooldown.reset();
-            }
+
 
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected){
                 this.setting.get(0).value = soundVolume;
@@ -173,6 +169,11 @@ public class SettingScreen extends Screen {
                     logger.warning("Couldn't save settings!");
                 }
                 this.isRunning = false;}
+            if (inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
+                    || inputManager.isKeyDown(KeyEvent.VK_SPACE) && selected) {
+                selected = false;
+                this.selectionCooldown.reset();
+            }
         }
     }
 
