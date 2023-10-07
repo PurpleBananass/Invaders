@@ -312,7 +312,6 @@ public class GameScreen extends Screen {
 						this.shipsDestroyed++;
 						if(enemyShip.hasItem()){
 							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY()));
-							this.logger.info("몇 개 ? " + items.size());
 						}
 						this.enemyShipFormation.destroy(enemyShip);
 
@@ -328,7 +327,18 @@ public class GameScreen extends Screen {
 					recyclable.add(bullet);
 				}
 			}
+
+		Set<Item> recycableItem = new HashSet<Item>();
+		for (Item item : this.items){
+			if (checkCollision(item, this.ship) && !this.levelFinished){
+				recycableItem.add(item);
+				this.logger.info("아이템 휙득!");
+			}
+		}
+
+
 		this.bullets.removeAll(recyclable);
+		this.items.removeAll(recycableItem);
 		BulletPool.recycle(recyclable);
 	}
 
