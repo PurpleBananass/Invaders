@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.lang.Integer;
 
-import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;

@@ -1,7 +1,6 @@
 package screen;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import engine.Cooldown;
 import engine.Core;
 import engine.InputManager;
@@ -31,6 +30,7 @@ public class SettingScreen extends Screen {
     private int[] keySetting = {0x26, 0x28, 0x25, 0x27, 0x20, 0x57, 0x53, 0x44, 0x41, 0x31};
     private String[] keySettingString = {"UP","DOWN","LEFT","RIGHT","SPACE","W","S","A","D","1"};
     private int keyNum =0;
+    private boolean keyChangeMode = false;
 
 
 
@@ -86,13 +86,9 @@ public class SettingScreen extends Screen {
                 this.selectionCooldown.reset();
             }
 
-            if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
-                    || inputManager.isKeyDown(KeyEvent.VK_D) && !selected) {
-                selected = true;
-                this.selectionCooldown.reset();
-            }
+
             if((inputManager.isKeyDown(KeyEvent.VK_UP)
-                    || inputManager.isKeyDown(KeyEvent.VK_W)) && selected){
+                    || inputManager.isKeyDown(KeyEvent.VK_W)) && selected && !keyChangeMode){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
@@ -119,7 +115,7 @@ public class SettingScreen extends Screen {
             }
 
             if((inputManager.isKeyDown(KeyEvent.VK_DOWN)
-                    || inputManager.isKeyDown(KeyEvent.VK_S)) && selected){
+                    || inputManager.isKeyDown(KeyEvent.VK_S)) && selected && !keyChangeMode){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
@@ -144,20 +140,46 @@ public class SettingScreen extends Screen {
                         break;
                 }
             }
-            if (itemCode == 2 && selected &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
-                keySettingString[keyNum] = Character.toString(inputManager.getKeyChar());
-                System.out.println(inputManager.getKeyChar());
+            /**
+             * keyChangeMode에서 left를 누를 시 입력되자마자 select가 풀리는 버그
+             */
+            if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected)
+                this.isRunning = false;
+
+
+            if (itemCode == 2 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
+                keyChangeMode =true;
+                keySettingString[keyNum] = "";
                 this.selectionCooldown.reset();
             }
-
-            if (inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
-                    || inputManager.isKeyDown(KeyEvent.VK_SPACE) && selected) {
+            else if(itemCode == 3 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))){
+                keyChangeMode =true;
+                keySettingString[keyNum +5] = "";
+                this.selectionCooldown.reset();
+            }
+            else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
+                keySettingString[keyNum] = inputManager.getKeyString();
+                keySetting[keyNum] = inputManager.getKeyCode();
+                keyChangeMode = false;
+                this.selectionCooldown.reset();
+            }
+            else if(itemCode == 3 && selected && keyChangeMode && inputManager.getcheck()){
+                keySettingString[keyNum + 5] = inputManager.getKeyString();
+                keySetting[keyNum + 5] = inputManager.getKeyCode();
+                keyChangeMode = false;
+                this.selectionCooldown.reset();
+            }
+            else if ((inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
+                    || inputManager.isKeyDown(KeyEvent.VK_SPACE)) && selected && !keyChangeMode) {
+                keyNum = 0;
                 selected = false;
                 this.selectionCooldown.reset();
             }
-
-            if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected)
-                this.isRunning = false;
+            else if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
+                    || inputManager.isKeyDown(KeyEvent.VK_D) && !selected && !keyChangeMode) {
+                selected = true;
+                this.selectionCooldown.reset();
+            }
         }
     }
 

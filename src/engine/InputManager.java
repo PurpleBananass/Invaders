@@ -18,8 +18,9 @@ public final class InputManager implements KeyListener {
 	/** Singleton instance of the class. */
 	private static InputManager instance;
 
-	private static int keyCode;
-	private static char keyChar;
+	private static Integer keyCode;
+	private static String keyString;
+	private boolean check=false;
 
 	/**
 	 * Private constructor.
@@ -61,6 +62,8 @@ public final class InputManager implements KeyListener {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = true;
 		keyCode = key.getKeyCode();
+		keyString = key.getKeyText(keyCode);
+		check = true;
 	}
 
 	/**
@@ -73,6 +76,7 @@ public final class InputManager implements KeyListener {
 	public void keyReleased(final KeyEvent key) {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = false;
+		check = false;
 	}
 
 	/**
@@ -86,6 +90,7 @@ public final class InputManager implements KeyListener {
 
 	}
 
-	public int getKeyCode(){return keyCode;}
-	public char getKeyChar(){return keyChar;}
+	public Integer getKeyCode(){return keyCode;}
+	public String getKeyString(){return keyString;}
+	public boolean getcheck(){return check;}
 }
