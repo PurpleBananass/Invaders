@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.lang.Integer;
 
 import screen.Screen;
 import entity.Entity;
@@ -141,7 +142,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * First part of the drawing process. Initialices buffers, draws the
+	 * First part of the drawing process. Initialize buffers, draws the
 	 * background and prepares the images.
 	 * 
 	 * @param screen
@@ -177,7 +178,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws an entity, using the apropiate image.
+	 * Draws an entity, using the appropriate image.
 	 * 
 	 * @param entity
 	 *            Entity to be drawn.
@@ -290,10 +291,10 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, instructionsString,
-				screen.getHeight() /2 - fontRegularMetrics.getHeight()*3/2-fontRegularMetrics.getHeight()*2);
+				screen.getHeight() / 2-fontRegularMetrics.getHeight()*4);
 
 		backBufferGraphics.setColor(Color.GREEN);
-		drawCenteredBigString(screen, titleString, screen.getHeight() / 3-fontRegularMetrics.getHeight()*2);
+		drawCenteredBigString(screen, titleString, screen.getHeight() / 3-fontRegularMetrics.getHeight()*3);
 	}
 
 	/**
@@ -488,6 +489,7 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, instructionsString,
 				screen.getHeight() / 5);
 	}
+
 	/**
 	 * Draws high scores.
 	 * 
@@ -511,7 +513,6 @@ public final class DrawManager {
 		}
 	}
 
-
 	/**
 	 * Draws a centered string on regular font.
 	 * 
@@ -530,7 +531,7 @@ public final class DrawManager {
 	}
 	/**
 	 * Draws a leftside string on regular font.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param string
@@ -599,4 +600,149 @@ public final class DrawManager {
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
 	}
+    public void drawOneFifthRegularString(final Screen screen,
+                                          final String string, final int height) {
+        backBufferGraphics.setFont(fontRegular);
+        backBufferGraphics.drawString(string, screen.getWidth() / 5
+                - fontRegularMetrics.stringWidth(string) / 2 , height);
+    }
+
+    public void drawSevenTenthRegularString(final Screen screen,
+                                            final String string, final int height) {
+        backBufferGraphics.setFont(fontRegular);
+        backBufferGraphics.drawString(string, screen.getWidth() / 10 * 7
+                - fontRegularMetrics.stringWidth(string) / 2 , height);
+    }
+
+    public void drawStar(final Screen screen,
+                         final String string, final int height){
+        backBufferGraphics.setFont(fontRegular);
+        backBufferGraphics.drawString("*", screen.getWidth() / 5
+                - fontRegularMetrics.stringWidth(string) / 2 -16, height);
+
+    }
+
+    public void drawSetting(final Screen screen, final int option, final boolean selected){
+        String settingString = "Setting";
+        String instructionsString = "Press Space to return";
+
+        String volumeString = "Volume";
+        String bgmString = "BGM";
+        String frameSizeString = "Frame Size";
+        String keysString = "Keys";
+
+
+        backBufferGraphics.setColor(Color.GREEN);
+        drawCenteredBigString(screen, settingString, screen.getHeight() / 8);
+
+        backBufferGraphics.setColor(Color.GRAY);
+        drawCenteredRegularString(screen, instructionsString,
+                screen.getHeight() / 5);
+
+
+        if (option == 0) {
+            backBufferGraphics.setColor(Color.GREEN);
+            if(selected) drawStar(screen, volumeString,
+                    screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+        }
+        else
+            backBufferGraphics.setColor(Color.WHITE);
+        drawOneFifthRegularString(screen, volumeString,
+                screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+
+        if (option == 1) {
+            backBufferGraphics.setColor(Color.GREEN);
+            if(selected) drawStar(screen, bgmString,
+                    screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+        }
+        else
+            backBufferGraphics.setColor(Color.WHITE);
+        drawOneFifthRegularString(screen, bgmString,
+                screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+
+        if (option == 2) {
+            backBufferGraphics.setColor(Color.GREEN);
+            if(selected) drawStar(screen, frameSizeString,
+                    screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);;
+        }
+        else
+            backBufferGraphics.setColor(Color.WHITE);
+        drawOneFifthRegularString(screen, frameSizeString,
+                screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+
+        if (option == 3) {
+            backBufferGraphics.setColor(Color.GREEN);
+            if(selected) drawStar(screen, keysString,
+                    screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 8);;
+        }
+        else
+            backBufferGraphics.setColor(Color.WHITE);
+        drawOneFifthRegularString(screen, keysString,
+                screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 8);
+
+        backBufferGraphics.setColor(Color.GREEN);
+        backBufferGraphics.drawLine(screen.getWidth()/5*2 -1,screen.getHeight() / 4,
+                screen.getWidth()/5*2 -1,screen.getHeight() / 4 * 3);
+        backBufferGraphics.drawLine(screen.getWidth()/5*2,screen.getHeight() / 4,
+                screen.getWidth()/5*2,screen.getHeight() / 4 * 3);
+
+    }
+
+
+    public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
+                                  int volume, boolean bgmon, int frameSize) {
+
+
+        if (option == 0 && selected)
+            backBufferGraphics.setColor(Color.GREEN);
+        else
+            backBufferGraphics.setColor(Color.WHITE);
+
+        backBufferGraphics.drawRect(screen.getWidth() / 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() / 8 * 12,
+                screen.getWidth() / 4, fontRegularMetrics.getHeight());
+        backBufferGraphics.fillRect(screen.getWidth() / 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() / 8 * 12,
+                screen.getWidth() / 4 * volume / 100, fontRegularMetrics.getHeight());
+        backBufferGraphics.drawString(Integer.toString(volume), screen.getWidth() / 4 * 3
+                + fontRegularMetrics.stringWidth("A") * 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+
+        if (option == 1 && selected)
+            backBufferGraphics.setColor(Color.GREEN);
+        else
+            backBufferGraphics.setColor(Color.WHITE);
+
+        if(bgmon) drawSevenTenthRegularString(screen,"ON",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+        else drawSevenTenthRegularString(screen,"OFF",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+
+        if (option == 2 && selected){
+            backBufferGraphics.setFont(fontRegular);
+
+            if(frameSize == 1) backBufferGraphics.setColor(Color.GREEN);
+            else backBufferGraphics.setColor(Color.WHITE);
+            backBufferGraphics.drawString("1", screen.getWidth() / 10 * 6
+                    - fontRegularMetrics.stringWidth("1") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+
+            if(frameSize == 2) backBufferGraphics.setColor(Color.GREEN);
+            else backBufferGraphics.setColor(Color.WHITE);
+            drawSevenTenthRegularString(screen,"2",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+
+            if(frameSize == 3) backBufferGraphics.setColor(Color.GREEN);
+            else backBufferGraphics.setColor(Color.WHITE);
+            backBufferGraphics.drawString("3", screen.getWidth() / 10 * 8
+                    - fontRegularMetrics.stringWidth("3") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+        }
+        else {
+            backBufferGraphics.setColor(Color.WHITE);
+            drawSevenTenthRegularString(screen,Integer.toString(frameSize),screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+        }
+
+
+
+        if (option == 3)
+            backBufferGraphics.setColor(Color.GREEN);
+        else
+            backBufferGraphics.setColor(Color.WHITE);
+
+
+
+    }
 }

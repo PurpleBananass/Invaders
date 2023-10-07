@@ -1,25 +1,28 @@
-[INFO|9:25:59]: Started loading resources. 
-[FINE|9:25:59]: Sprite Ship loaded. 
-[FINE|9:25:59]: Sprite ShipDestroyed loaded. 
-[FINE|9:25:59]: Sprite Bullet loaded. 
-[FINE|9:25:59]: Sprite EnemyBullet loaded. 
-[FINE|9:25:59]: Sprite EnemyShipA1 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipA2 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipB1 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipB2 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipC1 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipC2 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipSpecial loaded. 
-[FINE|9:25:59]: Sprite Explosion loaded. 
-[INFO|9:25:59]: Finished loading the sprites. 
-[INFO|9:25:59]: Finished loading the fonts. 
-[INFO|9:25:59]: Starting 448x520 title screen at 60 fps. 
-[INFO|9:26:00]: Closing title screen. 
-[INFO|9:26:00]: There's no shop yet 
-[INFO|9:26:00]: Starting 448x520 title screen at 60 fps. 
-[INFO|9:26:04]: Closing title screen. 
-[INFO|9:26:04]: There's no settings yet 
-[INFO|9:26:04]: Starting 448x520 title screen at 60 fps. 
-[INFO|9:26:06]: Closing title screen. 
-[INFO|9:26:06]: There's no achievements yet 
-[INFO|9:26:06]: Starting 448x520 title screen at 60 fps. 
+[INFO|5:18:02]: Started loading resources. 
+[FINE|5:18:02]: Sprite Ship loaded. 
+[FINE|5:18:02]: Sprite ShipDestroyed loaded. 
+[FINE|5:18:02]: Sprite Bullet loaded. 
+[FINE|5:18:02]: Sprite EnemyBullet loaded. 
+[FINE|5:18:02]: Sprite EnemyShipA1 loaded. 
+[FINE|5:18:02]: Sprite EnemyShipA2 loaded. 
+[FINE|5:18:02]: Sprite EnemyShipB1 loaded. 
+[FINE|5:18:02]: Sprite EnemyShipB2 loaded. 
+[FINE|5:18:02]: Sprite EnemyShipC1 loaded. 
+[FINE|5:18:02]: Sprite EnemyShipC2 loaded. 
+[FINE|5:18:02]: Sprite EnemyShipSpecial loaded. 
+[FINE|5:18:02]: Sprite Explosion loaded. 
+[INFO|5:18:02]: Finished loading the sprites. 
+[INFO|5:18:02]: Finished loading the fonts. 
+[INFO|5:18:02]: Starting 448x520 title screen at 60 fps. 
+[INFO|5:18:03]: Closing title screen. 
+[INFO|5:18:03]: Loading default high scores. 
+[INFO|5:18:03]: Starting 448x520 high score screen at 60 fps. 
+[INFO|5:18:05]: Closing high score screen. 
+[INFO|5:18:05]: Starting 448x520 title screen at 60 fps. 
+[INFO|5:18:06]: Closing title screen. 
+[INFO|5:18:06]: There's no shop yet 
+[INFO|5:18:06]: Starting 448x520 title screen at 60 fps. 
+[INFO|5:18:09]: Closing title screen. 
+[INFO|5:18:09]: There's no achievements yet 
+[INFO|5:18:09]: Starting 448x520 title screen at 60 fps. 
+[INFO|5:18:11]: Closing title screen. 

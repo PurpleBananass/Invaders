@@ -18,7 +18,6 @@ public class TitleScreen extends Screen {
 	/** Time between changes in user selection. */
 	private Cooldown selectionCooldown;
 
-
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 * 
@@ -84,7 +83,6 @@ public class TitleScreen extends Screen {
 		else
 			this.returnCode++;
 	}
-
 
 	/**
 	 * Shifts the focus to the previous menu item.
