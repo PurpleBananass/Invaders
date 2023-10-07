@@ -84,6 +84,7 @@ public class EnemyShip extends Entity {
 		this.spriteType = SpriteType.EnemyShipSpecial;
 		this.isDestroyed = false;
 		this.pointValue = BONUS_TYPE_POINTS;
+
 	}
 
 	/**
@@ -156,7 +157,6 @@ public class EnemyShip extends Entity {
 	public final boolean isDestroyed() {
 		return this.isDestroyed;
 	}
-
 
 	/**
 	 * 랜덤으로 Item을 가진 EnemyShip 생성*/
