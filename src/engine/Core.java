@@ -126,10 +126,10 @@ public final class Core {
 			case 2:
 				currentScreen = new SkinSelectionScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " title screen at " + FPS + " fps.");
-				break;
+						+ " Skin Selection screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
 				// Game & score.
-				/*do {
+				do {
 					// One extra live every few levels.
 					boolean bonusLife = gameState.getLevel()
 							% EXTRA_LIFE_FRECUENCY == 0
@@ -164,8 +164,6 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
 				break;
-
-				 */
 			case 3:
 				// High scores.
 				currentScreen = new HighScoreScreen(width, height, FPS);

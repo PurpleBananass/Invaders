@@ -477,6 +477,11 @@ public final class DrawManager {
 	 * @param screen
 	 *            Screen to draw on.
 	 */
+	public void drawSkinSelectionMenu(final Screen screen){
+		String SkinString = "Select Your Ship Design!";
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
+	}
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
 		String instructionsString = "Press Space to return";
