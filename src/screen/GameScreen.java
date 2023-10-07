@@ -277,15 +277,15 @@ public class GameScreen extends Screen {
 	}
 
 	private void updateItems() {
-		Set<Item> recyclable = new HashSet<Item>();
+		Set<Item> recycableItem = new HashSet<Item>();
 		for (Item item : this.items) {
 			item.update();
 			if (item.getPositionY() < SEPARATION_LINE_HEIGHT
 					|| item.getPositionY() > this.height)
-				recyclable.add(item);
+				recycableItem.add(item);
 		}
-		this.items.removeAll(recyclable);
-		ItemPool.recycle(recyclable);
+		this.items.removeAll(recycableItem);
+		ItemPool.recycle(recycableItem);
 	}
 
 	/**
@@ -340,6 +340,7 @@ public class GameScreen extends Screen {
 		this.bullets.removeAll(recyclable);
 		this.items.removeAll(recycableItem);
 		BulletPool.recycle(recyclable);
+		ItemPool.recycle(recycableItem);
 	}
 
 	/**
