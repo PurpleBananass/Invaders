@@ -1,7 +1,9 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import engine.Cooldown;
@@ -58,7 +60,7 @@ public class GameScreen extends Screen {
 	private Cooldown screenFinishedCooldown;
 	/** Set of all bullets fired by on screen ships. */
 	private Set<Bullet> bullets;
-	/** Set of all items dropped by on screen enemyships*/
+
 	private Set<Item> items;
 	/** Current score. */
 	private int score;
@@ -74,6 +76,9 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
+    
+    private List<Ship> auxiliaryShips = new ArrayList<>();
+    private boolean existAuxiliaryShips = false;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -126,6 +131,8 @@ public class GameScreen extends Screen {
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
 
+        this.auxiliaryShips.add(new Ship(ship.getPositionX() - 30, ship.getPositionY(), DrawManager.SpriteType.EnemyShipA1));
+        this.auxiliaryShips.add(new Ship(ship.getPositionX() + 30, ship.getPositionY(), DrawManager.SpriteType.EnemyShipA1));
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -178,6 +185,15 @@ public class GameScreen extends Screen {
 				if (inputManager.isKeyDown(KeyEvent.VK_G))
 					if(this.ship.useItem())
 						useItem(this.ship.getItemQueue().deque());
+                if (existAuxiliaryShips) {
+                    auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
+                    auxiliaryShips.get(0).setPositionY(ship.getPositionY());
+                    auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
+                    auxiliaryShips.get(1).setPositionY(ship.getPositionY());
+                }else{
+                    auxiliaryShips.get(0).destroy();
+                    auxiliaryShips.get(1).destroy();
+                }
 			}
 
 			if (this.enemyShipSpecial != null) {
@@ -206,7 +222,7 @@ public class GameScreen extends Screen {
 
 		manageCollisions();
 		cleanBullets();
-		cleanItems();
+		updateItems();
 		draw();
 
 		if ((this.enemyShipFormation.isEmpty() || this.lives == 0)
@@ -411,4 +427,8 @@ public class GameScreen extends Screen {
 	}
 
 
+}
+    public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
+        this.existAuxiliaryShips = existAuxiliaryShips;
+    }
 }
