@@ -204,6 +204,7 @@ public class GameScreen extends Screen {
                 boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT)
                         || inputManager.isKeyDown(KeyEvent.VK_A);
 
+
                 boolean isRightBorder = this.ship.getPositionX()
                         + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
                 boolean isLeftBorder = this.ship.getPositionX()
@@ -215,9 +216,18 @@ public class GameScreen extends Screen {
                 if (moveLeft && !isLeftBorder) {
                     this.ship.moveLeft();
                 }
+                if (existAuxiliaryShips) {
+                    auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
+                    auxiliaryShips.get(0).setPositionY(ship.getPositionY());
+                    auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
+                    auxiliaryShips.get(1).setPositionY(ship.getPositionY());
+                }
+
                 if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
                     if (this.ship.shoot(this.bullets))
                         this.bulletsShot++;
+
+
             }
 
             if (this.enemyShipSpecial != null) {
@@ -282,9 +292,10 @@ public class GameScreen extends Screen {
         for (Item item : this.items)
             drawManager.drawEntity(item, item.getPositionX(),
                     item.getPositionY());
-
-        for (Ship auxiliaryShip : this.auxiliaryShips) {
-            drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
+        if (existAuxiliaryShips) {
+            for (Ship auxiliaryShip : this.auxiliaryShips) {
+                drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
+            }
         }
 
 
