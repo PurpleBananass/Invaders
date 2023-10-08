@@ -2,7 +2,7 @@ package entity;
 
 public class EnemyTypeC extends EnemyShip {
 
-    public EnemyTypeA(final int positionX, final int positionY,
+    public EnemyTypeC(final int positionX, final int positionY,
                       final SpriteType spriteType) {
         super(positionX, positionY, spriteType);
     }
