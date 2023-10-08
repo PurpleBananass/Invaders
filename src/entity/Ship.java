@@ -19,7 +19,7 @@ public class Ship extends Entity {
 	/** Time between shots. */
 	private static final int SHOOTING_INTERVAL = 750;
 
-	private static final int ITEM_USE_INTERVAL = 750;
+	private static final int ITEM_USE_INTERVAL = 50;
 	/** Speed of the bullets shot by the ship. */
 	private static final int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time. */
@@ -88,7 +88,7 @@ public class Ship extends Entity {
 		return false;
 	}
 
-	public final boolean useItem() {
+	public final boolean itemCoolTime() {
 		if (this.itemCooldown.checkFinished()) {
 			this.itemCooldown.reset();
 			return true;

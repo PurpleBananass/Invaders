@@ -4,8 +4,8 @@ package entity;
 /** 현재 사용자가 보유한 아이템을 저장하는 Queue */
 public class ItemQueue {
 
-    private Item[] itemQue;
-    private int capacity;
+    private final Item[] itemQue;
+    private final int capacity;
     private int front;
     private int rear;
     private int size;
@@ -30,9 +30,6 @@ public class ItemQueue {
     }
 
     public Item deque(){
-        if(size <= 0) {
-
-        }
         Item x = itemQue[front++];
         size--;
         if(front == capacity)

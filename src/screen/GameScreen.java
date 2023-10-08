@@ -6,10 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import engine.Cooldown;
-import engine.Core;
-import engine.GameSettings;
-import engine.GameState;
+import engine.*;
 import entity.Bullet;
 import entity.BulletPool;
 import entity.EnemyShip;
@@ -120,7 +117,7 @@ public class GameScreen extends Screen {
 
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
-		this.ship = new Ship(this.width / 2, this.height - 30);
+		this.ship = new Ship(this.width / 2, this.height - 30, DrawManager.SpriteType.Ship);
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
 				BONUS_SHIP_INTERVAL, BONUS_SHIP_VARIANCE);
@@ -179,21 +176,32 @@ public class GameScreen extends Screen {
 				if (moveLeft && !isLeftBorder) {
 					this.ship.moveLeft();
 				}
-				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-					if (this.ship.shoot(this.bullets))
+				if (existAuxiliaryShips) {
+					auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
+					auxiliaryShips.get(0).setPositionY(ship.getPositionY());
+					auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
+					auxiliaryShips.get(1).setPositionY(ship.getPositionY());
+				}else{
+					auxiliaryShips.get(0).destroy();
+					auxiliaryShips.get(1).destroy();
+				}
+
+				if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && existAuxiliaryShips){
+					for (Ship auxiliaryShip : auxiliaryShips) {
+						if(auxiliaryShip.shoot(this.bullets)){
+							this.bulletsShot++;
+						}
+					}
+					if(this.ship.shoot(this.bullets)){
 						this.bulletsShot++;
+					}
+				}else if(inputManager.isKeyDown(KeyEvent.VK_SPACE) && this.ship.shoot(this.bullets)){
+					this.bulletsShot++;
+				}
 				if (inputManager.isKeyDown(KeyEvent.VK_G))
-					if(this.ship.useItem())
+					if(this.ship.itemCoolTime())
 						useItem(this.ship.getItemQueue().deque());
-                if (existAuxiliaryShips) {
-                    auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
-                    auxiliaryShips.get(0).setPositionY(ship.getPositionY());
-                    auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
-                    auxiliaryShips.get(1).setPositionY(ship.getPositionY());
-                }else{
-                    auxiliaryShips.get(0).destroy();
-                    auxiliaryShips.get(1).destroy();
-                }
+
 			}
 
 			if (this.enemyShipSpecial != null) {
@@ -258,6 +266,12 @@ public class GameScreen extends Screen {
 		for (Item item : this.items)
 			drawManager.drawEntity(item, item.getPositionX(),
 					item.getPositionY());
+		if (existAuxiliaryShips) {
+			for (Ship auxiliaryShip : this.auxiliaryShips) {
+				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
+			}
+		}
+
 
 		// Interface.
 		drawManager.drawScore(this, this.score);
@@ -298,7 +312,7 @@ public class GameScreen extends Screen {
 	/**
 	 * 아이템이 화면 아래나 Ship 닿을 시 아이템 청소
 	 * */
-	private void cleanItems() {
+	private void updateItems() {
 		Set<Item> recyclableItem = new HashSet<Item>();
 		for (Item item : this.items) {
 			item.update();
@@ -400,34 +414,36 @@ public class GameScreen extends Screen {
 
 	/** 아이템 종류에 맞는 기능 실행 */
 	private void useItem(Item item) {
-		if (!item.getIsGet() &&
-				item.getItemType() == Item.ItemType.SubPlaneItem) {
-			// 여기에 보조비행기 아이템 코드 작성
-			this.logger.info("SubPlane Item 사용");
-		}
-		else if (!item.getIsGet() &&
-				item.getItemType() == Item.ItemType.SpeedUpItem) {
-			// 여기에 스피드업 아이템 코드 작성
-			this.logger.info("SpeedUp Item 사용");
-		}
-		else if (!item.getIsGet() &&
-				item.getItemType() == Item.ItemType.InvincibleItem) {
-			this.ship.runInvincible();
-			this.logger.info("Invincible Item 사용");
-		}
-		else if (!item.getIsGet() &&
-				item.getItemType() == Item.ItemType.BombItem) {
-			// 여기에 폭탄 아이템 코드 작성
-			this.logger.info("Bomb Item 사용");
-		}
-		else {
+		if(item == null) {
 			this.logger.info("보유한 아이템이 없습니다");
 		}
-		item.setIsGet();
+		else{
+			if (!item.getIsGet() &&
+					item.getItemType() == Item.ItemType.SubPlaneItem) {
+				setExistAuxiliaryShips(true);
+				this.logger.info("SubPlane Item 사용");
+			}
+			else if (!item.getIsGet() &&
+					item.getItemType() == Item.ItemType.SpeedUpItem) {
+				// 여기에 스피드업 아이템 코드 작성
+				this.logger.info("SpeedUp Item 사용");
+			}
+			else if (!item.getIsGet() &&
+					item.getItemType() == Item.ItemType.InvincibleItem) {
+				this.ship.runInvincible();
+				this.logger.info("Invincible Item 사용");
+			}
+			else if (!item.getIsGet() &&
+					item.getItemType() == Item.ItemType.BombItem) {
+				// 여기에 폭탄 아이템 코드 작성
+				this.logger.info("Bomb Item 사용");
+			}
+			item.setIsGet();
+		}
+
 	}
 
 
-}
     public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
         this.existAuxiliaryShips = existAuxiliaryShips;
     }
