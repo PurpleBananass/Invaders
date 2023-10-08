@@ -223,9 +223,19 @@ public class GameScreen extends Screen {
                     auxiliaryShips.get(1).setPositionY(ship.getPositionY());
                 }
 
-                if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-                    if (this.ship.shoot(this.bullets))
+                if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && existAuxiliaryShips){
+                    for (Ship auxiliaryShip : auxiliaryShips) {
+                        if(auxiliaryShip.shoot(this.bullets)){
+                            this.bulletsShot++;
+                        }
+                    }
+                    if(this.ship.shoot(this.bullets)){
                         this.bulletsShot++;
+                    }
+                }else if(inputManager.isKeyDown(KeyEvent.VK_SPACE) && this.ship.shoot(this.bullets)){
+                    this.bulletsShot++;
+                }
+
 
 
             }
