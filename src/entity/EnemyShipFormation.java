@@ -162,7 +162,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 								+ positionX, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType);
 					case EnemyShipC1:
-						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
+						enemyShip = new EnemyTypeC((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ positionX, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType);
@@ -447,4 +447,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	public final boolean isEmpty() {
 		return this.shipCount <= 0;
 	}
+
+	public static final int bulletSpeed() { return BULLET_SPEED; }
 }
