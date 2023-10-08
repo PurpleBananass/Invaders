@@ -1,5 +1,12 @@
 package entity;
 
+import java.awt.Color;
+import java.util.Set;
+
+import engine.Cooldown;
+import engine.Core;
+import engine.DrawManager.SpriteType;
+
 public class EnemyTypeA extends EnemyShip {
     public EnemyTypeA(final int positionX, final int positionY,
                       final SpriteType spriteType) {
