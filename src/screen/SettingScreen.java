@@ -75,6 +75,7 @@ public class SettingScreen extends Screen {
         draw();
         if (this.selectionCooldown.checkFinished()
                 && this.inputDelay.checkFinished()) {
+            /** Move up and down when not selected */
             if ((inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) && !selected) {
                 previousSettingItem();
@@ -86,7 +87,7 @@ public class SettingScreen extends Screen {
                 this.selectionCooldown.reset();
             }
 
-
+            /** Move up and down when selected */
             if((inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) && selected && !keyChangeMode){
                 switch (itemCode){
@@ -99,13 +100,8 @@ public class SettingScreen extends Screen {
                         bgmOn = !bgmOn;
                         this.selectionCooldown.reset();
                         break;
-                    /** 1p Keys Setting */
-                    case 2:
-                        if(keyNum>0) keyNum--;
-                        this.selectionCooldown.reset();
-                        break;
-                    /** 2p Keys Setting */
-                    case 3:
+                    /** Keys Setting */
+                    case 2, 3:
                         if(keyNum>0) keyNum--;
                         this.selectionCooldown.reset();
                         break;
@@ -113,7 +109,6 @@ public class SettingScreen extends Screen {
                         break;
                 }
             }
-
             if((inputManager.isKeyDown(KeyEvent.VK_DOWN)
                     || inputManager.isKeyDown(KeyEvent.VK_S)) && selected && !keyChangeMode){
                 switch (itemCode){
@@ -126,13 +121,8 @@ public class SettingScreen extends Screen {
                         bgmOn = !bgmOn;
                         this.selectionCooldown.reset();
                         break;
-                    /** 1p Keys Setting */
-                    case 2:
-                        if(keyNum<4) keyNum++;
-                        this.selectionCooldown.reset();
-                        break;
-                    /** 2p Keys Setting */
-                    case 3:
+                    /** Keys Setting */
+                    case 2, 3:
                         if(keyNum<4) keyNum++;
                         this.selectionCooldown.reset();
                         break;
@@ -140,13 +130,17 @@ public class SettingScreen extends Screen {
                         break;
                 }
             }
-            /**
-             * keyChangeMode에서 left를 누를 시 입력되자마자 select가 풀리는 버그
-             */
+
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected)
                 this.isRunning = false;
 
-
+            /**
+             * 1P Keys Setting Mode
+             * 2P Keys Setting Mode
+             * Receive 1P Keys Setting Input
+             * Receive 2P Keys Setting Input
+             * Selected
+             * */
             if (itemCode == 2 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
                 keyChangeMode =true;
                 keySettingString[keyNum] = "";
@@ -184,7 +178,7 @@ public class SettingScreen extends Screen {
     }
 
     /**
-     * Shifts the focus to the next menu item.
+     * Shifts the focus to the next setting item.
      */
     private void nextSettingItem() {
         if (this.itemCode == 3)
@@ -194,7 +188,7 @@ public class SettingScreen extends Screen {
     }
 
     /**
-     * Shifts the focus to the previous menu item.
+     * Shifts the focus to the previous setting item.
      */
     private void previousSettingItem() {
         if (this.itemCode == 0)
