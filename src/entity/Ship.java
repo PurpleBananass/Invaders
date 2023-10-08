@@ -20,7 +20,9 @@ public class Ship extends Entity {
 	/** Speed of the bullets shot by the ship. */
 	private static final int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time. */
-	private static final int SPEED = 2;
+	private static int SPEED = 2;
+	/** Movement of the ship when ship get speed item for each unit of time. **/
+	private static final int item_SPEED = 6;
 	
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
@@ -110,4 +112,10 @@ public class Ship extends Entity {
 	public final int getSpeed() {
 		return SPEED;
 	}
+
+	/** Set item_speed when ship get speed item **/
+	public void set_item_Speed() {
+		this.SPEED = item_SPEED;
+	}
+
 }
