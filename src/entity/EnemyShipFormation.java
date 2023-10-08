@@ -149,10 +149,25 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				else
 					spriteType = SpriteType.EnemyShipA1;
 
-				column.add(new EnemyShip((SEPARATION_DISTANCE 
-						* this.enemyShips.indexOf(column))
+				EnemyShip enemyShip = null;
+				switch (spriteType) {
+					case EnemyShipA1:
+						enemyShip = new EnemyTypeA((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
 								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType));
+								+ positionY, spriteType);
+					case EnemyShipB1:
+						enemyShip = new EnemyTypeB((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ positionX, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType);
+					case EnemyShipC1:
+						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ positionX, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType);
+				}
+				column.add(enemyShip);
 				this.shipCount++;
 			}
 		}
@@ -335,13 +350,14 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 */
 	public final void shoot(final Set<Bullet> bullets) {
 		// For now, only ships in the bottom row are able to shoot.
-		int index = (int) (Math.random() * this.shooters.size());
-		EnemyShip shooter = this.shooters.get(index);
 
 		if (this.shootingCooldown.checkFinished()) {
 			this.shootingCooldown.reset();
-			bullets.add(BulletPool.getBullet(shooter.getPositionX()
-					+ shooter.width / 2, shooter.getPositionY(), BULLET_SPEED));
+			for (int i = 0; i < level; i++) {
+				int index = (int) (Math.random() * this.shooters.size());
+				EnemyShip shooter = this.shooters.get(index);
+				shooter.shoot(bullets);
+			}
 		}
 	}
 
