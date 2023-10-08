@@ -109,7 +109,7 @@ public class GameScreen extends Screen {
 	public final void initialize() {
 		super.initialize();
 
-		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
+		enemyShipFormation = new EnemyShipFormation(this.gameSettings,this.level);
 		enemyShipFormation.attach(this);
 		this.ship = new Ship(this.width / 2, this.height - 30);
 		// Appears each 10-30 seconds.
@@ -285,19 +285,23 @@ public class GameScreen extends Screen {
 				for (EnemyShip enemyShip : this.enemyShipFormation)
 					if (!enemyShip.isDestroyed()
 							&& checkCollision(bullet, enemyShip)) {
-						this.score += enemyShip.getPointValue();
-						this.shipsDestroyed++;
 						this.enemyShipFormation.destroy(enemyShip);
 						recyclable.add(bullet);
+						if (enemyShip.isDestroyed()) {
+							this.shipsDestroyed++;
+							this.score += enemyShip.getPointValue();
+						}
 					}
 				if (this.enemyShipSpecial != null
 						&& !this.enemyShipSpecial.isDestroyed()
 						&& checkCollision(bullet, this.enemyShipSpecial)) {
 					this.score += this.enemyShipSpecial.getPointValue();
-					this.shipsDestroyed++;
 					this.enemyShipSpecial.destroy();
 					this.enemyShipSpecialExplosionCooldown.reset();
 					recyclable.add(bullet);
+					if (enemyShipSpecial.isDestroyed()) {
+						this.shipsDestroyed++;
+					}
 				}
 			}
 		this.bullets.removeAll(recyclable);

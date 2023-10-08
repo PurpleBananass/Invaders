@@ -94,6 +94,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private List<EnemyShip> shooters;
 	/** Number of not destroyed ships. */
 	private int shipCount;
+	/** current LEVEL used by HP */
+	private int level;
 
 	/** Directions the formation can move. */
 	private enum Direction {
@@ -111,7 +113,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 * @param gameSettings
 	 *            Current game settings.
 	 */
-	public EnemyShipFormation(final GameSettings gameSettings) {
+	public EnemyShipFormation(final GameSettings gameSettings,int level) {
+		this.level = level;
 		this.drawManager = Core.getDrawManager();
 		this.logger = Core.getLogger();
 		this.enemyShips = new ArrayList<List<EnemyShip>>();
@@ -353,8 +356,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			for (int i = 0; i < column.size(); i++)
 				if (column.get(i).equals(destroyedShip)) {
 					column.get(i).destroy();
-					this.logger.info("Destroyed ship in ("
-							+ this.enemyShips.indexOf(column) + "," + i + ")");
+					if (destroyedShip.isDestroyed()) {
+						this.logger.info("Destroyed ship in ("
+								+ this.enemyShips.indexOf(column) + "," + i + ")");
+					}
 				}
 
 		// Updates the list of ships that can shoot the player.
@@ -379,8 +384,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						+ this.shooters.size() + " members.");
 			}
 		}
-
-		this.shipCount--;
+		if (destroyedShip.isDestroyed())
+			this.shipCount--;
 	}
 
 	/**
