@@ -1,10 +1,7 @@
 package screen;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import engine.*;
 import entity.Bullet;
@@ -221,6 +218,9 @@ public class GameScreen extends Screen {
                     auxiliaryShips.get(0).setPositionY(ship.getPositionY());
                     auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
                     auxiliaryShips.get(1).setPositionY(ship.getPositionY());
+                }else{
+                    auxiliaryShips.get(0).destroy();
+                    auxiliaryShips.get(1).destroy();
                 }
 
                 if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && existAuxiliaryShips){
@@ -285,7 +285,6 @@ public class GameScreen extends Screen {
      */
     private void draw() {
         drawManager.initDrawing(this);
-
         drawManager.drawEntity(this.ship, this.ship.getPositionX(),
                 this.ship.getPositionY());
         if (this.enemyShipSpecial != null)
@@ -442,4 +441,7 @@ public class GameScreen extends Screen {
                 this.bulletsShot, this.shipsDestroyed);
     }
 
+    public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
+        this.existAuxiliaryShips = existAuxiliaryShips;
+    }
 }
