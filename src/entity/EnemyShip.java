@@ -24,7 +24,9 @@ public class EnemyShip extends Entity {
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
-	private static final double ITEM_PROPORTIOIN = 0.1;
+	private static final double ITEM_PROPORTIOIN = 0.8;
+
+	public static final int RANDOM_BOUND = 10000;
 
 
 	/** Cooldown between sprite changes. */
@@ -35,6 +37,8 @@ public class EnemyShip extends Entity {
 	private int pointValue;
 
 	private boolean hasItem;
+
+	private int itemRange;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -53,7 +57,9 @@ public class EnemyShip extends Entity {
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
 		this.isDestroyed = false;
-		this.hasItem = itemGenerator();
+		this.itemRange =  new Random().nextInt(RANDOM_BOUND);
+		this.hasItem = itemGenerator(itemRange);
+
 
 		switch (this.spriteType) {
 		case EnemyShipA1:
@@ -160,10 +166,8 @@ public class EnemyShip extends Entity {
 
 	/**
 	 * 랜덤으로 Item을 가진 EnemyShip 생성*/
-	private boolean itemGenerator(){
-		int bound = 10000;
-		int rand_int = new Random().nextInt(bound);
-		if(rand_int < (int)(bound * ITEM_PROPORTIOIN))
+	private boolean itemGenerator(int rand_int){
+		if(rand_int < (int)(RANDOM_BOUND * ITEM_PROPORTIOIN))
 			return true;
 		else
 			return false;
@@ -173,6 +177,8 @@ public class EnemyShip extends Entity {
 	public final boolean hasItem(){
 		return this.hasItem;
 	}
+
+	public int getItemRange(){return this.itemRange;}
 }
 
 
