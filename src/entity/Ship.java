@@ -18,6 +18,8 @@ public class Ship extends Entity {
 
 	/** Time between shots. */
 	private static final int SHOOTING_INTERVAL = 750;
+
+	private static final int ITEM_USE_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship. */
 	private static final int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time. */
@@ -25,10 +27,14 @@ public class Ship extends Entity {
 	
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
+
+	private Cooldown itemCooldown;
 	/** Time spent inactive between hits. */
 	private Cooldown destructionCooldown;
 
 	public boolean Invincible;
+
+	private ItemQueue itemQueue;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -42,7 +48,9 @@ public class Ship extends Entity {
 		super(positionX, positionY, 13 * 2, 8 * 2, Color.GREEN);
 		this.spriteType = SpriteType.Ship;
 		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
+		this.itemCooldown = Core.getCooldown(ITEM_USE_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
+		this.itemQueue = new ItemQueue();
 
 		this.Invincible = false;
 	}
@@ -75,6 +83,14 @@ public class Ship extends Entity {
 			this.shootingCooldown.reset();
 			bullets.add(BulletPool.getBullet(positionX + this.width / 2,
 					positionY, BULLET_SPEED));
+			return true;
+		}
+		return false;
+	}
+
+	public final boolean useItem() {
+		if (this.itemCooldown.checkFinished()) {
+			this.itemCooldown.reset();
 			return true;
 		}
 		return false;
@@ -137,4 +153,7 @@ public class Ship extends Entity {
 		}
 
 	}
+
+	public final ItemQueue getItemQueue(){return this.itemQueue;}
+
 }

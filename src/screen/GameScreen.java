@@ -175,6 +175,9 @@ public class GameScreen extends Screen {
 				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
 					if (this.ship.shoot(this.bullets))
 						this.bulletsShot++;
+				if (inputManager.isKeyDown(KeyEvent.VK_G))
+					if(this.ship.useItem())
+						useItem(this.ship.getItemQueue().deque());
 			}
 
 			if (this.enemyShipSpecial != null) {
@@ -309,7 +312,7 @@ public class GameScreen extends Screen {
 						this.score += enemyShip.getPointValue();
 						this.shipsDestroyed++;
 						if(enemyShip.hasItem()){
-							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY()));
+							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
 						}
 						this.enemyShipFormation.destroy(enemyShip);
 
@@ -330,7 +333,7 @@ public class GameScreen extends Screen {
 		for (Item item : this.items){
 			if (checkCollision(item, this.ship) && !this.levelFinished){
 				recycableItem.add(item);
-				this.logger.info("아이템 휙득!");
+				this.ship.getItemQueue().enque(item);
 			}
 		}
 
@@ -375,5 +378,33 @@ public class GameScreen extends Screen {
 		return new GameState(this.level, this.score, this.lives,
 				this.bulletsShot, this.shipsDestroyed);
 	}
+
+	private void useItem(Item item) {
+		if (!item.getIsGet() &&
+				item.getItemType() == Item.ItemType.SubPlaneItem) {
+			this.ship.runInvincible();
+			this.logger.info("SubPlane Item 휙득");
+		}
+		else if (!item.getIsGet() &&
+				item.getItemType() == Item.ItemType.SpeedUpItem) {
+			this.ship.runInvincible();
+			this.logger.info("SpeedUp Item 휙득");
+		}
+		else if (!item.getIsGet() &&
+				item.getItemType() == Item.ItemType.InvincibleItem) {
+			this.ship.runInvincible();
+			this.logger.info("Invincible Item 휙득");
+		}
+		else if (!item.getIsGet() &&
+				item.getItemType() == Item.ItemType.BombItem) {
+			this.ship.runInvincible();
+			this.logger.info("Bomb Item 휙득");
+		}
+		else {
+			this.logger.info("보유한 아이템이 없습니다");
+		}
+		item.setIsGet();
+	}
+
 
 }
