@@ -38,9 +38,9 @@ public class Ship extends Entity {
 	 * @param positionY
 	 *            Initial position of the ship in the Y axis.
 	 */
-	public Ship(final int positionX, final int positionY) {
+	public Ship(final int positionX, final int positionY, SpriteType spriteType) {
 		super(positionX, positionY, 13 * 2, 8 * 2, Color.GREEN);
-		this.spriteType = SpriteType.Ship;
+		this.spriteType = spriteType;
 		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
 
