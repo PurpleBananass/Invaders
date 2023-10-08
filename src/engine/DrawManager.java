@@ -60,6 +60,10 @@ public final class DrawManager {
 		Bullet,
 		/** Enemy bullet. */
 		EnemyBullet,
+		/** Player bullet. */
+		BiggerBullet,
+		/** Enemy bullet. */
+		BiggerEnemyBullet,
 		/** First enemy ship - first form. */
 		EnemyShipA1,
 		/** First enemy ship - second form. */
@@ -101,6 +105,9 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.EnemyShipC2, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipSpecial, new boolean[16][7]);
 			spriteMap.put(SpriteType.Explosion, new boolean[13][7]);
+			//Bigger Bullet Sprite. Place at the bottom for easy modification of binary data in the res/graphics path
+			spriteMap.put(SpriteType.BiggerBullet, new boolean[3][6]);
+			spriteMap.put(SpriteType.BiggerEnemyBullet, new boolean[3][6]);
 
 			fileManager.loadSprite(spriteMap);
 			logger.info("Finished loading the sprites.");
