@@ -58,7 +58,7 @@ public class GameScreen extends Screen {
 	private Cooldown screenFinishedCooldown;
 	/** Set of all bullets fired by on screen ships. */
 	private Set<Bullet> bullets;
-
+	/** Set of all items dropped by on screen enemyships*/
 	private Set<Item> items;
 	/** Current score. */
 	private int score;
@@ -206,7 +206,7 @@ public class GameScreen extends Screen {
 
 		manageCollisions();
 		cleanBullets();
-		updateItems();
+		cleanItems();
 		draw();
 
 		if ((this.enemyShipFormation.isEmpty() || this.lives == 0)
@@ -279,16 +279,19 @@ public class GameScreen extends Screen {
 		BulletPool.recycle(recyclable);
 	}
 
-	private void updateItems() {
-		Set<Item> recycableItem = new HashSet<Item>();
+	/**
+	 * 아이템이 화면 아래나 Ship 닿을 시 아이템 청소
+	 * */
+	private void cleanItems() {
+		Set<Item> recyclableItem = new HashSet<Item>();
 		for (Item item : this.items) {
 			item.update();
 			if (item.getPositionY() < SEPARATION_LINE_HEIGHT
 					|| item.getPositionY() > this.height)
-				recycableItem.add(item);
+				recyclableItem.add(item);
 		}
-		this.items.removeAll(recycableItem);
-		ItemPool.recycle(recycableItem);
+		this.items.removeAll(recyclableItem);
+		ItemPool.recycle(recyclableItem);
 	}
 
 	/**
@@ -379,26 +382,27 @@ public class GameScreen extends Screen {
 				this.bulletsShot, this.shipsDestroyed);
 	}
 
+	/** 아이템 종류에 맞는 기능 실행 */
 	private void useItem(Item item) {
 		if (!item.getIsGet() &&
 				item.getItemType() == Item.ItemType.SubPlaneItem) {
-			this.ship.runInvincible();
-			this.logger.info("SubPlane Item 휙득");
+			// 여기에 보조비행기 아이템 코드 작성
+			this.logger.info("SubPlane Item 사용");
 		}
 		else if (!item.getIsGet() &&
 				item.getItemType() == Item.ItemType.SpeedUpItem) {
-			this.ship.runInvincible();
-			this.logger.info("SpeedUp Item 휙득");
+			// 여기에 스피드업 아이템 코드 작성
+			this.logger.info("SpeedUp Item 사용");
 		}
 		else if (!item.getIsGet() &&
 				item.getItemType() == Item.ItemType.InvincibleItem) {
 			this.ship.runInvincible();
-			this.logger.info("Invincible Item 휙득");
+			this.logger.info("Invincible Item 사용");
 		}
 		else if (!item.getIsGet() &&
 				item.getItemType() == Item.ItemType.BombItem) {
-			this.ship.runInvincible();
-			this.logger.info("Bomb Item 휙득");
+			// 여기에 폭탄 아이템 코드 작성
+			this.logger.info("Bomb Item 사용");
 		}
 		else {
 			this.logger.info("보유한 아이템이 없습니다");
