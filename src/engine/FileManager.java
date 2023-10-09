@@ -71,7 +71,7 @@ public final class FileManager {
 
 		try {
 			inputStream = DrawManager.class.getClassLoader()
-					.getResourceAsStream("graphics");
+					.getResourceAsStream("..\\..\\res\\graphics");
 			char c;
 
 			// Sprite loading.
