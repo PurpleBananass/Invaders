@@ -476,13 +476,24 @@ public final class DrawManager {
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
 		String instructionsString = "Press Space to return";
+		String gameMode_1 = "1P_Mode";
+		String gameMode_2 = "2P_Mode";
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, highScoreString, screen.getHeight() / 8);
 
+
 		backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, instructionsString,
 				screen.getHeight() / 5);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawLeftsideRegularString(screen, gameMode_1,
+				screen.getHeight()*4 / 15);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawRightsideRegularString(screen, gameMode_2,
+				screen.getHeight()*4 / 15);
 	}
 
 	/**
@@ -493,7 +504,7 @@ public final class DrawManager {
 	 * @param highScores
 	 *            List of high scores.
 	 */
-	public void drawHighScores(final Screen screen,
+	public void drawHighScores_1p(final Screen screen,
 							   final List<Score> highScores) {
 		backBufferGraphics.setColor(Color.WHITE);
 		int i = 0;
@@ -502,7 +513,22 @@ public final class DrawManager {
 		for (Score score : highScores) {
 			scoreString = String.format("%s        %04d", score.getName(),
 					score.getScore());
-			drawCenteredRegularString(screen, scoreString, screen.getHeight()
+			drawLeftsideRegularString(screen, scoreString, screen.getHeight()
+					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
+			i++;
+		}
+	}
+
+	public void drawHighScores_2p(final Screen screen,
+								  final List<Score> highScores) {
+		backBufferGraphics.setColor(Color.WHITE);
+		int i = 0;
+		String scoreString = "";
+
+		for (Score score : highScores) {
+			scoreString = String.format("%s        %04d", score.getName(),
+					score.getScore());
+			drawRightsideRegularString(screen, scoreString, screen.getHeight()
 					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
 			i++;
 		}
@@ -522,6 +548,20 @@ public final class DrawManager {
 										  final String string, final int height) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.drawString(string, screen.getWidth() / 2
+				- fontRegularMetrics.stringWidth(string) / 2, height);
+	}
+
+	public void drawLeftsideRegularString(final Screen screen,
+										  final String string, final int height) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString(string, screen.getWidth()*3 / 13
+				- fontRegularMetrics.stringWidth(string) / 2, height);
+	}
+
+	public void drawRightsideRegularString(final Screen screen,
+										  final String string, final int height) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString(string, screen.getWidth()*10 / 13
 				- fontRegularMetrics.stringWidth(string) / 2, height);
 	}
 
