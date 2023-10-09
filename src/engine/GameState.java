@@ -20,7 +20,7 @@ public class GameState {
 	private int bulletsShot;
 	/** Ships destroyed until now. */
 	private int shipsDestroyed;
-
+	/** Distinguish 1P and 2P mode. */
 	private int gameMode = 0;
 	/**
 	 * Constructor.
@@ -36,6 +36,8 @@ public class GameState {
 	 * @param shipsDestroyed
 	 *            Ships destroyed until now.
 	 */
+
+	// 1p mode
 	public GameState(final int level, final int score,
 					final int livesRemaining, final int bulletsShot,
 					final int shipsDestroyed) {
@@ -47,6 +49,7 @@ public class GameState {
 		this.shipsDestroyed = shipsDestroyed;
 	}
 
+	// 2p mode
 	public GameState(final int level, final int score,
 					 final int livesRemaining1, final int livesRemaining2, final int bulletsShot,
 					 final int shipsDestroyed) {

@@ -69,7 +69,11 @@ public class ScoreScreen extends Screen {
 		this.gameMode = gameState.getMode();
 		this.score = gameState.getScore();
 		this.livesRemaining1 = gameState.getLivesRemaining1p();
-		this.livesRemaining2 = gameState.getLivesRemaining2p();
+
+		if (gameState.getMode() == 2) {
+			this.livesRemaining2 = gameState.getLivesRemaining2p();
+		}
+
 		this.bulletsShot = gameState.getBulletsShot();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
 		this.isNewRecord = false;
@@ -107,7 +111,12 @@ public class ScoreScreen extends Screen {
 	protected final void update() {
 		super.update();
 
-		draw();
+		if (gameMode == 1) {
+			draw();
+		} else {
+			draw2();
+		}
+
 		if (this.inputDelay.checkFinished()) {
 			if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
 				// Return to main menu.
@@ -173,6 +182,24 @@ public class ScoreScreen extends Screen {
 	 * Draws the elements associated with the screen.
 	 */
 	private void draw() {
+		drawManager.initDrawing(this);
+
+		drawManager.drawGameOver(this, this.inputDelay.checkFinished(),
+				this.isNewRecord);
+		drawManager.drawResults(this, this.score, this.livesRemaining1,
+				this.shipsDestroyed, (float) this.shipsDestroyed
+						/ this.bulletsShot, this.isNewRecord);
+
+		if (this.isNewRecord)
+			drawManager.drawNameInput(this, this.name, this.nameCharSelected);
+
+		drawManager.completeDrawing(this);
+	}
+
+	/**
+	 * Draws the elements associated with the screen for 2P mode.
+	 */
+	private void draw2() {
 		drawManager.initDrawing(this);
 
 		drawManager.drawGameOver(this, this.inputDelay.checkFinished(),
