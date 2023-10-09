@@ -105,11 +105,14 @@ public class GameScreen extends Screen {
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
 		this.lives = gameState.getLivesRemaining1p();
-		this.lives2 = gameState.getLivesRemaining2p();
+
+		if (gameState.getMode() == 2) {
+			this.lives2 = gameState.getLivesRemaining2p();
+		}
 
 		if (this.bonusLife) {
 			this.lives++;
-			this.lives2++;
+			if (gameState.getMode() == 2) this.lives2++;
 		}
 
 		this.bulletsShot = gameState.getBulletsShot();
@@ -127,8 +130,7 @@ public class GameScreen extends Screen {
 
 
 		this.ship = new Ship(this.width / 2 + 50, this.height - 30, Color.GREEN);
-		/* 2player 함선 객체 생성 */
-		this.ship2 = new Ship(this.width / 2 - 30, this.height - 30, Color.RED);
+		// this.ship2 = new Ship(this.width / 2 - 30, this.height - 30, Color.RED);
 
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
@@ -188,7 +190,7 @@ public class GameScreen extends Screen {
 						this.bulletsShot++;
 			}
 
-			if (!this.ship2.isDestroyed() /* && 2player 전환 bool값 */) {
+			/*if (!this.ship2.isDestroyed() *//* && 2player 전환 bool값 *//*) {
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
 
@@ -206,7 +208,7 @@ public class GameScreen extends Screen {
 				if (inputManager.isKeyDown(KeyEvent.VK_W))
 					if (this.ship2.shoot(this.bullets))
 						this.bulletsShot++;
-			}
+			}*/
 
 			if (this.enemyShipSpecial != null) {
 				if (!this.enemyShipSpecial.isDestroyed())
@@ -260,8 +262,8 @@ public class GameScreen extends Screen {
 				this.ship.getPositionY());
 		/* if(2player 전환 bool값) */
 		/* 화면에 2player 함선 생성 */
-		drawManager.drawEntity(this.ship2, this.ship2.getPositionX(),
-        		this.ship2.getPositionY());
+		/*drawManager.drawEntity(this.ship2, this.ship2.getPositionX(),
+        		this.ship2.getPositionY());*/
 
 		if (this.enemyShipSpecial != null)
 			drawManager.drawEntity(this.enemyShipSpecial,

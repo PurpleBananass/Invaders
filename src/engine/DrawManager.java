@@ -342,7 +342,48 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws game results.
+	 * Draws game results for 1P mode.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param score
+	 *            Score obtained.
+	 * @param livesRemaining1
+	 *            1p's lives remaining when finished.
+	 * @param shipsDestroyed
+	 *            Total ships destroyed.
+	 * @param accuracy
+	 *            Total accuracy.
+	 *
+	 * @param isNewRecord
+	 *            If the score is a new high score.
+	 */
+	public void drawResults(final Screen screen, final int score,
+							final int livesRemaining1, final int shipsDestroyed,
+							final float accuracy, final boolean isNewRecord) {
+		String scoreString = String.format("score %04d", score);
+		String lives1RemainingString = "lives remaining " + livesRemaining1;
+		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
+		String accuracyString = String
+				.format("accuracy %.2f%%", accuracy * 100);
+
+		int height = isNewRecord ? 4 : 2;
+
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, scoreString, screen.getHeight()
+				/ height);
+		drawCenteredRegularString(screen, lives1RemainingString,
+				screen.getHeight() / height + fontRegularMetrics.getHeight()
+						* 2);
+		drawCenteredRegularString(screen, shipsDestroyedString,
+				screen.getHeight() / height + fontRegularMetrics.getHeight()
+						* 4);
+		drawCenteredRegularString(screen, accuracyString, screen.getHeight()
+				/ height + fontRegularMetrics.getHeight() * 6);
+	}
+
+	/**
+	 * Draws game results for 2P mode.
 	 *
 	 * @param screen
 	 *            Screen to draw on.

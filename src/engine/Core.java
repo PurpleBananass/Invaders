@@ -116,7 +116,11 @@ public final class Core {
 
 		int returnCode = 1;
 		do {
-			gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0);
+			// TODO 1P mode와 2p mode 진입 구현
+			gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+
+			// 2p mode의 gameState 생성자
+			// gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0);
 
 			switch (returnCode) {
 			case 1:
@@ -131,11 +135,19 @@ public final class Core {
 				// Game & score.
 				do {
 					// One extra live every few levels.
-					boolean bonusLife = gameState.getLevel()
-							% EXTRA_LIFE_FRECUENCY == 0
-							&& gameState.getLivesRemaining1p() < MAX_LIVES
-							&& gameState.getLivesRemaining2p() < MAX_LIVES;
-					
+					int mode = gameState.getMode();
+					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
+
+					if (mode == 1) {
+						// 1P mode
+						bonusLife = bonusLife && gameState.getLivesRemaining1p() < MAX_LIVES;
+					} else {
+						// 2P 모드 (두 플레이어 중 하나라도 생명이 적을 경우 bonusLife 부여)
+						bonusLife = bonusLife &&
+								(gameState.getLivesRemaining1p() < MAX_LIVES
+										|| gameState.getLivesRemaining2p() < MAX_LIVES);
+					}
+
 					currentScreen = new GameScreen(gameState,
 							gameSettings.get(gameState.getLevel() - 1),
 							bonusLife, width, height, FPS);
@@ -144,26 +156,43 @@ public final class Core {
 					frame.setScreen(currentScreen);
 					LOGGER.info("Closing game screen.");
 
-					gameState = ((GameScreen) currentScreen).getGameState2p();
-
-					gameState = new GameState(gameState.getLevel() + 1,
-							gameState.getScore(),
-							gameState.getLivesRemaining1p(),
-							gameState.getLivesRemaining2p(),
-							gameState.getBulletsShot(),
-							gameState.getShipsDestroyed());
-
-				} while (gameState.getLivesRemaining1p() > 0
-						&& gameState.getLivesRemaining2p() > 0
+					if (mode == 1) {
+						gameState = ((GameScreen) currentScreen).getGameState1p();
+						gameState = new GameState(gameState.getLevel() + 1,
+								gameState.getScore(),
+								gameState.getLivesRemaining1p(),
+								gameState.getBulletsShot(),
+								gameState.getShipsDestroyed());
+					} else {
+						gameState = ((GameScreen) currentScreen).getGameState2p();
+						gameState = new GameState(gameState.getLevel() + 1,
+								gameState.getScore(),
+								gameState.getLivesRemaining1p(),
+								gameState.getLivesRemaining2p(),
+								gameState.getBulletsShot(),
+								gameState.getShipsDestroyed());
+					}
+				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
 						&& gameState.getLevel() <= NUM_LEVELS);
 
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+				if (gameState.getMode() == 1) {
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " score screen at " + FPS + " fps, with a score of "
 						+ gameState.getScore() + ", "
 						+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
-						+ gameState.getLivesRemaining2p() + " lives remaining for 2p, "
 						+ gameState.getBulletsShot() + " bullets shot and "
 						+ gameState.getShipsDestroyed() + " ships destroyed.");
+				} else {
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " score screen at " + FPS + " fps, with a score of "
+							+ gameState.getScore() + ", "
+							+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
+							+ gameState.getLivesRemaining2p() + " lives remaining for 2p, "
+							+ gameState.getBulletsShot() + " bullets shot and "
+							+ gameState.getShipsDestroyed() + " ships destroyed.");
+				}
+
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
