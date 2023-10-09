@@ -27,6 +27,8 @@ public class ScoreScreen extends Screen {
 	/** Code of last mayus character. */
 	private static final int LAST_CHAR = 90;
 
+	/** Current gameMode. */
+	private int gameMode;
 	/** Current score. */
 	private int score;
 	/** 1p's lives left. */
@@ -64,6 +66,7 @@ public class ScoreScreen extends Screen {
 			final GameState gameState) {
 		super(width, height, fps);
 
+		this.gameMode = gameState.getMode();
 		this.score = gameState.getScore();
 		this.livesRemaining1 = gameState.getLivesRemaining1p();
 		this.livesRemaining2 = gameState.getLivesRemaining2p();
@@ -76,7 +79,7 @@ public class ScoreScreen extends Screen {
 		this.selectionCooldown.reset();
 
 		try {
-			this.highScores = Core.getFileManager().loadHighScores();
+			this.highScores = Core.getFileManager().loadHighScores(this.gameMode);
 			if (highScores.size() < MAX_HIGH_SCORE_NUM
 					|| highScores.get(highScores.size() - 1).getScore()
 					< this.score)
@@ -111,13 +114,13 @@ public class ScoreScreen extends Screen {
 				this.returnCode = 1;
 				this.isRunning = false;
 				if (this.isNewRecord)
-					saveScore();
+					saveScore(gameMode);
 			} else if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
 				// Play again.
 				this.returnCode = 2;
 				this.isRunning = false;
 				if (this.isNewRecord)
-					saveScore();
+					saveScore(gameMode);
 			}
 
 			if (this.isNewRecord && this.selectionCooldown.checkFinished()) {
@@ -153,14 +156,14 @@ public class ScoreScreen extends Screen {
 	/**
 	 * Saves the score as a high score.
 	 */
-	private void saveScore() {
+	private void saveScore(final int gameMode) {
 		highScores.add(new Score(new String(this.name), score));
 		Collections.sort(highScores);
 		if (highScores.size() > MAX_HIGH_SCORE_NUM)
 			highScores.remove(highScores.size() - 1);
 
 		try {
-			Core.getFileManager().saveHighScores(highScores);
+			Core.getFileManager().saveHighScores(highScores, gameMode);
 		} catch (IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}

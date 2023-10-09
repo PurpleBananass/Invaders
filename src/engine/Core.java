@@ -181,7 +181,6 @@ public final class Core {
 			}
 
 		} while (returnCode != 0);
-
 		fileHandler.flush();
 		fileHandler.close();
 		System.exit(0);
