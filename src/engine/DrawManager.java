@@ -247,6 +247,21 @@ public final class DrawManager {
 	}
 
 	/**
+	 * Draws current score on screen.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param highScore
+	 *            Current score.
+	 */
+	public void drawHighScore(final Screen screen, final int highScore) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		String scoreString = String.format("%04d", highScore);
+		backBufferGraphics.drawString(scoreString, 2*screen.getWidth()/3, 25);
+	}
+
+	/**
 	 * Draws number of remaining lives on screen.
 	 * 
 	 * @param screen

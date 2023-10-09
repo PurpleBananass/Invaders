@@ -1,10 +1,8 @@
 package screen;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 import engine.*;
 import entity.Bullet;
@@ -73,6 +71,8 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
+	/** list of past high scores */
+	private int highScore;
     
     private List<Ship> auxiliaryShips = new ArrayList<>();
     private boolean existAuxiliaryShips = false;
@@ -107,6 +107,13 @@ public class GameScreen extends Screen {
 			this.lives++;
 		this.bulletsShot = gameState.getBulletsShot();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
+
+		try {
+			List<Score> highScores = Core.getFileManager().loadHighScores();
+			this.highScore = highScores.stream().mapToInt(Score::getScore).max().orElseThrow(NoSuchElementException::new);
+		} catch (NumberFormatException | NoSuchElementException | IOException e) {
+			logger.warning("Couldn't load high score!");
+		}
 	}
 
 	/**
@@ -276,6 +283,7 @@ public class GameScreen extends Screen {
 		// Interface.
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
+		drawManager.drawHighScore(this, this.highScore);
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
 
 		// Countdown to game start.
