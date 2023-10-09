@@ -39,6 +39,8 @@ public class GameScreen extends Screen {
 	/** Height of the interface separation line. */
 	private static final int SEPARATION_LINE_HEIGHT = 40;
 
+	/** Current game state. */
+	private GameState gameState;
 	/** Current game difficulty settings. */
 	private GameSettings gameSettings;
 	/** Current difficulty level number. */
@@ -100,6 +102,7 @@ public class GameScreen extends Screen {
 					  final int width, final int height, final int fps) {
 		super(width, height, fps);
 
+		this.gameState = gameState;
 		this.gameSettings = gameSettings;
 		this.bonusLife = bonusLife;
 		this.level = gameState.getLevel();
@@ -128,9 +131,10 @@ public class GameScreen extends Screen {
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
 
-
 		this.ship = new Ship(this.width / 2 + 50, this.height - 30, Color.GREEN);
-		// this.ship2 = new Ship(this.width / 2 - 30, this.height - 30, Color.RED);
+		if (gameState.getMode() == 2) {
+			this.ship2 = new Ship(this.width / 2 - 30, this.height - 30, Color.RED);
+		}
 
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
@@ -190,7 +194,7 @@ public class GameScreen extends Screen {
 						this.bulletsShot++;
 			}
 
-			/*if (!this.ship2.isDestroyed() *//* && 2player 전환 bool값 *//*) {
+			if (gameState.getMode() == 2 && !this.ship2.isDestroyed()) {
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
 
@@ -208,7 +212,7 @@ public class GameScreen extends Screen {
 				if (inputManager.isKeyDown(KeyEvent.VK_W))
 					if (this.ship2.shoot(this.bullets))
 						this.bulletsShot++;
-			}*/
+			}
 
 			if (this.enemyShipSpecial != null) {
 				if (!this.enemyShipSpecial.isDestroyed())
@@ -229,9 +233,10 @@ public class GameScreen extends Screen {
 			}
 
 			this.ship.update();
-			/* 2player 함선 상태 체크 */
-			/* if(2player 전환 bool값) */
-			this.ship2.update();
+			if (this.gameState.getMode() == 2) {
+				this.ship2.update();
+			}
+
 			this.enemyShipFormation.update();
 			this.enemyShipFormation.shoot(this.bullets);
 		}
@@ -240,8 +245,7 @@ public class GameScreen extends Screen {
 		cleanBullets();
 		draw();
 
-		if ((this.enemyShipFormation.isEmpty() || this.lives == 0 || this.lives2 == 0)
-				// 1player 또는 2player의 lives = 0 --> 게임 종료
+		if ((this.enemyShipFormation.isEmpty() || this.lives == 0 || (this.gameState.getMode() == 2 && this.lives2 == 0))
 				&& !this.levelFinished) {
 			this.levelFinished = true;
 			this.screenFinishedCooldown.reset();
@@ -258,12 +262,15 @@ public class GameScreen extends Screen {
 	private void draw() {
 		drawManager.initDrawing(this);
 
-		drawManager.drawEntity(this.ship, this.ship.getPositionX(),
-				this.ship.getPositionY());
-		/* if(2player 전환 bool값) */
-		/* 화면에 2player 함선 생성 */
-		/*drawManager.drawEntity(this.ship2, this.ship2.getPositionX(),
-        		this.ship2.getPositionY());*/
+		if (this.gameState.getMode() == 1) {
+			drawManager.drawEntity(this.ship, this.ship.getPositionX(),
+					this.ship.getPositionY());
+		} else {
+			drawManager.drawEntity(this.ship, this.ship.getPositionX(),
+					this.ship.getPositionY());
+			drawManager.drawEntity(this.ship2, this.ship2.getPositionX(),
+					this.ship2.getPositionY());
+		}
 
 		if (this.enemyShipSpecial != null)
 			drawManager.drawEntity(this.enemyShipSpecial,
@@ -278,7 +285,7 @@ public class GameScreen extends Screen {
 
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
-		drawManager.drawLives2(this, this.lives2);
+		if (this.gameState.getMode() == 2) drawManager.drawLives2(this, this.lives2);
 
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
 
@@ -331,9 +338,7 @@ public class GameScreen extends Screen {
 					}
 				}
 
-				/* 2player 함선 총알 피격 처리
-				2player 생명 따로 처리 필요 */
-				if (/*2player 전환 bool 값 && */ checkCollision(bullet, this.ship2) && !this.levelFinished) {
+				if (this.gameState.getMode() == 2 && checkCollision(bullet, this.ship2) && !this.levelFinished) {
 					recyclable.add(bullet);
 					if (!this.ship2.isDestroyed()) {
 						this.ship2.destroy();
