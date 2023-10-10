@@ -1,13 +1,15 @@
 package screen;
-import engine.Settings;
+import engine.*;
+
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import engine.Cooldown;
-import engine.Core;
 
 
 public class SettingScreen extends Screen {
+
+    private List<Settings> settings1 = null;
 
     /** List of Settings. */
     private List<Settings> setting;
@@ -29,8 +31,8 @@ public class SettingScreen extends Screen {
     /** Check BGM is On/Off  */
     private boolean bgmOn;
 
-    private int[] keySetting = {0x26, 0x28, 0x25, 0x27, 0x20, 0x57, 0x53, 0x44, 0x41, 0x31};
-    private String[] keySettingString = {"UP","DOWN","LEFT","RIGHT","SPACE","W","S","A","D","1"};
+    private int[] keySetting = new int[10];;
+    private String[] keySettingString = new String[10];
     private int keyNum =0;
     private boolean keyChangeMode = false;
 
@@ -50,12 +52,19 @@ public class SettingScreen extends Screen {
         super(width, height, fps);
         try {
             this.setting = Core.getFileManager().loadSettings();
-
             soundVolume = this.setting.get(0).getValue();
-
-            if(this.setting.get(1).getValue() == 1) bgmOn = true;
-            else bgmOn =false;
-
+            if(this.setting.get(1).getValue()==1){
+                bgmOn = true;
+            }
+            else bgmOn = false;
+            System.out.println(soundVolume);
+            System.out.println(bgmOn);
+            for (int i =2; i < 11; i++) {
+                keySettingString[i] = this.setting.get(i).getName();
+                keySetting[i] = this.setting.get(i).getValue();
+            }
+            System.out.println(keySettingString);
+            System.out.println(keySetting);
         } catch (NumberFormatException | IOException e) {
             logger.warning("Couldn't load Settings!");
         }
@@ -142,9 +151,10 @@ public class SettingScreen extends Screen {
                 }
             }
 
-            if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected)
+            if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected){
+                savescore();
                 this.isRunning = false;
-
+            }
             /**
              * 1P Keys Setting Mode
              * 2P Keys Setting Mode
@@ -217,6 +227,17 @@ public class SettingScreen extends Screen {
         drawManager.drawSettingDetail(this, itemCode, selected, soundVolume, bgmOn, keyNum);
 
         drawManager.completeDrawing(this);
+    }
+
+    private void savescore(){
+        for (int i =0; i < 9; i++) {
+            settings1.add(new Settings(keySettingString[i],keySetting[i]));
+        }
+        try {
+            FileManager.saveSettings(settings1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public final int getSoundVolume(){return soundVolume;}

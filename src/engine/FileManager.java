@@ -306,7 +306,7 @@ public final class FileManager {
 
 		} catch (FileNotFoundException e) {
 			// loads default if there's no user scores.
-			logger.info("Loading default high scores.");
+			logger.info("Loading default Settings.");
 			settings = loaddefaultSettings();
 		} finally {
 			if (bufferedReader != null)
@@ -334,6 +334,8 @@ public final class FileManager {
 				name = reader.readLine();
 				value = reader.readLine();
 			}
+			System.out.println(Setting);
+			logger.info("Successfully load");
 		} finally {
 			if (inputStream != null)
 				inputStream.close();
@@ -343,7 +345,7 @@ public final class FileManager {
 	}
 
 
-	public void saveSettings(final List<Settings> setting)
+	public static void saveSettings(final List<Settings> setting)
 			throws IOException {
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
