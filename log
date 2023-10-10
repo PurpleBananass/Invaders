@@ -1,25 +1,22 @@
-[INFO|9:25:59]: Started loading resources. 
-[FINE|9:25:59]: Sprite Ship loaded. 
-[FINE|9:25:59]: Sprite ShipDestroyed loaded. 
-[FINE|9:25:59]: Sprite Bullet loaded. 
-[FINE|9:25:59]: Sprite EnemyBullet loaded. 
-[FINE|9:25:59]: Sprite EnemyShipA1 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipA2 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipB1 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipB2 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipC1 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipC2 loaded. 
-[FINE|9:25:59]: Sprite EnemyShipSpecial loaded. 
-[FINE|9:25:59]: Sprite Explosion loaded. 
-[INFO|9:25:59]: Finished loading the sprites. 
-[INFO|9:25:59]: Finished loading the fonts. 
-[INFO|9:25:59]: Starting 448x520 title screen at 60 fps. 
-[INFO|9:26:00]: Closing title screen. 
-[INFO|9:26:00]: There's no shop yet 
-[INFO|9:26:00]: Starting 448x520 title screen at 60 fps. 
-[INFO|9:26:04]: Closing title screen. 
-[INFO|9:26:04]: There's no settings yet 
-[INFO|9:26:04]: Starting 448x520 title screen at 60 fps. 
-[INFO|9:26:06]: Closing title screen. 
-[INFO|9:26:06]: There's no achievements yet 
-[INFO|9:26:06]: Starting 448x520 title screen at 60 fps. 
+[INFO|11:37:25]: Started loading resources. 
+[FINE|11:37:25]: Sprite Ship loaded. 
+[FINE|11:37:25]: Sprite ShipDestroyed loaded. 
+[FINE|11:37:25]: Sprite Bullet loaded. 
+[FINE|11:37:25]: Sprite EnemyBullet loaded. 
+[FINE|11:37:25]: Sprite EnemyShipA1 loaded. 
+[FINE|11:37:25]: Sprite EnemyShipA2 loaded. 
+[FINE|11:37:25]: Sprite EnemyShipB1 loaded. 
+[FINE|11:37:25]: Sprite EnemyShipB2 loaded. 
+[FINE|11:37:25]: Sprite EnemyShipC1 loaded. 
+[FINE|11:37:25]: Sprite EnemyShipC2 loaded. 
+[FINE|11:37:25]: Sprite EnemyShipSpecial loaded. 
+[FINE|11:37:25]: Sprite Explosion loaded. 
+[INFO|11:37:25]: Finished loading the sprites. 
+[INFO|11:37:25]: Finished loading the fonts. 
+[INFO|11:37:25]: Starting 448x520 title screen at 60 fps. 
+[INFO|11:37:32]: Closing title screen. 
+[INFO|11:37:32]: Starting 448x520 high score screen at 60 fps. 
+[INFO|11:56:47]: Closing setting screen. 
+[INFO|11:56:47]: Starting 448x520 title screen at 60 fps. 
+[INFO|12:17:42]: Closing title screen. 
+[INFO|12:17:42]: Starting 448x520 high score screen at 60 fps. 
