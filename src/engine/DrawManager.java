@@ -799,4 +799,29 @@ public final class DrawManager {
 
 	}
 
+	public void drawSelect2PModeScreen(Screen screen, Boolean twoPlayerModeOn){
+		String SelectString = "Select 1P / 2P";
+		String instructionsString =
+				"select with a+d / arrows, confirm with space";
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, instructionsString,
+				screen.getHeight() / 2);
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, SelectString, screen.getHeight() / 3);
+
+		backBufferGraphics.setFont(fontBig);
+		if(!twoPlayerModeOn) backBufferGraphics.setColor(Color.GREEN);
+		else backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("1P", screen.getWidth() / 10 * 4
+				- fontRegularMetrics.stringWidth("1P") / 2 , screen.getHeight()
+				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+
+		if(twoPlayerModeOn) backBufferGraphics.setColor(Color.GREEN);
+		else backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("2P", screen.getWidth() / 10 * 6
+				- fontRegularMetrics.stringWidth("2P") / 2 , screen.getHeight()
+				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+	}
+
 }

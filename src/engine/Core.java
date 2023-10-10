@@ -112,7 +112,8 @@ public final class Core {
 
 		int returnCode = 1;
 		do {
-			gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			if(!Select2PScreen.twoPlayerModeOn) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			else gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 
 			switch (returnCode) {
 			case 1:
@@ -123,7 +124,7 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing title screen.");
 				break;
-			case 2:
+			case 7:
 				// Game & score.
 				do {
 					// One extra live every few levels.
@@ -168,7 +169,7 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
 				break;
-				
+
 			case 4:
 				// Shop
 				LOGGER.info("There's no shop yet");
@@ -186,6 +187,14 @@ public final class Core {
 				//Achievements
 				LOGGER.info("There's no achievements yet");
 				returnCode = frame.setScreen(currentScreen);
+				break;
+			case 2:
+				// Select2P
+				currentScreen = new Select2PScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
 				break;
 			default:
 				break;
