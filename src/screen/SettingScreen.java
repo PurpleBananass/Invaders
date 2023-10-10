@@ -2,15 +2,10 @@ package screen;
 import engine.Settings;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-
 import engine.Cooldown;
 import engine.Core;
-import engine.InputManager;
 
-import javax.swing.*;
 
 public class SettingScreen extends Screen {
 
