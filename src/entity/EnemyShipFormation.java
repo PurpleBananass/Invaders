@@ -23,7 +23,7 @@ import engine.GameSettings;
 public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/** Initial position in the x-axis. */
-	private static final int INIT_POS_X = 20;
+	private static final int INIT_POS_X = 30;
 	/** Initial position in the y-axis. */
 	private static final int INIT_POS_Y = 100;
 	/** Distance between ships. */
@@ -41,7 +41,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
-	private static final int SIDE_MARGIN = 20;
+	private static final int SIDE_MARGIN = 30;
 	/** Margin on the bottom of the screen. */
 	private static final int BOTTOM_MARGIN = 80;
 	/** Distance to go down each pass. */
@@ -94,10 +94,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private List<EnemyShip> shooters;
 	/** Number of not destroyed ships. */
 	private int shipCount;
-	/** For more complex movement. */
-	private int complex = 1;
-	/** List to remember the index of each ship. */
-	private final List<Integer> indexing;
+	/** need to make complex movements. */
+	private boolean moreDiff = false;
+	/** speed of complex movements. */
+	private int complexSpeed;
 
 
 	/** Directions the formation can move. */
@@ -133,7 +133,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		this.positionY = INIT_POS_Y;
 		this.shooters = new ArrayList<EnemyShip>();
 		SpriteType spriteType;
-		this.indexing = new ArrayList<Integer>();
 
 		this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh
 				+ " ship formation in (" + positionX + "," + positionY + ")");
@@ -171,9 +170,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		for (List<EnemyShip> column : this.enemyShips)
 			this.shooters.add(column.get(column.size() - 1));
 
-		// save index
-		for (int i = 0; i < nShipsHigh*nShipsWide; i++)
-			this.indexing.add(i);
+		if (nShipsHigh > 5)
+			moreDiff = true;
+
+		if (moreDiff)
+			complexSpeed = 8;
+		else
+			complexSpeed = 0;
 	}
 
 	/**
@@ -218,6 +221,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		movementInterval++;
 		if (movementInterval >= this.movementSpeed) {
 			movementInterval = 0;
+
+			// Consider irregular movements to prevent the formation from going out of the game screen.
+			if (moreDiff)
+				positionX += complexSpeed;
 
 			boolean isAtBottom = positionY
 					+ this.height > screen.getHeight() - BOTTOM_MARGIN;
@@ -269,38 +276,30 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 			// Cleans explosions.
 			List<EnemyShip> destroyed;
-			List<Integer> destroyed_index;
 			for (List<EnemyShip> column : this.enemyShips) {
 				destroyed = new ArrayList<EnemyShip>();
-				destroyed_index = new ArrayList<Integer>();
 				for (EnemyShip ship : column) {
 					if (ship != null && ship.isDestroyed()) {
 						destroyed.add(ship);
-						destroyed_index.add(nShipsWide*this.enemyShips.indexOf(column)+column.indexOf(ship));
 						this.logger.info("Removed enemy "
 								+ column.indexOf(ship) + " from column "
 								+ this.enemyShips.indexOf(column));
-						// remove destroyed ships from indexing list.
 					}
 				}
 				column.removeAll(destroyed);
-				indexing.removeAll(destroyed_index);
 			}
 
 			// From level 4, the ships moves more complicatedly.
-			if (nShipsHigh > 5) {
-				int i = 0;
+			if (moreDiff) {
 				for (List<EnemyShip> column : this.enemyShips) {
 					for (EnemyShip enemyShip : column) {
-						if (indexing.get(i) % 2 == 0) {
-							enemyShip.move(complex *4, -complex *4);
-						} else {
-							enemyShip.move(-complex *4, complex *4);
-						}
-						i++;
+						if ((int)((enemyShip.getpositionY()-100)/40)%2!=0) {
+							enemyShip.move(complexSpeed, 0);
+						} else
+							enemyShip.move(-complexSpeed, 0);
 					}
 				}
-				complex = -complex;
+				complexSpeed = -complexSpeed;
 			}
 
 			for (List<EnemyShip> column : this.enemyShips)

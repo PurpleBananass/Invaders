@@ -149,4 +149,5 @@ public class EnemyShip extends Entity {
 	public final boolean isDestroyed() {
 		return this.isDestroyed;
 	}
+	public final int getpositionY() { return this.positionY; }
 }
