@@ -72,7 +72,7 @@ public class TitleScreen extends Screen {
 			}
 			if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
 				this.isRunning = false;
-				this.selectionCooldown.reset();}
+		}
 	}
 
 	/**
