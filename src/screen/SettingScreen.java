@@ -32,7 +32,7 @@ public class SettingScreen extends Screen {
     private boolean bgmOn;
 
     private int[] keySetting = new int[10];;
-    private String[] keySettingString = new String[10];
+    private static String[] keySettingString = new String[10];
     private int keyNum =0;
     private boolean keyChangeMode = false;
 
@@ -63,8 +63,6 @@ public class SettingScreen extends Screen {
                 keySettingString[i-2] = this.setting.get(i).getName();
                 keySetting[i-2] = this.setting.get(i).getValue();
             }
-            System.out.println(keySettingString);
-            System.out.println(keySetting);
         } catch (NumberFormatException | IOException e) {
             logger.warning("Couldn't load Settings!");
         }
@@ -247,5 +245,5 @@ public class SettingScreen extends Screen {
     public final boolean isBgmOn(){return bgmOn;}
 
     public final int[] getKeySetting(){return keySetting;}
-    public final String[] getKeySettingString(){return keySettingString;}
+    public static final String[] getKeySettingString(){return keySettingString;}
 }
