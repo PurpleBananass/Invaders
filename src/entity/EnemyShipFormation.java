@@ -447,4 +447,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	public final boolean isEmpty() {
 		return this.shipCount <= 0;
 	}
+
+	public static final int bulletSpeed() { return BULLET_SPEED; }
 }
