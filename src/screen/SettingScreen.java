@@ -1,14 +1,11 @@
 package screen;
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
 import engine.Cooldown;
 import engine.Core;
-import engine.GameState;
-import engine.Score;
+import engine.InputManager;
+
+import javax.swing.*;
 
 public class SettingScreen extends Screen {
 
@@ -25,10 +22,17 @@ public class SettingScreen extends Screen {
     private boolean selected =false;
 
     /** Sound Volume  */
-    private int soundVolume = 100;
+    private int soundVolume = 80;
 
     /** Check BGM is On/Off  */
     private boolean bgmOn =true;
+
+    private int[] keySetting = {0x26, 0x28, 0x25, 0x27, 0x20, 0x57, 0x53, 0x44, 0x41, 0x31};
+    private String[] keySettingString = {"UP","DOWN","LEFT","RIGHT","SPACE","W","S","A","D","1"};
+    private int keyNum =0;
+    private boolean keyChangeMode = false;
+
+
 
     /**
      * Constructor, establishes the properties of the screen.
@@ -48,6 +52,8 @@ public class SettingScreen extends Screen {
         this.selectionCooldown.reset();
 
     }
+
+
 
     /**
      * Starts the action.
@@ -69,6 +75,7 @@ public class SettingScreen extends Screen {
         draw();
         if (this.selectionCooldown.checkFinished()
                 && this.inputDelay.checkFinished()) {
+            /** Move up and down when not selected */
             if ((inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) && !selected) {
                 previousSettingItem();
@@ -80,70 +87,98 @@ public class SettingScreen extends Screen {
                 this.selectionCooldown.reset();
             }
 
-            if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
-                    || inputManager.isKeyDown(KeyEvent.VK_D) && !selected) {
-                selected = true;
-                this.selectionCooldown.reset();
-            }
-            if(inputManager.isKeyDown(KeyEvent.VK_UP)
-                    || inputManager.isKeyDown(KeyEvent.VK_W) && selected){
+            /** Move up and down when selected */
+            if((inputManager.isKeyDown(KeyEvent.VK_UP)
+                    || inputManager.isKeyDown(KeyEvent.VK_W)) && selected && !keyChangeMode){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(soundVolume < 100) soundVolume += 2;
+                        if(soundVolume < 100) soundVolume ++;
                         break;
                     /** BGM On/Off */
                     case 1:
                         bgmOn = !bgmOn;
                         this.selectionCooldown.reset();
                         break;
-                    /** Frame Size Setting */
-                    case 2:
-                        break;
                     /** Keys Setting */
-                    case 3:
+                    case 2, 3:
+                        if(keyNum>0) keyNum--;
+                        this.selectionCooldown.reset();
                         break;
                     default:
                         break;
                 }
             }
-
-            if(inputManager.isKeyDown(KeyEvent.VK_DOWN)
-                    || inputManager.isKeyDown(KeyEvent.VK_S) && selected){
+            if((inputManager.isKeyDown(KeyEvent.VK_DOWN)
+                    || inputManager.isKeyDown(KeyEvent.VK_S)) && selected && !keyChangeMode){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(soundVolume >0) soundVolume -= 2;
+                        if(soundVolume >0) soundVolume --;
                         break;
                     /** BGM On/Off */
                     case 1:
                         bgmOn = !bgmOn;
                         this.selectionCooldown.reset();
                         break;
-                    /** Frame Size Setting */
-                    case 2:
-                        break;
                     /** Keys Setting */
-                    case 3:
+                    case 2, 3:
+                        if(keyNum<4) keyNum++;
+                        this.selectionCooldown.reset();
                         break;
                     default:
                         break;
                 }
-            }
-
-            if (inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
-                    || inputManager.isKeyDown(KeyEvent.VK_SPACE) && selected) {
-                selected = false;
-                this.selectionCooldown.reset();
             }
 
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected)
                 this.isRunning = false;
+
+            /**
+             * 1P Keys Setting Mode
+             * 2P Keys Setting Mode
+             * Receive 1P Keys Setting Input
+             * Receive 2P Keys Setting Input
+             * Selected
+             * */
+            if (itemCode == 2 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
+                keyChangeMode =true;
+                keySettingString[keyNum] = "";
+                this.selectionCooldown.reset();
+            }
+            else if(itemCode == 3 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))){
+                keyChangeMode =true;
+                keySettingString[keyNum +5] = "";
+                this.selectionCooldown.reset();
+            }
+            else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
+                keySettingString[keyNum] = inputManager.getKeyString();
+                keySetting[keyNum] = inputManager.getKeyCode();
+                keyChangeMode = false;
+                this.selectionCooldown.reset();
+            }
+            else if(itemCode == 3 && selected && keyChangeMode && inputManager.getcheck()){
+                keySettingString[keyNum + 5] = inputManager.getKeyString();
+                keySetting[keyNum + 5] = inputManager.getKeyCode();
+                keyChangeMode = false;
+                this.selectionCooldown.reset();
+            }
+            else if ((inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
+                    || inputManager.isKeyDown(KeyEvent.VK_SPACE)) && selected && !keyChangeMode) {
+                keyNum = 0;
+                selected = false;
+                this.selectionCooldown.reset();
+            }
+            else if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
+                    || inputManager.isKeyDown(KeyEvent.VK_D) && !selected && !keyChangeMode) {
+                selected = true;
+                this.selectionCooldown.reset();
+            }
         }
     }
 
     /**
-     * Shifts the focus to the next menu item.
+     * Shifts the focus to the next setting item.
      */
     private void nextSettingItem() {
         if (this.itemCode == 3)
@@ -153,7 +188,7 @@ public class SettingScreen extends Screen {
     }
 
     /**
-     * Shifts the focus to the previous menu item.
+     * Shifts the focus to the previous setting item.
      */
     private void previousSettingItem() {
         if (this.itemCode == 0)
@@ -169,11 +204,14 @@ public class SettingScreen extends Screen {
         drawManager.initDrawing(this);
 
         drawManager.drawSetting(this, itemCode, selected);
-        drawManager.drawSettingDetail(this, itemCode, selected);
+        drawManager.drawSettingDetail(this, itemCode, selected, soundVolume, bgmOn, keyNum);
 
         drawManager.completeDrawing(this);
     }
 
     public final int getSoundVolume(){return soundVolume;}
     public final boolean isBgmOn(){return bgmOn;}
+
+    public final int[] getKeySetting(){return keySetting;}
+    public final String[] getKeySettingString(){return keySettingString;}
 }
