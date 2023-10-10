@@ -169,7 +169,6 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
 				break;
-
 			case 4:
 				// Shop
 				LOGGER.info("There's no shop yet");

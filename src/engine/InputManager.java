@@ -14,7 +14,7 @@ public final class InputManager implements KeyListener {
 	/** Number of recognised keys. */
 	private static final int NUM_KEYS = 256;
 	/** Array with the jeys marked as pressed or not. */
-	private static boolean[] keys;
+	public static boolean[] keys;
 	/** Singleton instance of the class. */
 	private static InputManager instance;
 
@@ -29,6 +29,14 @@ public final class InputManager implements KeyListener {
 		keys = new boolean[NUM_KEYS];
 	}
 
+	public int checkwhichkey() {
+		int a = 0;
+		for (boolean aa : keys ){
+			if (aa) break;
+			a++;
+		}
+		return a;
+	}
 	/**
 	 * Returns shared instance of InputManager.
 	 * 
@@ -72,7 +80,6 @@ public final class InputManager implements KeyListener {
 	 * @param key
 	 *            Key released.
 	 */
-	@Override
 	public void keyReleased(final KeyEvent key) {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = false;

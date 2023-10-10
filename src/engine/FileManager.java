@@ -271,6 +271,114 @@ public final class FileManager {
 				bufferedWriter.close();
 		}
 	}
+	public List<Settings> loadSettings() throws IOException {
+
+		List<Settings> settings = new ArrayList<Settings>();
+		InputStream inputStream = null;
+		BufferedReader bufferedReader = null;
+
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+
+			String settingPath = new File(jarPath).getParent();
+			settingPath += File.separator;
+			settingPath += "settings";
+
+			File scoresFile = new File(settingPath);
+			inputStream = new FileInputStream(scoresFile);
+			bufferedReader = new BufferedReader(new InputStreamReader(
+					inputStream, Charset.forName("UTF-8")));
+
+			logger.info("Loading settings.");
+
+			Settings settings1 = null;
+			String name = bufferedReader.readLine();
+			String value = bufferedReader.readLine();
+
+			while ((name != null) && (value != null)) {
+				settings1 = new Settings(name, Integer.parseInt(value));
+				settings.add(settings1);
+				name = bufferedReader.readLine();
+				value = bufferedReader.readLine();
+			}
+
+		} catch (FileNotFoundException e) {
+			// loads default if there's no user scores.
+			logger.info("Loading default high scores.");
+			settings = loaddefaultSettings();
+		} finally {
+			if (bufferedReader != null)
+				bufferedReader.close();
+		}
+		return settings;
+	}
+	public List<Settings> loaddefaultSettings() throws IOException {
+		List<Settings> Setting = new ArrayList<Settings>();
+		InputStream inputStream = null;
+		BufferedReader reader = null;
+
+		try {
+			inputStream = FileManager.class.getClassLoader()
+					.getResourceAsStream("settings");
+			reader = new BufferedReader(new InputStreamReader(inputStream));
+
+			Settings Setting1 = null;
+			String name = reader.readLine();
+			String value = reader.readLine();
+
+			while ((name != null) && (value != null)) {
+				Setting1 = new Settings(name, Integer.parseInt(value));
+				Setting.add(Setting1);
+				name = reader.readLine();
+				value = reader.readLine();
+			}
+		} finally {
+			if (inputStream != null)
+				inputStream.close();
+		}
+
+		return Setting;
+	}
+
+
+	public void saveSettings(final List<Settings> setting)
+			throws IOException {
+		OutputStream outputStream = null;
+		BufferedWriter bufferedWriter = null;
+
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+
+			String settingPath = new File(jarPath).getParent() + File.separator + "settings";
+			File settingFlie = new File(settingPath);
+
+			if (!settingFlie.exists())
+				settingFlie.createNewFile();
+
+			outputStream = new FileOutputStream(settingFlie);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+					outputStream, Charset.forName("UTF-8")));
+
+			logger.info("Saving user settings.");
+
+			// Saves settings.
+			for (Settings setting1 : setting) {
+				bufferedWriter.write(setting1.getName());
+				bufferedWriter.newLine();
+				bufferedWriter.write(Integer.toString(setting1.getValue()));
+				bufferedWriter.newLine();
+
+			}
+
+		} finally {
+			if (bufferedWriter != null)
+				bufferedWriter.close();
+		}
+	}
 
 
 		

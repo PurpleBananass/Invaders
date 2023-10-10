@@ -1,8 +1,11 @@
 package screen;
 
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
+
 import engine.Cooldown;
 import engine.Core;
+import engine.InputManager;
 
 /**
  * Implements the title screen.
@@ -11,6 +14,9 @@ import engine.Core;
  * 
  */
 public class TitleScreen extends Screen {
+	public static int VK_GG = KeyEvent.VK_F;
+
+	public static boolean dmddo = false;
 
 	/** Milliseconds between changes in user selection. */
 	private static final int SELECTION_TIME = 200;
@@ -55,8 +61,14 @@ public class TitleScreen extends Screen {
 		super.update();
 
 		draw();
+		if (dmddo){
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}}
 		if (this.selectionCooldown.checkFinished()
-				&& this.inputDelay.checkFinished()) {
+				&& this.inputDelay.checkFinished()&& !dmddo) {
 			if (inputManager.isKeyDown(KeyEvent.VK_UP)
 					|| inputManager.isKeyDown(KeyEvent.VK_W)) {
 				previousMenuItem();
@@ -69,7 +81,12 @@ public class TitleScreen extends Screen {
 			}
 			if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
 				this.isRunning = false;
-		}
+				this.selectionCooldown.reset();}
+			if(inputManager.isKeyDown(KeyEvent.VK_ENTER)){
+				dmddo = true;
+				InputManager.keys[KeyEvent.VK_ENTER] = false;
+				this.selectionCooldown.reset();
+			}
 	}
 
 	/**
@@ -94,6 +111,10 @@ public class TitleScreen extends Screen {
 			this.returnCode = 0;
 		else
 			this.returnCode--;
+	}
+
+	private void changekey(){
+
 	}
 
 	/**

@@ -1,6 +1,11 @@
 package screen;
-
+import engine.Settings;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 import engine.Cooldown;
 import engine.Core;
 import engine.InputManager;
@@ -9,6 +14,8 @@ import javax.swing.*;
 
 public class SettingScreen extends Screen {
 
+    /** List of Settings. */
+    private List<Settings> setting;
     /** Milliseconds between changes in user selection. */
     private static final int SELECTION_TIME = 200;
 
@@ -22,10 +29,10 @@ public class SettingScreen extends Screen {
     private boolean selected =false;
 
     /** Sound Volume  */
-    private int soundVolume = 80;
+    private int soundVolume;
 
     /** Check BGM is On/Off  */
-    private boolean bgmOn =true;
+    private boolean bgmOn;
 
     private int[] keySetting = {0x26, 0x28, 0x25, 0x27, 0x20, 0x57, 0x53, 0x44, 0x41, 0x31};
     private String[] keySettingString = {"UP","DOWN","LEFT","RIGHT","SPACE","W","S","A","D","1"};
@@ -46,14 +53,23 @@ public class SettingScreen extends Screen {
      */
     public SettingScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
+        try {
+            this.setting = Core.getFileManager().loadSettings();
+
+            soundVolume = this.setting.get(0).getValue();
+
+            if(this.setting.get(1).getValue() == 1) bgmOn = true;
+            else bgmOn =false;
+
+        } catch (NumberFormatException | IOException e) {
+            logger.warning("Couldn't load Settings!");
+        }
 
         this.returnCode = 1;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
 
     }
-
-
 
     /**
      * Starts the action.
@@ -202,7 +218,6 @@ public class SettingScreen extends Screen {
      */
     private void draw() {
         drawManager.initDrawing(this);
-
         drawManager.drawSetting(this, itemCode, selected);
         drawManager.drawSettingDetail(this, itemCode, selected, soundVolume, bgmOn, keyNum);
 
