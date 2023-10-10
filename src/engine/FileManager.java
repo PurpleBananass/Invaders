@@ -296,7 +296,16 @@ public final class FileManager {
 			Settings settings1 = null;
 			String name = bufferedReader.readLine();
 			String value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
 
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
+
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
 			while ((name != null) && (value != null)) {
 				settings1 = new Settings(name, Integer.parseInt(value));
 				settings.add(settings1);
@@ -305,7 +314,7 @@ public final class FileManager {
 			}
 
 		} catch (FileNotFoundException e) {
-			// loads default if there's no user scores.
+			// loads default if there's no settings.
 			logger.info("Loading default Settings.");
 			settings = loaddefaultSettings();
 		} finally {
@@ -327,9 +336,18 @@ public final class FileManager {
 			Settings Setting1 = null;
 			String name = reader.readLine();
 			String value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
 
+			name = reader.readLine();
+			value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
+
+			name = reader.readLine();
+			value = reader.readLine();
 			while ((name != null) && (value != null)) {
-				Setting1 = new Settings(name, Integer.parseInt(value));
+				Setting1 = new Settings(name, Integer.parseInt(value.substring(2),16));
 				Setting.add(Setting1);
 				name = reader.readLine();
 				value = reader.readLine();

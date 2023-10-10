@@ -1,30 +1,20 @@
-[INFO|12:23:50]: Started loading resources. 
-[FINE|12:23:50]: Sprite Ship loaded. 
-[FINE|12:23:50]: Sprite ShipDestroyed loaded. 
-[FINE|12:23:50]: Sprite Bullet loaded. 
-[FINE|12:23:50]: Sprite EnemyBullet loaded. 
-[FINE|12:23:50]: Sprite EnemyShipA1 loaded. 
-[FINE|12:23:50]: Sprite EnemyShipA2 loaded. 
-[FINE|12:23:50]: Sprite EnemyShipB1 loaded. 
-[FINE|12:23:50]: Sprite EnemyShipB2 loaded. 
-[FINE|12:23:50]: Sprite EnemyShipC1 loaded. 
-[FINE|12:23:50]: Sprite EnemyShipC2 loaded. 
-[FINE|12:23:50]: Sprite EnemyShipSpecial loaded. 
-[FINE|12:23:50]: Sprite Explosion loaded. 
-[INFO|12:23:50]: Finished loading the sprites. 
-[INFO|12:23:50]: Finished loading the fonts. 
-[INFO|12:23:50]: Starting 448x520 title screen at 60 fps. 
-[INFO|12:23:53]: Closing title screen. 
-[INFO|12:23:53]: Loading user high scores. 
-[INFO|12:23:53]: Starting 448x520 high score screen at 60 fps. 
-[INFO|12:23:55]: Closing high score screen. 
-[INFO|12:23:55]: Starting 448x520 title screen at 60 fps. 
-[INFO|12:23:57]: Closing title screen. 
-[INFO|12:23:57]: There's no shop yet 
-[INFO|12:23:57]: There's no shop yet 
-[INFO|12:23:57]: There's no shop yet 
-[INFO|12:23:57]: There's no shop yet 
-[INFO|12:23:57]: There's no shop yet 
-[INFO|12:23:58]: Loading default Settings. 
-[WARNING|12:23:58]: Couldn't load Settings! 
-[INFO|12:23:58]: Starting 448x520 high score screen at 60 fps. 
+[INFO|1:29:30]: Started loading resources. 
+[FINE|1:29:30]: Sprite Ship loaded. 
+[FINE|1:29:30]: Sprite ShipDestroyed loaded. 
+[FINE|1:29:30]: Sprite Bullet loaded. 
+[FINE|1:29:30]: Sprite EnemyBullet loaded. 
+[FINE|1:29:30]: Sprite EnemyShipA1 loaded. 
+[FINE|1:29:30]: Sprite EnemyShipA2 loaded. 
+[FINE|1:29:30]: Sprite EnemyShipB1 loaded. 
+[FINE|1:29:30]: Sprite EnemyShipB2 loaded. 
+[FINE|1:29:30]: Sprite EnemyShipC1 loaded. 
+[FINE|1:29:30]: Sprite EnemyShipC2 loaded. 
+[FINE|1:29:30]: Sprite EnemyShipSpecial loaded. 
+[FINE|1:29:30]: Sprite Explosion loaded. 
+[INFO|1:29:30]: Finished loading the sprites. 
+[INFO|1:29:30]: Finished loading the fonts. 
+[INFO|1:29:30]: Starting 448x520 title screen at 60 fps. 
+[INFO|1:29:32]: Closing title screen. 
+[INFO|1:29:32]: Loading settings. 
+[WARNING|1:29:32]: Couldn't load Settings! 
+[INFO|1:29:32]: Starting 448x520 high score screen at 60 fps. 

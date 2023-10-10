@@ -60,8 +60,8 @@ public class SettingScreen extends Screen {
             System.out.println(soundVolume);
             System.out.println(bgmOn);
             for (int i =2; i < 11; i++) {
-                keySettingString[i] = this.setting.get(i).getName();
-                keySetting[i] = this.setting.get(i).getValue();
+                keySettingString[i-2] = this.setting.get(i).getName();
+                keySetting[i-2] = this.setting.get(i).getValue();
             }
             System.out.println(keySettingString);
             System.out.println(keySetting);
@@ -230,11 +230,14 @@ public class SettingScreen extends Screen {
     }
 
     private void savescore(){
+        this.setting.get(0).value = soundVolume;
+        this.setting.get(1).value = bgmOn ? 1:0;
         for (int i =0; i < 9; i++) {
-            settings1.add(new Settings(keySettingString[i],keySetting[i]));
+            this.setting.get(i+2).value = keySetting[i];
+            this.setting.get(i+2).name = keySettingString[i];
         }
         try {
-            FileManager.saveSettings(settings1);
+            FileManager.saveSettings(this.setting);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
