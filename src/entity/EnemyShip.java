@@ -5,7 +5,7 @@ import java.awt.Color;
 import engine.Cooldown;
 import engine.Core;
 import engine.DrawManager.SpriteType;
-
+import java.util.Set;
 /**
  * Implements a enemy ship, to be destroyed by the player.
  * 
@@ -30,6 +30,9 @@ public class EnemyShip extends Entity {
 	/** Values of the ship, in points, when destroyed. */
 	private int pointValue;
 
+	/** enemy's HP */
+	private int HP;
+	private int bullet_speed;
 	/**
 	 * Constructor, establishes the ship's properties.
 	 * 
@@ -41,9 +44,10 @@ public class EnemyShip extends Entity {
 	 *            Sprite type, image corresponding to the ship.
 	 */
 	public EnemyShip(final int positionX, final int positionY,
-			final SpriteType spriteType) {
+			final SpriteType spriteType, final int level, final int bullet_speed) {
 		super(positionX, positionY, 12 * 2, 8 * 2, Color.WHITE);
-
+		this.HP = level-1;
+		this.bullet_speed =  bullet_speed;
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
 		this.isDestroyed = false;
@@ -133,15 +137,19 @@ public class EnemyShip extends Entity {
 		}
 	}
 
-	public final void shoot(final Set<Bullet> bullets) {
+	public void shoot(Set<Bullet> bullets) {
 		bullets.add(BulletPool.getBullet(positionX
-				+ width / 2, positionY, EnemyShipFormations.BULLET_SPEED));
+				+ width / 2, positionY, bullet_speed));
 	}
 
 	/**
 	 * Destroys the ship, causing an explosion.
 	 */
 	public final void destroy() {
+		if (this.HP>0){
+			this.HP--;
+			return ;
+		}
 		this.isDestroyed = true;
 		this.spriteType = SpriteType.Explosion;
 	}

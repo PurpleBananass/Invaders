@@ -155,17 +155,17 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						enemyShip = new EnemyTypeA((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType);
+								+ positionY, spriteType,level, BULLET_SPEED);
 					case EnemyShipB1:
 						enemyShip = new EnemyTypeB((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType);
+								+ positionY, spriteType,level, BULLET_SPEED);
 					case EnemyShipC1:
-						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
+						enemyShip = new EnemyTypeC((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType);
+								+ positionY, spriteType,level, BULLET_SPEED);
 				}
 				column.add(enemyShip);
 				this.shipCount++;
