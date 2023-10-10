@@ -131,9 +131,13 @@ public class GameScreen extends Screen {
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
 
-		this.ship = new Ship(this.width / 2 + 50, this.height - 30, Color.GREEN);
+		// 게임 모드 별 함선 생성 제어
+		if (gameState.getMode() == 1){
+			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN);
+		}
 		if (gameState.getMode() == 2) {
-			this.ship2 = new Ship(this.width / 2 - 30, this.height - 30, Color.RED);
+			this.ship = new Ship(this.width / 2 + 60, this.height - 30, Color.GREEN);
+			this.ship2 = new Ship(this.width / 2 - 85, this.height - 30, Color.RED);
 		}
 
 		// Appears each 10-30 seconds.
