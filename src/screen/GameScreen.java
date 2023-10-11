@@ -77,6 +77,9 @@ public class GameScreen extends Screen {
     private List<Ship> auxiliaryShips = new ArrayList<>();
     private boolean existAuxiliaryShips = false;
 
+	/**  Checks item is bomb **/
+	private boolean isBomb = false;
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 * 
@@ -350,13 +353,24 @@ public class GameScreen extends Screen {
 				for (EnemyShip enemyShip : this.enemyShipFormation)
 					if (!enemyShip.isDestroyed()
 							&& checkCollision(bullet, enemyShip)) {
-						this.score += enemyShip.getPointValue();
-						this.shipsDestroyed++;
+						if (this.isBomb){
+							List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+							for(EnemyShip enemy : enemyShips) {
+								this.score += enemy.getPointValue();
+								this.shipsDestroyed++;
+							}
+						}
+						else {
+							this.score += enemyShip.getPointValue();
+							this.shipsDestroyed++;
+							this.enemyShipFormation.destroy(enemyShip);
+						}
+
 						if(enemyShip.hasItem()){
 							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
 						}
-						this.enemyShipFormation.destroy(enemyShip);
 
+						setBomb(false);
 						recyclable.add(bullet);
 					}
 				if (this.enemyShipSpecial != null
@@ -443,7 +457,7 @@ public class GameScreen extends Screen {
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.BombItem) {
-				// 여기에 폭탄 아이템 코드 작성
+				setBomb(true);
 				this.logger.info("Bomb Item 사용");
 			}
 			item.setIsGet();
@@ -451,6 +465,9 @@ public class GameScreen extends Screen {
 
 	}
 
+	public void setBomb(boolean isBomb){
+		this.isBomb = isBomb;
+	}
 
     public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
         this.existAuxiliaryShips = existAuxiliaryShips;
