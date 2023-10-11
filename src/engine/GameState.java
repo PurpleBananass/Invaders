@@ -12,13 +12,16 @@ public class GameState {
 	private int level;
 	/** Current score. */
 	private int score;
-	/** Lives currently remaining. */
-	private int livesRemaining;
+	/** 1p's Lives currently remaining. */
+	private int livesRemaining1;
+	/** 2p's Lives currently remaining. */
+	private int livesRemaining2;
 	/** Bullets shot until now. */
 	private int bulletsShot;
 	/** Ships destroyed until now. */
 	private int shipsDestroyed;
-
+	/** Distinguish 1P and 2P mode. */
+	private int gameMode = 0;
 	/**
 	 * Constructor.
 	 * 
@@ -33,12 +36,28 @@ public class GameState {
 	 * @param shipsDestroyed
 	 *            Ships destroyed until now.
 	 */
+
+	// 1p mode
 	public GameState(final int level, final int score,
-			final int livesRemaining, final int bulletsShot,
-			final int shipsDestroyed) {
+					final int livesRemaining, final int bulletsShot,
+					final int shipsDestroyed) {
+		this.gameMode = 1;
 		this.level = level;
 		this.score = score;
-		this.livesRemaining = livesRemaining;
+		this.livesRemaining1 = livesRemaining;
+		this.bulletsShot = bulletsShot;
+		this.shipsDestroyed = shipsDestroyed;
+	}
+
+	// 2p mode
+	public GameState(final int level, final int score,
+					 final int livesRemaining1, final int livesRemaining2, final int bulletsShot,
+					 final int shipsDestroyed) {
+		this.gameMode = 2;
+		this.level = level;
+		this.score = score;
+		this.livesRemaining1 = livesRemaining1;
+		this.livesRemaining2 = livesRemaining2;
 		this.bulletsShot = bulletsShot;
 		this.shipsDestroyed = shipsDestroyed;
 	}
@@ -51,6 +70,13 @@ public class GameState {
 	}
 
 	/**
+	 * @return the gameMode
+	 */
+	public final int getMode() {
+		return gameMode;
+	}
+
+	/**
 	 * @return the score
 	 */
 	public final int getScore() {
@@ -60,8 +86,12 @@ public class GameState {
 	/**
 	 * @return the livesRemaining
 	 */
-	public final int getLivesRemaining() {
-		return livesRemaining;
+	public final int getLivesRemaining1p() {
+		return livesRemaining1;
+	}
+
+	public final int getLivesRemaining2p() {
+		return livesRemaining2;
 	}
 
 	/**
