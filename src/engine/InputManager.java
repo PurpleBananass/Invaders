@@ -18,6 +18,8 @@ public final class InputManager implements KeyListener {
 	/** Singleton instance of the class. */
 	private static InputManager instance;
 
+	private static int keyUp = 0;
+
 	/**
 	 * Private constructor.
 	 */
@@ -58,7 +60,16 @@ public final class InputManager implements KeyListener {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = true;
 	}
+	public boolean isKeyUp(int keyCode) {
+		return !keys[keyCode];
+	}
 
+
+
+	public int countH_u=0;
+	public int countH_d=0;
+	public int countW_r=0;
+	public int countW_l=0;
 	/**
 	 * Changes the state of the key to not pressed.
 	 * 
@@ -69,7 +80,29 @@ public final class InputManager implements KeyListener {
 	public void keyReleased(final KeyEvent key) {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = false;
+
+		switch (key.getKeyCode()){
+			case KeyEvent.VK_UP:
+				countH_u++;
+				break;
+			case KeyEvent.VK_DOWN:
+				countH_d++;
+				break;
+			case KeyEvent.VK_LEFT:
+				countW_l++;
+				break;
+			case KeyEvent.VK_RIGHT:
+				countW_r++;
+				break;
+			case KeyEvent.VK_SPACE:
+				if (keyUp == 0) {
+					keyUp = 1;
+				}
+				break;
+		}
 	}
+
+
 
 	/**
 	 * Does nothing.

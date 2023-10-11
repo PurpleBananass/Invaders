@@ -16,16 +16,19 @@ import engine.DrawManager.SpriteType;
 public class Ship extends Entity {
 
 	/** Time between shots. */
-	private static final int SHOOTING_INTERVAL = 750;
+	private static int SHOOTING_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship. */
 	private static final int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time. */
-	private static final int SPEED = 2;
+	private static int SPEED = 2;
 	
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
 	/** Time spent inactive between hits. */
 	private Cooldown destructionCooldown;
+
+	private Cooldown skillCooldown;
+
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -41,6 +44,7 @@ public class Ship extends Entity {
 		this.spriteType = SpriteType.Ship;
 		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
+		this.skillCooldown = Core.getCooldown(1000);
 	}
 
 	/**
@@ -80,11 +84,21 @@ public class Ship extends Entity {
 	 * Updates status of the ship.
 	 */
 	public final void update() {
+		this.skillCooldown.checkFinished();
 		if (!this.destructionCooldown.checkFinished())
 			this.spriteType = SpriteType.ShipDestroyed;
-		else
-			this.spriteType = SpriteType.Ship;
+		this.spriteType = SpriteType.Ship;
 	}
+
+
+	public void setSPEED(int SPEED) {
+		this.SPEED = SPEED;
+	}
+
+	public int getSPEED() {
+		return SPEED;
+	}
+	public int getBULLET_SPEED() {return BULLET_SPEED;}
 
 	/**
 	 * Switches the ship to its destroyed state.

@@ -1,19 +1,22 @@
 package screen;
 
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import engine.Cooldown;
 import engine.Core;
 import engine.GameSettings;
 import engine.GameState;
-import entity.Bullet;
-import entity.BulletPool;
-import entity.EnemyShip;
-import entity.EnemyShipFormation;
-import entity.Entity;
-import entity.Ship;
+import engine.Replayability;
+
+import entity.*;
 
 /**
  * Implements the game screen, where the action happens.
@@ -40,12 +43,15 @@ public class GameScreen extends Screen {
 
 	/** Current game difficulty settings. */
 	private GameSettings gameSettings;
+	/** Player's freedom. */
+	private Replayability replayability = new Replayability(1);
 	/** Current difficulty level number. */
 	private int level;
 	/** Formation of enemy ships. */
 	private EnemyShipFormation enemyShipFormation;
 	/** Player's ship. */
 	private Ship ship;
+	private int shipWidth = 13*2;
 	/** Bonus enemy ship that appears sometimes. */
 	private EnemyShip enemyShipSpecial;
 	/** Minimum time between bonus ship appearances. */
@@ -54,6 +60,7 @@ public class GameScreen extends Screen {
 	private Cooldown enemyShipSpecialExplosionCooldown;
 	/** Time from finishing the level to screen change. */
 	private Cooldown screenFinishedCooldown;
+
 	/** Set of all bullets fired by on screen ships. */
 	private Set<Bullet> bullets;
 	/** Current score. */
@@ -70,6 +77,11 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
+
+	private int per=0;
+
+	private int originalSpeed;
+	private boolean speedBoosted;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -167,8 +179,17 @@ public class GameScreen extends Screen {
 					this.ship.moveLeft();
 				}
 				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-					if (this.ship.shoot(this.bullets))
+					if (this.ship.shoot(this.bullets)) {
 						this.bulletsShot++;
+					}
+				if (replayability.getReplay()==1){
+					if (inputManager.countW_r >= 5 && inputManager.countW_l >= 5) {
+						per = 1;
+					} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7) {
+						per = 2;
+					}
+				}
+
 			}
 
 			if (this.enemyShipSpecial != null) {
@@ -195,6 +216,7 @@ public class GameScreen extends Screen {
 			this.enemyShipFormation.shoot(this.bullets);
 		}
 
+		useSkill();
 		manageCollisions();
 		cleanBullets();
 		draw();
@@ -228,6 +250,8 @@ public class GameScreen extends Screen {
 		for (Bullet bullet : this.bullets)
 			drawManager.drawEntity(bullet, bullet.getPositionX(),
 					bullet.getPositionY());
+
+
 
 		// Interface.
 		drawManager.drawScore(this, this.score);
@@ -302,6 +326,43 @@ public class GameScreen extends Screen {
 			}
 		this.bullets.removeAll(recyclable);
 		BulletPool.recycle(recyclable);
+	}
+
+	/** Use skill*/
+	private void useSkill(){
+		if (per>0 && !this.levelFinished) {
+			boolean use = false;
+			int shipSpeed = (int) ship.getSPEED();
+			if (per == 1 && !speedBoosted) { // 오른쪽왼쪽 화살표 연타 -> 1초간 속도 빨라지기
+				originalSpeed = (int) ship.getSPEED();
+				ship.setSPEED(originalSpeed + 2);
+				this.logger.info("SpeedUp");
+
+				ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+				executor.schedule(() -> {
+					ship.setSPEED(originalSpeed);
+					speedBoosted = false;
+					executor.shutdown();
+				}, 1, TimeUnit.SECONDS);
+
+				speedBoosted = true;
+			}else if (per == 2) { //위아래화살표 연타 -> 총 세발
+				bullets.add(BulletPool.getBullet(ship.getPositionX(),
+						ship.getPositionY(), ship.getBULLET_SPEED()));
+				bullets.add(BulletPool.getBullet(ship.getPositionX() + shipWidth/2,
+							ship.getPositionY(), ship.getBULLET_SPEED()));
+				bullets.add(BulletPool.getBullet(ship.getPositionX() + shipWidth,
+							ship.getPositionY(), ship.getBULLET_SPEED()));
+				this.logger.info("Three bullets");
+				this.bulletsShot+=3;
+			}
+			ship.update();
+			per = 0;
+			inputManager.countW_r = 0;
+			inputManager.countW_l = 0;
+			inputManager.countH_d = 0;
+			inputManager.countH_u = 0;
+		}
 	}
 
 	/**
