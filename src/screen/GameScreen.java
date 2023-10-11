@@ -136,8 +136,8 @@ public class GameScreen extends Screen {
 			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN);
 		}
 		if (gameState.getMode() == 2) {
-			this.ship = new Ship(this.width / 2 + 60, this.height - 30, Color.GREEN);
-			this.ship2 = new Ship(this.width / 2 - 85, this.height - 30, Color.RED);
+			this.ship = new Ship(this.width / 2 + 60, this.height - 30, Color.RED);
+			this.ship2 = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN);
 		}
 
 		// Appears each 10-30 seconds.
@@ -198,6 +198,7 @@ public class GameScreen extends Screen {
 						this.bulletsShot++;
 			}
 
+			// 2p's play-key
 			if (gameState.getMode() == 2 && !this.ship2.isDestroyed()) {
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
