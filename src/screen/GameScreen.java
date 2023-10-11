@@ -146,8 +146,8 @@ public class GameScreen extends Screen {
 			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN);
 		}
 		if (gameState.getMode() == 2) {
-			this.ship = new Ship(this.width / 2 + 60, this.height - 30, Color.GREEN);
-			this.ship2 = new Ship(this.width / 2 - 85, this.height - 30, Color.RED);
+			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN);
+			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED);
 		}
 
 		// Appears each 10-30 seconds.
@@ -187,8 +187,7 @@ public class GameScreen extends Screen {
 
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
-			// 1p's play-key
-			if (!this.ship.isDestroyed()) {
+			if (gameState.getMode() == 1 && !this.ship.isDestroyed()) {
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
 				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
 
@@ -206,27 +205,43 @@ public class GameScreen extends Screen {
 				if (inputManager.isKeyDown(KeyEvent.VK_UP))
 					if (this.ship.shoot(this.bullets))
 						this.bulletsShot++;
-			}
+			} else if (gameState.getMode() == 2 && !this.ship2.isDestroyed()) {
+				boolean moveRight1p = inputManager.isKeyDown(KeyEvent.VK_D);
+				boolean moveLeft1p = inputManager.isKeyDown(KeyEvent.VK_A);
 
-			// 2p's play-key
-			if (gameState.getMode() == 2 && !this.ship2.isDestroyed()) {
-				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_D);
-				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_A);
+				boolean moveRight2p = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
+				boolean moveLeft2p = inputManager.isKeyDown(KeyEvent.VK_LEFT);
 
-				boolean isRightBorder = this.ship2.getPositionX()
+				boolean isRightBorder1p = this.ship.getPositionX()
+						+ this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
+				boolean isLeftBorder1p = this.ship.getPositionX()
+						- this.ship.getSpeed() < 1;
+
+				boolean isRightBorder2p = this.ship2.getPositionX()
 						+ this.ship2.getWidth() + this.ship2.getSpeed() > this.width - 1;
-				boolean isLeftBorder = this.ship2.getPositionX()
+				boolean isLeftBorder2p = this.ship2.getPositionX()
 						- this.ship2.getSpeed() < 1;
 
-				if (moveRight && !isRightBorder) {
+				if (moveRight1p && !isRightBorder1p) {
+					this.ship.moveRight();
+				}
+				if (moveRight2p && !isRightBorder2p) {
 					this.ship2.moveRight();
 				}
-				if (moveLeft && !isLeftBorder) {
+				if (moveLeft1p && !isLeftBorder1p) {
+					this.ship.moveLeft();
+				}
+				if (moveLeft2p && !isLeftBorder2p) {
 					this.ship2.moveLeft();
 				}
-				if (inputManager.isKeyDown(KeyEvent.VK_W))
+				if (inputManager.isKeyDown(KeyEvent.VK_W)) {
+					if (this.ship.shoot(this.bullets))
+						this.bulletsShot++;
+				}
+				if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
 					if (this.ship2.shoot(this.bullets))
 						this.bulletsShot++;
+				}
 			}
 
 			if (this.enemyShipSpecial != null) {
