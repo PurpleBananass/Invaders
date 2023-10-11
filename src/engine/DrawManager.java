@@ -142,7 +142,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * First part of the drawing process. Initialices buffers, draws the
+	 * First part of the drawing process. Initialize buffers, draws the
 	 * background and prepares the images.
 	 * 
 	 * @param screen
@@ -178,7 +178,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws an entity, using the apropiate image.
+	 * Draws an entity, using the appropriate image.
 	 * 
 	 * @param entity
 	 *            Entity to be drawn.
@@ -244,6 +244,21 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		String scoreString = String.format("%04d", score);
 		backBufferGraphics.drawString(scoreString, screen.getWidth() - 60, 25);
+	}
+
+	/**
+	 * Draws current score on screen.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param highScore
+	 *            Current score.
+	 */
+	public void drawHighScore(final Screen screen, final int highScore) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		String scoreString = String.format("%04d", highScore);
+		backBufferGraphics.drawString(scoreString, 2*screen.getWidth()/3, 25);
 	}
 
 	/**
