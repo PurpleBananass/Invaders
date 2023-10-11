@@ -59,4 +59,15 @@ public class AchievementManager {
         }
         return false;
     }
+
+    /**
+     * Check if the requirments for sharp shooter are met
+     */
+    public void checkSharpShooter() {
+        if (AchievementManager.isAchievementAchieved("sharp shooter") == false
+                && (GameState.getShipsDestroyed() == GameState.getBulletsShot())
+                && GameState.getLevel() == 3) {
+            AchievementManager.markAchievementAsAchieved("sharp shooter");
+        }
+    }
 }
