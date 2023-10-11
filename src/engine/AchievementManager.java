@@ -2,17 +2,27 @@ package engine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class AchievementManager {
   
     /** Singleton instance of the class. */
     private static AchievementManager instance;
+
+    private static final Logger LOGGER = Logger.getLogger(Core.class
+			.getSimpleName());
   
     // Map to store achievements and their completion status
     private Map<String, Boolean> achievements;
 
     private AchievementManager() {
         achievements = new HashMap<>();
+
+        // Initialize predefined achievements
+        achievements.put("adventure start", false);
+        achievements.put("sharp shooter", false);
+        achievements.put("perfect shooter", false);
+        achievements.put("lucky guy", false);
     }
   
     /**
@@ -25,15 +35,6 @@ public class AchievementManager {
     }
 
     /**
-     * Add a new achievement to the manager.
-     *
-     * @param achievementName The name of the achievement.
-     */
-    public void addAchievement(String achievementName) {
-        achievements.put(achievementName, false);
-    }
-
-    /**
      * Mark an achievement as achieved.
      *
      * @param achievementName The name of the achievement to mark as achieved.
@@ -42,6 +43,8 @@ public class AchievementManager {
         if (achievements.containsKey(achievementName)) {
             achievements.put(achievementName, true);
         }
+
+        LOGGER.info(achievementName + " achievement achieved!");
     }
 
     /**
