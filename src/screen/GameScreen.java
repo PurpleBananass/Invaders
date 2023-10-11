@@ -114,8 +114,26 @@ public class GameScreen extends Screen {
 		}
 
 		if (this.bonusLife) {
-			this.lives++;
-			if (gameState.getMode() == 2) this.lives2++;
+			if(gameState.getMode() == 1)
+			{
+				this.lives++;
+			}
+			else
+			{
+				if (this.lives == 3)
+				{
+					this.lives2++;
+				}
+				else if (this.lives2 == 3)
+				{
+					this.lives++;
+				}
+				else
+				{
+					this.lives++;
+					this.lives2++;
+				}
+			}
 		}
 
 		this.bulletsShot = gameState.getBulletsShot();
