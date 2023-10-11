@@ -114,22 +114,14 @@ public class GameScreen extends Screen {
 		}
 
 		if (this.bonusLife) {
-			if(gameState.getMode() == 1)
-			{
+			if (gameState.getMode() == 1) {
 				this.lives++;
-			}
-			else
-			{
-				if (this.lives == 3)
-				{
+			} else {
+				if (this.lives == Core.getMaxLives()) {
 					this.lives2++;
-				}
-				else if (this.lives2 == 3)
-				{
+				} else if (this.lives2 == Core.getMaxLives()) {
 					this.lives++;
-				}
-				else
-				{
+				} else {
 					this.lives++;
 					this.lives2++;
 				}
@@ -154,8 +146,8 @@ public class GameScreen extends Screen {
 			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN);
 		}
 		if (gameState.getMode() == 2) {
-			this.ship = new Ship(this.width / 2 + 60, this.height - 30, Color.RED);
-			this.ship2 = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN);
+			this.ship = new Ship(this.width / 2 + 60, this.height - 30, Color.GREEN);
+			this.ship2 = new Ship(this.width / 2 - 85, this.height - 30, Color.RED);
 		}
 
 		// Appears each 10-30 seconds.
