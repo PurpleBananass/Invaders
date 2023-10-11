@@ -1,0 +1,19 @@
+# TEAM 8 :: Two-Player Mode
+
+## Our Team's Goal
+- Collaborate with other teams and modify existing code to add new features that allow two players to attack enemies together.
+- Learn how to use tools to collaborate with others, such as Git, in the problem-solving process.
+
+## What to Develop
+| No. | Requirement                              | Members      | Detail                                                                                                                                                                                                                                | Collaborate       |
+|-----|------------------------------------------|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| 1   | Editing main menu                        |              | Adding a menu for two players to play together<br/> - Same as before when selecting 1p<br/> - Add tutorials such as arrow keys when selecting 2p                                                                                      | Main (*)          |
+| 2   | Creating a 2p's ship                     | SEHYEON PARK | Creating ships for added players<br/> - Color it differently to make it easier to distinguish 1p from 2p<br/> - 1p starts on the left, 2p starts on the right                                                                         | AnnoyingPotatoes  |
+| 3   | Displaying game screen                   |              | Thinking about how to express the screen when 2p is added<br/> - Split the game screen into two parts<br/> - Two players play together on one screen                                                                                  | HUD (*)           |
+| 4   | Adjusting difficulty                     |              | Adjusting difficulty when playing in 2p mode<br/> - Set different difficulty levels when selecting 1p and 2p                                                                                                                          | Level Up (*)      |
+| 5   | Handling crashes when playing in 2p mode | HYUNSU KIM   | - Will it be allowed? (May cause bullet collision issues)<br/> - Will 1p be allowed to play only on the left and 2p on the right? (May cause issue where player is locked to only one location, Limit is lifted when one player dies) |                   |
+| 6   | Setting up 2p play key                   | HAMIN SHIN   | - 1p: movement(“a”, “d”), shooting(“w”) <br/> - 2p: movement(“←”, “→”), shooting(“↑”)                                                                                                                                                 |                   |
+| 7   | Setting score and lives for 2p           | GYUWON GIM   | Considering whether to operate 1p and 2p score and lives by integrating them, or separately for each player                                                                                                                           |                   |
+| 8   | Editing scorecard                        | JIWOO PARK   | Considering whether to record score by entering the names of 1p and 2p separately, or combining them into team name                                                                                                                   | React             |
+| 9   | Total currency system                    | MINHOO KIM   | Considering whether 1p and 2p will share or integrate the currency for purchasing items                                                                                                                                               | Invaders_Currency |
+- '*' marking means the requirement to request development to other teams.
