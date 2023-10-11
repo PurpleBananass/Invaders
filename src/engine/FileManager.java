@@ -307,7 +307,7 @@ public final class FileManager {
 			name = bufferedReader.readLine();
 			value = bufferedReader.readLine();
 			while ((name != null) && (value != null)) {
-				settings1 = new Settings(name, Integer.parseInt(value));
+				settings1 = new Settings(name, Integer.parseInt(value,16));
 				settings.add(settings1);
 				name = bufferedReader.readLine();
 				value = bufferedReader.readLine();
@@ -349,10 +349,11 @@ public final class FileManager {
 			while ((name != null) && (value != null)) {
 				Setting1 = new Settings(name, Integer.parseInt(value.substring(2),16));
 				Setting.add(Setting1);
+				System.out.println(name);
 				name = reader.readLine();
 				value = reader.readLine();
 			}
-			System.out.println(Setting);
+
 			logger.info("Successfully load");
 		} finally {
 			if (inputStream != null)
@@ -384,14 +385,20 @@ public final class FileManager {
 					outputStream, Charset.forName("UTF-8")));
 
 			logger.info("Saving user settings.");
-
+			bufferedWriter.write(setting.get(0).getName());
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(setting.get(0).getValue()));
+			bufferedWriter.newLine();
+			bufferedWriter.write(setting.get(1).getName());
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(setting.get(1).getValue()));
+			bufferedWriter.newLine();
 			// Saves settings.
-			for (Settings setting1 : setting) {
-				bufferedWriter.write(setting1.getName());
+			for (int i =2; i<12; i++) {
+				bufferedWriter.write(setting.get(i).getName());
 				bufferedWriter.newLine();
-				bufferedWriter.write(Integer.toString(setting1.getValue()));
+				bufferedWriter.write(Integer.toHexString(setting.get(i).getValue()));
 				bufferedWriter.newLine();
-
 			}
 
 		} finally {

@@ -59,10 +59,13 @@ public class SettingScreen extends Screen {
             else bgmOn = false;
             System.out.println(soundVolume);
             System.out.println(bgmOn);
-            for (int i =2; i < 11; i++) {
+            for (int i =2; i < 12; i++) {
                 keySettingString[i-2] = this.setting.get(i).getName();
                 keySetting[i-2] = this.setting.get(i).getValue();
+                System.out.println( keySettingString[i-2]);
+                System.out.println( keySetting[i-2]);
             }
+
         } catch (NumberFormatException | IOException e) {
             logger.warning("Couldn't load Settings!");
         }
@@ -230,7 +233,7 @@ public class SettingScreen extends Screen {
     private void savescore(){
         this.setting.get(0).value = soundVolume;
         this.setting.get(1).value = bgmOn ? 1:0;
-        for (int i =0; i < 9; i++) {
+        for (int i =0; i < 10; i++) {
             this.setting.get(i+2).value = keySetting[i];
             this.setting.get(i+2).name = keySettingString[i];
         }

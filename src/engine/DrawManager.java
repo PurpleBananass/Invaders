@@ -748,6 +748,12 @@ public final class DrawManager {
 
 		if (option == 3){
 			drawKeyString(screen,"UP", "DOWN", "LEFT", "RIGHT", "ATTACK",6);
+			System.out.println(keyString[5]);
+			System.out.println(keyString[6]);
+			System.out.println(keyString[7]);
+			System.out.println(keyString[8]);
+			System.out.println(keyString[9]);
+
 			drawKeyString(screen,keyString[5],keyString[6],keyString[7],keyString[8],keyString[9],8);
 			if(selected){
 				if(keyNum == 0){
