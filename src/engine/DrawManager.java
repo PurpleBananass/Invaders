@@ -258,7 +258,7 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		String scoreString = String.format("%04d", highScore);
-		backBufferGraphics.drawString(scoreString, 2*screen.getWidth()/3, 25);
+		backBufferGraphics.drawString(scoreString, screen.getWidth() - 120, 25);
 	}
 
 	/**
