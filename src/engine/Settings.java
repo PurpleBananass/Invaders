@@ -9,7 +9,7 @@ package engine;
 public class Settings{
 
 	/** Setting's name. */
-	private String name;
+	public String name;
 	/** Setting's value. */
 	public int value;
 

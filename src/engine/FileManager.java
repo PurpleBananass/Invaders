@@ -296,17 +296,26 @@ public final class FileManager {
 			Settings settings1 = null;
 			String name = bufferedReader.readLine();
 			String value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
 
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
+
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
 			while ((name != null) && (value != null)) {
-				settings1 = new Settings(name, Integer.parseInt(value));
+				settings1 = new Settings(name, Integer.parseInt(value,16));
 				settings.add(settings1);
 				name = bufferedReader.readLine();
 				value = bufferedReader.readLine();
 			}
 
 		} catch (FileNotFoundException e) {
-			// loads default if there's no user scores.
-			logger.info("Loading default high scores.");
+			// loads default if there's no settings.
+			logger.info("Loading default Settings.");
 			settings = loaddefaultSettings();
 		} finally {
 			if (bufferedReader != null)
@@ -327,13 +336,25 @@ public final class FileManager {
 			Settings Setting1 = null;
 			String name = reader.readLine();
 			String value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
 
+			name = reader.readLine();
+			value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
+
+			name = reader.readLine();
+			value = reader.readLine();
 			while ((name != null) && (value != null)) {
-				Setting1 = new Settings(name, Integer.parseInt(value));
+				Setting1 = new Settings(name, Integer.parseInt(value.substring(2),16));
 				Setting.add(Setting1);
+				System.out.println(name);
 				name = reader.readLine();
 				value = reader.readLine();
 			}
+
+			logger.info("Successfully load");
 		} finally {
 			if (inputStream != null)
 				inputStream.close();
@@ -343,7 +364,7 @@ public final class FileManager {
 	}
 
 
-	public void saveSettings(final List<Settings> setting)
+	public static void saveSettings(final List<Settings> setting)
 			throws IOException {
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
@@ -364,14 +385,20 @@ public final class FileManager {
 					outputStream, Charset.forName("UTF-8")));
 
 			logger.info("Saving user settings.");
-
+			bufferedWriter.write(setting.get(0).getName());
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(setting.get(0).getValue()));
+			bufferedWriter.newLine();
+			bufferedWriter.write(setting.get(1).getName());
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(setting.get(1).getValue()));
+			bufferedWriter.newLine();
 			// Saves settings.
-			for (Settings setting1 : setting) {
-				bufferedWriter.write(setting1.getName());
+			for (int i =2; i<12; i++) {
+				bufferedWriter.write(setting.get(i).getName());
 				bufferedWriter.newLine();
-				bufferedWriter.write(Integer.toString(setting1.getValue()));
+				bufferedWriter.write(Integer.toHexString(setting.get(i).getValue()));
 				bufferedWriter.newLine();
-
 			}
 
 		} finally {

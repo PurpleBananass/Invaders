@@ -690,8 +690,7 @@ public final class DrawManager {
 
 	public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
 								  int volume, boolean bgmOn, int keyNum) {
-		String[] keyString = ((SettingScreen) screen).getKeySettingString();
-
+		String[] keyString = SettingScreen.getKeySettingString();
 		if(option == 0 || option == 1){
 			if (option == 0 && selected)
 				backBufferGraphics.setColor(Color.GREEN);
@@ -749,6 +748,12 @@ public final class DrawManager {
 
 		if (option == 3){
 			drawKeyString(screen,"UP", "DOWN", "LEFT", "RIGHT", "ATTACK",6);
+			System.out.println(keyString[5]);
+			System.out.println(keyString[6]);
+			System.out.println(keyString[7]);
+			System.out.println(keyString[8]);
+			System.out.println(keyString[9]);
+
 			drawKeyString(screen,keyString[5],keyString[6],keyString[7],keyString[8],keyString[9],8);
 			if(selected){
 				if(keyNum == 0){

@@ -29,14 +29,6 @@ public final class InputManager implements KeyListener {
 		keys = new boolean[NUM_KEYS];
 	}
 
-	public int checkwhichkey() {
-		int a = 0;
-		for (boolean aa : keys ){
-			if (aa) break;
-			a++;
-		}
-		return a;
-	}
 	/**
 	 * Returns shared instance of InputManager.
 	 * 
