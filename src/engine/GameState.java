@@ -78,14 +78,4 @@ public class GameState {
 		return shipsDestroyed;
 	}
 
-	/* Logic for check condition of SharpShooter (temporary)
-	public final boolean checkSharpShooter() {
-		if ((this.getShipsDestroyed() == this.getBulletsShot())
-				&& this.getLevel() == 3){
-			return true;
-			}
-		else {
-			return false;
-			}
-	} */
 }
