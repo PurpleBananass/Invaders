@@ -1,8 +1,6 @@
 package engine;
 
 import java.awt.Color;
-import java.awt.*;
-import javax.swing.*;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
@@ -13,10 +11,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.lang.Integer;
 
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
+import screen.SettingScreen;
 
 /**
  * Manages screen drawing.
@@ -141,7 +141,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * First part of the drawing process. Initialices buffers, draws the
+	 * First part of the drawing process. Initialize buffers, draws the
 	 * background and prepares the images.
 	 * 
 	 * @param screen
@@ -177,7 +177,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws an entity, using the apropiate image.
+	 * Draws an entity, using the appropriate image.
 	 * 
 	 * @param entity
 	 *            Entity to be drawn.
@@ -488,6 +488,7 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, instructionsString,
 				screen.getHeight() / 5);
 	}
+
 	/**
 	 * Draws high scores.
 	 * 
@@ -511,7 +512,6 @@ public final class DrawManager {
 		}
 	}
 
-
 	/**
 	 * Draws a centered string on regular font.
 	 * 
@@ -530,7 +530,7 @@ public final class DrawManager {
 	}
 	/**
 	 * Draws a leftside string on regular font.
-	 * 
+	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param string
@@ -599,4 +599,234 @@ public final class DrawManager {
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
 	}
+	public void drawOneFifthRegularString(final Screen screen,
+										  final String string, final int height) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString(string, screen.getWidth() / 5
+				- fontRegularMetrics.stringWidth(string) / 2 , height);
+	}
+
+	public void drawSevenTenthRegularString(final Screen screen,
+											final String string, final int height) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString(string, screen.getWidth() / 10 * 7
+				- fontRegularMetrics.stringWidth(string) / 2 , height);
+	}
+
+	public void drawStar(final Screen screen,
+						 final String string, final int height){
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString("*", screen.getWidth() / 5
+				- fontRegularMetrics.stringWidth(string) / 2 -16, height);
+
+	}
+
+	public void drawSetting(final Screen screen, final int option, final boolean selected){
+		String settingString = "Setting";
+		String instructionsString = "Press Space to return";
+
+		String volumeString = "Volume";
+		String bgmString = "BGM";
+		String keysString1 = "1P Keys";
+		String keysString2 = "2P Keys";
+
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, settingString, screen.getHeight() / 8);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, instructionsString,
+				screen.getHeight() / 5);
+
+
+		if (option == 0) {
+			backBufferGraphics.setColor(Color.GREEN);
+			if(selected) drawStar(screen, volumeString,
+					screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+		}
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawOneFifthRegularString(screen, volumeString,
+				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+
+		if (option == 1) {
+			backBufferGraphics.setColor(Color.GREEN);
+			if(selected) drawStar(screen, bgmString,
+					screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+		}
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawOneFifthRegularString(screen, bgmString,
+				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+
+		if (option == 2) {
+			backBufferGraphics.setColor(Color.GREEN);
+			if(selected) drawStar(screen, keysString1,
+					screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);;
+		}
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawOneFifthRegularString(screen, keysString1,
+				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+
+		if (option == 3) {
+			backBufferGraphics.setColor(Color.GREEN);
+			if(selected) drawStar(screen, keysString2,
+					screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 8);;
+		}
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawOneFifthRegularString(screen, keysString2,
+				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 8);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		backBufferGraphics.drawLine(screen.getWidth()/5*2 -1,screen.getHeight() / 4,
+				screen.getWidth()/5*2 -1,screen.getHeight() / 4 * 3);
+		backBufferGraphics.drawLine(screen.getWidth()/5*2,screen.getHeight() / 4,
+				screen.getWidth()/5*2,screen.getHeight() / 4 * 3);
+
+	}
+
+
+	public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
+								  int volume, boolean bgmOn, int keyNum) {
+		String[] keyString = SettingScreen.getKeySettingString();
+		if(option == 0 || option == 1){
+			if (option == 0 && selected)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+
+			backBufferGraphics.drawRect(screen.getWidth() / 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() / 8 * 12,
+					screen.getWidth() / 4, fontRegularMetrics.getHeight());
+			backBufferGraphics.fillRect(screen.getWidth() / 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() / 8 * 12,
+					screen.getWidth() / 4 * volume / 100, fontRegularMetrics.getHeight());
+			backBufferGraphics.drawString(Integer.toString(volume), screen.getWidth() / 4 * 3
+					+ fontRegularMetrics.stringWidth("A") * 2, screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+
+			if (option == 1 && selected)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+
+			if(bgmOn) drawSevenTenthRegularString(screen,"ON",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+			else drawSevenTenthRegularString(screen,"OFF",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+		}
+
+		if (option == 2){
+			drawKeyString(screen,"UP", "DOWN", "LEFT", "RIGHT", "ATTACK",6);
+			drawKeyString(screen,keyString[0],keyString[1],keyString[2],keyString[3],keyString[4],8);
+			if(selected){
+				if(keyNum == 0){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("UP", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("UP") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+				}
+				if(keyNum == 1){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("DOWN", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("DOWN") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+				}
+				if(keyNum == 2){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("LEFT", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("LEFT") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+				}
+				if(keyNum == 3){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("RIGHT", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("RIGHT") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 8);
+				}
+				if(keyNum == 4){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("ATTACK", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("ATTACK") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 10);
+				}
+			}
+
+		}
+
+		if (option == 3){
+			drawKeyString(screen,"UP", "DOWN", "LEFT", "RIGHT", "ATTACK",6);
+			System.out.println(keyString[5]);
+			System.out.println(keyString[6]);
+			System.out.println(keyString[7]);
+			System.out.println(keyString[8]);
+			System.out.println(keyString[9]);
+
+			drawKeyString(screen,keyString[5],keyString[6],keyString[7],keyString[8],keyString[9],8);
+			if(selected){
+				if(keyNum == 0){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("UP", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("UP") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+				}
+				if(keyNum == 1){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("DOWN", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("DOWN") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+				}
+				if(keyNum == 2){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("LEFT", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("LEFT") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+				}
+				if(keyNum == 3){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("RIGHT", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("RIGHT") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 8);
+				}
+				if(keyNum == 4){
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawString("ATTACK", screen.getWidth() / 10 * 6
+							- fontRegularMetrics.stringWidth("ATTACK") / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 10);
+				}
+			}
+
+		}
+
+
+
+	}
+	private void drawKeyString(Screen screen, String s1,String s2,String s3,String s4,String s5, int num){
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(s1, screen.getWidth() / 10 * num
+				- fontRegularMetrics.stringWidth(s1) / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 2);
+		backBufferGraphics.drawString(s2, screen.getWidth() / 10 * num
+				- fontRegularMetrics.stringWidth(s2) / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+		backBufferGraphics.drawString(s3, screen.getWidth() / 10 * num
+				- fontRegularMetrics.stringWidth(s3) / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 6);
+		backBufferGraphics.drawString(s4, screen.getWidth() / 10 * num
+				- fontRegularMetrics.stringWidth(s4) / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 8);
+		backBufferGraphics.drawString(s5, screen.getWidth() / 10 * num
+				- fontRegularMetrics.stringWidth(s5) / 2 , screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 10);
+
+	}
+
+	public void drawSelect2PModeScreen(Screen screen, Boolean twoPlayerModeOn){
+		String SelectString = "Select 1P / 2P";
+		String instructionsString =
+				"select with a+d / arrows, confirm with space";
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, instructionsString,
+				screen.getHeight() / 2);
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, SelectString, screen.getHeight() / 3);
+
+		backBufferGraphics.setFont(fontBig);
+		if(!twoPlayerModeOn) backBufferGraphics.setColor(Color.GREEN);
+		else backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("1P", screen.getWidth() / 10 * 4
+				- fontRegularMetrics.stringWidth("1P") / 2 , screen.getHeight()
+				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+
+		if(twoPlayerModeOn) backBufferGraphics.setColor(Color.GREEN);
+		else backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("2P", screen.getWidth() / 10 * 6
+				- fontRegularMetrics.stringWidth("2P") / 2 , screen.getHeight()
+				/ 3 * 2 + fontRegularMetrics.getHeight() * 2);
+	}
+
 }
