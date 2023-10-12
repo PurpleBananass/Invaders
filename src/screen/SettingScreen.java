@@ -172,7 +172,7 @@ public class SettingScreen extends Screen {
             else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
-                for(int i=0;i<5;i++){
+                for(int i=0;i<10;i++){
                     if(keySetting[i] == temp){
                         keySetting[i] = keySetting[keyNum];
                         keySettingString[i] = keySettingString[keyNum];
@@ -184,8 +184,16 @@ public class SettingScreen extends Screen {
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 3 && selected && keyChangeMode && inputManager.getcheck()){
-                keySettingString[keyNum + 5] = inputManager.getKeyString();
-                keySetting[keyNum + 5] = inputManager.getKeyCode();
+                int temp = inputManager.getKeyCode();
+                String tempS = inputManager.getKeyString();
+                for(int i=0;i<10;i++){
+                    if(keySetting[i] == temp){
+                        keySetting[i] = keySetting[keyNum + 5];
+                        keySettingString[i] = keySettingString[keyNum + 5];
+                    }
+                }
+                keySettingString[keyNum + 5] = tempS;
+                keySetting[keyNum + 5] = temp;
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
