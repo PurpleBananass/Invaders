@@ -36,5 +36,4 @@ public class ItemQueue {
             front = 0;
         return x;
     }
-
 }

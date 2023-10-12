@@ -1,8 +1,10 @@
 package screen;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 import engine.*;
 import entity.Bullet;
@@ -434,6 +436,9 @@ public class GameScreen extends Screen {
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
 				// 여기에 스피드업 아이템 코드 작성
+				/** apply item speed **/
+				this.ship.setItemSpeed();
+
 				this.logger.info("SpeedUp Item 사용");
 			}
 			else if (!item.getIsGet() &&

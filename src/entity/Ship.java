@@ -168,12 +168,24 @@ public class Ship extends Entity {
 	public final void setShootingInterval(int cldwn) {this.shootingCooldown = Core.getCooldown(cldwn);}
 
 	/**
-	 * Re-Setter for the ship's shooting frequency speed.
+	 * Re-Setter for the sh용ip's shooting frequency speed.
 	 */
 	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);}
 	
-	/** Set item_speed when ship get speed item **/
-	public void set_item_Speed() {this.SPEED = item_SPEED;}
+	/** Set item_speed for 10sec when ship get speed item **/
+	public void setItemSpeed() {
+		this.SPEED = item_SPEED;
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				resetSpeed();
+				timer.cancel();
+			}
+		};
+		timer.schedule(task, 10000);
+
+
+	}
 
 
 	public final boolean isInvincible() {
