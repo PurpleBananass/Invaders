@@ -23,7 +23,7 @@ import engine.GameSettings;
 public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/** Initial position in the x-axis. */
-	private static final int INIT_POS_X = 30;
+	private static final int INIT_POS_X = 20;
 	/** Initial position in the y-axis. */
 	private static final int INIT_POS_Y = 100;
 	/** Distance between ships. */
@@ -41,7 +41,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
-	private static final int SIDE_MARGIN = 30;
+	private static final int SIDE_MARGIN = 20;
 	/** Margin on the bottom of the screen. */
 	private static final int BOTTOM_MARGIN = 80;
 	/** Distance to go down each pass. */
