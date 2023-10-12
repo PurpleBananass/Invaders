@@ -57,13 +57,9 @@ public class SettingScreen extends Screen {
                 bgmOn = true;
             }
             else bgmOn = false;
-            System.out.println(soundVolume);
-            System.out.println(bgmOn);
             for (int i =2; i < 12; i++) {
                 keySettingString[i-2] = this.setting.get(i).getName();
                 keySetting[i-2] = this.setting.get(i).getValue();
-                System.out.println( keySettingString[i-2]);
-                System.out.println( keySetting[i-2]);
             }
 
         } catch (NumberFormatException | IOException e) {
@@ -153,7 +149,7 @@ public class SettingScreen extends Screen {
             }
 
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected){
-                savescore();
+                saveSetting();
                 this.isRunning = false;
             }
             /**
@@ -174,8 +170,16 @@ public class SettingScreen extends Screen {
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
-                keySettingString[keyNum] = inputManager.getKeyString();
-                keySetting[keyNum] = inputManager.getKeyCode();
+                int temp = inputManager.getKeyCode();
+                String tempS = inputManager.getKeyString();
+                for(int i=0;i<5;i++){
+                    if(keySetting[i] == temp){
+                        keySetting[i] = keySetting[keyNum];
+                        keySettingString[i] = keySettingString[keyNum];
+                    }
+                }
+                keySettingString[keyNum] = tempS;
+                keySetting[keyNum] = temp;
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
@@ -230,7 +234,7 @@ public class SettingScreen extends Screen {
         drawManager.completeDrawing(this);
     }
 
-    private void savescore(){
+    private void saveSetting(){
         this.setting.get(0).value = soundVolume;
         this.setting.get(1).value = bgmOn ? 1:0;
         for (int i =0; i < 10; i++) {

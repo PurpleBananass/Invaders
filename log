@@ -1,19 +1,28 @@
-[INFO|1:52:53]: Started loading resources. 
-[FINE|1:52:53]: Sprite Ship loaded. 
-[FINE|1:52:53]: Sprite ShipDestroyed loaded. 
-[FINE|1:52:53]: Sprite Bullet loaded. 
-[FINE|1:52:53]: Sprite EnemyBullet loaded. 
-[FINE|1:52:53]: Sprite EnemyShipA1 loaded. 
-[FINE|1:52:53]: Sprite EnemyShipA2 loaded. 
-[FINE|1:52:53]: Sprite EnemyShipB1 loaded. 
-[FINE|1:52:53]: Sprite EnemyShipB2 loaded. 
-[FINE|1:52:53]: Sprite EnemyShipC1 loaded. 
-[FINE|1:52:53]: Sprite EnemyShipC2 loaded. 
-[FINE|1:52:53]: Sprite EnemyShipSpecial loaded. 
-[FINE|1:52:53]: Sprite Explosion loaded. 
-[INFO|1:52:53]: Finished loading the sprites. 
-[INFO|1:52:53]: Finished loading the fonts. 
-[INFO|1:52:53]: Starting 448x520 title screen at 60 fps. 
-[INFO|1:52:55]: Closing title screen. 
-[INFO|1:52:55]: Loading settings. 
-[INFO|1:52:55]: Starting 448x520 high score screen at 60 fps. 
+[INFO|3:53:03]: Started loading resources. 
+[FINE|3:53:03]: Sprite Ship loaded. 
+[FINE|3:53:03]: Sprite ShipDestroyed loaded. 
+[FINE|3:53:03]: Sprite Bullet loaded. 
+[FINE|3:53:03]: Sprite EnemyBullet loaded. 
+[FINE|3:53:03]: Sprite EnemyShipA1 loaded. 
+[FINE|3:53:03]: Sprite EnemyShipA2 loaded. 
+[FINE|3:53:03]: Sprite EnemyShipB1 loaded. 
+[FINE|3:53:03]: Sprite EnemyShipB2 loaded. 
+[FINE|3:53:03]: Sprite EnemyShipC1 loaded. 
+[FINE|3:53:03]: Sprite EnemyShipC2 loaded. 
+[FINE|3:53:03]: Sprite EnemyShipSpecial loaded. 
+[FINE|3:53:03]: Sprite Explosion loaded. 
+[INFO|3:53:03]: Finished loading the sprites. 
+[INFO|3:53:03]: Finished loading the fonts. 
+[INFO|3:53:03]: Starting 448x520 title screen at 60 fps. 
+[INFO|3:53:06]: Closing title screen. 
+[INFO|3:53:06]: Loading settings. 
+[INFO|3:53:06]: Starting 448x520 high score screen at 60 fps. 
+[INFO|3:53:14]: Saving user settings. 
+[INFO|3:53:14]: Closing setting screen. 
+[INFO|3:53:14]: Starting 448x520 title screen at 60 fps. 
+[INFO|3:53:16]: Closing title screen. 
+[INFO|3:53:16]: Loading settings. 
+[INFO|3:53:16]: Starting 448x520 high score screen at 60 fps. 
+[INFO|3:53:21]: Saving user settings. 
+[INFO|3:53:21]: Closing setting screen. 
+[INFO|3:53:21]: Starting 448x520 title screen at 60 fps. 
