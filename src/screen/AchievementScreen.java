@@ -1,9 +1,6 @@
 package screen;
 import java.awt.event.KeyEvent;
-/*
- * react 팀에서 개발
- * 
-*/
+
 
 public class AchievementScreen extends Screen {
     	/**
