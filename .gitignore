@@ -168,10 +168,6 @@ pip-log.txt
 log*
 *.ttf
 .checkstyle
-<<<<<<< HEAD
 .idea
 *.iml
-out
-=======
-*.iml
->>>>>>> upstream/main
+outg
