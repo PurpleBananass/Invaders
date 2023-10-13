@@ -138,4 +138,8 @@ public class Entity {
 	public final int getHeight() {
 		return this.height;
 	}
+
+	public final void changeColor(Color color) {
+		this.color = color;
+	}
 }
