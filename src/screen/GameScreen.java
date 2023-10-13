@@ -77,6 +77,7 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
+	private int escapeCnt = 0;
 
 	private int per=0;
 
@@ -207,8 +208,27 @@ public class GameScreen extends Screen {
 			}
 			if (this.enemyShipSpecial != null
 					&& this.enemyShipSpecial.getPositionX() > this.width) {
+				this.escapeCnt++;
+				if(this.level==7){
+					this.lives--;
+					this.logger.info("This level is 7 and escaped ship is 1, so you lost on life.");
+				}
+				else if(this.level==6 && this.escapeCnt==2){
+					this.lives--;
+					this.logger.info("Escaped 2.");
+					this.escapeCnt = 0;
+					this.logger.info("This level is 6 and escaped ship is 2, so you lost on life.");
+				}
+				else if(this.level==5 && this.escapeCnt==3){
+					this.lives--;
+					this.logger.info("Escaped 3.");
+					this.escapeCnt = 0;
+					this.logger.info("This level is 5 and escaped ship is 3, so you lost on life.");
+				}
+				else{
+					this.logger.info("The special ship has escaped");
+				}
 				this.enemyShipSpecial = null;
-				this.logger.info("The special ship has escaped");
 			}
 
 			this.ship.update();
