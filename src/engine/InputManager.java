@@ -68,8 +68,7 @@ public final class InputManager implements KeyListener {
 
 	public int countH_u=0;
 	public int countH_d=0;
-	public int countW_r=0;
-	public int countW_l=0;
+	public int speed = 0;
 	/**
 	 * Changes the state of the key to not pressed.
 	 * 
@@ -88,17 +87,14 @@ public final class InputManager implements KeyListener {
 			case KeyEvent.VK_DOWN:
 				countH_d++;
 				break;
-			case KeyEvent.VK_LEFT:
-				countW_l++;
-				break;
-			case KeyEvent.VK_RIGHT:
-				countW_r++;
-				break;
 			case KeyEvent.VK_SPACE:
 				if (keyUp == 0) {
 					keyUp = 1;
 				}
 				break;
+			case 83:
+				speed ++;
+
 		}
 	}
 

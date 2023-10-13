@@ -183,7 +183,7 @@ public class GameScreen extends Screen {
 						this.bulletsShot++;
 					}
 				if (replayability.getReplay()==1){
-					if (inputManager.countW_r >= 5 && inputManager.countW_l >= 5) {
+					if (inputManager.speed == 3) {
 						per = 1;
 					} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7) {
 						per = 2;
@@ -333,7 +333,7 @@ public class GameScreen extends Screen {
 		if (per>0 && !this.levelFinished) {
 			boolean use = false;
 			int shipSpeed = (int) ship.getSPEED();
-			if (per == 1 && !speedBoosted) { // 오른쪽왼쪽 화살표 연타 -> 1초간 속도 빨라지기
+			if (per == 1 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
 				originalSpeed = (int) ship.getSPEED();
 				ship.setSPEED(originalSpeed + 2);
 				this.logger.info("SpeedUp");
@@ -358,10 +358,9 @@ public class GameScreen extends Screen {
 			}
 			ship.update();
 			per = 0;
-			inputManager.countW_r = 0;
-			inputManager.countW_l = 0;
 			inputManager.countH_d = 0;
 			inputManager.countH_u = 0;
+			inputManager.speed = 0;
 		}
 	}
 
