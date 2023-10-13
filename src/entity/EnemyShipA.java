@@ -9,5 +9,6 @@ public class EnemyShipA extends EnemyShip {
         super(positionX, positionY, spriteType, gameState);
         super.HP = (int)(super.HP * 0.5);
         super.pointValue = 10;
+        System.out.println(super.pointValue);
     }
 }

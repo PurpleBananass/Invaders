@@ -62,8 +62,7 @@ public class EnemyShip extends Entity {
 		this.isDestroyed = false;
 		this.itemRange =  new Random().nextInt(RANDOM_BOUND);
 		this.hasItem = itemGenerator(itemRange);
-		this.HP = 1;
-		this.pointValue = 0;
+		this.HP = this.gameState.getLevel();
 	}
 
 	/**
@@ -76,7 +75,7 @@ public class EnemyShip extends Entity {
 		this.spriteType = SpriteType.EnemyShipSpecial;
 		this.isDestroyed = false;
 		this.pointValue = BONUS_TYPE_POINTS;
-
+		System.out.println(this.pointValue);
 	}
 
 	/**
