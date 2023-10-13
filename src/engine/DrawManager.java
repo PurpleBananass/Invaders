@@ -75,7 +75,9 @@ public final class DrawManager {
 		/** Bonus ship. */
 		EnemyShipSpecial,
 		/** Destroyed enemy ship. */
-		Explosion
+		Explosion,
+
+		Item
 	};
 
 	/**
@@ -101,6 +103,7 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.EnemyShipC2, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipSpecial, new boolean[16][7]);
 			spriteMap.put(SpriteType.Explosion, new boolean[13][7]);
+			spriteMap.put(SpriteType.Item, new boolean[13][7]);
 
 			fileManager.loadSprite(spriteMap);
 			logger.info("Finished loading the sprites.");
@@ -244,6 +247,21 @@ public final class DrawManager {
 	}
 
 	/**
+	 * Draws current score on screen.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param highScore
+	 *            Current score.
+	 */
+	public void drawHighScore(final Screen screen, final int highScore) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		String scoreString = String.format("%04d", highScore);
+		backBufferGraphics.drawString(scoreString, screen.getWidth() - 120, 25);
+	}
+
+	/**
 	 * Draws number of remaining lives on screen.
 	 *
 	 * @param screen
@@ -258,7 +276,7 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
-		Ship dummyShip = new Ship(0, 0, Color.GREEN);
+		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 35 * i, 10);
 	}
@@ -269,7 +287,7 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives2), 160, 25);
-		Ship dummyShip = new Ship(0, 0, Color.RED);
+		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Ship);
 		for (int i = 0; i < lives2; i++)
 			drawEntity(dummyShip, 180 + 35 * i, 10);
 	}

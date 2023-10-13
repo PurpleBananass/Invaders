@@ -20,6 +20,8 @@ public class Entity {
 	protected int width;
 	/** Height of the entity. */
 	protected int height;
+	/** Original color of the entity. */
+	private Color origin_color;
 	/** Color of the entity. */
 	private Color color;
 	/** Sprite type assigned to the entity. */
@@ -45,6 +47,7 @@ public class Entity {
 		this.positionY = positionY;
 		this.width = width;
 		this.height = height;
+		this.origin_color = color;
 		this.color = color;
 	}
 
@@ -56,6 +59,20 @@ public class Entity {
 	public final Color getColor() {
 		return color;
 	}
+
+	/**
+	 * Setter for the color of the entity.
+	 *
+	 * @param c
+	 *            New color of the entity.
+	 */
+	public final void setColor(Color c) {this.color = c;}
+
+	/**
+	 * Re-setter for the color of the entity.
+
+	 */
+	public final void resetColor() {this.color = this.origin_color;}
 
 	/**
 	 * Getter for the X axis position of the entity.
@@ -120,5 +137,9 @@ public class Entity {
 	 */
 	public final int getHeight() {
 		return this.height;
+	}
+
+	public final void changeColor(Color color) {
+		this.color = color;
 	}
 }
