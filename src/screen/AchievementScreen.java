@@ -3,7 +3,7 @@ import java.awt.event.KeyEvent;
 
 
 public class AchievementScreen extends Screen {
-    	/**
+    /**
 	 * Constructor, establishes the properties of the screen.
 	 * 
 	 * @param width
@@ -25,13 +25,11 @@ public class AchievementScreen extends Screen {
 
 	protected final void update() {
 		super.update();
-
 		draw();
 		if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)
 				&& this.inputDelay.checkFinished())
 			this.isRunning = false;
 	}
-
 
 	private void draw() {
 		drawManager.initDrawing(this);
@@ -40,6 +38,4 @@ public class AchievementScreen extends Screen {
          */
 		drawManager.completeDrawing(this);
 	}
-
-
 }
