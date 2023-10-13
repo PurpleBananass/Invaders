@@ -169,3 +169,10 @@ pip-log.txt
 log*
 *.ttf
 .checkstyle
+
+# Intellij / User-specific configurations
+
+.idea/
+*.iml
+out/
+res
