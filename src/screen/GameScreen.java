@@ -1,8 +1,10 @@
 package screen;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 import engine.*;
 import entity.Bullet;
@@ -79,6 +81,8 @@ public class GameScreen extends Screen {
 
 	/**  Checks item is bomb **/
 	private boolean isBomb = false;
+
+	private boolean isChecked = false;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
