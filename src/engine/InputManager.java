@@ -69,6 +69,7 @@ public final class InputManager implements KeyListener {
 	public int countH_u=0;
 	public int countH_d=0;
 	public int speed = 0;
+	public boolean magazine = false;
 	/**
 	 * Changes the state of the key to not pressed.
 	 * 
@@ -92,9 +93,12 @@ public final class InputManager implements KeyListener {
 					keyUp = 1;
 				}
 				break;
-			case 83:
+			case 83: //s
 				speed ++;
-
+				break;
+			case 81: //q
+				magazine = true;
+				break;
 		}
 	}
 

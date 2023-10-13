@@ -69,6 +69,8 @@ public class GameScreen extends Screen {
 	private int lives;
 	/** Total bullets shot by the player. */
 	private int bulletsShot;
+	private int magazine;
+	private int bullet_count;
 	/** Total ships destroyed by the player. */
 	private int shipsDestroyed;
 	/** Moment the game starts. */
@@ -138,6 +140,9 @@ public class GameScreen extends Screen {
 		this.gameStartTime = System.currentTimeMillis();
 		this.inputDelay = Core.getCooldown(INPUT_DELAY);
 		this.inputDelay.reset();
+
+		this.magazine=5;
+		this.bullet_count=0;
 	}
 
 	/**
@@ -179,16 +184,29 @@ public class GameScreen extends Screen {
 				if (moveLeft && !isLeftBorder) {
 					this.ship.moveLeft();
 				}
-				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-					if (this.ship.shoot(this.bullets)) {
+				if ( replayability.getReplay()==0 && inputManager.isKeyDown(KeyEvent.VK_SPACE))
+					if (this.ship.shoot(this.bullets))
 						this.bulletsShot++;
+				if (replayability.getReplay()==1) {
+					if (this.bullet_count<=9 && inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+						if(this.ship.shoot(this.bullets)){
+							this.bulletsShot++;
+							this.bullet_count++;
+						}
 					}
-				if (replayability.getReplay()==1){
 					if (inputManager.speed == 3) {
 						per = 1;
-					} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7) {
+					} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7 && bullet_count <=7) {
 						per = 2;
 					}
+				}
+				if (inputManager.magazine){
+					inputManager.magazine = false;
+					inputManager.countH_d = 0;
+					inputManager.countH_u = 0;
+					inputManager.speed = 0;
+					this.magazine--;
+					this.bullet_count=0;
 				}
 
 			}
@@ -230,6 +248,9 @@ public class GameScreen extends Screen {
 				}
 				this.enemyShipSpecial = null;
 			}
+
+			if(this.magazine==0)
+				this.lives =0;
 
 			this.ship.update();
 			this.enemyShipFormation.update();
@@ -351,8 +372,6 @@ public class GameScreen extends Screen {
 	/** Use skill*/
 	private void useSkill(){
 		if (per>0 && !this.levelFinished) {
-			boolean use = false;
-			int shipSpeed = (int) ship.getSPEED();
 			if (per == 1 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
 				originalSpeed = (int) ship.getSPEED();
 				ship.setSPEED(originalSpeed + 2);
@@ -375,6 +394,7 @@ public class GameScreen extends Screen {
 							ship.getPositionY(), ship.getBULLET_SPEED()));
 				this.logger.info("Three bullets");
 				this.bulletsShot+=3;
+				this.bullet_count+=3;
 			}
 			ship.update();
 			per = 0;
