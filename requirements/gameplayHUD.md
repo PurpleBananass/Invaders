@@ -5,15 +5,15 @@ Hi, We are team HUD. Nice to meet you all.
 
 ### Goal of the team 
 
-: Making a good Game play HUD
+Making a good Game play HUD
 
 ### Vision of the team 
 
-: Good visibility, Working well
+Good visibility, Working well
 
 ### Team members 
 
-: Soomin Kim, Hyeontae Kim, Yousang Park, Sophie Jasmin Darandik, Zequn Dang, Nick Klaus Edgar Decker
+Soomin Kim, Hyeontae Kim, Yousang Park, Sophie Jasmin Darandik, Zequn Dang, Nick Klaus Edgar Decker
 
 
 
@@ -24,17 +24,17 @@ We are going to make a gameplay HUD which is show players' statements, informati
 
 
 ## Detailed requirements
-High score : Soomin Kim
+High score: Soomin Kim
 
-Credit, currency : Hyeontae Kim
+Credit, currency: Hyeontae Kim
 
-Items : Yousang Park
+Items: Yousang Park
 
-Play time : Sophie Jasmin Darandik
+Play time: Sophie Jasmin Darandik
 
-Level : Zequn Dang
+Level: Zequn Dang
 
-Statements, Uploading : Nick Klaus Edgar Decker
+Statements, Uploading: Nick Klaus Edgar Decker
 
 
 ## Dependencies on other teams
