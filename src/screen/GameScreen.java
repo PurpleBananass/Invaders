@@ -177,11 +177,11 @@ public class GameScreen extends Screen {
 
 		// 게임 모드 별 함선 생성 제어
 		if (gameState.getMode() == 1){
-			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship);
+			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, Core.getLevel());
 		}
 		if (gameState.getMode() == 2) {
-			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship);
-			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, DrawManager.SpriteType.Ship);
+			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, Core.getLevel());
+			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, DrawManager.SpriteType.Ship, Core.getLevel());
 		}
 
 		// Appears each 10-30 seconds.
@@ -194,8 +194,8 @@ public class GameScreen extends Screen {
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
 
-        this.auxiliaryShips.add(new Ship(ship.getPositionX() - 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1));
-        this.auxiliaryShips.add(new Ship(ship.getPositionX() + 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1));
+        this.auxiliaryShips.add(new Ship(ship.getPositionX() - 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1, Core.getLevel()));
+        this.auxiliaryShips.add(new Ship(ship.getPositionX() + 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1, Core.getLevel()));
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
