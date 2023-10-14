@@ -8,11 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import screen.GameScreen;
-import screen.HighScoreScreen;
-import screen.ScoreScreen;
-import screen.Screen;
-import screen.TitleScreen;
+import screen.*;
 
 /**
  * Implements core game logic.
@@ -158,7 +154,7 @@ public final class Core {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
-					LOGGER.info("Closing title screen.");
+					LOGGER.info("Closing game screen.");
 
 					if (mode == 1) {
 						gameState = ((GameScreen) currentScreen).getGameState1p();
@@ -176,9 +172,25 @@ public final class Core {
 								gameState.getBulletsShot(),
 								gameState.getShipsDestroyed());
 					}
+
+					if ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
+							&& gameState.getLevel() <= NUM_LEVELS) {
+						currentScreen = new ClearScreen(width, height, FPS);
+						LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+								+ " clear screen at " + FPS + " fps.");
+						returnCode = frame.setScreen(currentScreen);
+						LOGGER.info("Closing clear screen.");
+						if (returnCode == 1)
+							break;
+					}
+
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
 						&& gameState.getLevel() <= NUM_LEVELS);
+
+				if (returnCode == 1)
+					break;
 
 				if (gameState.getMode() == 1) {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
