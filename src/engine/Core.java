@@ -173,8 +173,8 @@ public final class Core {
 								gameState.getShipsDestroyed());
 					}
 
-					if ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
+					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 							&& gameState.getLevel() <= NUM_LEVELS) {
 						currentScreen = new ClearScreen(width, height, FPS);
 						LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -185,8 +185,8 @@ public final class Core {
 							break;
 					}
 
-				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
+				} while (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
 
 				if (returnCode == 1)
