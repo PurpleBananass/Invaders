@@ -31,10 +31,14 @@ public class SettingScreen extends Screen {
     /** Check BGM is On/Off  */
     private boolean bgmOn;
 
-    private int[] keySetting = new int[10];;
-    private static String[] keySettingString = new String[10];
+    private int[] keySetting = new int[14];
+    /** { 1P.UP, 1P.DOWN, 1P.LEFT, 1P.RIGHT, 1P.ATTACK, 1P.SKILL1, 1P.SKILL2, 2P.UP, 2P.DOWN, 2P.LEFT, 2P.RIGHT, 2P.ATTACK, 2P.SKILL1, 2P.SKILL2} */
+    private static String[] keySettingString = new String[14];
     private int keyNum =0;
     private boolean keyChangeMode = false;
+    /** For the situation some keys are not set*/
+    private int tempKeyCode;
+    private String tempKeyString;
 
 
 
@@ -65,6 +69,11 @@ public class SettingScreen extends Screen {
         } catch (NumberFormatException | IOException e) {
             logger.warning("Couldn't load Settings!");
         }
+        /** 테스트용, 준영아 읽어오는 코드 고치면 이거 지워주라*/
+        keySettingString[10] = "N";
+        keySettingString[11] = "M";
+        keySettingString[12] = "Q";
+        keySettingString[13] = "E";
 
         this.returnCode = 1;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
@@ -140,7 +149,7 @@ public class SettingScreen extends Screen {
                         break;
                     /** Keys Setting */
                     case 2, 3:
-                        if(keyNum<4) keyNum++;
+                        if(keyNum<6) keyNum++;
                         this.selectionCooldown.reset();
                         break;
                     default:
@@ -161,21 +170,25 @@ public class SettingScreen extends Screen {
              * */
             if (itemCode == 2 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
                 keyChangeMode =true;
+                tempKeyCode = keySetting[keyNum];
+                tempKeyString = keySettingString[keyNum];
                 keySettingString[keyNum] = "";
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 3 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))){
                 keyChangeMode =true;
-                keySettingString[keyNum +5] = "";
+                tempKeyCode = keySetting[keyNum];
+                tempKeyString = keySettingString[keyNum];
+                keySettingString[keyNum +7] = "";
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
-                for(int i=0;i<10;i++){
+                for(int i=0;i<14;i++){
                     if(keySetting[i] == temp){
-                        keySetting[i] = keySetting[keyNum];
-                        keySettingString[i] = keySettingString[keyNum];
+                        keySetting[i] = tempKeyCode;
+                        keySettingString[i] = tempKeyString;
                     }
                 }
                 keySettingString[keyNum] = tempS;
@@ -186,14 +199,14 @@ public class SettingScreen extends Screen {
             else if(itemCode == 3 && selected && keyChangeMode && inputManager.getcheck()){
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
-                for(int i=0;i<10;i++){
+                for(int i=0;i<14;i++){
                     if(keySetting[i] == temp){
-                        keySetting[i] = keySetting[keyNum + 5];
-                        keySettingString[i] = keySettingString[keyNum + 5];
+                        keySetting[i] = tempKeyCode;
+                        keySettingString[i] = tempKeyString;
                     }
                 }
-                keySettingString[keyNum + 5] = tempS;
-                keySetting[keyNum + 5] = temp;
+                keySettingString[keyNum + 7] = tempS;
+                keySetting[keyNum + 7] = temp;
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
