@@ -13,7 +13,7 @@ public class AchievementManager {
 			.getSimpleName());
   
     // Map to store achievements and their completion status
-    private Map<String, Boolean> achievements;
+    static private Map<String, Boolean> achievements;
 
     private AchievementManager() {
         achievements = new HashMap<>();
@@ -39,7 +39,7 @@ public class AchievementManager {
      *
      * @param achievementName The name of the achievement to mark as achieved.
      */
-    public void markAchievementAsAchieved(String achievementName) {
+    public static void markAchievementAsAchieved(String achievementName) {
         if (achievements.containsKey(achievementName)) {
             achievements.put(achievementName, true);
         }
@@ -53,7 +53,7 @@ public class AchievementManager {
      * @param achievementName The name of the achievement to check.
      * @return true if the achievement is achieved, false otherwise.
      */
-    public boolean isAchievementAchieved(String achievementName) {
+    public static boolean isAchievementAchieved(String achievementName) {
         if (achievements.containsKey(achievementName)) {
             return achievements.get(achievementName);
         }
