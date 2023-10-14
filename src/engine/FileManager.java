@@ -167,7 +167,8 @@ public final class FileManager {
 	/**
 	 * Loads high scores from file, and returns a sorted list of pairs score -
 	 * value.
-	 * 
+	 * @param gameMode
+	 *             The game mode.
 	 * @return Sorted list of scores - players.
 	 * @throws IOException
 	 *             In case of loading problems.

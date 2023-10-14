@@ -121,7 +121,7 @@ public final class Core {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
 			// gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0);
+			gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0);
 
 			switch (returnCode) {
 			case 1:
@@ -146,7 +146,7 @@ public final class Core {
 						// 1P mode
 						bonusLife = bonusLife && gameState.getLivesRemaining1p() < MAX_LIVES;
 					} else {
-						// 2P 모드 (두 플레이어 중 하나라도 생명이 적을 경우 bonusLife 부여)
+						// 2P mode (Give bonusLife if either player has less than max lives.)
 						bonusLife = bonusLife &&
 								(gameState.getLivesRemaining1p() < MAX_LIVES
 										|| gameState.getLivesRemaining2p() < MAX_LIVES);
@@ -158,14 +158,14 @@ public final class Core {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
-					LOGGER.info("Closing title screen.");
+					LOGGER.info("Closing Game screen.");
 
 					if (mode == 1) {
 						gameState = ((GameScreen) currentScreen).getGameState1p();
 						gameState = new GameState(gameState.getLevel() + 1,
 								gameState.getScore(),
 								gameState.getLivesRemaining1p(),
-								gameState.getBulletsShot(),
+								gameState.getBulletsShot1(),
 								gameState.getShipsDestroyed());
 					} else {
 						gameState = ((GameScreen) currentScreen).getGameState2p();
@@ -173,7 +173,8 @@ public final class Core {
 								gameState.getScore(),
 								gameState.getLivesRemaining1p(),
 								gameState.getLivesRemaining2p(),
-								gameState.getBulletsShot(),
+								gameState.getBulletsShot1(),
+								gameState.getBulletsShot2(),
 								gameState.getShipsDestroyed());
 					}
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
@@ -185,7 +186,7 @@ public final class Core {
 						+ " score screen at " + FPS + " fps, with a score of "
 						+ gameState.getScore() + ", "
 						+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
-						+ gameState.getBulletsShot() + " bullets shot and "
+						+ gameState.getBulletsShot1() + " bullets shot and "
 						+ gameState.getShipsDestroyed() + " ships destroyed.");
 				} else {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -193,7 +194,8 @@ public final class Core {
 							+ gameState.getScore() + ", "
 							+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
 							+ gameState.getLivesRemaining2p() + " lives remaining for 2p, "
-							+ gameState.getBulletsShot() + " bullets shot and "
+							+ gameState.getBulletsShot1() + " bullets shot by 1p and "
+							+ gameState.getBulletsShot2() + " bullets shot by 2p and "
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
 
@@ -286,7 +288,11 @@ public final class Core {
 											   final int variance) {
 		return new Cooldown(milliseconds, variance);
 	}
-
+	/**
+	 * Get Max Lives.
+	 *
+	 * @return MAX_LIVES.
+	 */
 	public static int getMaxLives() {
 		return MAX_LIVES;
 	}
