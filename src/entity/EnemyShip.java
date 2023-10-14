@@ -175,5 +175,3 @@ public class EnemyShip extends Entity {
 
 	public int getItemRange(){return this.itemRange;}
 }
-
-
