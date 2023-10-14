@@ -71,7 +71,7 @@ public final class FileManager {
 
 		try {
 			inputStream = DrawManager.class.getClassLoader()
-					.getResourceAsStream("..\\..\\res\\graphics");
+					.getResourceAsStream("graphics");
 			char c;
 
 			// Sprite loading.
@@ -172,7 +172,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public List<Score> loadHighScores() throws IOException {
+	public List<Score> loadHighScores(final int gameMode) throws IOException {
 
 		List<Score> highScores = new ArrayList<Score>();
 		InputStream inputStream = null;
@@ -185,14 +185,17 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores";
+			if (gameMode == 1)
+				scoresPath += "scores_1p";
+			else
+				scoresPath += "scores_2p";
 
 			File scoresFile = new File(scoresPath);
 			inputStream = new FileInputStream(scoresFile);
 			bufferedReader = new BufferedReader(new InputStreamReader(
 					inputStream, Charset.forName("UTF-8")));
 
-			logger.info("Loading user high scores.");
+			logger.info("Loading user high scores " + "from 'scores_" + gameMode +"p'");
 
 			Score highScore = null;
 			String name = bufferedReader.readLine();
@@ -226,7 +229,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public void saveHighScores(final List<Score> highScores) 
+	public void saveHighScores(final List<Score> highScores, final int gameMode)
 			throws IOException {
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
@@ -238,7 +241,10 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores";
+			if (gameMode == 1)
+				scoresPath += "scores_1p";
+			else
+				scoresPath += "scores_2p";
 
 			File scoresFile = new File(scoresPath);
 
