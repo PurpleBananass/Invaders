@@ -13,16 +13,22 @@ public class ClearScreen extends Screen {
     /** Time between changes in user selection. */
     private Cooldown selectionCooldown;
 
+    /** Current game level. */
+    private int level;
+
     /**
      * Constructor, establishes the properties of the screen.
      *
+     * @param level  Current game level.
      * @param width  Screen width.
      * @param height Screen height.
      * @param fps    Frames per second, frame rate at which the game is run.
      */
-    public ClearScreen(int width, int height, int fps) {
+    public ClearScreen(final int level,
+                       final int width, final int height, final int fps) {
         super(width, height, fps);
 
+        this.level = level;
         this.returnCode = 2;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
@@ -77,7 +83,7 @@ public class ClearScreen extends Screen {
     private void draw() {
         drawManager.initDrawing(this);
 
-        drawManager.drawClear(this, this.returnCode);
+        drawManager.drawClear(this, this.returnCode, this.level);
 
         drawManager.completeDrawing(this);
     }

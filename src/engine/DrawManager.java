@@ -680,8 +680,8 @@ public final class DrawManager {
 					+ fontBigMetrics.getHeight() / 3);
 	}
 
-	public void drawClear(final Screen screen, final int option) {
-		String titleString = "Clear";
+	public void drawClear(final Screen screen, final int option, final int level) {
+		String titleString = "LEVEL  " + level + "  Clear";
 //		String instructionsString =
 //				"select with w+s / arrows, confirm with space";
 //
