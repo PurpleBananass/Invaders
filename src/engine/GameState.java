@@ -16,8 +16,10 @@ public class GameState {
 	private int livesRemaining1;
 	/** 2p's Lives currently remaining. */
 	private int livesRemaining2;
-	/** Bullets shot until now. */
-	private int bulletsShot;
+	/** Bullets shot until now from player1. */
+	private int bulletsShot1;
+	/** Bullets shot until now from player2. */
+	private int bulletsShot2;
 	/** Ships destroyed until now. */
 	private int shipsDestroyed;
 	/** Distinguish 1P and 2P mode. */
@@ -45,20 +47,21 @@ public class GameState {
 		this.level = level;
 		this.score = score;
 		this.livesRemaining1 = livesRemaining;
-		this.bulletsShot = bulletsShot;
+		this.bulletsShot1 = bulletsShot;
 		this.shipsDestroyed = shipsDestroyed;
 	}
 
 	// 2p mode
 	public GameState(final int level, final int score,
-					 final int livesRemaining1, final int livesRemaining2, final int bulletsShot,
+					 final int livesRemaining1, final int livesRemaining2, final int bulletsShot1, final int bulletsShot2,
 					 final int shipsDestroyed) {
 		this.gameMode = 2;
 		this.level = level;
 		this.score = score;
 		this.livesRemaining1 = livesRemaining1;
 		this.livesRemaining2 = livesRemaining2;
-		this.bulletsShot = bulletsShot;
+		this.bulletsShot1 = bulletsShot1;
+		this.bulletsShot2 = bulletsShot2;
 		this.shipsDestroyed = shipsDestroyed;
 	}
 
@@ -95,10 +98,16 @@ public class GameState {
 	}
 
 	/**
-	 * @return the bulletsShot
+	 * @return the bulletsShot from player1
 	 */
-	public final int getBulletsShot() {
-		return bulletsShot;
+	public final int getBulletsShot1() {
+		return bulletsShot1;
+	}
+	/**
+	 * @return the bulletsShot from player1
+	 */
+	public final int getBulletsShot2() {
+		return bulletsShot2;
 	}
 
 	/**
