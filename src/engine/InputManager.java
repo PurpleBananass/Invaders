@@ -68,8 +68,12 @@ public final class InputManager implements KeyListener {
 
 	public int countH_u=0;
 	public int countH_d=0;
+	public int one=0, two=0;
+	public int seven=0, eight=0;
 	public int speed = 0;
+	public int speed1=0, speed2=0;
 	public boolean magazine = false;
+	public boolean magazine2 = false;
 	/**
 	 * Changes the state of the key to not pressed.
 	 * 
@@ -82,13 +86,13 @@ public final class InputManager implements KeyListener {
 			keys[key.getKeyCode()] = false;
 
 		switch (key.getKeyCode()){
-			case KeyEvent.VK_UP:
+			case 38: // 위
 				countH_u++;
 				break;
-			case KeyEvent.VK_DOWN:
+			case 40: // 아래
 				countH_d++;
 				break;
-			case KeyEvent.VK_SPACE:
+			case 32: // 스페이스
 				if (keyUp == 0) {
 					keyUp = 1;
 				}
@@ -99,6 +103,23 @@ public final class InputManager implements KeyListener {
 			case 81: //q
 				magazine = true;
 				break;
+
+			case 48: // 0
+				magazine2=true; break;
+			case 49: // 1
+				one++; break;
+			case 50: // 2
+				two++; break;
+			case 51: //3
+				speed1++; break;
+			case 52: //4
+				magazine = true; break;
+			case 55: //7
+				seven++; break;
+			case 56: //8
+				eight++; break;
+			case 57: //9
+				speed2++; break;
 		}
 	}
 
