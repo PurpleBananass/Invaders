@@ -35,7 +35,7 @@ public class ScoreScreen extends Screen {
 	private int livesRemaining1;
 	/** 2p's lives left. */
 	private int livesRemaining2;
-	/** Total bullets shot by the player1. */
+	/** Total bullets shot by the players. */
 	private int bulletsShot;
 	/** Total ships destroyed by the player. */
 	private int shipsDestroyed;
@@ -164,6 +164,9 @@ public class ScoreScreen extends Screen {
 
 	/**
 	 * Saves the score as a high score.
+	 *
+	 * @param gameMode
+	 *            Current game mode.
 	 */
 	private void saveScore(final int gameMode) {
 		highScores.add(new Score(new String(this.name), score));

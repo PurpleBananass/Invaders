@@ -25,7 +25,7 @@ public class GameState {
 	/** Distinguish 1P and 2P mode. */
 	private int gameMode = 0;
 	/**
-	 * Constructor.
+	 * Constructor for 1p mode.
 	 * 
 	 * @param level
 	 *            Current game level.
@@ -38,8 +38,6 @@ public class GameState {
 	 * @param shipsDestroyed
 	 *            Ships destroyed until now.
 	 */
-
-	// 1p mode
 	public GameState(final int level, final int score,
 					final int livesRemaining, final int bulletsShot,
 					final int shipsDestroyed) {
@@ -51,7 +49,24 @@ public class GameState {
 		this.shipsDestroyed = shipsDestroyed;
 	}
 
-	// 2p mode
+	/**
+	 * Constructor for 2p mode.
+	 *
+	 * @param level
+	 *            Current game level.
+	 * @param score
+	 *            Current score.
+	 * @param livesRemaining1
+	 *            player1's Lives currently remaining.
+	 * @param livesRemaining2
+	 *            player2's Lives currently remaining.
+	 * @param bulletsShot1
+	 *            Bullets shot until now from player1.
+	 * @param bulletsShot2
+	 *            Bullets shot until now from player2.
+	 * @param shipsDestroyed
+	 *            Ships destroyed until now.
+	 */
 	public GameState(final int level, final int score,
 					 final int livesRemaining1, final int livesRemaining2, final int bulletsShot1, final int bulletsShot2,
 					 final int shipsDestroyed) {
@@ -66,6 +81,8 @@ public class GameState {
 	}
 
 	/**
+	 * Getter for level.
+	 *
 	 * @return the level
 	 */
 	public final int getLevel() {
@@ -87,24 +104,34 @@ public class GameState {
 	}
 
 	/**
-	 * @return the livesRemaining
+	 * Getter for remain lives from player1.
+	 *
+	 * @return the remain lives from player1
 	 */
 	public final int getLivesRemaining1p() {
 		return livesRemaining1;
 	}
-
+	/**
+	 * Getter for remain lives from player2.
+	 *
+	 * @return the remain lives from player2
+	 */
 	public final int getLivesRemaining2p() {
 		return livesRemaining2;
 	}
 
 	/**
+	 * Getter for shot bullets from player1.
+	 *
 	 * @return the bulletsShot from player1
 	 */
 	public final int getBulletsShot1() {
 		return bulletsShot1;
 	}
 	/**
-	 * @return the bulletsShot from player1
+	 * Getter for shot bullets from player2.
+	 *
+	 * @return the bulletsShot from player2
 	 */
 	public final int getBulletsShot2() {
 		return bulletsShot2;

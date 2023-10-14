@@ -146,7 +146,7 @@ public final class Core {
 						// 1P mode
 						bonusLife = bonusLife && gameState.getLivesRemaining1p() < MAX_LIVES;
 					} else {
-						// 2P 모드 (두 플레이어 중 하나라도 생명이 적을 경우 bonusLife 부여)
+						// 2P mode (Give bonusLife if either player has less than max lives.)
 						bonusLife = bonusLife &&
 								(gameState.getLivesRemaining1p() < MAX_LIVES
 										|| gameState.getLivesRemaining2p() < MAX_LIVES);
@@ -288,7 +288,11 @@ public final class Core {
 											   final int variance) {
 		return new Cooldown(milliseconds, variance);
 	}
-
+	/**
+	 * Get Max Lives.
+	 *
+	 * @return MAX_LIVES.
+	 */
 	public static int getMaxLives() {
 		return MAX_LIVES;
 	}
