@@ -15,10 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import engine.DrawManager.SpriteType;
@@ -65,7 +62,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public void loadSprite(final Map<SpriteType, boolean[][]> spriteMap)
+	public void loadSprite(Map<SpriteType, boolean[][]> spriteMap)
 			throws IOException {
 		InputStream inputStream = null;
 
@@ -73,7 +70,6 @@ public final class FileManager {
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("graphics");
 			char c;
-
 			// Sprite loading.
 			for (Map.Entry<SpriteType, boolean[][]> sprite : spriteMap
 					.entrySet()) {
@@ -97,6 +93,70 @@ public final class FileManager {
 				inputStream.close();
 		}
 	}
+	/**
+	 * Change sprites from disk.
+	 *
+	 * @param spriteMap,spriteType,graphicsNum
+	 *            Changing boolean matrix that will
+	 *            change the image.
+	 * @throws IOException
+	 *             In case of changing problems.
+	 */
+	public void changeSprite(Map<SpriteType, boolean[][]> spriteMap, SpriteType spriteType, int graphicsNum)
+			throws IOException {
+		InputStream inputStream = checkSpriteType(spriteType);
+		try {
+			char c;
+			for (Map.Entry<SpriteType, boolean[][]> sprite : spriteMap
+					.entrySet()) {
+				if(sprite.getKey() == spriteType){
+					for(int k=-1; k<graphicsNum;k++){
+						for (int i = 0; i < sprite.getValue().length; i++)
+							for (int j = 0; j < sprite.getValue()[i].length; j++) {
+								do
+									c = (char) inputStream.read();
+								while (c != '0' && c != '1');
+
+								if (c == '1')
+									sprite.getValue()[i][j] = true;
+								else
+									sprite.getValue()[i][j] = false;
+							}
+					}
+					logger.fine("Sprite " + spriteType + " changed.");
+					break;
+				}
+			}
+			if (inputStream != null)
+				inputStream.close();
+		} finally {
+			if (inputStream != null)
+				inputStream.close();
+		}
+	}
+	/**
+	 * Check Sprite Type.
+	 *
+	 * @param spriteType
+	 *            Point size of the font.
+	 * @return inputStream.
+	 * @throws IOException
+	 *             In case of loading problems.
+	 */
+	public InputStream checkSpriteType(SpriteType spriteType){
+		InputStream inputStream = null;
+		if(spriteType == SpriteType.Bullet){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("bulletGraphics");
+		}
+		else if(spriteType == SpriteType.Ship){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("shipGraphics");
+		}
+
+		return inputStream;
+	}
+
 
 	/**
 	 * Loads a font of a given size.
