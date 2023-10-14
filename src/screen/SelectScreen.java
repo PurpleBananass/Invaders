@@ -5,7 +5,7 @@ import engine.Core;
 
 import java.awt.event.KeyEvent;
 
-public class Select2PScreen extends Screen{
+public class SelectScreen extends Screen{
 
     /** Milliseconds between changes in user selection. */
     private static final int SELECTION_TIME = 200;
@@ -26,7 +26,7 @@ public class Select2PScreen extends Screen{
      * @param height Screen height.
      * @param fps    Frames per second, frame rate at which the game is run.
      */
-    public Select2PScreen(int width, int height, int fps){
+    public SelectScreen(int width, int height, int fps){
         super(width, height, fps);
         this.returnCode = 7;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
@@ -99,7 +99,7 @@ public class Select2PScreen extends Screen{
     private void draw() {
         drawManager.initDrawing(this);
 
-        drawManager.drawSelect2PModeScreen(this,gameMode,skillModeOn, canEscape);
+        drawManager.drawSelect2PModeAndSkillModeScreen(this,gameMode,skillModeOn, canEscape);
 
         drawManager.completeDrawing(this);
     }
