@@ -13,10 +13,12 @@ public final class InputManager implements KeyListener {
 
 	/** Number of recognised keys. */
 	private static final int NUM_KEYS = 256;
-	/** Array with the jeys marked as pressed or not. */
+	/** Array with the keys marked as pressed or not. */
 	private static boolean[] keys;
 	/** Singleton instance of the class. */
 	private static InputManager instance;
+
+	private static int keyUp = 0;
 
 	/**
 	 * Private constructor.
@@ -58,7 +60,16 @@ public final class InputManager implements KeyListener {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = true;
 	}
+	public boolean isKeyUp(int keyCode) {
+		return !keys[keyCode];
+	}
 
+
+
+	public int countH_u=0;
+	public int countH_d=0;
+	public int speed = 0;
+	public boolean magazine = false;
 	/**
 	 * Changes the state of the key to not pressed.
 	 * 
@@ -69,7 +80,29 @@ public final class InputManager implements KeyListener {
 	public void keyReleased(final KeyEvent key) {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = false;
+
+		switch (key.getKeyCode()){
+			case KeyEvent.VK_UP:
+				countH_u++;
+				break;
+			case KeyEvent.VK_DOWN:
+				countH_d++;
+				break;
+			case KeyEvent.VK_SPACE:
+				if (keyUp == 0) {
+					keyUp = 1;
+				}
+				break;
+			case 83: //s
+				speed ++;
+				break;
+			case 81: //q
+				magazine = true;
+				break;
+		}
 	}
+
+
 
 	/**
 	 * Does nothing.

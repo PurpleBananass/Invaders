@@ -93,6 +93,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int shipCount;
 	/** check where the last ship is. */
 	private int flag = 1;
+	/** need to make complex movements. */
+	private boolean moreDiff = false;
+	/** speed of complex movements. */
+	private int complexSpeed;
+
+
 	/** Directions the formation can move. */
 	private enum Direction {
 		/** Movement to the right side of the screen. */
@@ -165,6 +171,14 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		for (List<EnemyShip> column : this.enemyShips)
 			this.shooters.add(column.get(column.size() - 1));
+
+		if (nShipsHigh > 5)
+			moreDiff = true;
+
+		if (moreDiff)
+			complexSpeed = 8;
+		else
+			complexSpeed = 0;
 	}
 
 	/**
@@ -201,7 +215,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					shootingVariance);
 			this.shootingCooldown.reset();
 		}
-		
 		cleanUp();
 
 		int movementX = 0;
@@ -220,6 +233,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		if (movementInterval >= this.movementSpeed) {
 			movementInterval = 0;
+
+			// Consider irregular movements to prevent the formation from going out of the game screen.
+			if (moreDiff)
+				positionX += complexSpeed;
 
 			boolean isAtBottom = positionY
 					+ this.height > screen.getHeight() - BOTTOM_MARGIN;
@@ -286,6 +303,19 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					}
 				}
 				column.removeAll(destroyed);
+			}
+
+			// From level 4, the ships moves more complicatedly.
+			if (moreDiff) {
+				for (List<EnemyShip> column : this.enemyShips) {
+					for (EnemyShip enemyShip : column) {
+						if ((int)((enemyShip.getpositionY()-100)/40)%2!=0) {
+							enemyShip.move(complexSpeed, 0);
+						} else
+							enemyShip.move(-complexSpeed, 0);
+					}
+				}
+				complexSpeed = -complexSpeed;
 			}
 
 			for (List<EnemyShip> column : this.enemyShips)
@@ -397,6 +427,73 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		}
 
 		this.shipCount--;
+	}
+
+	/**
+	 * Destroys a ship by bomb.
+	 *
+	 * @param destroyedShip
+	 *            Ship to be destroyed first.
+	 *
+	 * @return destroyedByBombEnemyShips
+	 * 			  List of Enemy ships destroyed by bomb.
+	 */
+	public final List<EnemyShip> destroyByBomb(final EnemyShip destroyedShip) {
+		List<EnemyShip> destroyedByBombEnemyShips = new ArrayList<>();
+		int howManyEnemyIsDead = 0;
+		int[] dx = {0, 0, 1, 1, 1, -1, -1, -1};
+		int[] dy = {-1, 1, -1, 0, 1, -1, 0, 1};
+		for (int i = 0; i < this.enemyShips.size(); i++){
+			for (int j = 0; j < this.enemyShips.get(i).size(); j++) {
+				if (this.enemyShips.get(i).get(j) == destroyedShip && true) {
+					destroyedByBombEnemyShips.add(this.enemyShips.get(i).get(j));
+					this.enemyShips.get(i).get(j).destroy();
+					this.logger.info("Destroyed ship in ("
+							+ i + "," + j + ")");
+					howManyEnemyIsDead++;
+					for(int n = 0; n < 8; n++){
+						int nx = i + dx[n]; int ny = j + dy[n];
+						if(!(nx >= 0 && nx <= this.enemyShips.size() - 1 && ny >= 0 && ny <= this.enemyShips.get(nx).size() - 1)) continue;
+						if(this.enemyShips.get(nx).get(ny).isDestroyed()) continue;
+						destroyedByBombEnemyShips.add(this.enemyShips.get(nx).get(ny));
+						this.enemyShips.get(nx).get(ny).destroy();
+						this.logger.info("Destroyed ship in ("
+								+ nx + "," + ny + ")");
+						howManyEnemyIsDead++;
+					}
+				}
+			}
+		}
+
+
+		for(EnemyShip enemyShip : destroyedByBombEnemyShips)
+			// Updates the list of ships that can shoot the player.
+			if (this.shooters.contains(enemyShip)) {
+				int destroyedShipIndex = this.shooters.indexOf(enemyShip);
+				int destroyedShipColumnIndex = -1;
+
+				for (List<EnemyShip> column : this.enemyShips)
+					if (column.contains(enemyShip)) {
+						destroyedShipColumnIndex = this.enemyShips.indexOf(column);
+						break;
+					}
+
+				EnemyShip nextShooter = getNextShooter(this.enemyShips
+						.get(destroyedShipColumnIndex));
+
+				if (nextShooter != null)
+					this.shooters.set(destroyedShipIndex, nextShooter);
+				else {
+					this.shooters.remove(destroyedShipIndex);
+					this.logger.info("Shooters list reduced to "
+							+ this.shooters.size() + " members.");
+				}
+			}
+
+
+		this.shipCount -= howManyEnemyIsDead;
+		return destroyedByBombEnemyShips;
+
 	}
 
 	/**
