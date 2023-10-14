@@ -176,4 +176,5 @@ outg
 # Intellij / User-specific configurations
 
 .idea/
+*.iml
 out/

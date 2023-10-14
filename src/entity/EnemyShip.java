@@ -2,10 +2,12 @@ package entity;
 
 import java.awt.Color;
 import java.util.Random;
+import java.util.Set;
 
 import engine.Cooldown;
 import engine.Core;
 import engine.DrawManager.SpriteType;
+import engine.GameState;
 
 /**
  * Implements a enemy ship, to be destroyed by the player.
@@ -14,13 +16,7 @@ import engine.DrawManager.SpriteType;
  * 
  */
 public class EnemyShip extends Entity {
-	
-	/** Point value of a type A enemy. */
-	private static final int A_TYPE_POINTS = 10;
-	/** Point value of a type B enemy. */
-	private static final int B_TYPE_POINTS = 20;
-	/** Point value of a type C enemy. */
-	private static final int C_TYPE_POINTS = 30;
+
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
@@ -28,17 +24,24 @@ public class EnemyShip extends Entity {
 
 	public static final int RANDOM_BOUND = 10000;
 
-
 	/** Cooldown between sprite changes. */
 	private Cooldown animationCooldown;
 	/** Checks if the ship has been hit by a bullet. */
 	private boolean isDestroyed;
+	/** 난이도 조절에 사용할 현재 스테이트 */
+	private GameState gameState;
 	/** Values of the ship, in points, when destroyed. */
-	private int pointValue;
+	protected int pointValue;
 
 	private boolean hasItem;
 
 	private int itemRange;
+
+	/** 적의 체력 */
+	protected int HP;
+
+	/** 총알 속도 */
+	private static final int BULLET_SPEED = 4;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -51,33 +54,15 @@ public class EnemyShip extends Entity {
 	 *            Sprite type, image corresponding to the ship.
 	 */
 	public EnemyShip(final int positionX, final int positionY,
-			final SpriteType spriteType) {
+					 final SpriteType spriteType, final GameState gameState) {
 		super(positionX, positionY, 12 * 2, 8 * 2, Color.WHITE);
-
+		this.gameState = gameState;
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
 		this.isDestroyed = false;
 		this.itemRange =  new Random().nextInt(RANDOM_BOUND);
 		this.hasItem = itemGenerator(itemRange);
-
-
-		switch (this.spriteType) {
-		case EnemyShipA1:
-		case EnemyShipA2:
-			this.pointValue = A_TYPE_POINTS;
-			break;
-		case EnemyShipB1:
-		case EnemyShipB2:
-			this.pointValue = B_TYPE_POINTS;
-			break;
-		case EnemyShipC1:
-		case EnemyShipC2:
-			this.pointValue = C_TYPE_POINTS;
-			break;
-		default:
-			this.pointValue = 0;
-			break;
-		}
+		this.HP = this.gameState.getLevel();
 	}
 
 	/**
@@ -90,7 +75,7 @@ public class EnemyShip extends Entity {
 		this.spriteType = SpriteType.EnemyShipSpecial;
 		this.isDestroyed = false;
 		this.pointValue = BONUS_TYPE_POINTS;
-
+		System.out.println(this.pointValue);
 	}
 
 	/**
@@ -147,12 +132,22 @@ public class EnemyShip extends Entity {
 		}
 	}
 
+	public void shoot(final Set<Bullet> bullets) {
+		bullets.add(BulletPool.getBullet(positionX
+				+ width / 2, positionY, BULLET_SPEED));
+	}
+
 	/**
 	 * Destroys the ship, causing an explosion.
 	 */
 	public final void destroy() {
-		this.isDestroyed = true;
-		this.spriteType = SpriteType.Explosion;
+		System.out.println(HP);
+		this.HP--;
+		System.out.println(HP);
+		if (this.HP <= 0) {
+			this.isDestroyed = true;
+			this.spriteType = SpriteType.Explosion;
+		}
 	}
 
 	/**
@@ -180,5 +175,3 @@ public class EnemyShip extends Entity {
 
 	public int getItemRange(){return this.itemRange;}
 }
-
-
