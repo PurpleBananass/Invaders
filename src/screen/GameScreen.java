@@ -519,7 +519,7 @@ public class GameScreen extends Screen {
 	}
 
 	/**
-	 * Returns a GameState object representing the status of the game.
+	 * Returns a GameState object representing the status of the game for 1p mode.
 	 *
 	 * @return Current game state.
 	 */
@@ -527,7 +527,11 @@ public class GameScreen extends Screen {
 		return new GameState(this.level, this.score, this.lives,
 				this.bulletsShot1, this.shipsDestroyed);
 	}
-
+	/**
+	 * Returns a GameState object representing the status of the game for 2p mode.
+	 *
+	 * @return Current game state.
+	 */
 	public final GameState getGameState2p() {
 		return new GameState(this.level, this.score, this.lives, this.lives2,
 				this.bulletsShot1, this.bulletsShot2,  this.shipsDestroyed);

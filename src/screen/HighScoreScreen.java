@@ -15,9 +15,9 @@ import engine.Score;
  */
 public class HighScoreScreen extends Screen {
 
-	/** List of past high scores. */
+	/** List of past high scores from 1p mode. */
 	private List<Score> highScores_1p;
-	/** List of past high scores. */
+	/** List of past high scores from 2p mode. */
 	private List<Score> highScores_2p;
 
 	/**
