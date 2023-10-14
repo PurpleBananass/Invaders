@@ -38,8 +38,6 @@ public class GameState {
 	 * @param shipsDestroyed
 	 *            Ships destroyed until now.
 	 */
-
-	// 1p mode
 	public GameState(final int level, final int score,
 					final int livesRemaining, final int bulletsShot,
 					final int shipsDestroyed) {
