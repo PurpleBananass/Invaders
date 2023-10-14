@@ -57,6 +57,10 @@ public class Ship extends Entity {
 	 *            Initial position of the ship in the X axis.
 	 * @param positionY
 	 *            Initial position of the ship in the Y axis.
+	 * @param color
+	 *            Initial color of the ship.
+	 * @param spriteType
+	 *            Initial spriteType of the ship.
 	 */
 	public Ship(final int positionX, final int positionY, final Color color, SpriteType spriteType) {
 		super(positionX, positionY, 13 * 2, 8 * 2, color);

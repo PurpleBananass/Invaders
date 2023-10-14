@@ -35,7 +35,7 @@ public class ScoreScreen extends Screen {
 	private int livesRemaining1;
 	/** 2p's lives left. */
 	private int livesRemaining2;
-	/** Total bullets shot by the player. */
+	/** Total bullets shot by the players. */
 	private int bulletsShot;
 	/** Total ships destroyed by the player. */
 	private int shipsDestroyed;
@@ -74,7 +74,7 @@ public class ScoreScreen extends Screen {
 			this.livesRemaining2 = gameState.getLivesRemaining2p();
 		}
 
-		this.bulletsShot = gameState.getBulletsShot();
+		this.bulletsShot = gameState.getBulletsShot1() + gameState.getBulletsShot2();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
 		this.isNewRecord = false;
 		this.name = "AAA".toCharArray();
@@ -164,6 +164,9 @@ public class ScoreScreen extends Screen {
 
 	/**
 	 * Saves the score as a high score.
+	 *
+	 * @param gameMode
+	 *            Current game mode.
 	 */
 	private void saveScore(final int gameMode) {
 		highScores.add(new Score(new String(this.name), score));
