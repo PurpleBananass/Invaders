@@ -82,6 +82,10 @@ public class GameScreen extends Screen {
 	private int bulletsShot;
 	private int magazine;
 	private int bullet_count;
+	/** Total bullets shot by the player1. */
+	private int bulletsShot1;
+	/** Total bullets shot by the player2. */
+	private int bulletsShot2;
 	/** Total ships destroyed by the player. */
 	private int shipsDestroyed;
 
@@ -130,9 +134,12 @@ public class GameScreen extends Screen {
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
 		this.lives = gameState.getLivesRemaining1p();
+		this.bulletsShot1 = gameState.getBulletsShot1();
+		this.shipsDestroyed = gameState.getShipsDestroyed();
 
 		if (gameState.getMode() == 2) {
 			this.lives2 = gameState.getLivesRemaining2p();
+			this.bulletsShot2 = gameState.getBulletsShot2();
 		}
 
 		if (this.bonusLife) {
@@ -149,9 +156,6 @@ public class GameScreen extends Screen {
 				}
 			}
 		}
-
-		this.bulletsShot = gameState.getBulletsShot();
-		this.shipsDestroyed = gameState.getShipsDestroyed();
 
 		try {
 			if (this.gameState.getMode() == 1) {
@@ -268,6 +272,7 @@ public class GameScreen extends Screen {
 					this.bullet_count=0;
 				}
 
+				this.bulletsShot1++;
 
 			} else if (gameState.getMode() == 2 && !this.ship2.isDestroyed()) {
 				boolean moveRight1p = inputManager.isKeyDown(KeyEvent.VK_D);
@@ -300,11 +305,11 @@ public class GameScreen extends Screen {
 				}
 				if (inputManager.isKeyDown(KeyEvent.VK_W)) {
 					if (this.ship.shoot(this.bullets))
-						this.bulletsShot++;
+						this.bulletsShot2++;
 				}
 				if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
 					if (this.ship2.shoot(this.bullets))
-						this.bulletsShot++;
+						this.bulletsShot1++;
 				}
 
 				if (existAuxiliaryShips) {
@@ -319,14 +324,14 @@ public class GameScreen extends Screen {
 				if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && existAuxiliaryShips) {
 					for (Ship auxiliaryShip : auxiliaryShips) {
 						if(auxiliaryShip.shoot(this.bullets)) {
-							this.bulletsShot++;
+							this.bulletsShot1++;
 						}
 					}
 					if (this.ship.shoot(this.bullets)){
-						this.bulletsShot++;
+						this.bulletsShot1++;
 					}
 				} else if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && this.ship.shoot(this.bullets)) {
-					this.bulletsShot++;
+					this.bulletsShot1++;
 				}
 				if (inputManager.isKeyDown(KeyEvent.VK_G))
 					if(this.ship.itemCoolTime())
@@ -619,18 +624,22 @@ public class GameScreen extends Screen {
 	}
 
 	/**
-	 * Returns a GameState object representing the status of the game.
+	 * Returns a GameState object representing the status of the game for 1p mode.
 	 *
 	 * @return Current game state.
 	 */
 	public final GameState getGameState1p() {
 		return new GameState(this.level, this.score, this.lives,
-				this.bulletsShot, this.shipsDestroyed);
+				this.bulletsShot1, this.shipsDestroyed);
 	}
-
+	/**
+	 * Returns a GameState object representing the status of the game for 2p mode.
+	 *
+	 * @return Current game state.
+	 */
 	public final GameState getGameState2p() {
 		return new GameState(this.level, this.score, this.lives, this.lives2,
-				this.bulletsShot, this.shipsDestroyed);
+				this.bulletsShot1, this.bulletsShot2,  this.shipsDestroyed);
 	}
 
 	/** 아이템 종류에 맞는 기능 실행 */
