@@ -75,7 +75,6 @@ public class EnemyShip extends Entity {
 		this.spriteType = SpriteType.EnemyShipSpecial;
 		this.isDestroyed = false;
 		this.pointValue = BONUS_TYPE_POINTS;
-		System.out.println(this.pointValue);
 	}
 
 	/**
@@ -141,9 +140,7 @@ public class EnemyShip extends Entity {
 	 * Destroys the ship, causing an explosion.
 	 */
 	public final void destroy() {
-		System.out.println(HP);
 		this.HP--;
-		System.out.println(HP);
 		if (this.HP <= 0) {
 			this.isDestroyed = true;
 			this.spriteType = SpriteType.Explosion;

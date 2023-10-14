@@ -1,10 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import engine.*;
@@ -45,6 +41,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int DESCENT_DISTANCE = 20;
 	/** Minimum speed allowed. */
 	private static final int MINIMUM_SPEED = 10;
+	/** 적의 타입에 따라 총 쿨타임이 줄어듬 */
+	private static final double[] BULLETCOOLDOWN = {0.05,0.1,0.2};
 
 	/** DrawManager instance. */
 	private DrawManager drawManager;
@@ -172,7 +170,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 								+ positionX, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 				}
-
 				column.add(enemyShip);
 				this.shipCount++;
 			}
@@ -359,10 +356,31 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		if (this.shootingCooldown.checkFinished()) {
 			this.shootingCooldown.reset();
+			ArrayList<Boolean> shot = new ArrayList<>();// 적이 한번만 발사
+			for (int i=0;i<this.shooters.size();i++) shot.add(false);
 			for (int i = 0; i < gameState.getLevel(); i++) {
-				int index = (int) (Math.random() * this.shooters.size());
+				int index = (int) (Math.random() * (this.shooters.size()-1));
+				if (shot.get(index))continue;
+				shot.set(index, true);
 				EnemyShip shooter = this.shooters.get(index);
 				shooter.shoot(bullets);
+				switch (shooter.spriteType)
+				{
+					case EnemyShipA1:
+					case EnemyShipA2:
+						this.shootingCooldown.timedown(BULLETCOOLDOWN[0]);
+						break;
+					case EnemyShipB1:
+					case EnemyShipB2:
+						this.shootingCooldown.timedown(BULLETCOOLDOWN[1]);
+						break;
+					case EnemyShipC1:
+					case EnemyShipC2:
+						this.shootingCooldown.timedown(BULLETCOOLDOWN[2]);
+						break;
+					default:
+						break;
+				}
 			}
 		}
 	}
