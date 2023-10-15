@@ -714,8 +714,8 @@ public final class DrawManager {
 		int rectWidth = screen.getWidth();
 		int rectHeight = screen.getHeight() / 6;
 		backBufferGraphics.setColor(Color.BLACK);
-		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2,
-				rectWidth, rectHeight);
+		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2 - 40,
+				rectWidth, rectHeight + 40);
 	}
 
 	public void drawPauseMenu(final Screen screen, final int option) {
@@ -733,6 +733,10 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, resume, screen.getHeight() / 2 + 20 );
 
+		//How to operate in the pause window
+		backBufferGraphics.setColor(Color.YELLOW);
+		drawCenteredRegularString(screen, "Change: Ctrl" + " / " + "Select: Spacebar",
+				screen.getHeight() / 2 - screen.getHeight() / 12 - 15 );
 	}
 
 }

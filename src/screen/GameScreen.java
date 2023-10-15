@@ -586,6 +586,7 @@ public class GameScreen extends Screen {
 		if (isPause){
 			drawManager.drawPauseWindow(this);
 			drawManager.drawPauseMenu(this, pauseCnt%2);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 40, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}
