@@ -61,7 +61,7 @@ public class SettingScreen extends Screen {
                 bgmOn = true;
             }
             else bgmOn = false;
-            for (int i =2; i < 12; i++) {
+            for (int i =2; i < 16; i++) {
                 keySettingString[i-2] = this.setting.get(i).getName();
                 keySetting[i-2] = this.setting.get(i).getValue();
             }
@@ -69,11 +69,6 @@ public class SettingScreen extends Screen {
         } catch (NumberFormatException | IOException e) {
             logger.warning("Couldn't load Settings!");
         }
-        /** 테스트용, 준영아 읽어오는 코드 고치면 이거 지워주라*/
-        keySettingString[10] = "N";
-        keySettingString[11] = "M";
-        keySettingString[12] = "Q";
-        keySettingString[13] = "E";
 
         this.returnCode = 1;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
@@ -258,7 +253,7 @@ public class SettingScreen extends Screen {
     private void saveSetting(){
         this.setting.get(0).value = soundVolume;
         this.setting.get(1).value = bgmOn ? 1:0;
-        for (int i =0; i < 10; i++) {
+        for (int i =0; i < 14; i++) {
             this.setting.get(i+2).value = keySetting[i];
             this.setting.get(i+2).name = keySettingString[i];
         }

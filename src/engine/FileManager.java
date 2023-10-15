@@ -349,7 +349,6 @@ public final class FileManager {
 			while ((name != null) && (value != null)) {
 				Setting1 = new Settings(name, Integer.parseInt(value.substring(2),16));
 				Setting.add(Setting1);
-				System.out.println(name);
 				name = reader.readLine();
 				value = reader.readLine();
 			}
@@ -394,7 +393,7 @@ public final class FileManager {
 			bufferedWriter.write(Integer.toString(setting.get(1).getValue()));
 			bufferedWriter.newLine();
 			// Saves settings.
-			for (int i =2; i<12; i++) {
+			for (int i =2; i<16; i++) {
 				bufferedWriter.write(setting.get(i).getName());
 				bufferedWriter.newLine();
 				bufferedWriter.write(Integer.toHexString(setting.get(i).getValue()));
