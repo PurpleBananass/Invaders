@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="seojun" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "jdk.selected.JAVA_MODULE": "1.8",
+    "last_opened_file_path": "C:/Users/Hong/Invaders-seojun_pregame",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task id="LOCAL-00001" summary="Changes">
+      <created>1697349711057</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1697349711057</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Changes">
+      <created>1697350365549</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1697350365550</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Changes">
+      <created>1697350384189</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1697350384189</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log">
+      <created>1697350490557</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1697350490557</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log">
+      <created>1697351317164</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1697351317164</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="invaders/seojun_pregame" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="reset version" />
+    <MESSAGE value="Changes" />
+    <MESSAGE value="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
