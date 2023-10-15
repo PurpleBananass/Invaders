@@ -578,6 +578,7 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
 		backBufferGraphics.setFont(fontBig);
+		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2-1, 130);
 		if(Select2PScreen.twoPlayerModeOn) {
 			backBufferGraphics.drawString(skin2p, 3 * screen.getWidth() / 4 - (fontRegularMetrics.stringWidth(skin2p) / 2) - 2, 130);
