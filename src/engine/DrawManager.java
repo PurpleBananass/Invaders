@@ -479,6 +479,8 @@ public final class DrawManager {
 	 */
 	public void drawSkinSelectionMenu(final Screen screen, final int skincode1p,final int skincode2p){
 		String SkinString = "Select Your Ship Design!";
+		String skin1p = "1P";
+		String skin2p = "2P";
 		backBufferGraphics.setColor(Color.white);
 		backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
 		if (skincode1p == 0) {
@@ -577,6 +579,9 @@ public final class DrawManager {
 		}
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
+		backBufferGraphics.setFont(fontBig);
+		backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2, 130);
+		backBufferGraphics.drawString(skin2p, 3*screen.getWidth() / 4 -( fontRegularMetrics.stringWidth(skin2p) / 2)-1, 130);
 
 	}
 	public void drawHighScoreMenu(final Screen screen) {
