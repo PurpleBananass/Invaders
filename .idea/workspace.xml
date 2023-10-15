@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log">
+    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="make Centered Line in SkinSelectionScreen">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log" beforeDir="false" afterPath="$PROJECT_DIR$/log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/settings" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/settings" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/Core.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/Core.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/engine/DrawManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/DrawManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/SettingScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/SettingScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/SkinSelectionScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/SkinSelectionScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +94,14 @@
       <option name="presentableId" value="Default" />
       <updated>1697352921293</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="make Centered Line in SkinSelectionScreen">
+      <created>1697376450074</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1697376450074</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -127,7 +131,8 @@
     <MESSAGE value="reset version" />
     <MESSAGE value="Changes" />
     <MESSAGE value="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log" />
+    <MESSAGE value="make Centered Line in SkinSelectionScreen" />
+    <option name="LAST_COMMIT_MESSAGE" value="make Centered Line in SkinSelectionScreen" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
