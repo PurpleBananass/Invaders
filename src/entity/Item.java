@@ -53,11 +53,11 @@ public class Item extends Entity {
      * Sets correct sprite for the item, based on speed.
      */
     public final void setItemType(int itemRange) {
-        if(itemRange > EnemyShip.RANDOM_BOUND * 0.6)
+        if(itemRange > EnemyShip.RANDOM_BOUND * EnemyShip.ITEM_PROPORTION * 0.75)
             this.itemType = ItemType.SubPlaneItem;
-        else if(itemRange > EnemyShip.RANDOM_BOUND * 0.4)
+        else if(itemRange > EnemyShip.RANDOM_BOUND * EnemyShip.ITEM_PROPORTION * 0.5)
             this.itemType = ItemType.SpeedUpItem;
-        else if(itemRange > EnemyShip.RANDOM_BOUND * 0.2)
+        else if(itemRange > EnemyShip.RANDOM_BOUND * EnemyShip.ITEM_PROPORTION * 0.25)
             this.itemType = ItemType.InvincibleItem;
         else
             this.itemType = ItemType.BombItem;

@@ -24,7 +24,7 @@ public class EnemyShip extends Entity {
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
-	private static final double ITEM_PROPORTIOIN = 0.8;
+	public static final double ITEM_PROPORTION = 0.1;
 
 	public static final int RANDOM_BOUND = 10000;
 
@@ -167,7 +167,7 @@ public class EnemyShip extends Entity {
 	/**
 	 * 랜덤으로 Item을 가진 EnemyShip 생성*/
 	private boolean itemGenerator(int rand_int){
-		if(rand_int < (int)(RANDOM_BOUND * ITEM_PROPORTIOIN))
+		if(rand_int < (int)(RANDOM_BOUND * ITEM_PROPORTION))
 			return true;
 		else
 			return false;
