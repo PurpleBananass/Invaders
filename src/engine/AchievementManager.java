@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+
 public class AchievementManager {
   
     /** Singleton instance of the class. */
     private static AchievementManager instance;
+    private GameState gameState;
+    private int LuckyScore = 770;
 
     private static final Logger LOGGER = Logger.getLogger(Core.class
 			.getSimpleName());
@@ -65,9 +68,30 @@ public class AchievementManager {
      */
     public void checkSharpShooter() {
         if (AchievementManager.isAchievementAchieved("sharp shooter") == false
-                && (GameState.getShipsDestroyed() == GameState.getBulletsShot())
-                && GameState.getLevel() == 3) {
+                && (gameState.getShipsDestroyed() == gameState.getBulletsShot())
+                && gameState.getLevel() == 3) {
             AchievementManager.markAchievementAsAchieved("sharp shooter");
         }
     }
+
+    /**
+     * Test if the requirments for 'Lucky Guy' are met
+     */
+    public boolean isLuckyGuyAchieved() {
+        return isAchievementAchieved("lucky guy");
+    }
+
+    /**
+     * Check if the requirments for 'Lucky Guy' are met
+     */
+    public void checkLuckySeven(int score) {
+        if ( isLuckyGuyAchieved() ) {
+            return;
+        }
+        
+        if ( score == LuckyScore ) {
+            markAchievementAsAchieved("lucky guy");
+        }
+    }
+
 }
