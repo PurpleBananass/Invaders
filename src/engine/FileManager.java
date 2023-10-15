@@ -99,6 +99,7 @@ public final class FileManager {
 	 * @param spriteMap,spriteType,graphicsNum
 	 *            Changing boolean matrix that will
 	 *            change the image.
+	 * 			  graphicsNum is col_num(each graphics)
 	 * @throws IOException
 	 *             In case of changing problems.
 	 */
@@ -153,7 +154,38 @@ public final class FileManager {
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("shipGraphics");
 		}
-
+		else if(spriteType == SpriteType.EnemyBullet){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("bulletGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipA1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipA2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipB1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipB2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipC1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipC2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipSpecial){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("specialenemyGraphics");
+		}
 		return inputStream;
 	}
 
