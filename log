@@ -1,58 +1,18 @@
-[INFO|4:39:35]: Started loading resources. 
-[FINE|4:39:35]: Sprite Ship loaded. 
-[FINE|4:39:35]: Sprite ShipDestroyed loaded. 
-[FINE|4:39:35]: Sprite Bullet loaded. 
-[FINE|4:39:35]: Sprite EnemyBullet loaded. 
-[FINE|4:39:35]: Sprite EnemyShipA1 loaded. 
-[FINE|4:39:35]: Sprite EnemyShipA2 loaded. 
-[FINE|4:39:35]: Sprite EnemyShipB1 loaded. 
-[FINE|4:39:35]: Sprite EnemyShipB2 loaded. 
-[FINE|4:39:35]: Sprite EnemyShipC1 loaded. 
-[FINE|4:39:35]: Sprite EnemyShipC2 loaded. 
-[FINE|4:39:35]: Sprite EnemyShipSpecial loaded. 
-[FINE|4:39:35]: Sprite Explosion loaded. 
-[INFO|4:39:35]: Finished loading the sprites. 
-[INFO|4:39:35]: Finished loading the fonts. 
-[INFO|4:39:35]: Starting 448x520 title screen at 60 fps. 
-[INFO|4:39:37]: Closing title screen. 
-[INFO|4:39:37]: Starting 448x520 Skin Selection screen at 60 fps. 
-[INFO|4:39:41]: Starting 448x520 game screen at 60 fps. 
-[INFO|4:39:41]: Initializing 5x4 ship formation in (20,100) 
-[INFO|4:39:48]: Destroyed ship in (4,3) 
-[INFO|4:39:49]: Destroyed ship in (3,3) 
-[INFO|4:39:49]: Removed enemy 3 from column 3 
-[INFO|4:39:49]: Removed enemy 3 from column 4 
-[INFO|4:39:51]: Destroyed ship in (4,2) 
-[INFO|4:39:51]: Removed enemy 2 from column 4 
-[INFO|4:39:51]: A special ship appears 
-[INFO|4:39:51]: Destroyed ship in (1,3) 
-[INFO|4:39:52]: Removed enemy 3 from column 1 
-[INFO|4:39:52]: Destroyed ship in (2,0) 
-[INFO|4:39:53]: Removed enemy 0 from column 2 
-[INFO|4:39:53]: Destroyed ship in (1,1) 
-[INFO|4:39:54]: Removed enemy 1 from column 1 
-[INFO|4:39:54]: Destroyed ship in (4,1) 
-[INFO|4:39:54]: Removed enemy 1 from column 4 
-[INFO|4:39:55]: The special ship has escaped 
-[INFO|4:39:56]: Destroyed ship in (3,2) 
-[INFO|4:39:56]: Removed enemy 2 from column 3 
-[INFO|4:39:57]: Destroyed ship in (1,1) 
-[INFO|4:39:57]: Removed enemy 1 from column 1 
-[INFO|4:39:58]: Destroyed ship in (2,2) 
-[INFO|4:39:58]: Removed enemy 2 from column 2 
-[INFO|4:39:59]: Destroyed ship in (0,3) 
-[INFO|4:39:59]: Removed enemy 3 from column 0 
-[INFO|4:40:00]: Destroyed ship in (0,2) 
-[INFO|4:40:00]: Removed enemy 2 from column 0 
-[INFO|4:40:01]: Destroyed ship in (1,0) 
-[INFO|4:40:01]: Shooters list reduced to 4 members. 
-[INFO|4:40:02]: Formation now moving down 5 
-[INFO|4:40:02]: Removed enemy 0 from column 1 
-[INFO|4:40:02]: Removed column 1 
-[INFO|4:40:03]: Formation now moving left 1 
-[INFO|4:40:03]: Destroyed ship in (0,1) 
-[INFO|4:40:03]: Removed enemy 1 from column 0 
-[INFO|4:40:04]: Destroyed ship in (0,0) 
-[INFO|4:40:04]: Shooters list reduced to 3 members. 
-[INFO|4:40:04]: Removed enemy 0 from column 0 
-[INFO|4:40:04]: Removed column 0 
+[INFO|3:26:21]: Started loading resources. 
+[FINE|3:26:21]: Sprite Ship loaded. 
+[FINE|3:26:21]: Sprite ShipDestroyed loaded. 
+[FINE|3:26:21]: Sprite Bullet loaded. 
+[FINE|3:26:21]: Sprite EnemyBullet loaded. 
+[FINE|3:26:21]: Sprite EnemyShipA1 loaded. 
+[FINE|3:26:21]: Sprite EnemyShipA2 loaded. 
+[FINE|3:26:21]: Sprite EnemyShipB1 loaded. 
+[FINE|3:26:21]: Sprite EnemyShipB2 loaded. 
+[FINE|3:26:21]: Sprite EnemyShipC1 loaded. 
+[FINE|3:26:21]: Sprite EnemyShipC2 loaded. 
+[FINE|3:26:21]: Sprite EnemyShipSpecial loaded. 
+[FINE|3:26:21]: Sprite Explosion loaded. 
+[INFO|3:26:21]: Finished loading the sprites. 
+[INFO|3:26:21]: Finished loading the fonts. 
+[INFO|3:26:21]: Starting 448x520 title screen at 60 fps. 
+[INFO|3:26:22]: Closing title screen. 
+[INFO|3:26:22]: Starting 448x520 Skin Selection screen at 60 fps. 
