@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
 
+import engine.AchievementManager;
 import engine.Cooldown;
 import engine.Core;
 import engine.GameSettings;
@@ -207,7 +208,7 @@ public class GameScreen extends Screen {
 
 		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
 			this.isRunning = false;
-
+		AchievementManager.getInstance().checkLuckySeven(this.score);
 	}
 
 	/**

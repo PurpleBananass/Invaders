@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+
 public class AchievementManager {
   
     /** Singleton instance of the class. */
     private static AchievementManager instance;
+    private int LuckyScore = 770;
 
     private static final Logger LOGGER = Logger.getLogger(Core.class
 			.getSimpleName());
@@ -76,4 +78,14 @@ public class AchievementManager {
             markAchievementAsAchieved("sharp shooter");
         }
     }
+
+    /**
+     * Check if the requirments for 'Lucky Guy' are met
+     */
+    public void checkLuckySeven(int score) {
+        if ( score == LuckyScore ) {
+            markAchievementAsAchieved("lucky guy");
+        }
+    }
+
 }
