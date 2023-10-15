@@ -1,20 +1,28 @@
-[INFO|10:19:15]: Started loading resources. 
-[FINE|10:19:15]: Sprite Ship loaded. 
-[FINE|10:19:15]: Sprite ShipDestroyed loaded. 
-[FINE|10:19:15]: Sprite Bullet loaded. 
-[FINE|10:19:15]: Sprite EnemyBullet loaded. 
-[FINE|10:19:15]: Sprite EnemyShipA1 loaded. 
-[FINE|10:19:15]: Sprite EnemyShipA2 loaded. 
-[FINE|10:19:15]: Sprite EnemyShipB1 loaded. 
-[FINE|10:19:15]: Sprite EnemyShipB2 loaded. 
-[FINE|10:19:15]: Sprite EnemyShipC1 loaded. 
-[FINE|10:19:15]: Sprite EnemyShipC2 loaded. 
-[FINE|10:19:15]: Sprite EnemyShipSpecial loaded. 
-[FINE|10:19:15]: Sprite Explosion loaded. 
-[INFO|10:19:15]: Finished loading the sprites. 
-[INFO|10:19:16]: Finished loading the fonts. 
-[INFO|10:19:16]: Starting 448x520 title screen at 60 fps. 
-[INFO|10:19:18]: Closing title screen. 
-[INFO|10:19:18]: Loading default Settings. 
-[INFO|10:19:18]: Successfully load 
-[INFO|10:19:18]: Starting 448x520 high score screen at 60 fps. 
+[INFO|4:38:42]: Started loading resources. 
+[FINE|4:38:42]: Sprite Ship loaded. 
+[FINE|4:38:42]: Sprite ShipDestroyed loaded. 
+[FINE|4:38:42]: Sprite Bullet loaded. 
+[FINE|4:38:42]: Sprite EnemyBullet loaded. 
+[FINE|4:38:42]: Sprite EnemyShipA1 loaded. 
+[FINE|4:38:42]: Sprite EnemyShipA2 loaded. 
+[FINE|4:38:42]: Sprite EnemyShipB1 loaded. 
+[FINE|4:38:42]: Sprite EnemyShipB2 loaded. 
+[FINE|4:38:42]: Sprite EnemyShipC1 loaded. 
+[FINE|4:38:42]: Sprite EnemyShipC2 loaded. 
+[FINE|4:38:42]: Sprite EnemyShipSpecial loaded. 
+[FINE|4:38:42]: Sprite Explosion loaded. 
+[INFO|4:38:42]: Finished loading the sprites. 
+[INFO|4:38:42]: Finished loading the fonts. 
+[INFO|4:38:42]: Starting 448x520 title screen at 60 fps. 
+[INFO|4:38:43]: Closing title screen. 
+[INFO|4:38:43]: Loading default Settings. 
+[INFO|4:38:43]: Successfully load 
+[INFO|4:38:43]: Starting 448x520 high score screen at 60 fps. 
+[INFO|4:38:48]: Saving user settings. 
+[INFO|4:38:48]: Closing setting screen. 
+[INFO|4:38:48]: Starting 448x520 title screen at 60 fps. 
+[INFO|4:38:49]: Closing title screen. 
+[INFO|4:38:49]: Starting 448x520 high score screen at 60 fps. 
+[INFO|4:38:53]: Closing setting screen. 
+[INFO|4:38:53]: Starting 448x520 game screen at 60 fps. 
+[INFO|4:38:53]: Initializing 5x4 ship formation in (20,100) 

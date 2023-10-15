@@ -393,7 +393,7 @@ public final class FileManager {
 			bufferedWriter.write(Integer.toString(setting.get(1).getValue()));
 			bufferedWriter.newLine();
 			// Saves settings.
-			for (int i =2; i<16; i++) {
+			for (int i =2; i<18; i++) {
 				bufferedWriter.write(setting.get(i).getName());
 				bufferedWriter.newLine();
 				bufferedWriter.write(Integer.toHexString(setting.get(i).getValue()));

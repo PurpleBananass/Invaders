@@ -16,7 +16,7 @@ public class SelectScreen extends Screen{
     public static int gameMode = 1;
     /** Check Skill Mode */
     public static boolean skillModeOn = true;
-
+    /** Separate function when space is down*/
     private boolean canEscape = false;
 
     /**
@@ -55,17 +55,10 @@ public class SelectScreen extends Screen{
                 && this.inputDelay.checkFinished()) {
             if(!canEscape){
                 if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
-                        || inputManager.isKeyDown(KeyEvent.VK_D)) {
+                        || inputManager.isKeyDown(KeyEvent.VK_D)|| inputManager.isKeyDown(KeyEvent.VK_LEFT)|| inputManager.isKeyDown(KeyEvent.VK_A)) {
                     if(gameMode == 1) gameMode = 2;
                     else gameMode= 1;
-                    this.selectionCooldown.reset();
-                }
-                if (inputManager.isKeyDown(KeyEvent.VK_LEFT)
-                        || inputManager.isKeyDown(KeyEvent.VK_A)) {
-                    if(gameMode == 1) gameMode = 2;
-                    else gameMode = 1;
-                    this.selectionCooldown.reset();
-                }
+                    this.selectionCooldown.reset();}
                 if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
                     canEscape = true;
                     this.selectionCooldown.reset();
@@ -75,15 +68,8 @@ public class SelectScreen extends Screen{
             }
             else{
                 if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
-                        || inputManager.isKeyDown(KeyEvent.VK_D)) {
-                    if(skillModeOn) skillModeOn = false;
-                    else skillModeOn= true;
-                    this.selectionCooldown.reset();
-                }
-                if (inputManager.isKeyDown(KeyEvent.VK_LEFT)
-                        || inputManager.isKeyDown(KeyEvent.VK_A)) {
-                    if(skillModeOn) skillModeOn = false;
-                    else skillModeOn = true;
+                        || inputManager.isKeyDown(KeyEvent.VK_D)|| inputManager.isKeyDown(KeyEvent.VK_LEFT)|| inputManager.isKeyDown(KeyEvent.VK_A)) {
+                    skillModeOn = !skillModeOn;
                     this.selectionCooldown.reset();
                 }
                 if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
