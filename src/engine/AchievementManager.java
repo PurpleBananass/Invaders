@@ -71,9 +71,9 @@ public class AchievementManager {
      */
     public void checkAchievements (GameState gameState) {
         int level = gameState.getLevel();
-        int shot = gameState.getBulletsShot();
+        int shot = gameState.getBulletsShot1() + gameState.getBulletsShot2();
         
-        double accuracy = ((double) gameState.getShipsDestroyed()/(double) gameState.getBulletsShot())*100;
+        double accuracy = ((double)gameState.getShipsDestroyed() / (double)shot) * 100;
         if (shot > 0 && accuracy >= 10 && level >= 3) {
             markAchievementAsAchieved("sharp shooter");
         }
