@@ -207,8 +207,8 @@ public class GameScreen extends Screen {
 
 		// Adjust bullet shooting interval by level.
 		if (this.level==1) {
-			this.ship.setShootingInterval(500);
-			this.ship2.setShootingInterval(500);
+			this.ship.resetShootingInterval();
+			this.ship2.resetShootingInterval();
 		} else if (this.level==2) {
 			this.ship.setShootingInterval(800);
 			this.ship2.setShootingInterval(800);
