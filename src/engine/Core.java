@@ -17,9 +17,9 @@ import screen.TitleScreen;
 
 /**
  * Implements core game logic.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
+ *
  */
 public final class Core {
 
@@ -36,7 +36,7 @@ public final class Core {
 	private static final int EXTRA_LIFE_FRECUENCY = 3;
 	/** Total number of levels. */
 	private static final int NUM_LEVELS = 7;
-	
+
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 			new GameSettings(5, 4, 60, 2000);
@@ -58,7 +58,7 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500);
-	
+
 	/** Frame to draw the screen on. */
 	private static Frame frame;
 	/** Screen currently shown. */
@@ -73,10 +73,12 @@ public final class Core {
 	/** Logger handler for printing to console. */
 	private static ConsoleHandler consoleHandler;
 
+	private static SoundManager mainBgm = new SoundManager("res/menu.wav");
+
 
 	/**
 	 * Test implementation.
-	 * 
+	 *
 	 * @param args
 	 *            Program args, ignored.
 	 */
@@ -112,16 +114,20 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
-		
+
 		GameState gameState;
 	
 		int returnCode = 1;
 		do {
-			gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			// TODO 1P mode와 2P mode 진입 구현
+			// TODO gameState 생성자에 따라 1P와 2P mode 구분
+			// gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0);
 
 			switch (returnCode) {
 			case 1:
 				// Main menu.
+				mainBgm.loop();
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
@@ -131,37 +137,69 @@ public final class Core {
 			case 2:
 				// Game & score.
 				do {
+					mainBgm.stop();
+
 					// One extra live every few levels.
-					boolean bonusLife = gameState.getLevel()
-							% EXTRA_LIFE_FRECUENCY == 0
-							&& gameState.getLivesRemaining() < MAX_LIVES;
-					
+					int mode = gameState.getMode();
+					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
+
+					if (mode == 1) {
+						// 1P mode
+						bonusLife = bonusLife && gameState.getLivesRemaining1p() < MAX_LIVES;
+					} else {
+						// 2P mode (Give bonusLife if either player has less than max lives.)
+						bonusLife = bonusLife &&
+								(gameState.getLivesRemaining1p() < MAX_LIVES
+										|| gameState.getLivesRemaining2p() < MAX_LIVES);
+					}
+
 					currentScreen = new GameScreen(gameState,
 							gameSettings.get(gameState.getLevel() - 1),
 							bonusLife, width, height, FPS);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-							+ " game screen at " + FPS + " fps.");
-					frame.setScreen(currentScreen);
-					LOGGER.info("Closing game screen.");
+							+ " title screen at " + FPS + " fps.");
+					returnCode = frame.setScreen(currentScreen);
+					LOGGER.info("Closing Game screen.");
 
-					gameState = ((GameScreen) currentScreen).getGameState();
-
-					gameState = new GameState(gameState.getLevel() + 1,
-							gameState.getScore(),
-							gameState.getLivesRemaining(),
-							gameState.getBulletsShot(),
-							gameState.getShipsDestroyed());
-					AchievementManager.getInstance().checkAchievements(gameState);
-				} while (gameState.getLivesRemaining() > 0
+					if (mode == 1) {
+						gameState = ((GameScreen) currentScreen).getGameState1p();
+						gameState = new GameState(gameState.getLevel() + 1,
+								gameState.getScore(),
+								gameState.getLivesRemaining1p(),
+								gameState.getBulletsShot1(),
+								gameState.getShipsDestroyed());
+					} else {
+						gameState = ((GameScreen) currentScreen).getGameState2p();
+						gameState = new GameState(gameState.getLevel() + 1,
+								gameState.getScore(),
+								gameState.getLivesRemaining1p(),
+								gameState.getLivesRemaining2p(),
+								gameState.getBulletsShot1(),
+								gameState.getBulletsShot2(),
+								gameState.getShipsDestroyed());
+					}
+          AchievementManager.getInstance().checkAchievements(gameState);
+				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
 						&& gameState.getLevel() <= NUM_LEVELS);
 
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+				if (gameState.getMode() == 1) {
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " score screen at " + FPS + " fps, with a score of "
 						+ gameState.getScore() + ", "
-						+ gameState.getLivesRemaining() + " lives remaining, "
-						+ gameState.getBulletsShot() + " bullets shot and "
+						+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
+						+ gameState.getBulletsShot1() + " bullets shot and "
 						+ gameState.getShipsDestroyed() + " ships destroyed.");
-				
+				} else {
+					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+							+ " score screen at " + FPS + " fps, with a score of "
+							+ gameState.getScore() + ", "
+							+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
+							+ gameState.getLivesRemaining2p() + " lives remaining for 2p, "
+							+ gameState.getBulletsShot1() + " bullets shot by 1p and "
+							+ gameState.getBulletsShot2() + " bullets shot by 2p and "
+							+ gameState.getShipsDestroyed() + " ships destroyed.");
+				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
@@ -185,7 +223,6 @@ public final class Core {
 			}
 
 		} while (returnCode != 0);
-
 		fileHandler.flush();
 		fileHandler.close();
 		System.exit(0);
@@ -200,7 +237,7 @@ public final class Core {
 
 	/**
 	 * Controls access to the logger.
-	 * 
+	 *
 	 * @return Application logger.
 	 */
 	public static Logger getLogger() {
@@ -209,7 +246,7 @@ public final class Core {
 
 	/**
 	 * Controls access to the drawing manager.
-	 * 
+	 *
 	 * @return Application draw manager.
 	 */
 	public static DrawManager getDrawManager() {
@@ -218,7 +255,7 @@ public final class Core {
 
 	/**
 	 * Controls access to the input manager.
-	 * 
+	 *
 	 * @return Application input manager.
 	 */
 	public static InputManager getInputManager() {
@@ -227,7 +264,7 @@ public final class Core {
 
 	/**
 	 * Controls access to the file manager.
-	 * 
+	 *
 	 * @return Application file manager.
 	 */
 	public static FileManager getFileManager() {
@@ -236,7 +273,7 @@ public final class Core {
 
 	/**
 	 * Controls creation of new cooldowns.
-	 * 
+	 *
 	 * @param milliseconds
 	 *            Duration of the cooldown.
 	 * @return A new cooldown.
@@ -247,7 +284,7 @@ public final class Core {
 
 	/**
 	 * Controls creation of new cooldowns with variance.
-	 * 
+	 *
 	 * @param milliseconds
 	 *            Duration of the cooldown.
 	 * @param variance
@@ -255,7 +292,15 @@ public final class Core {
 	 * @return A new cooldown with variance.
 	 */
 	public static Cooldown getVariableCooldown(final int milliseconds,
-			final int variance) {
+											   final int variance) {
 		return new Cooldown(milliseconds, variance);
+	}
+	/**
+	 * Get Max Lives.
+	 *
+	 * @return MAX_LIVES.
+	 */
+	public static int getMaxLives() {
+		return MAX_LIVES;
 	}
 }

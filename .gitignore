@@ -58,7 +58,6 @@ local.properties
 *.tlb
 *.tli
 *.tlh
-*.tmp
 *.vspscc
 .builds
 *.dotCover
@@ -171,3 +170,6 @@ pip-log.txt
 log*
 *.ttf
 .checkstyle
+.idea
+*.iml
+outg
