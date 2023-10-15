@@ -151,7 +151,7 @@ public final class Core {
 							gameState.getLivesRemaining(),
 							gameState.getBulletsShot(),
 							gameState.getShipsDestroyed());
-
+					AchievementManager.getInstance().checkAchievements(gameState);
 				} while (gameState.getLivesRemaining() > 0
 						&& gameState.getLevel() <= NUM_LEVELS);
 
@@ -167,23 +167,21 @@ public final class Core {
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
-				// High scores.
-				currentScreen = new HighScoreScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing high score screen.");
-				break;
-			case 4: 
-				// Achievement.
+				//  Achievement.
 				currentScreen = new AchievementScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing Achievement screen.");
 				break;
-			default:
-				break;
+			// case 3:
+			// 	// High scores.
+			// 	currentScreen = new HighScoreScreen(width, height, FPS);
+			// 	LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+			// 			+ " high score screen at " + FPS + " fps.");
+			// 	returnCode = frame.setScreen(currentScreen);
+			// 	LOGGER.info("Closing high score screen.");
+			// 	break;
 			}
 
 		} while (returnCode != 0);

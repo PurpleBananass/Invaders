@@ -43,6 +43,10 @@ public class AchievementManager {
      * @param achievementName The name of the achievement to mark as achieved.
      */
     public static void markAchievementAsAchieved(String achievementName) {
+        if (isAchievementAchieved(achievementName)) {
+            return;
+        }
+
         if (achievements.containsKey(achievementName)) {
             achievements.put(achievementName, true);
         }
@@ -66,11 +70,13 @@ public class AchievementManager {
     /**
      * Check if the requirments for sharp shooter are met
      */
-    public void checkSharpShooter() {
-        if (AchievementManager.isAchievementAchieved("sharp shooter") == false
-                && (gameState.getShipsDestroyed() == gameState.getBulletsShot())
-                && gameState.getLevel() == 3) {
-            AchievementManager.markAchievementAsAchieved("sharp shooter");
+    public void checkAchievements (GameState gameState) {
+        int level = gameState.getLevel();
+        int shot = gameState.getBulletsShot();
+        
+        double accuracy = ((double) gameState.getShipsDestroyed()/(double) gameState.getBulletsShot())*100;
+        if (shot > 0 && accuracy >= 10 && level >= 3) {
+            markAchievementAsAchieved("sharp shooter");
         }
     }
 
