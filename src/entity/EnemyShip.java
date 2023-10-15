@@ -24,7 +24,7 @@ public class EnemyShip extends Entity {
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
-	private static final double ITEM_PROPORTIOIN = 0.8;
+	private static final double ITEM_PROPORTIOIN = 0.1;
 
 	public static final int RANDOM_BOUND = 10000;
 
