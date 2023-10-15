@@ -22,7 +22,7 @@ public final class InputManager implements KeyListener {
 
 	private static Integer keyCode;
 	private static String keyString;
-	private boolean check=false;
+	private boolean checkKeyPressed=false;
 
 	/**
 	 * Private constructor.
@@ -65,7 +65,7 @@ public final class InputManager implements KeyListener {
 			keys[key.getKeyCode()] = true;
 		keyCode = key.getKeyCode();
 		keyString = key.getKeyText(keyCode);
-		check = true;
+		checkKeyPressed = true;
 	}
 	public boolean isKeyUp(int keyCode) {
 		return !keys[keyCode];
@@ -91,7 +91,7 @@ public final class InputManager implements KeyListener {
 	public void keyReleased(final KeyEvent key) {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = false;
-		check = false;
+		checkKeyPressed = false;
 
 		switch (key.getKeyCode()){
 			case 38: // 위
@@ -146,5 +146,5 @@ public final class InputManager implements KeyListener {
 
 	public Integer getKeyCode(){return keyCode;}
 	public String getKeyString(){return keyString;}
-	public boolean getcheck(){return check;}
+	public boolean getcheck(){return checkKeyPressed;}
 }
