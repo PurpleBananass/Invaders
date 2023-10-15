@@ -2,6 +2,10 @@ Volume
 80
 BGM
 1
+UP
+0x26
+DOWN
+0x28
 LEFT
 0x25
 RIGHT
