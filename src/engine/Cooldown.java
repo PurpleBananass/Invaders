@@ -68,4 +68,7 @@ public class Cooldown {
 					+ (int) (Math.random()
 							* (this.milliseconds + this.variance));
 	}
+	public final void timedown(final double percent){
+		this.variance=(int)(this.variance*(1-percent));
+	}
 }

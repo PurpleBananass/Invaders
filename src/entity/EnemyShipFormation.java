@@ -1,10 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import engine.*;
@@ -45,6 +41,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int DESCENT_DISTANCE = 20;
 	/** Minimum speed allowed. */
 	private static final int MINIMUM_SPEED = 10;
+	/** 적의 타입에 따라 총 쿨타임이 줄어듬 */
+	private static final double[] BULLETCOOLDOWN = {0.05,0.1,0.2};
 
 	/** DrawManager instance. */
 	private DrawManager drawManager;
@@ -178,7 +176,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 								+ positionX, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 				}
-
 				column.add(enemyShip);
 				this.shipCount++;
 			}
@@ -389,10 +386,31 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		if (this.shootingCooldown.checkFinished()) {
 			this.shootingCooldown.reset();
+			ArrayList<Boolean> shot = new ArrayList<>();// 적이 한번만 발사
+			for (int i=0;i<this.shooters.size();i++) shot.add(false);
 			for (int i = 0; i < gameState.getLevel(); i++) {
-				int index = (int) (Math.random() * this.shooters.size());
+				int index = (int) (Math.random() * (this.shooters.size()-1));
+				if (shot.get(index))continue;
+				shot.set(index, true);
 				EnemyShip shooter = this.shooters.get(index);
 				shooter.shoot(bullets);
+				switch (shooter.spriteType)
+				{
+					case EnemyShipA1:
+					case EnemyShipA2:
+						this.shootingCooldown.timedown(BULLETCOOLDOWN[0]);
+						break;
+					case EnemyShipB1:
+					case EnemyShipB2:
+						this.shootingCooldown.timedown(BULLETCOOLDOWN[1]);
+						break;
+					case EnemyShipC1:
+					case EnemyShipC2:
+						this.shootingCooldown.timedown(BULLETCOOLDOWN[2]);
+						break;
+					default:
+						break;
+				}
 			}
 		}
 	}
@@ -436,77 +454,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		}
 		if (destroyedShip.isDestroyed())
 			this.shipCount--;
-	}
-
-	/**
-	 * Destroys a ship by bomb.
-	 *
-	 * @param destroyedShip
-	 *            Ship to be destroyed first.
-	 *
-	 * @return destroyedByBombEnemyShips
-	 * 			  List of Enemy ships destroyed by bomb.
-	 */
-	public final List<EnemyShip> destroyByBomb(final EnemyShip destroyedShip) {
-		List<EnemyShip> destroyedByBombEnemyShips = new ArrayList<>();
-		int howManyEnemyIsDead = 0;
-		int[] dx = {0, 0, 1, 1, 1, -1, -1, -1};
-		int[] dy = {-1, 1, -1, 0, 1, -1, 0, 1};
-		for (int i = 0; i < this.enemyShips.size(); i++){
-			for (int j = 0; j < this.enemyShips.get(i).size(); j++) {
-				if (this.enemyShips.get(i).get(j) == destroyedShip && true) {
-					destroyedByBombEnemyShips.add(this.enemyShips.get(i).get(j));
-					this.enemyShips.get(i).get(j).destroy();
-					this.logger.info("Destroyed ship in ("
-							+ i + "," + j + ")");
-					if (this.enemyShips.get(i).get(j).isDestroyed())
-						howManyEnemyIsDead++;
-					for(int n = 0; n < 8; n++){
-						int nx = i + dx[n]; int ny = j + dy[n];
-						if(!(nx >= 0 && nx <= this.enemyShips.size() - 1 && ny >= 0 && ny <= this.enemyShips.get(nx).size() - 1)) continue;
-						if(this.enemyShips.get(nx).get(ny).isDestroyed()) continue;
-						destroyedByBombEnemyShips.add(this.enemyShips.get(nx).get(ny));
-						for (int repeat=0;repeat<3;repeat++)
-							this.enemyShips.get(nx).get(ny).destroy();
-						this.enemyShips.get(nx).get(ny).destroy();
-						this.logger.info("Destroyed ship in ("
-								+ nx + "," + ny + ")");
-						if (this.enemyShips.get(nx).get(ny).isDestroyed())
-							howManyEnemyIsDead++;
-					}
-				}
-			}
-		}
-
-
-		for(EnemyShip enemyShip : destroyedByBombEnemyShips)
-			// Updates the list of ships that can shoot the player.
-			if (this.shooters.contains(enemyShip)) {
-				int destroyedShipIndex = this.shooters.indexOf(enemyShip);
-				int destroyedShipColumnIndex = -1;
-
-				for (List<EnemyShip> column : this.enemyShips)
-					if (column.contains(enemyShip)) {
-						destroyedShipColumnIndex = this.enemyShips.indexOf(column);
-						break;
-					}
-
-				EnemyShip nextShooter = getNextShooter(this.enemyShips
-						.get(destroyedShipColumnIndex));
-
-				if (nextShooter != null)
-					this.shooters.set(destroyedShipIndex, nextShooter);
-				else {
-					this.shooters.remove(destroyedShipIndex);
-					this.logger.info("Shooters list reduced to "
-							+ this.shooters.size() + " members.");
-				}
-			}
-
-
-		this.shipCount -= howManyEnemyIsDead;
-		return destroyedByBombEnemyShips;
-
 	}
 
 	/**

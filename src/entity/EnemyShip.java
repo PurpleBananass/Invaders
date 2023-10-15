@@ -25,7 +25,7 @@ public class EnemyShip extends Entity {
 	public static final int RANDOM_BOUND = 10000;
 
 	/** Cooldown between sprite changes. */
-	private Cooldown animationCooldown;
+	protected Cooldown animationCooldown;
 	/** Checks if the ship has been hit by a bullet. */
 	private boolean isDestroyed;
 	/** 난이도 조절에 사용할 현재 스테이트 */
@@ -75,7 +75,6 @@ public class EnemyShip extends Entity {
 		this.spriteType = SpriteType.EnemyShipSpecial;
 		this.isDestroyed = false;
 		this.pointValue = BONUS_TYPE_POINTS;
-		System.out.println(this.pointValue);
 	}
 
 	/**
@@ -103,33 +102,8 @@ public class EnemyShip extends Entity {
 	/**
 	 * Updates attributes, mainly used for animation purposes.
 	 */
-	public final void update() {
-		if (this.animationCooldown.checkFinished()) {
-			this.animationCooldown.reset();
-
-			switch (this.spriteType) {
-			case EnemyShipA1:
-				this.spriteType = SpriteType.EnemyShipA2;
-				break;
-			case EnemyShipA2:
-				this.spriteType = SpriteType.EnemyShipA1;
-				break;
-			case EnemyShipB1:
-				this.spriteType = SpriteType.EnemyShipB2;
-				break;
-			case EnemyShipB2:
-				this.spriteType = SpriteType.EnemyShipB1;
-				break;
-			case EnemyShipC1:
-				this.spriteType = SpriteType.EnemyShipC2;
-				break;
-			case EnemyShipC2:
-				this.spriteType = SpriteType.EnemyShipC1;
-				break;
-			default:
-				break;
-			}
-		}
+	public void update() {
+		return;
 	}
 
 	public void shoot(final Set<Bullet> bullets) {
@@ -141,9 +115,7 @@ public class EnemyShip extends Entity {
 	 * Destroys the ship, causing an explosion.
 	 */
 	public final void destroy() {
-		System.out.println(HP);
 		this.HP--;
-		System.out.println(HP);
 		if (this.HP <= 0) {
 			this.isDestroyed = true;
 			this.spriteType = SpriteType.Explosion;
