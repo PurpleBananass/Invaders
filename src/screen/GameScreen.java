@@ -78,10 +78,13 @@ public class GameScreen extends Screen {
 	private int lives;
 	/** Second Player's lives left. */
 	private int lives2;
-	/** Total bullets shot by the player. */
+	/** Player 1's remaining magazines */
 	private int magazine;
+	/** Player 2's remaining magazines */
 	private int magazine2;
+	/** Number of bullets used in player 1's active magazine */
 	private int bullet_count;
+	/** Number of bullets used in player 2's active magazine */
 	private int bullet_count2;
 	/** Total bullets shot by the player1. */
 	private int bulletsShot1;
@@ -96,7 +99,6 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
-//<<<<<<< HEAD
 	private int escapeCnt = 0;
 	private int per=0;
 	private int originalSpeed;
@@ -105,8 +107,8 @@ public class GameScreen extends Screen {
 	/** list of past high scores */
 	private int highScore;
 
-    private List<Ship> auxiliaryShips = new ArrayList<>();
-    private boolean existAuxiliaryShips = false;
+	private List<Ship> auxiliaryShips = new ArrayList<>();
+	private boolean existAuxiliaryShips = false;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -199,8 +201,8 @@ public class GameScreen extends Screen {
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
 
-        this.auxiliaryShips.add(new Ship(ship.getPositionX() - 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1));
-        this.auxiliaryShips.add(new Ship(ship.getPositionX() + 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1));
+		this.auxiliaryShips.add(new Ship(ship.getPositionX() - 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1));
+		this.auxiliaryShips.add(new Ship(ship.getPositionX() + 30, ship.getPositionY(), Color.GREEN, DrawManager.SpriteType.EnemyShipA1));
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -337,7 +339,7 @@ public class GameScreen extends Screen {
 					}
 					if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
 						if (this.ship2.shoot(this.bullets)) {
-							this.bulletsShot1++;
+							this.bulletsShot2++;
 							this.bullet_count2++;
 						}
 					}
@@ -376,7 +378,7 @@ public class GameScreen extends Screen {
 							for (Ship auxiliaryShip : auxiliaryShips)
 								auxiliaryShip.shoot(this.bullets);
 						}
-					if (inputManager.isKeyDown(KeyEvent.VK_TAB))
+						if (inputManager.isKeyDown(KeyEvent.VK_TAB))
 							if(this.ship.itemCoolTime())
 								useItem(this.ship.getItemQueue().deque());
 					}
@@ -673,9 +675,9 @@ public class GameScreen extends Screen {
 				bullets.add(BulletPool.getBullet(ship.getPositionX(),
 						ship.getPositionY(), ship.getBULLET_SPEED()));
 				bullets.add(BulletPool.getBullet(ship.getPositionX() + shipWidth/2,
-							ship.getPositionY(), ship.getBULLET_SPEED()));
+						ship.getPositionY(), ship.getBULLET_SPEED()));
 				bullets.add(BulletPool.getBullet(ship.getPositionX() + shipWidth,
-							ship.getPositionY(), ship.getBULLET_SPEED()));
+						ship.getPositionY(), ship.getBULLET_SPEED()));
 				this.logger.info("Three bullets");
 				this.bulletsShot1+=3;
 				this.bullet_count+=3;
@@ -790,7 +792,7 @@ public class GameScreen extends Screen {
 		}
 	}
 
-    public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
-        this.existAuxiliaryShips = existAuxiliaryShips;
-    }
+	public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
+		this.existAuxiliaryShips = existAuxiliaryShips;
+	}
 }
