@@ -111,6 +111,7 @@ public class GameScreen extends Screen {
 
 	private List<Ship> auxiliaryShips = new ArrayList<>();
 	private boolean existAuxiliaryShips = false;
+	private int pauseCnt = 0;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -500,8 +501,25 @@ public class GameScreen extends Screen {
 
 		}
 		else {
-			if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) { isPause = false; }
-			else if (inputManager.isKeyDown(KeyEvent.VK_M)) {this.returnCode = 1; this.isRunning = false;}
+			boolean isControlKeyDown = false;
+			if(inputManager.isKeyDown(KeyEvent.VK_CONTROL)) { isControlKeyDown = true; }
+			if(isControlKeyDown){
+				pauseCnt++;
+				//System.out.println(pauseCnt);
+				isControlKeyDown = false;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) { }
+			}
+			if(inputManager.isKeyDown(KeyEvent.VK_SPACE)){
+				if( pauseCnt%2 == 0) { //quit
+					this.returnCode = 1;
+					this.isRunning = false;
+				}
+				else { //resume
+					isPause = false;
+				}
+			}
 		}
 
 		draw();
@@ -567,6 +585,7 @@ public class GameScreen extends Screen {
 
 		if (isPause){
 			drawManager.drawPauseWindow(this);
+			drawManager.drawPauseMenu(this, pauseCnt%2);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}

@@ -716,9 +716,23 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2,
 				rectWidth, rectHeight);
-		backBufferGraphics.setColor(Color.YELLOW);
-		drawCenteredBigString(screen, "Quit: m   Resume: space",
-				screen.getHeight() / 2 + fontBigMetrics.getHeight() / 3 );
+	}
+
+	public void drawPauseMenu(final Screen screen, final int option) {
+		String quit = "Quit";
+		String resume = "Resume";
+
+		if (option == 0)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, quit, screen.getHeight() / 2 - 10 );
+		if (option == 1)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, resume, screen.getHeight() / 2 + 20 );
 
 	}
+
 }
