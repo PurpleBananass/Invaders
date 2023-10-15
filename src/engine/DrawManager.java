@@ -340,7 +340,7 @@ public final class DrawManager {
 	 */
 	public void drawMenu(final Screen screen, final int option) {
 		String playString = "Play";
-		String highScoresString = "High scores";
+		String highScoresString = "Acheivement";
 		String exitString = "exit";
 
 		if (option == 2)

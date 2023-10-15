@@ -8,6 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import screen.AchievementScreen;
 import screen.GameScreen;
 import screen.HighScoreScreen;
 import screen.ScoreScreen;
@@ -115,7 +116,7 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_7);
 
 		GameState gameState;
-
+	
 		int returnCode = 1;
 		do {
 			// TODO 1P mode와 2P mode 진입 구현
@@ -177,6 +178,7 @@ public final class Core {
 								gameState.getBulletsShot2(),
 								gameState.getShipsDestroyed());
 					}
+          AchievementManager.getInstance().checkAchievements(gameState);
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
 						&& gameState.getLevel() <= NUM_LEVELS);
@@ -198,21 +200,26 @@ public final class Core {
 							+ gameState.getBulletsShot2() + " bullets shot by 2p and "
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
-
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
-				// High scores.
-				currentScreen = new HighScoreScreen(width, height, FPS);
+				//  Achievement.
+				currentScreen = new AchievementScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing high score screen.");
+				LOGGER.info("Closing Achievement screen.");
 				break;
-			default:
-				break;
+			// case 3:
+			// 	// High scores.
+			// 	currentScreen = new HighScoreScreen(width, height, FPS);
+			// 	LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+			// 			+ " high score screen at " + FPS + " fps.");
+			// 	returnCode = frame.setScreen(currentScreen);
+			// 	LOGGER.info("Closing high score screen.");
+			// 	break;
 			}
 
 		} while (returnCode != 0);

@@ -71,6 +71,8 @@ ipch/
 *.ncb
 *.opensdf
 *.sdf
+# Visual Studio Code
+.vscode/
 
 # Visual Studio profiler
 *.psess
