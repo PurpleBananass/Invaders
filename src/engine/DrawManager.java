@@ -60,6 +60,10 @@ public final class DrawManager {
 		Bullet,
 		/** Enemy bullet. */
 		EnemyBullet,
+		/** Player bullet. */
+		BiggerBullet,
+		/** Enemy bullet. */
+		BiggerEnemyBullet,
 		/** First enemy ship - first form. */
 		EnemyShipA1,
 		/** First enemy ship - second form. */
