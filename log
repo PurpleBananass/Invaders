@@ -1,0 +1,23 @@
+[INFO|8:09:27]: Started loading resources. 
+[FINE|8:09:27]: Sprite Ship loaded. 
+[FINE|8:09:27]: Sprite ShipDestroyed loaded. 
+[FINE|8:09:27]: Sprite Bullet loaded. 
+[FINE|8:09:27]: Sprite EnemyBullet loaded. 
+[FINE|8:09:27]: Sprite EnemyShipA1 loaded. 
+[FINE|8:09:27]: Sprite EnemyShipA2 loaded. 
+[FINE|8:09:27]: Sprite EnemyShipB1 loaded. 
+[FINE|8:09:27]: Sprite EnemyShipB2 loaded. 
+[FINE|8:09:27]: Sprite EnemyShipC1 loaded. 
+[FINE|8:09:27]: Sprite EnemyShipC2 loaded. 
+[FINE|8:09:27]: Sprite EnemyShipSpecial loaded. 
+[FINE|8:09:27]: Sprite Explosion loaded. 
+[INFO|8:09:27]: Finished loading the sprites. 
+[INFO|8:09:27]: Finished loading the fonts. 
+[INFO|8:09:27]: Starting 448x520 title screen at 60 fps. 
+[INFO|8:09:30]: Closing title screen. 
+[INFO|8:09:30]: Loading settings. 
+[INFO|8:09:30]: Starting 448x520 high score screen at 60 fps. 
+[INFO|8:09:36]: Saving user settings. 
+[INFO|8:09:36]: Closing setting screen. 
+[INFO|8:09:36]: Starting 448x520 title screen at 60 fps. 
+[INFO|8:09:39]: Closing title screen. 
