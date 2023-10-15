@@ -8,7 +8,11 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import screen.*;
+import screen.GameScreen;
+import screen.HighScoreScreen;
+import screen.ScoreScreen;
+import screen.Screen;
+import screen.TitleScreen;
 
 /**
  * Implements core game logic.
@@ -175,17 +179,28 @@ public final class Core {
 			case 4:
 				// Shop
 				LOGGER.info("There's no shop yet");
-				returnCode = 1;
+				returnCode = frame.setScreen(currentScreen);
 				break;
 			case 5:
-				//settings
-				LOGGER.info("There's no settings yet");
-				returnCode = 1;
+				// Setting.
+				currentScreen = new SettingScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
 				break;
 			case 6:
 				//Achievements
 				LOGGER.info("There's no achievements yet");
-				returnCode = 1;
+				returnCode = frame.setScreen(currentScreen);
+				break;
+			case 2:
+				// Select2P
+				currentScreen = new Select2PScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
 				break;
 			default:
 				break;
