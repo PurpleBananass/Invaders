@@ -90,6 +90,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private List<EnemyShip> shooters;
 	/** Number of not destroyed ships. */
 	private int shipCount;
+	/** need to make complex movements. */
+	private boolean moreDiff = false;
+	/** speed of complex movements. */
+	private int complexSpeed;
+
+
 	/** Directions the formation can move. */
 	private enum Direction {
 		/** Movement to the right side of the screen. */
@@ -185,6 +191,14 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		for (List<EnemyShip> column : this.enemyShips)
 			this.shooters.add(column.get(column.size() - 1));
+
+		if (nShipsHigh > 5)
+			moreDiff = true;
+
+		if (moreDiff)
+			complexSpeed = 8;
+		else
+			complexSpeed = 0;
 	}
 
 	/**
@@ -216,7 +230,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					shootingVariance);
 			this.shootingCooldown.reset();
 		}
-		
 		cleanUp();
 
 		int movementX = 0;
@@ -230,6 +243,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		movementInterval++;
 		if (movementInterval >= this.movementSpeed) {
 			movementInterval = 0;
+
+			// Consider irregular movements to prevent the formation from going out of the game screen.
+			if (moreDiff)
+				positionX += complexSpeed;
 
 			boolean isAtBottom = positionY
 					+ this.height > screen.getHeight() - BOTTOM_MARGIN;
@@ -292,6 +309,19 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					}
 				}
 				column.removeAll(destroyed);
+			}
+
+			// From level 4, the ships moves more complicatedly.
+			if (moreDiff) {
+				for (List<EnemyShip> column : this.enemyShips) {
+					for (EnemyShip enemyShip : column) {
+						if ((int)((enemyShip.getpositionY()-100)/40)%2!=0) {
+							enemyShip.move(complexSpeed, 0);
+						} else
+							enemyShip.move(-complexSpeed, 0);
+					}
+				}
+				complexSpeed = -complexSpeed;
 			}
 
 			for (List<EnemyShip> column : this.enemyShips)

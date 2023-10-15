@@ -20,7 +20,7 @@ public class EnemyShip extends Entity {
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
-	private static final double ITEM_PROPORTIOIN = 0.8;
+	private static final double ITEM_PROPORTIOIN = 0.1;
 
 	public static final int RANDOM_BOUND = 10000;
 
@@ -130,6 +130,8 @@ public class EnemyShip extends Entity {
 	public final boolean isDestroyed() {
 		return this.isDestroyed;
 	}
+	public final int getpositionY() { return this.positionY; }
+
 
 	/**
 	 * 랜덤으로 Item을 가진 EnemyShip 생성*/
