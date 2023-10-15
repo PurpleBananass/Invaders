@@ -49,7 +49,6 @@ public class Ship extends Entity {
 
 	private Cooldown skillCooldown;
 
-	private int LEVEL;
 
 
 	/**
@@ -60,11 +59,11 @@ public class Ship extends Entity {
 	 * @param positionY
 	 *            Initial position of the ship in the Y axis.
 	 */
-	public Ship(final int positionX, final int positionY, final Color color, SpriteType spriteType, final int level) {
+	public Ship(final int positionX, final int positionY, final Color color, SpriteType spriteType) {
 		super(positionX, positionY, 13 * 2, 8 * 2, color);
 
 		this.spriteType = spriteType;
-		this.shootingCooldown = Core.getCooldown(this.controlShootingInterval(level));
+		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
 		this.itemCooldown = Core.getCooldown(ITEM_USE_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
 		this.skillCooldown = Core.getCooldown(1000);
@@ -72,7 +71,6 @@ public class Ship extends Entity {
 		this.BULLET_SPEED = ORIGINAL_BULLET_SPEED;
 		this.itemQueue = new ItemQueue();
 		this.Invincible = false;
-		this.LEVEL = level;
 	}
 
 	/**
@@ -211,23 +209,5 @@ public class Ship extends Entity {
 
 	public final ItemQueue getItemQueue(){ return this.itemQueue; }
 
-
-	public int controlShootingInterval(int LEVEL) {
-		if (LEVEL==1) {
-			return 500;
-		} else if (LEVEL==2) {
-			return 600;
-		} else if (LEVEL==3) {
-			return 700;
-		} else if (LEVEL==4) {
-			return 800;
-		} else if (LEVEL==5) {
-			return 900;
-		} else if (LEVEL==6) {
-			return 1000;
-		} else {
-			return 1500;
-		}
-	}
 
 }

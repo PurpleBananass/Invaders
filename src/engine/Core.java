@@ -123,7 +123,6 @@ public final class Core {
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
 			// gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 			gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0);
-			LEVEL = gameState.getLevel();
 
 			switch (returnCode) {
 			case 1:
@@ -169,7 +168,6 @@ public final class Core {
 								gameState.getLivesRemaining1p(),
 								gameState.getBulletsShot(),
 								gameState.getShipsDestroyed());
-						LEVEL++;
 					} else {
 						gameState = ((GameScreen) currentScreen).getGameState2p();
 						gameState = new GameState(gameState.getLevel() + 1,
@@ -178,7 +176,6 @@ public final class Core {
 								gameState.getLivesRemaining2p(),
 								gameState.getBulletsShot(),
 								gameState.getShipsDestroyed());
-						LEVEL++;
 					}
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
@@ -295,7 +292,4 @@ public final class Core {
 		return MAX_LIVES;
 	}
 
-	public static int getLevel() {
-		return LEVEL;
-	}
 }
