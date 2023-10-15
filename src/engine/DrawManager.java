@@ -304,8 +304,8 @@ public final class DrawManager {
 	 * @param positionY
 	 *            Y coordinate of the line.
 	 */
-	public void drawHorizontalLine(final Screen screen, final int positionY) {
-		backBufferGraphics.setColor(Color.GREEN);
+	public void drawHorizontalLine(final Screen screen, final int positionY, Color color) {
+		backBufferGraphics.setColor(color);
 		backBufferGraphics.drawLine(0, positionY, screen.getWidth(), positionY);
 		backBufferGraphics.drawLine(0, positionY + 1, screen.getWidth(),
 				positionY + 1);
@@ -708,5 +708,17 @@ public final class DrawManager {
 		else
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
+	}
+
+	public void drawPauseWindow(final Screen screen){
+		int rectWidth = screen.getWidth();
+		int rectHeight = screen.getHeight() / 6;
+		backBufferGraphics.setColor(Color.BLACK);
+		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2,
+				rectWidth, rectHeight);
+		backBufferGraphics.setColor(Color.YELLOW);
+		drawCenteredBigString(screen, "Quit: m   Resume: space",
+				screen.getHeight() / 2 + fontBigMetrics.getHeight() / 3 );
+
 	}
 }

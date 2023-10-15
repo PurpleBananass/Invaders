@@ -549,7 +549,7 @@ public class GameScreen extends Screen {
 		drawManager.drawLives(this, this.lives);
 		if (this.gameState.getMode() == 2) drawManager.drawLives2(this, this.lives2);
 		drawManager.drawHighScore(this, this.highScore);
-		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
+		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1, Color.GREEN);
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
@@ -560,13 +560,17 @@ public class GameScreen extends Screen {
 			drawManager.drawCountDown(this, this.level, countdown,
 					this.bonusLife);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height
-					/ 12);
+					/ 12, Color.GREEN);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height
-					/ 12);
+					/ 12, Color.GREEN);
 		}
 
-		if (isPause)
-			drawManager.drawTitle(this);
+		if (isPause){
+			drawManager.drawPauseWindow(this);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
+			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
+		}
+
 
 		drawManager.completeDrawing(this);
 	}
