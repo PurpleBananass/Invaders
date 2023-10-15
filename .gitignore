@@ -58,6 +58,7 @@ local.properties
 *.tlb
 *.tli
 *.tlh
+*.tmp
 *.vspscc
 .builds
 *.dotCover
@@ -173,3 +174,9 @@ log*
 .idea
 *.iml
 outg
+
+# Intellij / User-specific configurations
+
+.idea/
+*.iml
+out/
