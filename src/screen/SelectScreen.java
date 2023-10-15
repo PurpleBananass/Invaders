@@ -16,7 +16,7 @@ public class SelectScreen extends Screen{
     public static int gameMode = 1;
     /** Check Skill Mode */
     public static boolean skillModeOn = true;
-
+    /** Separate function when space is down*/
     private boolean canEscape = false;
 
     /**
