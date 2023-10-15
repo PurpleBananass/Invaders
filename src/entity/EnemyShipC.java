@@ -5,7 +5,7 @@ import engine.GameState;
 
 public class EnemyShipC extends EnemyShip {
     /** HP의 배율 */
-    private final double HPPOWER = 0.1;
+    private final double HPPOWER = .1;
     /** 제거시 올라가는 점수 */
     private final int POINT = 20;
     public EnemyShipC(final int positionX, final int positionY,
