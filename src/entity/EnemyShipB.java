@@ -14,4 +14,14 @@ public class EnemyShipB extends EnemyShip {
         super.HP = (int)(super.HP * HPPOWER);
         super.pointValue = POINT;
     }
+
+    public final void update() {
+        if (this.animationCooldown.checkFinished()) {
+            this.animationCooldown.reset();
+            if (spriteType == DrawManager.SpriteType.EnemyShipB1)
+                spriteType = DrawManager.SpriteType.EnemyShipB2;
+            else
+                spriteType = DrawManager.SpriteType.EnemyShipB1;
+        }
+    }
 }

@@ -15,4 +15,14 @@ public class EnemyShipA extends EnemyShip {
         super.pointValue = POINT;
     }
 
+    public final void update() {
+        if (this.animationCooldown.checkFinished()) {
+            this.animationCooldown.reset();
+            if (spriteType == DrawManager.SpriteType.EnemyShipA1)
+                spriteType = DrawManager.SpriteType.EnemyShipA2;
+            else
+                spriteType = DrawManager.SpriteType.EnemyShipA1;
+        }
+    }
+
 }
