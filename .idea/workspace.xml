@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="make Skin Select Box">
+    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="Edit SkinSeletionMenu&#10;make &quot;1P&quot;, &quot;2P&quot; on skin box">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log" beforeDir="false" afterPath="$PROJECT_DIR$/log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/engine/DrawManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/DrawManager.java" afterDir="false" />
@@ -107,7 +107,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697380252817</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Edit SkinSeletionMenu&#10;make &quot;1P&quot;, &quot;2P&quot; on skin box">
+      <created>1697381834585</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1697381834585</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,7 +146,8 @@
     <MESSAGE value="Merge remote-tracking branch 'invaders/seojun_pregame' into seojun_pregame&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;Invaders-seojun_pregame.iml&#10;#&#9;log" />
     <MESSAGE value="make Centered Line in SkinSelectionScreen" />
     <MESSAGE value="make Skin Select Box" />
-    <option name="LAST_COMMIT_MESSAGE" value="make Skin Select Box" />
+    <MESSAGE value="Edit SkinSeletionMenu&#10;make &quot;1P&quot;, &quot;2P&quot; on skin box" />
+    <option name="LAST_COMMIT_MESSAGE" value="Edit SkinSeletionMenu&#10;make &quot;1P&quot;, &quot;2P&quot; on skin box" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
