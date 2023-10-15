@@ -477,10 +477,12 @@ public final class DrawManager {
 	 * @param screen
 	 *            Screen to draw on.
 	 */
-	public void drawSkinSelectionMenu(final Screen screen){
+	public void drawSkinSelectionMenu(final Screen screen, final int option){
 		String SkinString = "Select Your Ship Design!";
+		drawCenterdline(screen);
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
+
 	}
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
@@ -565,7 +567,10 @@ public final class DrawManager {
 		backBufferGraphics.drawString(string, screen.getWidth() / 2
 				- fontBigMetrics.stringWidth(string) / 2, height);
 	}
-
+	public void drawCenterdline(final Screen screen){
+		backBufferGraphics.setColor(Color.white);
+		backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
+	}
 	/**
 	 * Countdown to game start.
 	 * 
