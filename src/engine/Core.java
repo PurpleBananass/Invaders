@@ -107,13 +107,11 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
-		
 		GameState gameState;
 
 		int returnCode = 1;
 		do {
-			if(!Select2PScreen.twoPlayerModeOn) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			else gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 
 			switch (returnCode) {
 			case 1:
@@ -189,7 +187,7 @@ public final class Core {
 				break;
 			case 2:
 				// Select2P
-				currentScreen = new Select2PScreen(width, height, FPS);
+				currentScreen = new SelectScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);

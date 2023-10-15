@@ -31,10 +31,17 @@ public class SettingScreen extends Screen {
     /** Check BGM is On/Off  */
     private boolean bgmOn;
 
-    private int[] keySetting = new int[10];;
-    private static String[] keySettingString = new String[10];
+    private int[] keySetting = new int[16];
+    /** { 1P.LEFT, 1P.RIGHT, 1P.ATTACK, 1P.BURST 1, 1P.BURST 2, 1P.RELOAD, 1P.BOOSTER, 1P.ITEM,
+     * 2P.LEFT, 2P.RIGHT, 2P.ATTACK, 2P.BURST 1, 2P.BURST 2, 2P.RELOAD, 2P.BOOSTER, 2P.ITEM} */
+    private static String[] keySettingString = new String[16];
+    /** Check what key is selected */
     private int keyNum =0;
+    /** Check when user enters keyChange */
     private boolean keyChangeMode = false;
+    /** For the situation some keys are not set */
+    private int tempKeyCode;
+    private String tempKeyString;
 
 
 
@@ -57,7 +64,7 @@ public class SettingScreen extends Screen {
                 bgmOn = true;
             }
             else bgmOn = false;
-            for (int i =2; i < 12; i++) {
+            for (int i =2; i < 18; i++) {
                 keySettingString[i-2] = this.setting.get(i).getName();
                 keySetting[i-2] = this.setting.get(i).getValue();
             }
@@ -140,7 +147,7 @@ public class SettingScreen extends Screen {
                         break;
                     /** Keys Setting */
                     case 2, 3:
-                        if(keyNum<4) keyNum++;
+                        if(keyNum<7) keyNum++;
                         this.selectionCooldown.reset();
                         break;
                     default:
@@ -161,21 +168,25 @@ public class SettingScreen extends Screen {
              * */
             if (itemCode == 2 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
                 keyChangeMode =true;
+                tempKeyCode = keySetting[keyNum];
+                tempKeyString = keySettingString[keyNum];
                 keySettingString[keyNum] = "";
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 3 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))){
                 keyChangeMode =true;
-                keySettingString[keyNum +5] = "";
+                tempKeyCode = keySetting[keyNum];
+                tempKeyString = keySettingString[keyNum];
+                keySettingString[keyNum + 8] = "";
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
-                for(int i=0;i<10;i++){
+                for(int i=0;i<14;i++){
                     if(keySetting[i] == temp){
-                        keySetting[i] = keySetting[keyNum];
-                        keySettingString[i] = keySettingString[keyNum];
+                        keySetting[i] = tempKeyCode;
+                        keySettingString[i] = tempKeyString;
                     }
                 }
                 keySettingString[keyNum] = tempS;
@@ -186,14 +197,14 @@ public class SettingScreen extends Screen {
             else if(itemCode == 3 && selected && keyChangeMode && inputManager.getcheck()){
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
-                for(int i=0;i<10;i++){
+                for(int i=0;i<16;i++){
                     if(keySetting[i] == temp){
-                        keySetting[i] = keySetting[keyNum + 5];
-                        keySettingString[i] = keySettingString[keyNum + 5];
+                        keySetting[i] = tempKeyCode;
+                        keySettingString[i] = tempKeyString;
                     }
                 }
-                keySettingString[keyNum + 5] = tempS;
-                keySetting[keyNum + 5] = temp;
+                keySettingString[keyNum + 8] = tempS;
+                keySetting[keyNum + 8] = temp;
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
@@ -245,7 +256,7 @@ public class SettingScreen extends Screen {
     private void saveSetting(){
         this.setting.get(0).value = soundVolume;
         this.setting.get(1).value = bgmOn ? 1:0;
-        for (int i =0; i < 10; i++) {
+        for (int i =0; i < 16; i++) {
             this.setting.get(i+2).value = keySetting[i];
             this.setting.get(i+2).name = keySettingString[i];
         }
