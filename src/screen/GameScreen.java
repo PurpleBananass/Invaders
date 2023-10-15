@@ -556,7 +556,7 @@ public class GameScreen extends Screen {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
 		}
-		if (this.ship2.isExistAuxiliaryShips()) {
+		if (gameState.getMode() == 2 && this.ship2.isExistAuxiliaryShips()) {
 			for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips()) {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
