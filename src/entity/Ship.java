@@ -25,7 +25,7 @@ public class Ship extends Entity {
 	/** Original movement of the ship for each unit of time. */
 	private static int ORIGINAL_SPEED = 2;
 
-	private static final int ITEM_USE_INTERVAL = 50;
+	private static final int ITEM_USE_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship.
 	private static final int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time.
@@ -51,8 +51,6 @@ public class Ship extends Entity {
 	private Cooldown skillCooldown;
 	private List<Ship> auxiliaryShips = new ArrayList<>();
 	private boolean existAuxiliaryShips = false;
-	private boolean isAuxiliaryShip = false;
-
 
 	/**
 	 * Constructor, establishes the ship's properties.
