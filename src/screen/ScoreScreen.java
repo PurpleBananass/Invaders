@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import engine.AchievementManager;
 import engine.Cooldown;
 import engine.Core;
 import engine.GameState;
@@ -82,6 +83,8 @@ public class ScoreScreen extends Screen {
 		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
 
+		AchievementManager.getInstance().checkScore(this.score);
+
 		try {
 			this.highScores = Core.getFileManager().loadHighScores(this.gameMode);
 			if (highScores.size() < MAX_HIGH_SCORE_NUM
@@ -122,14 +125,12 @@ public class ScoreScreen extends Screen {
 				// Return to main menu.
 				this.returnCode = 1;
 				this.isRunning = false;
-				if (this.isNewRecord)
-					saveScore(gameMode);
+				saveScore(gameMode);
 			} else if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
 				// Play again.
 				this.returnCode = 2;
 				this.isRunning = false;
-				if (this.isNewRecord)
-					saveScore(gameMode);
+				saveScore(gameMode);
 			}
 
 			if (this.isNewRecord && this.selectionCooldown.checkFinished()) {
