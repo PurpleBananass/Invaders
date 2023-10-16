@@ -259,8 +259,10 @@ public class GameScreen extends Screen {
 	protected final void update() {
 		super.update();
 
-		if (this.inputDelay.checkFinished() && inputManager.isKeyDown(KeyEvent.VK_ESCAPE))
-			isPause=true;
+		if (this.inputDelay.checkFinished() && inputManager.isKeyDown(KeyEvent.VK_CONTROL)){
+			isPause = true;
+		}
+
 
 		if (!isPause) {
 			if (this.inputDelay.checkFinished() && !this.levelFinished) {
@@ -560,7 +562,7 @@ public class GameScreen extends Screen {
 				} catch (InterruptedException e) { }
 			}
 			if(inputManager.isKeyDown(KeyEvent.VK_SPACE)){
-				if( pauseCnt%2 == 0) { //quit
+				if( pauseCnt%2 == 1) { //quit
 					this.returnCode = 1;
 					this.isRunning = false;
 				}
