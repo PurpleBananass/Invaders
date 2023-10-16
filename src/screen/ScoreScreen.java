@@ -211,8 +211,8 @@ public class ScoreScreen extends Screen {
 		drawManager.drawGameOver(this, this.inputDelay.checkFinished(),
 				this.isNewRecord);
 		drawManager.drawResults(this, this.score, this.livesRemaining1, this.livesRemaining2,
-				this.shipsDestroyed1, (float) this.shipsDestroyed1
-						/ this.bulletsShot1, this.shipsDestroyed2 / this.bulletsShot2 , this.isNewRecord);
+				this.shipsDestroyed1+this.shipsDestroyed2, (float) this.shipsDestroyed1
+						/ this.bulletsShot1, (float) this.shipsDestroyed2 / this.bulletsShot2 , this.isNewRecord);
 
 		if (this.isNewRecord)
 			drawManager.drawNameInput(this, this.name, this.nameCharSelected);
