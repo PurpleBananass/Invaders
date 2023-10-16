@@ -13,6 +13,10 @@ public class SoundManager {
     public static HashMap<String, Clip> clips = new HashMap<>();
 
     public static void playSound(String soundFilePath, String clipName, boolean isLoop) {
+        Clip clip = clips.get(clipName);
+        if (clip != null && clip.isActive()) {
+            return;
+        }
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -34,6 +38,10 @@ public class SoundManager {
     }
 
     public static void playSound(String soundFilePath, String clipName, boolean isLoop, float fadeInSpeed) {
+        Clip clip = clips.get(clipName);
+        if (clip != null && clip.isActive()) {
+            return;
+        }
         new Thread(new Runnable() {
             public void run() {
                 try {
