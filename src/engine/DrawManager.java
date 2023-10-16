@@ -263,32 +263,36 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws number of remaining lives on screen.
+	 * Draws number of remaining lives from player1 on screen.
 	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param lives
-	 *            Current lives.
+	 *            Current player1's lives.
 	 */
-
-
-	/* 1player lives 위치 draw */
 	public void drawLives(final Screen screen, final int lives) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
-		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship);
+		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 35 * i, 10);
 	}
 
 
-	/* 2player의 lives 위치 draw */
+	/**
+	 * Draws number of remaining lives from player2 on screen.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param lives2
+	 *            Current player2's lives.
+	 */
 	public void drawLives2(final Screen screen, final int lives2) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives2), 160, 25);
-		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Ship);
+		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Ship, false);
 		for (int i = 0; i < lives2; i++)
 			drawEntity(dummyShip, 180 + 35 * i, 10);
 	}
@@ -301,8 +305,8 @@ public final class DrawManager {
 	 * @param positionY
 	 *            Y coordinate of the line.
 	 */
-	public void drawHorizontalLine(final Screen screen, final int positionY) {
-		backBufferGraphics.setColor(Color.GREEN);
+	public void drawHorizontalLine(final Screen screen, final int positionY, Color color) {
+		backBufferGraphics.setColor(color);
 		backBufferGraphics.drawLine(0, positionY, screen.getWidth(), positionY);
 		backBufferGraphics.drawLine(0, positionY + 1, screen.getWidth(),
 				positionY + 1);
@@ -557,7 +561,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws high scores.
+	 * Draws high scores from 1p mode.
 	 *
 	 * @param screen
 	 *            Screen to draw on.
@@ -579,6 +583,14 @@ public final class DrawManager {
 		}
 	}
 
+	/**
+	 * Draws high scores from 2p mode.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param highScores
+	 *            List of high scores.
+	 */
 	public void drawHighScores_2p(final Screen screen,
 								  final List<Score> highScores) {
 		backBufferGraphics.setColor(Color.WHITE);
@@ -610,14 +622,32 @@ public final class DrawManager {
 		backBufferGraphics.drawString(string, screen.getWidth() / 2
 				- fontRegularMetrics.stringWidth(string) / 2, height);
 	}
-
+	/**
+	 * Draws a left sided string on regular font.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param string
+	 *            String to draw.
+	 * @param height
+	 *            Height of the drawing.
+	 */
 	public void drawLeftsideRegularString(final Screen screen,
 										  final String string, final int height) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.drawString(string, screen.getWidth()*3 / 13
 				- fontRegularMetrics.stringWidth(string) / 2, height);
 	}
-
+	/**
+	 * Draws a right sided string on regular font.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param string
+	 *            String to draw.
+	 * @param height
+	 *            Height of the drawing.
+	 */
 	public void drawRightsideRegularString(final Screen screen,
 										  final String string, final int height) {
 		backBufferGraphics.setFont(fontRegular);
@@ -680,4 +710,34 @@ public final class DrawManager {
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
 	}
+
+	public void drawPauseWindow(final Screen screen){
+		int rectWidth = screen.getWidth();
+		int rectHeight = screen.getHeight() / 6;
+		backBufferGraphics.setColor(Color.BLACK);
+		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2 - 40,
+				rectWidth, rectHeight + 40);
+	}
+
+	public void drawPauseMenu(final Screen screen, final int option) {
+		String quit = "Quit";
+		String resume = "Resume";
+
+		if (option == 0)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, quit, screen.getHeight() / 2 - 10 );
+		if (option == 1)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, resume, screen.getHeight() / 2 + 20 );
+
+		//How to operate in the pause window
+		backBufferGraphics.setColor(Color.YELLOW);
+		drawCenteredRegularString(screen, "Change: Ctrl" + " / " + "Select: Spacebar",
+				screen.getHeight() / 2 - screen.getHeight() / 12 - 15 );
+	}
+
 }
