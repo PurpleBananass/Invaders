@@ -20,8 +20,11 @@ public class GameState {
 	private int bulletsShot1;
 	/** Bullets shot until now from player2. */
 	private int bulletsShot2;
-	/** Ships destroyed until now. */
-	private int shipsDestroyed;
+
+	/** Number of enemy ships destroyed */
+	private int shipsDestroyed1;
+	private int shipsDestroyed2;
+
 	/** Distinguish 1P and 2P mode. */
 	private int gameMode = 0;
 	/**
@@ -46,7 +49,7 @@ public class GameState {
 		this.score = score;
 		this.livesRemaining1 = livesRemaining;
 		this.bulletsShot1 = bulletsShot;
-		this.shipsDestroyed = shipsDestroyed;
+		this.shipsDestroyed1 = shipsDestroyed;
 	}
 
 	/**
@@ -69,7 +72,7 @@ public class GameState {
 	 */
 	public GameState(final int level, final int score,
 					 final int livesRemaining1, final int livesRemaining2, final int bulletsShot1, final int bulletsShot2,
-					 final int shipsDestroyed) {
+					 final int shipsDestroyed, final int shipsDestroyed2) {
 		this.gameMode = 2;
 		this.level = level;
 		this.score = score;
@@ -77,7 +80,8 @@ public class GameState {
 		this.livesRemaining2 = livesRemaining2;
 		this.bulletsShot1 = bulletsShot1;
 		this.bulletsShot2 = bulletsShot2;
-		this.shipsDestroyed = shipsDestroyed;
+		this.shipsDestroyed1 = shipsDestroyed;
+		this.shipsDestroyed2 = shipsDestroyed2;
 	}
 
 	/**
@@ -140,8 +144,13 @@ public class GameState {
 	/**
 	 * @return the shipsDestroyed
 	 */
+	/** Returns the number of ships destroyed by 1p */
 	public final int getShipsDestroyed() {
-		return shipsDestroyed;
+		return shipsDestroyed1;
+	}
+	/** Returns the number of ships destroyed by 2p*/
+	public final int getShipsDestroyed2() {
+		return shipsDestroyed2;
 	}
 
 }
