@@ -687,11 +687,13 @@ public class GameScreen extends Screen {
 			if (checkCollision(item, this.ship) && !this.levelFinished){
 				recyclableItem.add(item);
 				this.ship.getItemQueue().enque(item);
+				this.logger.info("Item Acquired. 1p has " + this.ship.getItemQueue().getSize() + " items");
 			}
 
 			if (this.gameState.getMode() == 2 && checkCollision(item, this.ship2) && !this.levelFinished) {
 				recyclableItem.add(item);
 				this.ship2.getItemQueue().enque(item);
+				this.logger.info("Item Acquired. 2p has " + this.ship2.getItemQueue().getSize() + " items");
 			}
 		}
 
@@ -812,7 +814,7 @@ public class GameScreen extends Screen {
 	/** 아이템 종류에 맞는 기능 실행 */
 	private void useItem(Item item, Ship ship) {
 		if(item == null) {
-			this.logger.info("보유한 아이템이 없습니다");
+			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
 		}
 		else{
 			if (!item.getIsGet() &&
@@ -836,6 +838,7 @@ public class GameScreen extends Screen {
 				this.logger.info("Bomb Item 사용");
 			}
 			item.setIsGet();
+			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
 		}
 	}
 
