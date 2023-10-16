@@ -514,7 +514,7 @@ public class GameScreen extends Screen {
 		updateItems();
 		draw();
 
-		if ((this.enemyShipFormation.isEmpty() || this.lives == 0 || (this.gameState.getMode() == 2 && this.lives2 == 0))
+		if ((this.enemyShipFormation.isEmpty() || this.lives == 0 || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
 				&& !this.levelFinished) {
 			this.levelFinished = true;
 			this.screenFinishedCooldown.reset();
@@ -632,6 +632,9 @@ public class GameScreen extends Screen {
 						if (!this.ship.isDestroyed()) {
 							this.ship.destroy();
 							this.lives--;
+							if (lives==0) {
+								this.ship.clearEntity(this.ship, this.ship.getPositionX, this.ship.getPositionY);
+							}
 							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
 						}
 					}
@@ -669,6 +672,9 @@ public class GameScreen extends Screen {
 						if (!this.ship.isDestroyed()) {
 							this.ship.destroy();
 							this.lives--;
+							if (this.lives == 0) {
+								this.ship.clearEntity(this.ship, this.ship.getPositionX, this.ship.getPositionY);
+							}
 							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
 						}
 					}
@@ -677,6 +683,9 @@ public class GameScreen extends Screen {
 						if (!this.ship2.isDestroyed()) {
 							this.ship2.destroy();
 							this.lives2--;
+							if (this.lives2 == 0) {
+								this.ship.clearEntity(this.ship2, this.ship2.getPositionX, this.ship2.getPositionY);
+							}
 							this.logger.info("Hit on player2 ship, " + this.lives2 + " lives remaining.");
 						}
 					}
