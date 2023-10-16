@@ -430,13 +430,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 							+ this.enemyShips.indexOf(column) + "," + i + ")");
 				}
 
-		// Updates the list of ships that can shoot the player.
-		checkNextShooter(destroyedShip);
-
-		this.shipCount--;
-	}
-
-	private void checkNextShooter(EnemyShip destroyedShip) {
 		if (this.shooters.contains(destroyedShip)) {
 			int destroyedShipIndex = this.shooters.indexOf(destroyedShip);
 			int destroyedShipColumnIndex = -1;
@@ -458,10 +451,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						+ this.shooters.size() + " members.");
 			}
 		}
-
-		if (destroyedShip.isDestroyed())
-			this.shipCount--;
-
+		if (destroyedShip.isDestroyed()) this.shipCount--;
 	}
 
 	/**
@@ -484,7 +474,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			for (int j = 0; j < this.enemyShips.get(i).size(); j++) {
 				if (this.enemyShips.get(i).get(j) == destroyedShip) {
 					destroyedByBombEnemyShips.add(this.enemyShips.get(i).get(j));
-					this.enemyShips.get(i).get(j).destroy();
+					this.enemyShips.get(i).get(j).destroyByBomb();
 					this.logger.info("Destroyed ship in ("
 							+ i + "," + j + ")");
 					howManyEnemyIsDead++;
@@ -501,7 +491,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						if(enemyShip.isDestroyed()) continue;
 
 						destroyedByBombEnemyShips.add(enemyShip);
-						enemyShip.destroy();
+						enemyShip.destroyByBomb();
 						this.logger.info("Destroyed ship in ("
 								+ nx + "," + ny + ")");
 						howManyEnemyIsDead++;
@@ -510,8 +500,27 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			}
 		}
 		for(EnemyShip enemyShip : destroyedByBombEnemyShips)
-			// Updates the list of ships that can shoot the player.
-			checkNextShooter(enemyShip);
+			if (this.shooters.contains(enemyShip)) {
+				int destroyedShipIndex = this.shooters.indexOf(enemyShip);
+				int destroyedShipColumnIndex = -1;
+
+				for (List<EnemyShip> column : this.enemyShips)
+					if (column.contains(enemyShip)) {
+						destroyedShipColumnIndex = this.enemyShips.indexOf(column);
+						break;
+					}
+
+				EnemyShip nextShooter = getNextShooter(this.enemyShips
+						.get(destroyedShipColumnIndex));
+
+				if (nextShooter != null)
+					this.shooters.set(destroyedShipIndex, nextShooter);
+				else {
+					this.shooters.remove(destroyedShipIndex);
+					this.logger.info("Shooters list reduced to "
+							+ this.shooters.size() + " members.");
+				}
+			}
 
 		this.shipCount -= howManyEnemyIsDead;
 		return destroyedByBombEnemyShips;

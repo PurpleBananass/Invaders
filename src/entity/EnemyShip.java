@@ -122,6 +122,11 @@ public class EnemyShip extends Entity {
 		}
 	}
 
+	public final void destroyByBomb(){
+		this.HP = 0;
+		this.isDestroyed = true;
+		this.spriteType = SpriteType.Explosion;
+	}
 	/**
 	 * Checks if the ship has been destroyed.
 	 * 
