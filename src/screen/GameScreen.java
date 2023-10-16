@@ -112,6 +112,7 @@ public class GameScreen extends Screen {
 	private List<Ship> auxiliaryShips = new ArrayList<>();
 	private boolean existAuxiliaryShips = false;
 	private int pauseCnt = 0;
+	private boolean manual = false;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -262,9 +263,11 @@ public class GameScreen extends Screen {
 		if (this.inputDelay.checkFinished() && inputManager.isKeyDown(KeyEvent.VK_CONTROL)){
 			isPause = true;
 		}
+		if (this.inputDelay.checkFinished() && inputManager.isKeyDown(KeyEvent.VK_SHIFT)){
+			manual = true;
+		}
 
-
-		if (!isPause) {
+		if (!isPause && !manual) {
 			if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
 				if (gameState.getMode() == 1 && !this.ship.isDestroyed()) {
@@ -565,6 +568,7 @@ public class GameScreen extends Screen {
 				else { //resume
 					isPause = false;
 				}
+				manual = false;
 			}
 		}
 
@@ -637,13 +641,19 @@ public class GameScreen extends Screen {
 		}
 
 		if (isPause){
-			drawManager.drawPauseWindow(this);
+			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 40, 40);
 			drawManager.drawPauseMenu(this, pauseCnt%2);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 40, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}
 
+		if(manual){
+			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 85, 165);
+			drawManager.drawManualMenu(this);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 85, Color.CYAN);
+			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12 + 80, Color.CYAN);
+		}
 
 		drawManager.completeDrawing(this);
 	}
