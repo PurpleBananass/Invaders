@@ -482,8 +482,13 @@ public final class DrawManager {
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
-		backBufferGraphics.setColor(Color.white);
-		backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
+		if(Select2PScreen.twoPlayerModeOn){
+			backBufferGraphics.setColor(Color.white);
+			backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
+			backBufferGraphics.setFont(fontBig);
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2-1, 130);
+			backBufferGraphics.drawString(skin2p, 3*screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2-2, 130);
 		if (skincode1p == 0) {
 			backBufferGraphics.setColor(Color.GREEN);
 			backBufferGraphics.drawRect(screen.getWidth()/4 -15 , 165, 30,30);
@@ -531,7 +536,6 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 415, 30,30);
 		}
-		if(Select2PScreen.twoPlayerModeOn) {
 			if (skincode2p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
@@ -575,15 +579,60 @@ public final class DrawManager {
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
 			}
 		}
+		else{
+			if (skincode1p == 0) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth()/2 -15 , 165, 30,30);
+			}
+			else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 165, 30,30);
+			}
+			if (skincode1p == 1) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 215, 30,30);
+			}
+			else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 215, 30,30);
+			}
+			if (skincode1p == 2) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 265, 30,30);
+			}
+			else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 265, 30,30);
+			}if (skincode1p == 3) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 315, 30,30);
+			}
+			else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 315, 30,30);
+			}
+			if (skincode1p == 4) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 365, 30,30);
+			}
+			else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 365, 30,30);
+			}
+			if (skincode1p == 5) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 415, 30,30);
+			}
+			else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 415, 30,30);
+			}
+			backBufferGraphics.setFont(fontBig);
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2-1, 130);
+		}
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
-		backBufferGraphics.setFont(fontBig);
-		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2-1, 130);
-		if(Select2PScreen.twoPlayerModeOn) {
-			backBufferGraphics.drawString(skin2p, 3 * screen.getWidth() / 4 - (fontRegularMetrics.stringWidth(skin2p) / 2) - 2, 130);
-		}
-
 	}
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
