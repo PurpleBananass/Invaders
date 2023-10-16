@@ -16,6 +16,7 @@ import java.lang.Integer;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
+import entity.ShowItem;
 import screen.SettingScreen;
 
 /**
@@ -285,6 +286,25 @@ public final class DrawManager {
 		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 35 * i, 10);
+	}
+
+
+
+	/**
+	 * Draws number of remaining items on screen.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param items
+	 *            Current items the player has.
+	 */
+	public void drawItems(final Screen screen, final int items) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(items), 170, 25);
+		ShowItem dummyItem = new ShowItem(0, 0);
+		for (int i = 0; i < items; i++)
+			drawEntity(dummyItem, 190 + 35 * i, 10);
 	}
 
 

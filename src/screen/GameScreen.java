@@ -76,6 +76,8 @@ public class GameScreen extends Screen {
 	private int score;
 	/** First Player's lives left. */
 	private int lives;
+	/** Total bullets shot by the player. */
+	private int bulletsShot;
 	/** Second Player's lives left. */
 	private int lives2;
 	/** Player 1's remaining magazines */
