@@ -70,6 +70,8 @@ public final class Core {
 
 	private static SoundManager mainBgm = new SoundManager("res/menu.wav");
 
+	/** control bottom HUD height */
+	public static int bottomHudHeight = 40;
 
 	/**
 	 * Test implementation.
@@ -96,7 +98,7 @@ public final class Core {
 			e.printStackTrace();
 		}
 
-		frame = new Frame(WIDTH, HEIGHT);
+		frame = new Frame(WIDTH, HEIGHT, bottomHudHeight);
 		DrawManager.getInstance().setFrame(frame);
 		int width = frame.getWidth();
 		int height = frame.getHeight();

@@ -159,7 +159,7 @@ public final class DrawManager {
 	 *            Screen to draw in.
 	 */
 	public void initDrawing(final Screen screen) {
-		backBuffer = new BufferedImage(screen.getWidth(), screen.getHeight(),
+		backBuffer = new BufferedImage(screen.getWidth(), screen.getHeight() + frame.getBottomHudHeight(),
 				BufferedImage.TYPE_INT_RGB);
 
 		graphics = frame.getGraphics();
@@ -167,7 +167,7 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics
-				.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+				.fillRect(0, 0, screen.getWidth(), screen.getHeight() + frame.getBottomHudHeight());
 
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);

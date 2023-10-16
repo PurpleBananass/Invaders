@@ -569,6 +569,7 @@ public class GameScreen extends Screen {
 		if (this.gameState.getMode() == 2) drawManager.drawLives2(this, this.lives2);
 		drawManager.drawHighScore(this, this.highScore);
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
+		drawManager.drawHorizontalLine(this, this.height - 1); //separation line for bottom hud
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
