@@ -33,7 +33,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	/** Downwards speed of the formation. */
 	private static final int Y_SPEED = 4;
 	/** Speed of the bullets shot by the members. */
-	private static final int BULLET_SPEED = 4;
+	private static int BULLET_SPEED = 4;
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
@@ -206,15 +206,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 */
 	public final void update() {
 
-		if(shipCount==1){
-			shootingInterval = 3;
-		}
-		
 		if(this.shootingCooldown == null) {
 			this.shootingCooldown = Core.getVariableCooldown(shootingInterval,
 					shootingVariance);
 			this.shootingCooldown.reset();
 		}
+
 		cleanUp();
 
 		int movementX = 0;
@@ -388,6 +385,16 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		if (this.shootingCooldown.checkFinished()) {
 			this.shootingCooldown.reset();
+			/** if shipcount remains one, Bullet_speed is speed up. */
+			if(shipCount == 1) {
+				if (flag == 1){
+					BULLET_SPEED = 8;
+				}
+				else{
+					BULLET_SPEED = 4;
+				}
+			}
+
 			bullets.add(BulletPool.getBullet(shooter.getPositionX()
 					+ shooter.width / 2, shooter.getPositionY(), BULLET_SPEED));
 		}
