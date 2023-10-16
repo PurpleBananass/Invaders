@@ -107,7 +107,6 @@ public final class  Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
-		
 		GameState gameState;
 
 		int returnCode = 1;
@@ -193,7 +192,7 @@ public final class  Core {
 				break;
 			case 2:
 				// Select2P
-				currentScreen = new Select2PScreen(width, height, FPS);
+				currentScreen = new SelectScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
