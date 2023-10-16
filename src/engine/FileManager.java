@@ -1,5 +1,4 @@
 package engine;
-
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.BufferedReader;
@@ -8,19 +7,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
-
 import engine.DrawManager.SpriteType;
 
 /**
@@ -65,7 +63,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public void loadSprite(final Map<SpriteType, boolean[][]> spriteMap)
+	public void loadSprite(Map<SpriteType, boolean[][]> spriteMap)
 			throws IOException {
 		InputStream inputStream = null;
 
@@ -73,7 +71,6 @@ public final class FileManager {
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("graphics");
 			char c;
-
 			// Sprite loading.
 			for (Map.Entry<SpriteType, boolean[][]> sprite : spriteMap
 					.entrySet()) {
@@ -97,6 +94,102 @@ public final class FileManager {
 				inputStream.close();
 		}
 	}
+	/**
+	 * Change sprites from disk.
+	 *
+	 * @param spriteMap,spriteType,graphicsNum
+	 *            Changing boolean matrix that will
+	 *            change the image.
+	 * 			  graphicsNum is col_num(each graphics)
+	 * @throws IOException
+	 *             In case of changing problems.
+	 */
+	public void changeSprite(Map<SpriteType, boolean[][]> spriteMap, SpriteType spriteType, int graphicsNum)
+			throws IOException {
+		InputStream inputStream = checkSpriteType(spriteType);
+		try {
+			char c;
+			for (Map.Entry<SpriteType, boolean[][]> sprite : spriteMap
+					.entrySet()) {
+				if(sprite.getKey() == spriteType){
+					for(int k=-1; k<graphicsNum;k++){
+						for (int i = 0; i < sprite.getValue().length; i++)
+							for (int j = 0; j < sprite.getValue()[i].length; j++) {
+								do
+									c = (char) inputStream.read();
+								while (c != '0' && c != '1');
+
+								if (c == '1')
+									sprite.getValue()[i][j] = true;
+								else
+									sprite.getValue()[i][j] = false;
+							}
+					}
+					logger.fine("Sprite " + spriteType + " changed.");
+					break;
+				}
+			}
+			if (inputStream != null)
+				inputStream.close();
+		} finally {
+			if (inputStream != null)
+				inputStream.close();
+		}
+	}
+	/**
+	 * Check Sprite Type.
+	 *
+	 * @param spriteType
+	 *            Point size of the font.
+	 * @return inputStream.
+	 * @throws IOException
+	 *             In case of loading problems.
+	 */
+	public InputStream checkSpriteType(SpriteType spriteType){
+		InputStream inputStream = null;
+		if(spriteType == SpriteType.Bullet){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("bulletGraphics");
+		}
+		else if(spriteType == SpriteType.Ship){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("shipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyBullet){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("bulletGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipA1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipA2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipB1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipB2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipC1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipC2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipSpecial){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("specialenemyGraphics");
+		}
+		return inputStream;
+	}
+
 
 	/**
 	 * Loads a font of a given size.
@@ -167,7 +260,8 @@ public final class FileManager {
 	/**
 	 * Loads high scores from file, and returns a sorted list of pairs score -
 	 * value.
-	 * 
+	 * @param gameMode
+	 *             The game mode.
 	 * @return Sorted list of scores - players.
 	 * @throws IOException
 	 *             In case of loading problems.
@@ -220,6 +314,8 @@ public final class FileManager {
 		Collections.sort(highScores);
 		return highScores;
 	}
+	
+	
 
 	/**
 	 * Saves user high scores to disk.
@@ -274,4 +370,145 @@ public final class FileManager {
 				bufferedWriter.close();
 		}
 	}
+	public List<Settings> loadSettings() throws IOException {
+
+		List<Settings> settings = new ArrayList<Settings>();
+		InputStream inputStream = null;
+		BufferedReader bufferedReader = null;
+
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+
+			String settingPath = new File(jarPath).getParent();
+			settingPath += File.separator;
+			settingPath += "settings";
+
+			File scoresFile = new File(settingPath);
+			inputStream = new FileInputStream(scoresFile);
+			bufferedReader = new BufferedReader(new InputStreamReader(
+					inputStream, Charset.forName("UTF-8")));
+
+			logger.info("Loading settings.");
+
+			Settings settings1 = null;
+			String name = bufferedReader.readLine();
+			String value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
+
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
+
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
+			while ((name != null) && (value != null)) {
+				settings1 = new Settings(name, Integer.parseInt(value,16));
+				settings.add(settings1);
+				name = bufferedReader.readLine();
+				value = bufferedReader.readLine();
+			}
+
+		} catch (FileNotFoundException e) {
+			// loads default if there's no settings.
+			logger.info("Loading default Settings.");
+			settings = loaddefaultSettings();
+		} finally {
+			if (bufferedReader != null)
+				bufferedReader.close();
+		}
+		return settings;
+	}
+	public List<Settings> loaddefaultSettings() throws IOException {
+		List<Settings> Setting = new ArrayList<Settings>();
+		InputStream inputStream = null;
+		BufferedReader reader = null;
+
+		try {
+			inputStream = FileManager.class.getClassLoader()
+					.getResourceAsStream("settings");
+			reader = new BufferedReader(new InputStreamReader(inputStream));
+
+			Settings Setting1 = null;
+			String name = reader.readLine();
+			String value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
+
+			name = reader.readLine();
+			value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
+
+			name = reader.readLine();
+			value = reader.readLine();
+			while ((name != null) && (value != null)) {
+				Setting1 = new Settings(name, Integer.parseInt(value.substring(2),16));
+				Setting.add(Setting1);
+				name = reader.readLine();
+				value = reader.readLine();
+			}
+
+			logger.info("Successfully load");
+		} finally {
+			if (inputStream != null)
+				inputStream.close();
+		}
+
+		return Setting;
+	}
+
+
+	public static void saveSettings(final List<Settings> setting)
+			throws IOException {
+		OutputStream outputStream = null;
+		BufferedWriter bufferedWriter = null;
+
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+
+			String settingPath = new File(jarPath).getParent() + File.separator + "settings";
+			File settingFlie = new File(settingPath);
+
+			if (!settingFlie.exists())
+				settingFlie.createNewFile();
+
+			outputStream = new FileOutputStream(settingFlie);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+					outputStream, Charset.forName("UTF-8")));
+
+			logger.info("Saving user settings.");
+			bufferedWriter.write(setting.get(0).getName());
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(setting.get(0).getValue()));
+			bufferedWriter.newLine();
+			bufferedWriter.write(setting.get(1).getName());
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(setting.get(1).getValue()));
+			bufferedWriter.newLine();
+			// Saves settings.
+			for (int i =2; i<18; i++) {
+				bufferedWriter.write(setting.get(i).getName());
+				bufferedWriter.newLine();
+				bufferedWriter.write(Integer.toHexString(setting.get(i).getValue()));
+				bufferedWriter.newLine();
+			}
+
+		} finally {
+			if (bufferedWriter != null)
+				bufferedWriter.close();
+		}
+	}
+
+
+		
 }
+
+
+
+
