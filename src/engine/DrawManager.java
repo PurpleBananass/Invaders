@@ -321,7 +321,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws game title.
+	 * Draws game title.x
 	 *
 	 * @param screen
 	 *            Screen to draw on.
@@ -740,6 +740,30 @@ public final class DrawManager {
 		else
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
+	}
+
+	public void drawClear(final Screen screen, final int option, final int level) {
+		String titleString = "LEVEL  " + level + "  Clear";
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
+
+		String continueString = "Continue";
+		String exitString = "Exit";
+
+		if (option == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, continueString,
+				screen.getHeight() / 4 * 3);
+
+		if (option == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, exitString,
+				screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
 	}
 
 	public void drawPauseWindow(final Screen screen){
