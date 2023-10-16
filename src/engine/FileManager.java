@@ -1,8 +1,17 @@
 package engine;
-
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import engine.DrawManager.SpriteType;
 
 /**
@@ -60,7 +68,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public void loadSprite(final Map<SpriteType, boolean[][]> spriteMap)
+	public void loadSprite(Map<SpriteType, boolean[][]> spriteMap)
 			throws IOException {
 		InputStream inputStream = null;
 
@@ -68,7 +76,6 @@ public final class FileManager {
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("graphics");
 			char c;
-
 			// Sprite loading.
 			for (Map.Entry<SpriteType, boolean[][]> sprite : spriteMap
 					.entrySet()) {
@@ -92,6 +99,102 @@ public final class FileManager {
 				inputStream.close();
 		}
 	}
+	/**
+	 * Change sprites from disk.
+	 *
+	 * @param spriteMap,spriteType,graphicsNum
+	 *            Changing boolean matrix that will
+	 *            change the image.
+	 * 			  graphicsNum is col_num(each graphics)
+	 * @throws IOException
+	 *             In case of changing problems.
+	 */
+	public void changeSprite(Map<SpriteType, boolean[][]> spriteMap, SpriteType spriteType, int graphicsNum)
+			throws IOException {
+		InputStream inputStream = checkSpriteType(spriteType);
+		try {
+			char c;
+			for (Map.Entry<SpriteType, boolean[][]> sprite : spriteMap
+					.entrySet()) {
+				if(sprite.getKey() == spriteType){
+					for(int k=-1; k<graphicsNum;k++){
+						for (int i = 0; i < sprite.getValue().length; i++)
+							for (int j = 0; j < sprite.getValue()[i].length; j++) {
+								do
+									c = (char) inputStream.read();
+								while (c != '0' && c != '1');
+
+								if (c == '1')
+									sprite.getValue()[i][j] = true;
+								else
+									sprite.getValue()[i][j] = false;
+							}
+					}
+					logger.fine("Sprite " + spriteType + " changed.");
+					break;
+				}
+			}
+			if (inputStream != null)
+				inputStream.close();
+		} finally {
+			if (inputStream != null)
+				inputStream.close();
+		}
+	}
+	/**
+	 * Check Sprite Type.
+	 *
+	 * @param spriteType
+	 *            Point size of the font.
+	 * @return inputStream.
+	 * @throws IOException
+	 *             In case of loading problems.
+	 */
+	public InputStream checkSpriteType(SpriteType spriteType){
+		InputStream inputStream = null;
+		if(spriteType == SpriteType.Bullet){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("bulletGraphics");
+		}
+		else if(spriteType == SpriteType.Ship){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("shipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyBullet){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("bulletGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipA1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipA2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipB1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipB2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipC1){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipC2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("enemyshipGraphics");
+		}
+		else if(spriteType == SpriteType.EnemyShipSpecial){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("specialenemyGraphics");
+		}
+		return inputStream;
+	}
+
 
 	/**
 	 * Loads a font of a given size.
@@ -162,12 +265,13 @@ public final class FileManager {
 	/**
 	 * Loads high scores from file, and returns a sorted list of pairs score -
 	 * value.
-	 * 
+	 * @param gameMode
+	 *             The game mode.
 	 * @return Sorted list of scores - players.
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public List<Score> loadHighScores() throws IOException {
+	public List<Score> loadHighScores(final int gameMode) throws IOException {
 
 		List<Score> highScores = new ArrayList<Score>();
 		InputStream inputStream = null;
@@ -180,14 +284,17 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores";
+			if (gameMode == 1)
+				scoresPath += "scores_1p";
+			else
+				scoresPath += "scores_2p";
 
 			File scoresFile = new File(scoresPath);
 			inputStream = new FileInputStream(scoresFile);
 			bufferedReader = new BufferedReader(new InputStreamReader(
 					inputStream, Charset.forName("UTF-8")));
 
-			logger.info("Loading user high scores.");
+			logger.info("Loading user high scores " + "from 'scores_" + gameMode +"p'");
 
 			Score highScore = null;
 			String name = bufferedReader.readLine();
@@ -213,6 +320,8 @@ public final class FileManager {
 		return highScores;
 	}
 
+
+
 	/**
 	 * Saves user high scores to disk.
 	 * 
@@ -221,7 +330,7 @@ public final class FileManager {
 	 * @throws IOException
 	 *             In case of loading problems.
 	 */
-	public void saveHighScores(final List<Score> highScores) 
+	public void saveHighScores(final List<Score> highScores, final int gameMode)
 			throws IOException {
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
@@ -233,7 +342,10 @@ public final class FileManager {
 
 			String scoresPath = new File(jarPath).getParent();
 			scoresPath += File.separator;
-			scoresPath += "scores";
+			if (gameMode == 1)
+				scoresPath += "scores_1p";
+			else
+				scoresPath += "scores_2p";
 
 			File scoresFile = new File(scoresPath);
 
@@ -263,203 +375,338 @@ public final class FileManager {
 				bufferedWriter.close();
 		}
 	}
-	public Player loadPlayer(char[] name) throws IOException {
+	public List<Settings> loadSettings() throws IOException {
 
-		Player player = null;
-		int amountOfItems = 0;
+		List<Settings> settings = new ArrayList<Settings>();
+		InputStream inputStream = null;
+		BufferedReader bufferedReader = null;
 
-		String jarPath = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, "UTF-8");
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
 
-		String playerPath = new File(jarPath).getParent() + File.separator + "accounts";
-		String currentPlayerPath = new File(jarPath).getParent() + File.separator + "currentPlayer";
+			String settingPath = new File(jarPath).getParent();
+			settingPath += File.separator;
+			settingPath += "settings";
 
-		File playerFile = new File(playerPath);
-		File currentPlayerFile = new File(currentPlayerPath);
-		currentPlayerFile.createNewFile();
+			File scoresFile = new File(settingPath);
+			inputStream = new FileInputStream(scoresFile);
+			bufferedReader = new BufferedReader(new InputStreamReader(
+					inputStream, Charset.forName("UTF-8")));
 
+			logger.info("Loading settings.");
 
+			Settings settings1 = null;
+			String name = bufferedReader.readLine();
+			String value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
 
-		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(playerFile), Charset.forName("UTF-8")));
-			 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentPlayerFile, false), Charset.forName("UTF-8")))) {
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
+			settings1 = new Settings(name, Integer.parseInt(value));
+			settings.add(settings1);
 
-			String loadedName = bufferedReader.readLine();
-			String currency = bufferedReader.readLine();
-
-			while ((loadedName != null) && (currency != null)) {
-				if (loadedName.equals(String.valueOf(name))) {
-					player = new Player(loadedName, Integer.parseInt(currency));
-					logger.info(String.valueOf(player.getCurrency()));
-					bufferedWriter.write(loadedName);
-					bufferedWriter.newLine();
-					bufferedWriter.write(currency);
-					bufferedWriter.newLine();
-					for (int i = 0; i < amountOfItems; i++) {
-						bufferedWriter.write(bufferedReader.readLine());
-						bufferedWriter.newLine();
-					}
-					bufferedWriter.flush();
-					break;
-				}else {
-					loadedName = bufferedReader.readLine();
-					currency = bufferedReader.readLine();
-				}
+			name = bufferedReader.readLine();
+			value = bufferedReader.readLine();
+			while ((name != null) && (value != null)) {
+				settings1 = new Settings(name, Integer.parseInt(value,16));
+				settings.add(settings1);
+				name = bufferedReader.readLine();
+				value = bufferedReader.readLine();
 			}
 
 		} catch (FileNotFoundException e) {
-			// create new player if player not found.
-			logger.info("Account list not found.");
+			// loads default if there's no settings.
+			logger.info("Loading default Settings.");
+			settings = loaddefaultSettings();
+		} finally {
+			if (bufferedReader != null)
+				bufferedReader.close();
 		}
-
-		return player;
+		return settings;
 	}
-	public void saveNewPlayer(final char[] name) throws IOException {
-		// Get the path to the JAR file.
-		String jarPath = FileManager.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+	public List<Settings> loaddefaultSettings() throws IOException {
+		List<Settings> Setting = new ArrayList<Settings>();
+		InputStream inputStream = null;
+		BufferedReader reader = null;
 
-		// Construct the path to the player file.
-		Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
+		try {
+			inputStream = FileManager.class.getClassLoader()
+					.getResourceAsStream("settings");
+			reader = new BufferedReader(new InputStreamReader(inputStream));
 
-		// Create the player file if it doesn't exist.
-		File playerFile = playerPath.toFile();
-		if (!playerFile.exists() && !playerFile.createNewFile()) {
-			logger.warning("Failed to create new player file at: " + playerPath);
-			return;
+			Settings Setting1 = null;
+			String name = reader.readLine();
+			String value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
+
+			name = reader.readLine();
+			value = reader.readLine();
+			Setting1 = new Settings(name, Integer.parseInt(value));
+			Setting.add(Setting1);
+
+			name = reader.readLine();
+			value = reader.readLine();
+			while ((name != null) && (value != null)) {
+				Setting1 = new Settings(name, Integer.parseInt(value.substring(2),16));
+				Setting.add(Setting1);
+				name = reader.readLine();
+				value = reader.readLine();
+			}
+
+			logger.info("Successfully load");
+		} finally {
+			if (inputStream != null)
+				inputStream.close();
 		}
 
-		// Write the new player data to the file.
-		try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
-			logger.info("Creating new user with name: " + String.valueOf(name));
-			bufferedWriter.write(String.valueOf(name));
+		return Setting;
+	}
+
+
+	public static void saveSettings(final List<Settings> setting)
+			throws IOException {
+		OutputStream outputStream = null;
+		BufferedWriter bufferedWriter = null;
+
+		try {
+			String jarPath = FileManager.class.getProtectionDomain()
+					.getCodeSource().getLocation().getPath();
+			jarPath = URLDecoder.decode(jarPath, "UTF-8");
+
+			String settingPath = new File(jarPath).getParent() + File.separator + "settings";
+			File settingFlie = new File(settingPath);
+
+			if (!settingFlie.exists())
+				settingFlie.createNewFile();
+
+			outputStream = new FileOutputStream(settingFlie);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+					outputStream, Charset.forName("UTF-8")));
+
+			logger.info("Saving user settings.");
+			bufferedWriter.write(setting.get(0).getName());
 			bufferedWriter.newLine();
-			bufferedWriter.write("0");
+			bufferedWriter.write(Integer.toString(setting.get(0).getValue()));
 			bufferedWriter.newLine();
-		} catch (IOException e) {
-			logger.warning("Failed to write new player data to file: " + e.getMessage());
-			throw e; // Re-throw the exception after logging it.
-		}
-	}
-
-	//Overwrites the content of currentPlayer.txt to accounts.txt.
-	public void updateAccounts() throws IOException {
-		String jarPath = FileManager.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-
-		Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
-
-		if (!Files.exists(playerPath)) {
-			logger.warning("Player file not found at: " + playerPath);
-			return;
-		}
-
-		StringBuilder inputBuffer = new StringBuilder();
-		try (BufferedReader bufferedReader = Files.newBufferedReader(playerPath, StandardCharsets.UTF_8)) {
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				inputBuffer.append(line).append('\n');
-			}
-		} catch (IOException e) {
-			logger.warning("Failed to read player data from file: " + e.getMessage());
-			throw e;
-		}
-
-		Path currentPlayerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
-
-		try (BufferedReader currentBufferedReader = Files.newBufferedReader(currentPlayerPath, StandardCharsets.UTF_8)) {
-			String loadedName = currentBufferedReader.readLine();
-			String currency = currentBufferedReader.readLine();
-
-			if (loadedName == null || currency == null) {
-				logger.warning("Invalid data in current player file");
-				return;
+			bufferedWriter.write(setting.get(1).getName());
+			bufferedWriter.newLine();
+			bufferedWriter.write(Integer.toString(setting.get(1).getValue()));
+			bufferedWriter.newLine();
+			// Saves settings.
+			for (int i =2; i<18; i++) {
+				bufferedWriter.write(setting.get(i).getName());
+				bufferedWriter.newLine();
+				bufferedWriter.write(Integer.toHexString(setting.get(i).getValue()));
+				bufferedWriter.newLine();
 			}
 
-			Player player = loadPlayer(loadedName.toCharArray());
-			String inputStr = inputBuffer.toString().replace(
-					loadedName + "\n" + player.getCurrency() + "\n",
-					loadedName + "\n" + currency + "\n");
-
-			try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8)) {
-				bufferedWriter.write(inputStr);
-				logger.info("Successfully changed amount of player: " + loadedName + " to " + currency);
-			} catch (IOException e) {
-				logger.warning("Failed to write updated player data to file: " + e.getMessage());
-				throw e;
-			}
-		} catch (IOException e) {
-			logger.warning("Failed to read current player data from file: " + e.getMessage());
-			throw e;
+		} finally {
+			if (bufferedWriter != null)
+				bufferedWriter.close();
 		}
 	}
 
-	public void updateCurrencyOfCurrentPlayer(int difference) throws IOException {
-		String jarPath = FileManager.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+    public Player loadPlayer(char[] name) throws IOException {
 
-		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+        Player player = null;
+        int amountOfItems = 0;
 
-		if (!Files.exists(playerPath)) {
-			logger.warning("Player file not found at: " + playerPath);
-			return;
-		}
+        String jarPath = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, "UTF-8");
 
-		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
-		if (lines.size() < 2) {
-			logger.warning("Invalid data in current player file");
-			return;
-		}
+        String playerPath = new File(jarPath).getParent() + File.separator + "accounts";
+        String currentPlayerPath = new File(jarPath).getParent() + File.separator + "currentPlayer";
 
-		String loadedName = lines.get(0);
-		int currentCurrency;
-		try {
-			currentCurrency = Integer.parseInt(lines.get(1));
-		} catch (NumberFormatException e) {
-			logger.warning("Invalid currency value in current player file");
-			return;
-		}
+        File playerFile = new File(playerPath);
+        File currentPlayerFile = new File(currentPlayerPath);
+        currentPlayerFile.createNewFile();
 
-		int newBalance = currentCurrency + difference;
-		lines.set(1, String.valueOf(newBalance));
 
-		try {
-			Files.write(playerPath, lines, StandardCharsets.UTF_8);
-			logger.info("Successfully changed amount of player: " + loadedName + " to " + newBalance);
-		} catch (IOException e) {
-			logger.warning("Failed to write updated player data to file: " + e.getMessage());
-			throw e;
-		}
-	}
 
-	public int getCurrentPlayerCurrency() throws IOException {
-		String jarPath = FileManager.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(playerFile), Charset.forName("UTF-8")));
+             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentPlayerFile, false), Charset.forName("UTF-8")))) {
 
-		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+            String loadedName = bufferedReader.readLine();
+            String currency = bufferedReader.readLine();
 
-		if (!Files.exists(playerPath)) {
-			logger.warning("Player file not found at: " + playerPath);
-			throw new FileNotFoundException("Player file not found at: " + playerPath);
-		}
+            while ((loadedName != null) && (currency != null)) {
+                if (loadedName.equals(String.valueOf(name))) {
+                    player = new Player(loadedName, Integer.parseInt(currency));
+                    logger.info(String.valueOf(player.getCurrency()));
+                    bufferedWriter.write(loadedName);
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(currency);
+                    bufferedWriter.newLine();
+                    for (int i = 0; i < amountOfItems; i++) {
+                        bufferedWriter.write(bufferedReader.readLine());
+                        bufferedWriter.newLine();
+                    }
+                    bufferedWriter.flush();
+                    break;
+                }else {
+                    loadedName = bufferedReader.readLine();
+                    currency = bufferedReader.readLine();
+                }
+            }
 
-		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
-		if (lines.size() < 2) {
-			logger.warning("Invalid data in current player file");
-			throw new IOException("Invalid data in current player file");
-		}
+        } catch (FileNotFoundException e) {
+            // create new player if player not found.
+            logger.info("Account list not found.");
+        }
 
-		int currency;
-		try {
-			currency = Integer.parseInt(lines.get(1));
-		} catch (NumberFormatException e) {
-			logger.warning("Invalid currency value in current player file");
-			throw new NumberFormatException("Invalid currency value in current player file");
-		}
+        return player;
+    }
+    public void saveNewPlayer(final char[] name) throws IOException {
+        // Get the path to the JAR file.
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
 
-		return currency;
-	}
+        // Construct the path to the player file.
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
+
+        // Create the player file if it doesn't exist.
+        File playerFile = playerPath.toFile();
+        if (!playerFile.exists() && !playerFile.createNewFile()) {
+            logger.warning("Failed to create new player file at: " + playerPath);
+            return;
+        }
+
+        // Write the new player data to the file.
+        try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
+            logger.info("Creating new user with name: " + String.valueOf(name));
+            bufferedWriter.write(String.valueOf(name));
+            bufferedWriter.newLine();
+            bufferedWriter.write("0");
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            logger.warning("Failed to write new player data to file: " + e.getMessage());
+            throw e; // Re-throw the exception after logging it.
+        }
+    }
+
+    //Overwrites the content of currentPlayer.txt to accounts.txt.
+    public void updateAccounts() throws IOException {
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
+
+        if (!Files.exists(playerPath)) {
+            logger.warning("Player file not found at: " + playerPath);
+            return;
+        }
+
+        StringBuilder inputBuffer = new StringBuilder();
+        try (BufferedReader bufferedReader = Files.newBufferedReader(playerPath, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                inputBuffer.append(line).append('\n');
+            }
+        } catch (IOException e) {
+            logger.warning("Failed to read player data from file: " + e.getMessage());
+            throw e;
+        }
+
+        Path currentPlayerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+        try (BufferedReader currentBufferedReader = Files.newBufferedReader(currentPlayerPath, StandardCharsets.UTF_8)) {
+            String loadedName = currentBufferedReader.readLine();
+            String currency = currentBufferedReader.readLine();
+
+            if (loadedName == null || currency == null) {
+                logger.warning("Invalid data in current player file");
+                return;
+            }
+
+            Player player = loadPlayer(loadedName.toCharArray());
+            String inputStr = inputBuffer.toString().replace(
+                    loadedName + "\n" + player.getCurrency() + "\n",
+                    loadedName + "\n" + currency + "\n");
+
+            try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8)) {
+                bufferedWriter.write(inputStr);
+                logger.info("Successfully changed amount of player: " + loadedName + " to " + currency);
+            } catch (IOException e) {
+                logger.warning("Failed to write updated player data to file: " + e.getMessage());
+                throw e;
+            }
+        } catch (IOException e) {
+            logger.warning("Failed to read current player data from file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public void updateCurrencyOfCurrentPlayer(int difference) throws IOException {
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+        if (!Files.exists(playerPath)) {
+            logger.warning("Player file not found at: " + playerPath);
+            return;
+        }
+
+        List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+        if (lines.size() < 2) {
+            logger.warning("Invalid data in current player file");
+            return;
+        }
+
+        String loadedName = lines.get(0);
+        int currentCurrency;
+        try {
+            currentCurrency = Integer.parseInt(lines.get(1));
+        } catch (NumberFormatException e) {
+            logger.warning("Invalid currency value in current player file");
+            return;
+        }
+
+        int newBalance = currentCurrency + difference;
+        lines.set(1, String.valueOf(newBalance));
+
+        try {
+            Files.write(playerPath, lines, StandardCharsets.UTF_8);
+            logger.info("Successfully changed amount of player: " + loadedName + " to " + newBalance);
+        } catch (IOException e) {
+            logger.warning("Failed to write updated player data to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public int getCurrentPlayerCurrency() throws IOException {
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+        if (!Files.exists(playerPath)) {
+            logger.warning("Player file not found at: " + playerPath);
+            throw new FileNotFoundException("Player file not found at: " + playerPath);
+        }
+
+        List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+        if (lines.size() < 2) {
+            logger.warning("Invalid data in current player file");
+            throw new IOException("Invalid data in current player file");
+        }
+
+        int currency;
+        try {
+            currency = Integer.parseInt(lines.get(1));
+        } catch (NumberFormatException e) {
+            logger.warning("Invalid currency value in current player file");
+            throw new NumberFormatException("Invalid currency value in current player file");
+        }
+
+        return currency;
+    }
 }

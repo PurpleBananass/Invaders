@@ -45,6 +45,15 @@ public class Bullet extends Entity {
 		else
 			this.spriteType = SpriteType.EnemyBullet;
 	}
+	/**
+	 * Sets correct sprite for the Bigger bullet, based on speed.
+	 */
+	public final void setBiggerSprite() {
+		if (speed < 0)
+			this.spriteType = SpriteType.BiggerBullet;
+		else
+			this.spriteType = SpriteType.BiggerEnemyBullet;
+	}
 
 	/**
 	 * Updates the bullet's position.
