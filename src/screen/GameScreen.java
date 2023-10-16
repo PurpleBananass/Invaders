@@ -516,8 +516,7 @@ public class GameScreen extends Screen {
 		}
 
 		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
-			this.isRunning = false;
-		AchievementManager.getInstance().checkLuckySeven(this.score);
+			this.isRunning = false;	
 	}
 
 	/**
@@ -556,7 +555,7 @@ public class GameScreen extends Screen {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
 		}
-		if (this.ship2.isExistAuxiliaryShips()) {
+		if (gameState.getMode() == 2 && this.ship2.isExistAuxiliaryShips()) {
 			for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips()) {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
