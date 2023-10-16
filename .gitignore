@@ -58,7 +58,6 @@ local.properties
 *.tlb
 *.tli
 *.tlh
-*.tmp
 *.vspscc
 .builds
 *.dotCover
@@ -72,6 +71,8 @@ ipch/
 *.ncb
 *.opensdf
 *.sdf
+# Visual Studio Code
+.vscode/
 
 # Visual Studio profiler
 *.psess
@@ -169,3 +170,6 @@ pip-log.txt
 log*
 *.ttf
 .checkstyle
+.idea
+*.iml
+outg
