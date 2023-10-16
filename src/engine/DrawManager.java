@@ -16,7 +16,7 @@ import java.lang.Integer;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
-import screen.Select2PScreen;
+import screen.SelectScreen;
 import screen.SettingScreen;
 
 /**
@@ -482,7 +482,7 @@ public final class DrawManager {
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
-		if(Select2PScreen.twoPlayerModeOn){
+		if(SelectScreen.gameMode == 2){
 			backBufferGraphics.setColor(Color.white);
 			backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
 			backBufferGraphics.setFont(fontBig);
