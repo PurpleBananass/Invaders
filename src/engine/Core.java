@@ -121,6 +121,7 @@ public final class Core {
 
 			switch (returnCode) {
 				case 0:
+					// Login Menu
 					currentScreen = new LoginScreen(width, height, FPS);LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
