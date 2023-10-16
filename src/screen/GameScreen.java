@@ -460,10 +460,10 @@ public class GameScreen extends Screen {
 				this.enemyShipSpecial = null;
 			}
 
-			if(this.magazine==0)
+			/** If you use up all your magazines and bullets and then recharge your magazine, you will die.*/
+			if(this.magazine<0)
 				this.lives =0;
-
-			if(this.magazine2==0)
+			if(this.magazine2<0)
 				this.lives2 =0;
 
 
