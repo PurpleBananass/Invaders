@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="change font color&#10;green -&gt; white in skin select screen">
+    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="edit drawskinselection&#10;divide 1P/2P each other">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log" beforeDir="false" afterPath="$PROJECT_DIR$/log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/Core.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/Core.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/DrawManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/DrawManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697388351712</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="edit drawskinselection&#10;divide 1P/2P each other">
+      <created>1697415331797</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1697415331797</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -164,7 +169,8 @@
     <MESSAGE value="Edit SkinSeletionMenu&#10;make &quot;1P&quot;, &quot;2P&quot; on skin box" />
     <MESSAGE value="add if(Twoplayermode)&#10;each cases : 1P, 2P get other design" />
     <MESSAGE value="change font color&#10;green -&gt; white in skin select screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="change font color&#10;green -&gt; white in skin select screen" />
+    <MESSAGE value="edit drawskinselection&#10;divide 1P/2P each other" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit drawskinselection&#10;divide 1P/2P each other" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
