@@ -21,7 +21,6 @@ public class EnemyShip extends Entity {
 	private static final int BONUS_TYPE_POINTS = 100;
 
 	public static final double ITEM_PROPORTION = 0.1;
-
 	public static final int RANDOM_BOUND = 10000;
 
 	/** Cooldown between sprite changes. */

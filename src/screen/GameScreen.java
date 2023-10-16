@@ -111,6 +111,7 @@ public class GameScreen extends Screen {
 	/**  Checks item is bomb **/
 	private boolean isBomb = false;
 
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 *
