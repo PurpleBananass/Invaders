@@ -217,12 +217,8 @@ public class GameScreen extends Screen {
 	 */
 	public final int run() {
 		super.run();
-		if(gameState.getMode() == 1) {
-			this.score += LIFE_SCORE * Math.max(0, (this.lives - 1));
-		}
-		if(gameState.getMode() == 2) {
-			this.score += LIFE_SCORE * Math.max(0,(this.lives + this.lives2 - 1));
-		}
+
+		this.score += LIFE_SCORE * (this.lives - 1);
 		this.logger.info("Screen cleared with a score of " + this.score);
 
 		return this.returnCode;
