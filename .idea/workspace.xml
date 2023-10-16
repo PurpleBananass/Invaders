@@ -4,35 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="resolve conflict">
+    <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="__">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Cooldown.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Core.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/DrawManager$SpriteType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/DrawManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/FileManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Frame.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/GameSettings.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/GameState.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/InputManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/MinimalFormatter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Score.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Settings.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/Bullet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/BulletPool.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShip$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShip.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShipFormation$Direction.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShipFormation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/Entity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/Ship.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/GameScreen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/HighScoreScreen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/ScoreScreen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/Screen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/SettingScreen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/SkinSelectionScreen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/TitleScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/Core.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/Core.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/DrawManager$SpriteType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/DrawManager$SpriteType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/DrawManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/DrawManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/FileManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/FileManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/GameState.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/GameState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/InputManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/InputManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShip$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShip$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShip.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShip.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShipFormation$Direction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShipFormation$Direction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShipFormation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/entity/EnemyShipFormation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/entity/Entity.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/entity/Entity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/entity/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/entity/Ship.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/graphics" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/graphics" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/screen/GameScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/screen/GameScreen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/screen/HighScoreScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/screen/HighScoreScreen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/screen/ScoreScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/screen/ScoreScreen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/screen/SkinSelectionScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/screen/SkinSelectionScreen.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +44,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2Wn0DPKrMmfK5evoEblTGTP6V02" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -64,13 +57,24 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "1.8",
     "last_opened_file_path": "C:/Users/Hong/Invaders-seojun_pregame",
-    "project.structure.last.edited": "프로젝트",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="Invaders-seojun_pregame1" />
@@ -131,10 +135,13 @@
       <updated>1697352467955</updated>
     </task>
     <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="__" />
       <created>1697352921293</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1697352921293</updated>
+      <workItem from="1697422139151" duration="366000" />
+      <workItem from="1697422561851" duration="713000" />
     </task>
     <task id="LOCAL-00007" summary="make Centered Line in SkinSelectionScreen">
       <created>1697376450074</created>
@@ -209,6 +216,9 @@
     <option name="localTasksCounter" value="17" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -243,7 +253,8 @@
     <MESSAGE value="change font color&#10;green -&gt; white in skin select screen" />
     <MESSAGE value="edit drawskinselection&#10;divide 1P/2P each other" />
     <MESSAGE value="resolve conflict" />
-    <option name="LAST_COMMIT_MESSAGE" value="resolve conflict" />
+    <MESSAGE value="__" />
+    <option name="LAST_COMMIT_MESSAGE" value="__" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
