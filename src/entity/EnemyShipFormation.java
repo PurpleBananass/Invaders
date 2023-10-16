@@ -148,34 +148,25 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				else
 					spriteType = SpriteType.EnemyShipA1;
 
-				EnemyShip enemyShip = null;
+				EnemyShip enemyShip = switch (spriteType) {
+					case EnemyShipA1 -> new EnemyShipA((SEPARATION_DISTANCE
+							* this.enemyShips.indexOf(column))
+							+ positionX, (SEPARATION_DISTANCE * i)
+							+ positionY, spriteType, gameState);
+					case EnemyShipB1 -> new EnemyShipB((SEPARATION_DISTANCE
+							* this.enemyShips.indexOf(column))
+							+ positionX, (SEPARATION_DISTANCE * i)
+							+ positionY, spriteType, gameState);
+					case EnemyShipC1 -> new EnemyShipC((SEPARATION_DISTANCE
+							* this.enemyShips.indexOf(column))
+							+ positionX, (SEPARATION_DISTANCE * i)
+							+ positionY, spriteType, gameState);
+					default -> new EnemyShip((SEPARATION_DISTANCE
+							* this.enemyShips.indexOf(column))
+							+ positionX, (SEPARATION_DISTANCE * i)
+							+ positionY, spriteType, gameState);
+				};
 
-				switch (spriteType)
-				{
-					case EnemyShipA1:
-						enemyShip = new EnemyShipA((SEPARATION_DISTANCE
-								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState);
-						break;
-					case EnemyShipB1:
-						enemyShip = new EnemyShipB((SEPARATION_DISTANCE
-								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState);
-						break;
-					case EnemyShipC1:
-						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
-								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState);
-						break;
-					default:
-						enemyShip = new EnemyShip((SEPARATION_DISTANCE
-								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState);
-				}
 				column.add(enemyShip);
 				this.shipCount++;
 			}
@@ -394,22 +385,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				shot.set(index, true);
 				EnemyShip shooter = this.shooters.get(index);
 				shooter.shoot(bullets);
-				switch (shooter.spriteType)
-				{
-					case EnemyShipA1:
-					case EnemyShipA2:
-						this.shootingCooldown.timedown(BULLETCOOLDOWN[0]);
-						break;
-					case EnemyShipB1:
-					case EnemyShipB2:
-						this.shootingCooldown.timedown(BULLETCOOLDOWN[1]);
-						break;
-					case EnemyShipC1:
-					case EnemyShipC2:
-						this.shootingCooldown.timedown(BULLETCOOLDOWN[2]);
-						break;
-					default:
-						break;
+				switch (shooter.spriteType) {
+					case EnemyShipA1, EnemyShipA2 -> this.shootingCooldown.timedown(BULLETCOOLDOWN[0]);
+					case EnemyShipB1, EnemyShipB2 -> this.shootingCooldown.timedown(BULLETCOOLDOWN[1]);
+					case EnemyShipC1, EnemyShipC2 -> this.shootingCooldown.timedown(BULLETCOOLDOWN[2]);
+					default -> {
+					}
 				}
 			}
 		}
@@ -552,8 +533,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		Set<EnemyShip> enemyShipsList = new HashSet<EnemyShip>();
 
 		for (List<EnemyShip> column : this.enemyShips)
-			for (EnemyShip enemyShip : column)
-				enemyShipsList.add(enemyShip);
+			enemyShipsList.addAll(column);
 
 		return enemyShipsList.iterator();
 	}
