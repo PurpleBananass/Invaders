@@ -1,34 +1,20 @@
-[INFO|1:18:29]: Started loading resources. 
-[FINE|1:18:29]: Sprite Ship loaded. 
-[FINE|1:18:29]: Sprite ShipDestroyed loaded. 
-[FINE|1:18:29]: Sprite Bullet loaded. 
-[FINE|1:18:29]: Sprite EnemyBullet loaded. 
-[FINE|1:18:29]: Sprite EnemyShipA1 loaded. 
-[FINE|1:18:29]: Sprite EnemyShipA2 loaded. 
-[FINE|1:18:29]: Sprite EnemyShipB1 loaded. 
-[FINE|1:18:29]: Sprite EnemyShipB2 loaded. 
-[FINE|1:18:29]: Sprite EnemyShipC1 loaded. 
-[FINE|1:18:29]: Sprite EnemyShipC2 loaded. 
-[FINE|1:18:29]: Sprite EnemyShipSpecial loaded. 
-[FINE|1:18:29]: Sprite Explosion loaded. 
-[INFO|1:18:29]: Finished loading the sprites. 
-[INFO|1:18:31]: Finished loading the fonts. 
-[INFO|1:18:31]: Starting 448x520 title screen at 60 fps. 
-[INFO|1:18:35]: Closing title screen. 
-[INFO|1:18:35]: There's no settings yet 
-[INFO|1:18:35]: Starting 448x520 title screen at 60 fps. 
-[INFO|1:18:39]: Closing title screen. 
-[INFO|1:18:39]: There's no settings yet 
-[INFO|1:18:39]: Starting 448x520 title screen at 60 fps. 
-[INFO|1:18:42]: Closing title screen. 
-[INFO|1:18:42]: There's no shop yet 
-[INFO|1:18:42]: Starting 448x520 title screen at 60 fps. 
-[INFO|1:18:43]: Closing title screen. 
-[INFO|1:18:43]: Loading user high scores. 
-[INFO|1:18:43]: Starting 448x520 high score screen at 60 fps. 
-[INFO|1:18:44]: Closing high score screen. 
-[INFO|1:18:44]: Starting 448x520 title screen at 60 fps. 
-[INFO|1:18:50]: Closing title screen. 
-[INFO|1:18:50]: Starting 448x520 Skin Selection screen at 60 fps. 
-[INFO|1:18:52]: Starting 448x520 game screen at 60 fps. 
-[INFO|1:18:52]: Initializing 5x4 ship formation in (20,100) 
+[INFO|10:04:56]: Started loading resources. 
+[FINE|10:04:56]: Sprite Ship loaded. 
+[FINE|10:04:56]: Sprite ShipDestroyed loaded. 
+[FINE|10:04:56]: Sprite Bullet loaded. 
+[FINE|10:04:56]: Sprite EnemyBullet loaded. 
+[FINE|10:04:56]: Sprite EnemyShipA1 loaded. 
+[FINE|10:04:56]: Sprite EnemyShipA2 loaded. 
+[FINE|10:04:56]: Sprite EnemyShipB1 loaded. 
+[FINE|10:04:56]: Sprite EnemyShipB2 loaded. 
+[FINE|10:04:56]: Sprite EnemyShipC1 loaded. 
+[FINE|10:04:56]: Sprite EnemyShipC2 loaded. 
+[FINE|10:04:56]: Sprite EnemyShipSpecial loaded. 
+[FINE|10:04:56]: Sprite Explosion loaded. 
+[INFO|10:04:56]: Finished loading the sprites. 
+[INFO|10:04:58]: Finished loading the fonts. 
+[INFO|10:04:58]: Starting 448x520 title screen at 60 fps. 
+[INFO|10:05:00]: Closing title screen. 
+[INFO|10:05:00]: Starting 448x520 high score screen at 60 fps. 
+[INFO|10:05:02]: Closing setting screen. 
+[INFO|10:05:02]: Starting 448x520 Skin Selection screen at 60 fps. 
