@@ -754,13 +754,13 @@ public final class DrawManager {
 		String quit = "Quit";
 		String resume = "Resume";
 
-		if (option == 0)
+		if (option == 1)
 			backBufferGraphics.setColor(Color.YELLOW);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, quit, screen.getHeight() / 2 - 10);
 
-		if (option == 1)
+		if (option == 0)
 			backBufferGraphics.setColor(Color.YELLOW);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
