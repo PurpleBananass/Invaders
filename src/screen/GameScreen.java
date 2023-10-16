@@ -1,5 +1,6 @@
 package screen;
 
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -110,6 +111,11 @@ public class GameScreen extends Screen {
 	/**  Checks item is bomb **/
 	private boolean isBomb = false;
 
+
+	/**  Checks item is bomb **/
+	private boolean isBomb = false;
+
+	private boolean isChecked = false;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
