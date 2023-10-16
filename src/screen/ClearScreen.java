@@ -39,18 +39,16 @@ public class ClearScreen extends Screen {
      * @param height Screen height.
      * @param fps    Frames per second, frame rate at which the game is run.
      */
-    public ClearScreen(final GameState gameState,
-                       final int width, final int height, final int fps) {
+    public ClearScreen(final int width, final int height, final int fps,
+                       final GameState gameState) {
         super(width, height, fps);
 
         this.gameState = gameState;
-        this.level = gameState.getLevel();
+        this.level = gameState.getLevel()-1;
         this.score = gameState.getScore();
         this.lives = gameState.getLivesRemaining1p();
-
-        if (gameState.getMode() == 2) {
+        if (gameState.getMode() == 2)
             this.lives2 = gameState.getLivesRemaining2p();
-        }
 
         try {
             if (this.gameState.getMode() == 1) {

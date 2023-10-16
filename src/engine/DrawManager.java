@@ -682,15 +682,9 @@ public final class DrawManager {
 
 	public void drawClear(final Screen screen, final int option, final int level) {
 		String titleString = "LEVEL  " + level + "  Clear";
-//		String instructionsString =
-//				"select with w+s / arrows, confirm with space";
-//
-//		backBufferGraphics.setColor(Color.GRAY);
-//		drawCenteredRegularString(screen, instructionsString,
-//				screen.getHeight() / 2);
 
 		backBufferGraphics.setColor(Color.GREEN);
-		drawCenteredBigString(screen, titleString, screen.getHeight() / 3);
+		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
 
 		String continueString = "Continue";
 		String exitString = "Exit";
@@ -700,14 +694,14 @@ public final class DrawManager {
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, continueString,
-				screen.getHeight() / 3 * 2);
+				screen.getHeight() / 4 * 3);
 
 		if (option == 1)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString,
-				screen.getHeight() / 3 * 2 + fontRegularMetrics.getHeight() * 2);
+				screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
 
 	}
 

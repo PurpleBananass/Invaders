@@ -176,8 +176,8 @@ public final class Core {
 					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 							&& gameState.getLevel() <= NUM_LEVELS) {
-						currentScreen = new ClearScreen(gameState, width, height, FPS);
-						LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						currentScreen = new ClearScreen(width, height, FPS, gameState);
+						LOGGER.info("Starting 	" + WIDTH + "x" + HEIGHT
 								+ " clear screen at " + FPS + " fps.");
 						returnCode = frame.setScreen(currentScreen);
 						LOGGER.info("Closing clear screen.");
