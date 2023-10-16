@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.lang.Integer;
 
+import screen.GameScreen;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
@@ -464,11 +465,11 @@ public final class DrawManager {
 		String lives2RemainingString = "2p's lives remaining " + livesRemaining2;
 		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
 		String accuracyString = String
-				.format("accuracy %.2f%%", accuracy * 100);
+				.format("1p's accuracy %.2f%%", accuracy * 100);
 		String accuracyString2 = String
-				.format("accuracy %.2f%%", accuracy2 * 100);
+				.format("2p's accuracy %.2f%%", accuracy2 * 100);
 
-		int height = isNewRecord ? 4 : 2;
+		int height = isNewRecord ? 4 : 3;
 
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, scoreString, screen.getHeight()
@@ -484,7 +485,7 @@ public final class DrawManager {
 						* 6);
 		drawCenteredRegularString(screen, accuracyString, screen.getHeight()
 				/ height + fontRegularMetrics.getHeight() * 8);
-		drawCenteredRegularString(screen, accuracyString, screen.getHeight()
+		drawCenteredRegularString(screen, accuracyString2, screen.getHeight()
 				/ height + fontRegularMetrics.getHeight() * 10);
 	}
 
@@ -553,7 +554,7 @@ public final class DrawManager {
 		String continueOrExitString =
 				"Press Space to play again, Escape to exit";
 
-		int height = isNewRecord ? 4 : 2;
+		int height = isNewRecord ? 4 : 3;
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, gameOverString, screen.getHeight()
