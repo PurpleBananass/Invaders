@@ -299,7 +299,7 @@ public class GameScreen extends Screen {
 						auxiliaryShips.get(0).destroy();
 						auxiliaryShips.get(1).destroy();
 					}
-					if (inputManager.isKeyDown(KeyEvent.VK_1))
+					if (inputManager.isKeyDown(KeyEvent.VK_G))
 						if(this.ship.itemCoolTime())
 							useItem(this.ship.getItemQueue().deque(), this.ship);
 				}
@@ -400,7 +400,7 @@ public class GameScreen extends Screen {
 							auxiliaryShips.get(0).destroy();
 							auxiliaryShips.get(1).destroy();
 						}
-						if (inputManager.isKeyDown(KeyEvent.VK_1))
+						if (inputManager.isKeyDown(KeyEvent.VK_G))
 							if(this.ship.itemCoolTime())
 								useItem(this.ship.getItemQueue().deque(), this.ship);
 					}
