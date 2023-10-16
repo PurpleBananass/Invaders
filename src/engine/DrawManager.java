@@ -77,7 +77,8 @@ public final class DrawManager {
 		/** Destroyed enemy ship. */
 		Explosion,
 
-		Item
+		Item,
+		Barrier
 	};
 
 	/**

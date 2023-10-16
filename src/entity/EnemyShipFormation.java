@@ -225,7 +225,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				* this.baseSpeed);
 		this.movementSpeed += MINIMUM_SPEED;
 
-		/** If the number of remain enemyShip is one, it moves quickly in even row. */
+		/** If the number of remain enemyShip is one, it moves quickly in odd row. */
 		if(shipCount == 1 && flag == 1){
 			this.movementSpeed = 5;
 		}
@@ -264,6 +264,9 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						currentDirection = Direction.RIGHT;
 						this.logger.info("Formation now moving right 4");
 					}
+					/** if ship remains one switch flag.
+					 * it works only on odd row
+					 * */
 					if (shipCount == 1) flag *= -1;
 				}
 			} else {
@@ -276,6 +279,9 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						currentDirection = Direction.LEFT;
 						this.logger.info("Formation now moving left 6");
 					}
+					/** if ship remains one switch flag.
+					 * it works only on odd row
+					 * */
 					if(shipCount==1) flag*= -1;
 				}
 			}
