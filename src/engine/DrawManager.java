@@ -759,11 +759,12 @@ public final class DrawManager {
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, quit, screen.getHeight() / 2 - 10);
+
 		if (option == 1)
 			backBufferGraphics.setColor(Color.YELLOW);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, resume, screen.getHeight() / 2 + 20);
+		drawCenteredRegularString(screen, resume, screen.getHeight() / 2 + 20 );
 
 		//How to operate in the pause window
 		backBufferGraphics.setColor(Color.YELLOW);

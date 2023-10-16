@@ -516,11 +516,11 @@ public class GameScreen extends Screen {
 					this.enemyShipSpecial = null;
 				}
 
-				if (this.magazine == 0)
-					this.lives = 0;
-
-				if (this.magazine2 == 0)
-					this.lives2 = 0;
+			/** If you use up all your magazines and bullets and then recharge your magazine, you will die.*/
+			if(this.magazine<0)
+				this.lives =0;
+			if(this.magazine2<0)
+				this.lives2 =0;
 
 
 				this.ship.update();
@@ -570,14 +570,6 @@ public class GameScreen extends Screen {
 			}
 		}
 
-		if ((this.enemyShipFormation.isEmpty() || this.lives == 0 || (this.gameState.getMode() == 2 && this.lives2 == 0))
-				&& !this.levelFinished) {
-			this.levelFinished = true;
-			this.screenFinishedCooldown.reset();
-		}
-
-		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
-			this.isRunning = false;
 		AchievementManager.getInstance().checkLuckySeven(this.score);
 
 		draw();
