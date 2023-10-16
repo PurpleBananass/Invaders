@@ -176,7 +176,7 @@ public class GameScreen extends Screen {
 	public final void initialize() {
 		super.initialize();
 
-		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
+		enemyShipFormation = new EnemyShipFormation(this.gameSettings, this.gameState);
 		enemyShipFormation.attach(this);
 
 		// 게임 모드 별 함선 생성 제어
@@ -556,7 +556,7 @@ public class GameScreen extends Screen {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
 		}
-		if (this.ship2.isExistAuxiliaryShips()) {
+		if (gameState.getMode() == 2 && this.ship2.isExistAuxiliaryShips()) {
 			for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips()) {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}

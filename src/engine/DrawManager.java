@@ -63,6 +63,10 @@ public final class DrawManager {
 		Bullet,
 		/** Enemy bullet. */
 		EnemyBullet,
+		/** Player bullet. */
+		BiggerBullet,
+		/** Enemy bullet. */
+		BiggerEnemyBullet,
 		/** First enemy ship - first form. */
 		EnemyShipA1,
 		/** First enemy ship - second form. */
@@ -109,6 +113,9 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.Item, new boolean[13][7]);
 
 			fileManager.loadSprite(spriteMap);
+
+			fileManager.changeSprite(spriteMap,SpriteType.Bullet,0);
+			fileManager.changeSprite(spriteMap,SpriteType.Ship,0);
 			logger.info("Finished loading the sprites.");
 
 			// Font loading.
