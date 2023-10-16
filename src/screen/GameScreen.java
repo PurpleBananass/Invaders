@@ -447,7 +447,7 @@ public class GameScreen extends Screen {
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
-				this.ship.set_item_Speed();
+				this.ship.setItemSpeed();
 				this.logger.info("SpeedUp Item 사용");
 			}
 			else if (!item.getIsGet() &&

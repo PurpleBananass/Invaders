@@ -183,8 +183,6 @@ public class Ship extends Entity {
 			}
 		};
 		timer.schedule(task, 10000);
-
-
 	}
 
 
@@ -208,7 +206,6 @@ public class Ship extends Entity {
 			this.changeColor(Color.BLUE);
 			timer.schedule(task, 10000);
 		}
-
 	}
 
 	public final ItemQueue getItemQueue(){return this.itemQueue;}
