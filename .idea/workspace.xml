@@ -6,10 +6,33 @@
   <component name="ChangeListManager">
     <list default="true" id="8df5f03c-8b0b-462b-8f44-ded7d851efeb" name="Changes" comment="resolve conflict">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log" beforeDir="false" afterPath="$PROJECT_DIR$/log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/Core.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/Core.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/DrawManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/DrawManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/yuna_code/engine/FileManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/yuna_code/engine/FileManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Cooldown.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Core.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/DrawManager$SpriteType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/DrawManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/FileManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Frame.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/GameSettings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/GameState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/InputManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/MinimalFormatter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Score.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/engine/Settings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/Bullet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/BulletPool.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShip$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShip.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShipFormation$Direction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/EnemyShipFormation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/Entity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/entity/Ship.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/GameScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/HighScoreScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/ScoreScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/Screen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/SettingScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/SkinSelectionScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Invaders-seojun_pregame1/screen/TitleScreen.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +40,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="invaders/main" />
+    <option name="BRANCH" value="invaders/upstream_merge" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -41,15 +64,28 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "1.8",
     "last_opened_file_path": "C:/Users/Hong/Invaders-seojun_pregame",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "모듈",
+    "project.structure.last.edited": "프로젝트",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Invaders-seojun_pregame1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Invaders-seojun_pregame1" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="Changes">
@@ -163,7 +199,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697418641538</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="resolve conflict">
+      <created>1697419168422</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1697419168422</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
