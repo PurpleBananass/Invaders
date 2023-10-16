@@ -649,10 +649,11 @@ public class GameScreen extends Screen {
 		}
 
 		if(manual){
-			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 85, 165);
+			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 90, 180);
 			drawManager.drawManualMenu(this);
-			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 85, Color.CYAN);
-			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12 + 80, Color.CYAN);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 90, Color.CYAN);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 50, Color.CYAN);
+			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12 + 90, Color.CYAN);
 		}
 
 		drawManager.completeDrawing(this);

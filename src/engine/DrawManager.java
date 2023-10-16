@@ -777,32 +777,19 @@ public final class DrawManager {
 		String[] keyValue = SettingScreen.getKeySettingString();
 
 		backBufferGraphics.setColor(Color.CYAN);
-		drawCenteredRegularString(screen, "Play manual", screen.getHeight() / 2 - 100);
-		backBufferGraphics.drawString("Player1", screen.getWidth() / 2 - 140, screen.getHeight() / 2 - 80);
-		backBufferGraphics.drawString("Player2", screen.getWidth() / 2 + 60, screen.getHeight() / 2 - 80);
+		drawCenteredRegularString(screen, "Play manual", screen.getHeight() / 2 - 105);
+		backBufferGraphics.drawString("Player1", screen.getWidth() / 2 - 140, screen.getHeight() / 2 - 60);
+		backBufferGraphics.drawString("Player2", screen.getWidth() / 2 + 65, screen.getHeight() / 2 - 60);
 
-		int y = screen.getHeight() / 2 - 50;
-		//player1
-		int x1 = screen.getWidth() / 2 - 170;
-		backBufferGraphics.drawString(keyInfo[0], x1, y);
-		backBufferGraphics.drawString(keyInfo[1], x1, y+20);
-		backBufferGraphics.drawString(keyInfo[2], x1, y+40);
-		backBufferGraphics.drawString(keyInfo[3], x1, y+60);
-		backBufferGraphics.drawString(keyInfo[4], x1, y+80);
-		backBufferGraphics.drawString(keyInfo[5], x1, y+100);
-		backBufferGraphics.drawString(keyInfo[6], x1, y+120);
-		backBufferGraphics.drawString(keyInfo[7], x1, y+140);
+		backBufferGraphics.setColor(Color.WHITE);
+		int y = screen.getHeight() / 2 - 30;
+		int x1 = screen.getWidth() / 2 - 150; //player1
+		int x2 = screen.getWidth() / 2 + 55; //player2
+		for(int i=0; i<8; i++){
+			backBufferGraphics.drawString(keyInfo[i], x1-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyInfo[i], x2-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+		}
 
-		//player2
-		int x2 = screen.getWidth() / 2 + 30;
-		backBufferGraphics.drawString(keyInfo[0], x2, y);
-		backBufferGraphics.drawString(keyInfo[1], x2, y+20);
-		backBufferGraphics.drawString(keyInfo[2], x2, y+40);
-		backBufferGraphics.drawString(keyInfo[3], x2, y+60);
-		backBufferGraphics.drawString(keyInfo[4], x2, y+80);
-		backBufferGraphics.drawString(keyInfo[5], x2, y+100);
-		backBufferGraphics.drawString(keyInfo[6], x2, y+120);
-		backBufferGraphics.drawString(keyInfo[7], x2, y+140);
 
 	}
 
