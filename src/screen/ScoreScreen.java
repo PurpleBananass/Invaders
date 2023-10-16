@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import engine.AchievementManager;
 import engine.Cooldown;
 import engine.Core;
 import engine.GameState;
@@ -27,14 +28,20 @@ public class ScoreScreen extends Screen {
 	/** Code of last mayus character. */
 	private static final int LAST_CHAR = 90;
 
+	/** Current gameMode. */
+	private int gameMode;
 	/** Current score. */
 	private int score;
-	/** Player lives left. */
-	private int livesRemaining;
-	/** Total bullets shot by the player. */
-	private int bulletsShot;
+	/** 1p's lives left. */
+	private int livesRemaining1;
+	/** 2p's lives left. */
+	private int livesRemaining2;
+	/** Total bullets shot by the players. */
+	private int bulletsShot1;
+	private int bulletsShot2;
 	/** Total ships destroyed by the player. */
-	private int shipsDestroyed;
+	private int shipsDestroyed1;
+	private int shipsDestroyed2;
 	/** List of past high scores. */
 	private List<Score> highScores;
 	/** Checks if current score is a new high score. */
@@ -62,18 +69,27 @@ public class ScoreScreen extends Screen {
 			final GameState gameState) {
 		super(width, height, fps);
 
+		this.gameMode = gameState.getMode();
 		this.score = gameState.getScore();
-		this.livesRemaining = gameState.getLivesRemaining();
-		this.bulletsShot = gameState.getBulletsShot();
-		this.shipsDestroyed = gameState.getShipsDestroyed();
+		this.livesRemaining1 = gameState.getLivesRemaining1p();
+		this.bulletsShot1 = gameState.getBulletsShot1();
+		if (gameState.getMode() == 2) {
+			this.livesRemaining2 = gameState.getLivesRemaining2p();
+			this.bulletsShot2 = gameState.getBulletsShot2();
+			this.shipsDestroyed2 = gameState.getShipsDestroyed2();
+		}
+
+		this.shipsDestroyed1 = gameState.getShipsDestroyed();
 		this.isNewRecord = false;
 		this.name = "AAA".toCharArray();
 		this.nameCharSelected = 0;
 		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
 
+		AchievementManager.getInstance().checkScore(this.score);
+
 		try {
-			this.highScores = Core.getFileManager().loadHighScores();
+			this.highScores = Core.getFileManager().loadHighScores(this.gameMode);
 			if (highScores.size() < MAX_HIGH_SCORE_NUM
 					|| highScores.get(highScores.size() - 1).getScore()
 					< this.score)
@@ -101,20 +117,23 @@ public class ScoreScreen extends Screen {
 	protected final void update() {
 		super.update();
 
-		draw();
+		if (gameMode == 1) {
+			draw();
+		} else {
+			draw2();
+		}
+
 		if (this.inputDelay.checkFinished()) {
 			if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
 				// Return to main menu.
 				this.returnCode = 1;
 				this.isRunning = false;
-				if (this.isNewRecord)
-					saveScore();
+				saveScore(gameMode);
 			} else if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
 				// Play again.
 				this.returnCode = 2;
 				this.isRunning = false;
-				if (this.isNewRecord)
-					saveScore();
+				saveScore(gameMode);
 			}
 
 			if (this.isNewRecord && this.selectionCooldown.checkFinished()) {
@@ -149,15 +168,18 @@ public class ScoreScreen extends Screen {
 
 	/**
 	 * Saves the score as a high score.
+	 *
+	 * @param gameMode
+	 *            Current game mode.
 	 */
-	private void saveScore() {
+	private void saveScore(final int gameMode) {
 		highScores.add(new Score(new String(this.name), score));
 		Collections.sort(highScores);
 		if (highScores.size() > MAX_HIGH_SCORE_NUM)
 			highScores.remove(highScores.size() - 1);
 
 		try {
-			Core.getFileManager().saveHighScores(highScores);
+			Core.getFileManager().saveHighScores(highScores, gameMode);
 		} catch (IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}
@@ -171,9 +193,27 @@ public class ScoreScreen extends Screen {
 
 		drawManager.drawGameOver(this, this.inputDelay.checkFinished(),
 				this.isNewRecord);
-		drawManager.drawResults(this, this.score, this.livesRemaining,
-				this.shipsDestroyed, (float) this.shipsDestroyed
-						/ this.bulletsShot, this.isNewRecord);
+		drawManager.drawResults(this, this.score, this.livesRemaining1,
+				this.shipsDestroyed1, (float) this.shipsDestroyed1
+						/ this.bulletsShot1, this.isNewRecord);
+
+		if (this.isNewRecord)
+			drawManager.drawNameInput(this, this.name, this.nameCharSelected);
+
+		drawManager.completeDrawing(this);
+	}
+
+	/**
+	 * Draws the elements associated with the screen for 2P mode.
+	 */
+	private void draw2() {
+		drawManager.initDrawing(this);
+
+		drawManager.drawGameOver(this, this.inputDelay.checkFinished(),
+				this.isNewRecord);
+		drawManager.drawResults(this, this.score, this.livesRemaining1, this.livesRemaining2,
+				this.shipsDestroyed1+this.shipsDestroyed2, (float) this.shipsDestroyed1
+						/ this.bulletsShot1, (float) this.shipsDestroyed2 / this.bulletsShot2 , this.isNewRecord);
 
 		if (this.isNewRecord)
 			drawManager.drawNameInput(this, this.name, this.nameCharSelected);
