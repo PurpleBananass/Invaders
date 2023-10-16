@@ -42,7 +42,7 @@ public final class BulletPool {
 	public static Bullet getBullet(final int positionX,
 			final int positionY, final int speed, final int shooter) {
 		Bullet bullet;
-		if (!pool.containsKey(shooter) && !pool.get(shooter).isEmpty()) {
+		if (pool.containsKey(shooter) && !pool.get(shooter).isEmpty()) {
 			bullet = pool.get(shooter).iterator().next();
 			pool.get(shooter).remove(bullet);
 			bullet.setPositionX(positionX - bullet.getWidth() / 2);
