@@ -509,14 +509,15 @@ public class GameScreen extends Screen {
 		updateItems();
 		draw();
 
-		if ((this.enemyShipFormation.isEmpty() || this.lives == 0 || (this.gameState.getMode() == 2 && this.lives2 == 0))
+		if ((this.enemyShipFormation.isEmpty() || this.lives == 0 || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
 				&& !this.levelFinished) {
 			this.levelFinished = true;
 			this.screenFinishedCooldown.reset();
 		}
 
 		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
-			this.isRunning = false;	
+			this.isRunning = false;
+		AchievementManager.getInstance().checkLuckySeven(this.score);
 	}
 
 	/**
