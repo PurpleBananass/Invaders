@@ -6,13 +6,14 @@ import java.util.*;
 
 import engine.Cooldown;
 import engine.Core;
+import engine.DrawManager;
 import engine.DrawManager.SpriteType;
 
 /**
  * Implements a ship, to be controlled by the player.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
+ *
  */
 public class Ship extends Entity {
 
@@ -48,17 +49,24 @@ public class Ship extends Entity {
 	private ItemQueue itemQueue;
 
 	private Cooldown skillCooldown;
+	private List<Ship> auxiliaryShips = new ArrayList<>();
+	private boolean existAuxiliaryShips = false;
+	private boolean isAuxiliaryShip = false;
 
 
 	/**
 	 * Constructor, establishes the ship's properties.
-	 * 
+	 *
 	 * @param positionX
 	 *            Initial position of the ship in the X axis.
 	 * @param positionY
 	 *            Initial position of the ship in the Y axis.
+	 * @param color
+	 *            Initial color of the ship.
+	 * @param spriteType
+	 *            Initial spriteType of the ship.
 	 */
-	public Ship(final int positionX, final int positionY, final Color color, SpriteType spriteType) {
+	public Ship(final int positionX, final int positionY, final Color color, SpriteType spriteType, boolean isAuxiliaryShip) {
 		super(positionX, positionY, 13 * 2, 8 * 2, color);
 
 		this.spriteType = spriteType;
@@ -70,7 +78,12 @@ public class Ship extends Entity {
 		this.BULLET_SPEED = ORIGINAL_BULLET_SPEED;
 		this.itemQueue = new ItemQueue();
 		this.Invincible = false;
-	}
+
+        if(!isAuxiliaryShip){
+            this.auxiliaryShips.add(new Ship(positionX - 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
+            this.auxiliaryShips.add(new Ship(positionX + 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
+        }
+    }
 
 	/**
 	 * Moves the ship speed uni ts right, or until the right screen border is
@@ -90,7 +103,7 @@ public class Ship extends Entity {
 
 	/**
 	 * Shoots a bullet upwards.
-	 * 
+	 *
 	 * @param bullets
 	 *            List of bullets on screen, to add the new bullet.
 	 * @return Checks if the bullet was shot correctly.
@@ -132,7 +145,7 @@ public class Ship extends Entity {
 
 	/**
 	 * Checks if the ship is destroyed.
-	 * 
+	 *
 	 * @return True if the ship is currently destroyed.
 	 */
 	public final boolean isDestroyed() {return !this.destructionCooldown.checkFinished();}
@@ -141,7 +154,7 @@ public class Ship extends Entity {
 
 	/**
 	 * Getter for the ship's speed.
-	 * 
+	 *
 	 * @return Speed of the ship.
 	 */
 	public final int getSpeed() {
@@ -208,4 +221,15 @@ public class Ship extends Entity {
 
 	public final ItemQueue getItemQueue(){return this.itemQueue;}
 
+	public List<Ship> getAuxiliaryShips() {
+		return auxiliaryShips;
+	}
+
+	public boolean isExistAuxiliaryShips() {
+		return existAuxiliaryShips;
+	}
+
+	public void setAuxiliaryShipsMode() {
+		this.existAuxiliaryShips = true;
+	}
 }
