@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import engine.AchievementManager;
 import engine.Cooldown;
 import engine.Core;
 import engine.GameState;
@@ -81,6 +82,8 @@ public class ScoreScreen extends Screen {
 		this.nameCharSelected = 0;
 		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
+
+		AchievementManager.getInstance().checkScore(this.score);
 
 		try {
 			this.highScores = Core.getFileManager().loadHighScores(this.gameMode);

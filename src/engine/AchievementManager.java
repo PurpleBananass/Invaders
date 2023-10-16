@@ -9,7 +9,9 @@ public class AchievementManager {
   
     /** Singleton instance of the class. */
     private static AchievementManager instance;
-    private int LuckyScore = 770;
+    private int LuckyScore = 770; //'7' means the lucky number
+    private int UnluckyScore = 440; //'4' means the unlucky number
+    private int AceScore = 1110; //'1' means the ace in one card
 
     private static final Logger LOGGER = Logger.getLogger(Core.class
 			.getSimpleName());
@@ -25,6 +27,8 @@ public class AchievementManager {
         achievements.put("sharp shooter", false);
         achievements.put("perfect shooter", false);
         achievements.put("lucky guy", false);
+        achievements.put("unlucky guy", false);
+        achievements.put("game ace", false);
     }
 
     public Map<String, Boolean> getAchievements() {
@@ -83,13 +87,22 @@ public class AchievementManager {
         }
     }
 
-    /**
-     * Check if the requirments for 'Lucky Guy' are met
+    /*
+     * Check if the score equals to the achievement
+     * 
+     * @param score the score of the player
      */
-    public void checkLuckySeven(int score) {
-        if ( score == LuckyScore ) {
+    public void checkScore(int score) {
+        if (score == LuckyScore) {
             markAchievementAsAchieved("lucky guy");
         }
-    }
 
+        else if (score == UnluckyScore) {
+            markAchievementAsAchieved("unlucky guy");
+        }
+
+        else if (score == AceScore) {
+            markAchievementAsAchieved("game ace");
+        }
+    }
 }
