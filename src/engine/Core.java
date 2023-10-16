@@ -8,11 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import screen.GameScreen;
-import screen.HighScoreScreen;
-import screen.ScoreScreen;
-import screen.Screen;
-import screen.TitleScreen;
+import screen.*;
 
 /**
  * Implements core game logic.
@@ -121,8 +117,8 @@ public final class Core {
 		do {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
-			// gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0);
+			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0);
 
 			switch (returnCode) {
 			case 1:
@@ -134,7 +130,7 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing title screen.");
 				break;
-			case 2:
+			case 7:
 				// Game & score.
 				do {
 					mainBgm.stop();
@@ -180,6 +176,7 @@ public final class Core {
 								gameState.getBulletsShot2(),
 								gameState.getShipsDestroyed());
 					}
+          AchievementManager.getInstance().checkAchievements(gameState);
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
 						&& gameState.getLevel() <= NUM_LEVELS);
@@ -203,7 +200,6 @@ public final class Core {
 							+ gameState.getBulletsShot2() + " bullets shot by 2p and "
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
-
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
@@ -215,6 +211,35 @@ public final class Core {
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
+				break;
+			case 4:
+				// Shop
+				LOGGER.info("There's no shop yet");
+				returnCode = frame.setScreen(currentScreen);
+				break;
+			case 5:
+				// Setting.
+				currentScreen = new SettingScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
+				break;
+			case 6:
+				//  Achievement.
+				currentScreen = new AchievementScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing Achievement screen.");
+				break;
+			case 2:
+				// Select2P
+				currentScreen = new SelectScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
 				break;
 			default:
 				break;
