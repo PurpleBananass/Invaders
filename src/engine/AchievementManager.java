@@ -26,6 +26,10 @@ public class AchievementManager {
         achievements.put("perfect shooter", false);
         achievements.put("lucky guy", false);
     }
+
+    public Map<String, Boolean> getAchievements() {
+        return achievements;
+    }
   
     /**
      * @return Shared instance of AchievementManager.
@@ -41,7 +45,7 @@ public class AchievementManager {
      *
      * @param achievementName The name of the achievement to mark as achieved.
      */
-    public static void markAchievementAsAchieved(String achievementName) {
+    public void markAchievementAsAchieved(String achievementName) {
         if (isAchievementAchieved(achievementName)) {
             return;
         }
