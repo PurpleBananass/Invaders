@@ -551,12 +551,8 @@ public class GameScreen extends Screen {
 
 		}
 		else {
-			boolean isControlKeyDown = false;
-			if(inputManager.isKeyDown(KeyEvent.VK_CONTROL)) { isControlKeyDown = true; }
-			if(isControlKeyDown){
+			if(inputManager.isKeyDown(KeyEvent.VK_CONTROL)){
 				pauseCnt++;
-				//System.out.println(pauseCnt);
-				isControlKeyDown = false;
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) { }
