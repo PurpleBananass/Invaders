@@ -516,8 +516,7 @@ public class GameScreen extends Screen {
 		}
 
 		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
-			this.isRunning = false;
-		AchievementManager.getInstance().checkLuckySeven(this.score);
+			this.isRunning = false;	
 	}
 
 	/**
