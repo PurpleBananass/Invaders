@@ -22,7 +22,6 @@ public class EnemyShip extends Entity {
 
 	public static final double ITEM_PROPORTION = 0.1;
 
-
 	public static final int RANDOM_BOUND = 10000;
 
 	/** Cooldown between sprite changes. */

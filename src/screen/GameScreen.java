@@ -110,6 +110,7 @@ public class GameScreen extends Screen {
 	/**  Checks item is bomb **/
 	private boolean isBomb = false;
 
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 *
@@ -785,7 +786,6 @@ public class GameScreen extends Screen {
 	}
 
 	/**
-	 * Returns a GameState object representing the status of the game.
 	 * Returns a GameState object representing the status of the game for 1p mode.
 	 *
 	 * @return Current game state.
