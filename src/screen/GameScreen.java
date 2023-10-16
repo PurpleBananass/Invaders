@@ -214,26 +214,40 @@ public class GameScreen extends Screen {
 		this.bullet_count=0;
 		this.bullet_count2=0;
 
-		// Adjust bullet shooting interval by level.
+		// Adjust bullet shooting interval and speed by level.
 		if (this.level==1) {
+			this.ship.setSpeed(4);
+			this.ship2.setSpeed(4);
 			this.ship.resetShootingInterval();
 			this.ship2.resetShootingInterval();
 		} else if (this.level==2) {
+			this.ship.setSpeed(4);
+			this.ship2.setSpeed(4);
 			this.ship.setShootingInterval(800);
 			this.ship2.setShootingInterval(800);
 		} else if (this.level==3) {
+			this.ship.setSpeed(3);
+			this.ship2.setSpeed(3);
 			this.ship.setShootingInterval(850);
 			this.ship2.setShootingInterval(850);
 		} else if (this.level==4) {
+			this.ship.setSpeed(3);
+			this.ship2.setSpeed(3);
 			this.ship.setShootingInterval(900);
 			this.ship2.setShootingInterval(900);
 		} else if (this.level==5) {
+			this.ship.setSpeed(3);
+			this.ship2.setSpeed(3);
 			this.ship.setShootingInterval(950);
 			this.ship2.setShootingInterval(950);
 		} else if (this.level==6) {
+			this.ship.resetSpeed();
+			this.ship2.resetSpeed();
 			this.ship.setShootingInterval(1000);
 			this.ship2.setShootingInterval(1000);
 		} else {
+			this.ship.resetSpeed();
+			this.ship2.resetSpeed();
 			this.ship.setShootingInterval(1100);
 			this.ship2.setShootingInterval(1100);
 		}
