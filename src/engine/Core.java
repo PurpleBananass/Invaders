@@ -53,6 +53,7 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500);
+	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -68,7 +69,6 @@ public final class Core {
 	/** Logger handler for printing to console. */
 	private static ConsoleHandler consoleHandler;
 
-	private static SoundManager mainBgm = new SoundManager("res/menu.wav");
 
 
 	/**
@@ -116,24 +116,23 @@ public final class Core {
 		do {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
-			// gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0);
+			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0);
 
 			switch (returnCode) {
 			case 1:
 				// Main menu.
-				mainBgm.loop();
+				SoundManager.playSound("res/menu.wav", "menu", true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing title screen.");
 				break;
-			case 2:
+			case 7:
 				// Game & score.
 				do {
-					mainBgm.stop();
-
+					SoundManager.stopSound("menu", 1.5f);
 					// One extra live every few levels.
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
@@ -142,7 +141,7 @@ public final class Core {
 						// 1P mode
 						bonusLife = bonusLife && gameState.getLivesRemaining1p() < MAX_LIVES;
 					} else {
-						// 2P 모드 (두 플레이어 중 하나라도 생명이 적을 경우 bonusLife 부여)
+						// 2P mode (Give bonusLife if either player has less than max lives.)
 						bonusLife = bonusLife &&
 								(gameState.getLivesRemaining1p() < MAX_LIVES
 										|| gameState.getLivesRemaining2p() < MAX_LIVES);
@@ -156,12 +155,14 @@ public final class Core {
 					returnCode = frame.setScreen(currentScreen);
 					LOGGER.info("Closing game screen.");
 
+					if (returnCode == 1) break;
+
 					if (mode == 1) {
 						gameState = ((GameScreen) currentScreen).getGameState1p();
 						gameState = new GameState(gameState.getLevel() + 1,
 								gameState.getScore(),
 								gameState.getLivesRemaining1p(),
-								gameState.getBulletsShot(),
+								gameState.getBulletsShot1(),
 								gameState.getShipsDestroyed());
 					} else {
 						gameState = ((GameScreen) currentScreen).getGameState2p();
@@ -169,10 +170,10 @@ public final class Core {
 								gameState.getScore(),
 								gameState.getLivesRemaining1p(),
 								gameState.getLivesRemaining2p(),
-								gameState.getBulletsShot(),
+								gameState.getBulletsShot1(),
+								gameState.getBulletsShot2(),
 								gameState.getShipsDestroyed());
 					}
-
 					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 							&& gameState.getLevel() <= NUM_LEVELS) {
@@ -185,19 +186,20 @@ public final class Core {
 							break;
 					}
 
+					AchievementManager.getInstance().checkAchievements(gameState);
+
 				} while (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
 
-				if (returnCode == 1)
-					break;
+				if (returnCode == 1) break;
 
 				if (gameState.getMode() == 1) {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " score screen at " + FPS + " fps, with a score of "
 						+ gameState.getScore() + ", "
 						+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
-						+ gameState.getBulletsShot() + " bullets shot and "
+						+ gameState.getBulletsShot1() + " bullets shot and "
 						+ gameState.getShipsDestroyed() + " ships destroyed.");
 				} else {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -205,10 +207,10 @@ public final class Core {
 							+ gameState.getScore() + ", "
 							+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
 							+ gameState.getLivesRemaining2p() + " lives remaining for 2p, "
-							+ gameState.getBulletsShot() + " bullets shot and "
+							+ gameState.getBulletsShot1() + " bullets shot by 1p and "
+							+ gameState.getBulletsShot2() + " bullets shot by 2p and "
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
-
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing score screen.");
@@ -220,6 +222,35 @@ public final class Core {
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
+				break;
+			case 4:
+				// Shop
+				LOGGER.info("There's no shop yet");
+				returnCode = frame.setScreen(currentScreen);
+				break;
+			case 5:
+				// Setting.
+				currentScreen = new SettingScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
+				break;
+			case 6:
+				//  Achievement.
+				currentScreen = new AchievementScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing Achievement screen.");
+				break;
+			case 2:
+				// Select2P
+				currentScreen = new SelectScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
 				break;
 			default:
 				break;
@@ -298,8 +329,13 @@ public final class Core {
 											   final int variance) {
 		return new Cooldown(milliseconds, variance);
 	}
-
+	/**
+	 * Get Max Lives.
+	 *
+	 * @return MAX_LIVES.
+	 */
 	public static int getMaxLives() {
 		return MAX_LIVES;
 	}
+
 }

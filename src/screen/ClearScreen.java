@@ -5,6 +5,7 @@ import engine.Core;
 import engine.GameState;
 import engine.Score;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
@@ -120,7 +121,7 @@ public class ClearScreen extends Screen {
         drawManager.drawLives(this, this.lives);
         if (this.gameState.getMode() == 2) drawManager.drawLives2(this, this.lives2);
         drawManager.drawHighScore(this, this.highScore);
-        drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
+        drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1, Color.GREEN);
 
         drawManager.drawClear(this, this.returnCode, this.level);
 
