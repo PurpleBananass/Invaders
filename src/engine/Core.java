@@ -121,7 +121,7 @@ public final class Core {
 			switch (returnCode) {
 			case 1:
 				// Main menu.
-				SoundManager.playSound("res/menu.wav", "menu", true);
+				SoundManager.playSound("res/menu.wav", "menu", true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
@@ -131,7 +131,7 @@ public final class Core {
 			case 7:
 				// Game & score.
 				do {
-					SoundManager.stopSound("menu");
+					SoundManager.stopSound("menu", 1.5f);
 					// One extra live every few levels.
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
