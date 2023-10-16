@@ -144,4 +144,7 @@ public class GameState {
 		return shipsDestroyed;
 	}
 
+	public int livesRemaining1() {
+		return 0;
+	}
 }
