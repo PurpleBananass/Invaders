@@ -161,6 +161,8 @@ public final class Core {
 					returnCode = frame.setScreen(currentScreen);
 					LOGGER.info("Closing Game screen.");
 
+					if (returnCode == 1) break;
+
 					if (mode == 1) {
 						gameState = ((GameScreen) currentScreen).getGameState1p();
 						gameState = new GameState(gameState.getLevel() + 1,
@@ -181,6 +183,8 @@ public final class Core {
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
 						&& gameState.getLevel() <= NUM_LEVELS);
+
+				if (returnCode == 1) break;
 
 				if (gameState.getMode() == 1) {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT

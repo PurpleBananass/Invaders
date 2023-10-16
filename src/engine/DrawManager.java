@@ -304,8 +304,8 @@ public final class DrawManager {
 	 * @param positionY
 	 *            Y coordinate of the line.
 	 */
-	public void drawHorizontalLine(final Screen screen, final int positionY) {
-		backBufferGraphics.setColor(Color.GREEN);
+	public void drawHorizontalLine(final Screen screen, final int positionY, Color color) {
+		backBufferGraphics.setColor(color);
 		backBufferGraphics.drawLine(0, positionY, screen.getWidth(), positionY);
 		backBufferGraphics.drawLine(0, positionY + 1, screen.getWidth(),
 				positionY + 1);
@@ -709,4 +709,34 @@ public final class DrawManager {
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
 	}
+
+	public void drawPauseWindow(final Screen screen){
+		int rectWidth = screen.getWidth();
+		int rectHeight = screen.getHeight() / 6;
+		backBufferGraphics.setColor(Color.BLACK);
+		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2 - 40,
+				rectWidth, rectHeight + 40);
+	}
+
+	public void drawPauseMenu(final Screen screen, final int option) {
+		String quit = "Quit";
+		String resume = "Resume";
+
+		if (option == 0)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, quit, screen.getHeight() / 2 - 10 );
+		if (option == 1)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, resume, screen.getHeight() / 2 + 20 );
+
+		//How to operate in the pause window
+		backBufferGraphics.setColor(Color.YELLOW);
+		drawCenteredRegularString(screen, "Change: Ctrl" + " / " + "Select: Spacebar",
+				screen.getHeight() / 2 - screen.getHeight() / 12 - 15 );
+	}
+
 }
