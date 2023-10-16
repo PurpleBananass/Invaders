@@ -80,8 +80,8 @@ public class Ship extends Entity {
 		this.Invincible = false;
 
         if(!isAuxiliaryShip){
-            this.auxiliaryShips.add(new Ship(positionX - 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
-            this.auxiliaryShips.add(new Ship(positionX + 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
+            this.auxiliaryShips.add(new Ship(positionX - 25, positionY, this.getColor(), SpriteType.AuxiliaryShips, true));
+            this.auxiliaryShips.add(new Ship(positionX + 25, positionY, this.getColor(), DrawManager.SpriteType.AuxiliaryShips, true));
         }
     }
 
@@ -206,14 +206,12 @@ public class Ship extends Entity {
 		TimerTask task = new TimerTask() {
 			public void run() {
 				Invincible = false;
-				changeColor(Color.GREEN);
 				timer.cancel();
 			}
 		};
 
 		if (!this.isInvincible()) {
 			this.Invincible = true;
-			this.changeColor(Color.BLUE);
 			timer.schedule(task, 10000);
 		}
 
@@ -232,4 +230,5 @@ public class Ship extends Entity {
 	public void setAuxiliaryShipsMode() {
 		this.existAuxiliaryShips = true;
 	}
+
 }

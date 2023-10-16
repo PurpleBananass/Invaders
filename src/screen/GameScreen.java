@@ -291,9 +291,9 @@ public class GameScreen extends Screen {
 				if(!this.ship.isDestroyed()){
 					List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
 					if (this.ship.isExistAuxiliaryShips()) {
-						auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
+						auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 25);
 						auxiliaryShips.get(0).setPositionY(ship.getPositionY());
-						auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
+						auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 25);
 						auxiliaryShips.get(1).setPositionY(ship.getPositionY());
 					} else {
 						auxiliaryShips.get(0).destroy();
