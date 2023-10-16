@@ -1,20 +1,48 @@
-[INFO|10:19:04]: Started loading resources. 
-[FINE|10:19:04]: Sprite Ship loaded. 
-[FINE|10:19:04]: Sprite ShipDestroyed loaded. 
-[FINE|10:19:04]: Sprite Bullet loaded. 
-[FINE|10:19:04]: Sprite EnemyBullet loaded. 
-[FINE|10:19:04]: Sprite EnemyShipA1 loaded. 
-[FINE|10:19:04]: Sprite EnemyShipA2 loaded. 
-[FINE|10:19:04]: Sprite EnemyShipB1 loaded. 
-[FINE|10:19:04]: Sprite EnemyShipB2 loaded. 
-[FINE|10:19:04]: Sprite EnemyShipC1 loaded. 
-[FINE|10:19:04]: Sprite EnemyShipC2 loaded. 
-[FINE|10:19:04]: Sprite EnemyShipSpecial loaded. 
-[FINE|10:19:04]: Sprite Explosion loaded. 
-[INFO|10:19:04]: Finished loading the sprites. 
-[INFO|10:19:04]: Finished loading the fonts. 
-[INFO|10:19:04]: Starting 448x520 title screen at 60 fps. 
-[INFO|10:19:05]: Closing title screen. 
-[INFO|10:19:05]: Starting 448x520 high score screen at 60 fps. 
-[INFO|10:19:07]: Closing setting screen. 
-[INFO|10:19:07]: Starting 448x520 Skin Selection screen at 60 fps. 
+[INFO|11:02:38]: Started loading resources. 
+[FINE|11:02:38]: Sprite Ship loaded. 
+[FINE|11:02:38]: Sprite ShipDestroyed loaded. 
+[FINE|11:02:38]: Sprite Bullet loaded. 
+[FINE|11:02:38]: Sprite EnemyBullet loaded. 
+[FINE|11:02:38]: Sprite EnemyShipA1 loaded. 
+[FINE|11:02:38]: Sprite EnemyShipA2 loaded. 
+[FINE|11:02:38]: Sprite EnemyShipB1 loaded. 
+[FINE|11:02:38]: Sprite EnemyShipB2 loaded. 
+[FINE|11:02:38]: Sprite EnemyShipC1 loaded. 
+[FINE|11:02:38]: Sprite EnemyShipC2 loaded. 
+[FINE|11:02:38]: Sprite EnemyShipSpecial loaded. 
+[FINE|11:02:38]: Sprite Explosion loaded. 
+[INFO|11:02:38]: Finished loading the sprites. 
+[INFO|11:02:40]: Finished loading the fonts. 
+[INFO|11:02:40]: Starting 448x520 title screen at 60 fps. 
+[INFO|11:02:43]: Closing title screen. 
+[INFO|11:02:43]: Starting 448x520 high score screen at 60 fps. 
+[INFO|11:02:49]: Closing setting screen. 
+[INFO|11:02:49]: Starting 448x520 Skin Selection screen at 60 fps. 
+[INFO|11:02:50]: Closing SkinSelection screen. 
+[INFO|11:02:50]: Starting 448x520 game screen at 60 fps. 
+[INFO|11:02:50]: Initializing 5x4 ship formation in (20,100) 
+[INFO|11:02:57]: Destroyed ship in (3,3) 
+[INFO|11:02:58]: Destroyed ship in (1,3) 
+[INFO|11:02:58]: Removed enemy 3 from column 1 
+[INFO|11:02:58]: Removed enemy 3 from column 3 
+[INFO|11:02:59]: Destroyed ship in (2,3) 
+[INFO|11:02:59]: Removed enemy 3 from column 2 
+[INFO|11:03:00]: Destroyed ship in (3,2) 
+[INFO|11:03:01]: Hit on player ship, 2 lives remaining. 
+[INFO|11:03:01]: Removed enemy 2 from column 3 
+[INFO|11:03:02]: A special ship appears 
+[INFO|11:03:03]: Hit on player ship, 1 lives remaining. 
+[INFO|11:03:06]: The special ship has escaped 
+[INFO|11:03:07]: Hit on player ship, 0 lives remaining. 
+[INFO|11:03:08]: Screen cleared with a score of -50 
+[INFO|11:03:08]: Closing game screen. 
+[INFO|11:03:08]: Starting 448x520 score screen at 60 fps, with a score of -50, 0 lives remaining, 4 bullets shot and 4 ships destroyed. 
+[INFO|11:03:08]: Loading user high scores. 
+[INFO|11:03:10]: Saving user high scores. 
+[INFO|11:03:10]: Closing score screen. 
+[INFO|11:03:10]: Starting 448x520 high score screen at 60 fps. 
+[INFO|11:03:11]: Closing setting screen. 
+[INFO|11:03:11]: Starting 448x520 Skin Selection screen at 60 fps. 
+[INFO|11:03:12]: Closing SkinSelection screen. 
+[INFO|11:03:12]: Starting 448x520 game screen at 60 fps. 
+[INFO|11:03:12]: Initializing 5x4 ship formation in (20,100) 

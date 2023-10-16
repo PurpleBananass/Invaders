@@ -43,6 +43,7 @@ public class SkinSelectionScreen extends Screen{
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+
                 this.isRunning = false;
             }
         }
