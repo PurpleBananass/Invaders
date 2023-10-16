@@ -262,32 +262,36 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws number of remaining lives on screen.
+	 * Draws number of remaining lives from player1 on screen.
 	 *
 	 * @param screen
 	 *            Screen to draw on.
 	 * @param lives
-	 *            Current lives.
+	 *            Current player1's lives.
 	 */
-
-
-	/* 1player lives 위치 draw */
 	public void drawLives(final Screen screen, final int lives) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
-		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship);
+		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 35 * i, 10);
 	}
 
 
-	/* 2player의 lives 위치 draw */
+	/**
+	 * Draws number of remaining lives from player2 on screen.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param lives2
+	 *            Current player2's lives.
+	 */
 	public void drawLives2(final Screen screen, final int lives2) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives2), 160, 25);
-		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Ship);
+		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Ship, false);
 		for (int i = 0; i < lives2; i++)
 			drawEntity(dummyShip, 180 + 35 * i, 10);
 	}
@@ -556,7 +560,7 @@ public final class DrawManager {
 	}
 
 	/**
-	 * Draws high scores.
+	 * Draws high scores from 1p mode.
 	 *
 	 * @param screen
 	 *            Screen to draw on.
@@ -578,6 +582,14 @@ public final class DrawManager {
 		}
 	}
 
+	/**
+	 * Draws high scores from 2p mode.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param highScores
+	 *            List of high scores.
+	 */
 	public void drawHighScores_2p(final Screen screen,
 								  final List<Score> highScores) {
 		backBufferGraphics.setColor(Color.WHITE);
@@ -609,14 +621,32 @@ public final class DrawManager {
 		backBufferGraphics.drawString(string, screen.getWidth() / 2
 				- fontRegularMetrics.stringWidth(string) / 2, height);
 	}
-
+	/**
+	 * Draws a left sided string on regular font.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param string
+	 *            String to draw.
+	 * @param height
+	 *            Height of the drawing.
+	 */
 	public void drawLeftsideRegularString(final Screen screen,
 										  final String string, final int height) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.drawString(string, screen.getWidth()*3 / 13
 				- fontRegularMetrics.stringWidth(string) / 2, height);
 	}
-
+	/**
+	 * Draws a right sided string on regular font.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param string
+	 *            String to draw.
+	 * @param height
+	 *            Height of the drawing.
+	 */
 	public void drawRightsideRegularString(final Screen screen,
 										  final String string, final int height) {
 		backBufferGraphics.setFont(fontRegular);
