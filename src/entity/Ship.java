@@ -80,8 +80,8 @@ public class Ship extends Entity {
 		this.Invincible = false;
 
         if(!isAuxiliaryShip){
-            this.auxiliaryShips.add(new Ship(positionX - 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
-            this.auxiliaryShips.add(new Ship(positionX + 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
+            this.auxiliaryShips.add(new Ship(positionX - 25, positionY, this.getColor(), SpriteType.AuxiliaryShips, true));
+            this.auxiliaryShips.add(new Ship(positionX + 25, positionY, this.getColor(), DrawManager.SpriteType.AuxiliaryShips, true));
         }
     }
 
@@ -201,23 +201,42 @@ public class Ship extends Entity {
 	}
 
 	public final void runInvincible() {
+		Color c = this.getColor();
 
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			public void run() {
-				Invincible = false;
-				changeColor(Color.GREEN);
-				timer.cancel();
+		if (c == Color.GREEN) {
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					Invincible = false;
+					changeColor(Color.GREEN);
+					timer.cancel();
+				}
+			};
+
+			if (!this.isInvincible()) {
+				this.Invincible = true;
+				this.changeColor(Color.BLUE);
+				timer.schedule(task, 10000);
 			}
-		};
+		} else {
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					Invincible = false;
+					changeColor(Color.RED);
+					timer.cancel();
+				}
+			};
 
-		if (!this.isInvincible()) {
-			this.Invincible = true;
-			this.changeColor(Color.BLUE);
-			timer.schedule(task, 10000);
+			if (!this.isInvincible()) {
+				this.Invincible = true;
+				this.changeColor(Color.magenta);
+				timer.schedule(task, 10000);
+			}
 		}
-
 	}
+
+
 
 	public final ItemQueue getItemQueue(){return this.itemQueue;}
 
@@ -232,4 +251,5 @@ public class Ship extends Entity {
 	public void setAuxiliaryShipsMode() {
 		this.existAuxiliaryShips = true;
 	}
+
 }
