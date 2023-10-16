@@ -16,7 +16,7 @@ import screen.*;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  * 
  */
-public final class Core {
+public final class  Core {
 
 	/** Width of current screen. */
 	private static final int WIDTH = 448;
@@ -123,6 +123,11 @@ public final class Core {
 				LOGGER.info("Closing title screen.");
 				break;
 			case 7:
+				currentScreen = new SkinSelectionScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " Skin Selection screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing SkinSelection screen.");
 				// Game & score.
 				do {
 					// One extra live every few levels.
@@ -195,6 +200,8 @@ public final class Core {
 				break;
 			default:
 				break;
+
+				
 			}
 
 		} while (returnCode != 0);
