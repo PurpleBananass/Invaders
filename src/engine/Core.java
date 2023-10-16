@@ -109,6 +109,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
 
+		AchievementManager.getInstance().markAchievementAsAchieved("adventure start");
+
 		GameState gameState;
 
 		int returnCode = 1;
@@ -116,7 +118,7 @@ public final class Core {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
 			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0);
+			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
 			case 1:
@@ -169,7 +171,8 @@ public final class Core {
 								gameState.getLivesRemaining2p(),
 								gameState.getBulletsShot1(),
 								gameState.getBulletsShot2(),
-								gameState.getShipsDestroyed());
+								gameState.getShipsDestroyed(),
+								gameState.getShipsDestroyed2());
 					}
           AchievementManager.getInstance().checkAchievements(gameState);
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
