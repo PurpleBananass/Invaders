@@ -1,6 +1,7 @@
 package engine;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +15,16 @@ import javax.sound.sampled.FloatControl.Type;
 public class SoundManager {
     private static HashMap<String, Clip> clips = new HashMap<>();
     private static ArrayList<Clip> bgms = new ArrayList<>();
-    private static float masterVolume = screen.SettingScreen.getSoundVolume();
+    private static float masterVolume;
+
+    static {
+        try {
+            masterVolume = Core.getFileManager().loadSettings().get(0).getValue();
+        } catch (IOException e) {
+            Core.getLogger().warning("Couldn't load Settings!");
+        }
+    }
+
     private static final float minimum = -80;
     private static final float maximum = 6;
     private static final float one = Math.abs((minimum-maximum)/100);
@@ -90,11 +100,12 @@ public class SoundManager {
         if (clip != null && clip.isActive()) {
             new Thread(new Runnable() {
                 public void run() {
-                    float volume = ((FloatControl) clip.getControl(Type.MASTER_GAIN)).getValue();
                     FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
+                    float volume = masterVolume;
                     while (volume > minimum) {
-                        floatControl.setValue(volume);
-                        volume -= (0.4 * fadeoutSpeed);
+                        volume -= fadeoutSpeed;
+                        if(volume<minimum) volume = minimum;
+                        floatControl.setValue((float)(minimum + one*(50*Math.log10(volume))));
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException e) {
@@ -113,13 +124,13 @@ public class SoundManager {
             Clip clip = clips.get(clipName);
 
             public void run() {
-                float volume = ((FloatControl) clip.getControl(Type.MASTER_GAIN)).getValue();
+                float volume = 0;
                 FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
-                floatControl.setValue(-80);
-                while (volume < master) {
-                    floatControl.setValue(volume);
-                    volume += (0.4 * fadeInSpeed);
-                    if(volume>0) volume = 0;
+                floatControl.setValue(minimum);
+                while (volume < masterVolume) {
+                    volume += fadeInSpeed;
+                    if(volume>masterVolume) volume = masterVolume;
+                    floatControl.setValue((float)(minimum + one*(50*Math.log10(volume))));
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
@@ -132,12 +143,11 @@ public class SoundManager {
 
     public static void setMasterVolume(float volume) {
         masterVolume = volume;
+        master = (float)(minimum + one*(50*Math.log10(volume)));
         for (Clip clip : clips.values()) {
             if (clip != null && clip.isActive()) {
                 FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-                master = (float)(minimum + one*(50*Math.log10(volume)));
                 floatControl.setValue(master);
-                System.out.println(volume+" = "+ master);
             }
         }
     }

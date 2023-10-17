@@ -59,7 +59,6 @@ public class SettingScreen extends Screen {
         try {
             this.setting = Core.getFileManager().loadSettings();
             soundVolume = this.setting.get(0).getValue();
-            SoundManager.setMasterVolume(soundVolume);
             if(this.setting.get(1).getValue()==1){
                 bgmOn = true;
                 SoundManager.bgmSetting(true);
