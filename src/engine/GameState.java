@@ -2,9 +2,9 @@ package engine;
 
 /**
  * Implements an object that stores the state of the game between levels.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
+ *
  */
 public class GameState {
 
@@ -12,6 +12,7 @@ public class GameState {
 	private int level;
 	/** Current score. */
 	private int score;
+	private int coin;
 	/** Lives currently remaining. */
 	private int livesRemaining;
 	/** Bullets shot until now. */
@@ -21,7 +22,7 @@ public class GameState {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param level
 	 *            Current game level.
 	 * @param score
@@ -34,10 +35,21 @@ public class GameState {
 	 *            Ships destroyed until now.
 	 */
 	public GameState(final int level, final int score,
-			final int livesRemaining, final int bulletsShot,
-			final int shipsDestroyed) {
+					 final int livesRemaining, final int bulletsShot,
+					 final int shipsDestroyed) {
 		this.level = level;
 		this.score = score;
+		this.livesRemaining = livesRemaining;
+		this.bulletsShot = bulletsShot;
+		this.shipsDestroyed = shipsDestroyed;
+	}
+
+	public GameState(final int level, final int score,final int coin,
+					 final int livesRemaining, final int bulletsShot,
+					 final int shipsDestroyed) {
+		this.level = level;
+		this.score = score;
+		this.coin = coin;//myupdate
 		this.livesRemaining = livesRemaining;
 		this.bulletsShot = bulletsShot;
 		this.shipsDestroyed = shipsDestroyed;
@@ -55,6 +67,10 @@ public class GameState {
 	 */
 	public final int getScore() {
 		return score;
+	}
+
+	public final int getCoin() {
+		return coin;
 	}
 
 	/**

@@ -3,15 +3,16 @@ package screen;
 import engine.Cooldown;
 import engine.Core;
 import engine.Player;
+import screen.Screen;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 /**
  * Implements the title screen.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
+ *
  */
 
 public class LoginScreen extends Screen {
@@ -55,7 +56,7 @@ public class LoginScreen extends Screen {
 
 	/**
 	 * Starts the action.
-	 * 
+	 *
 	 * @return Next screen code.
 	 */
 	public final int run() {
@@ -73,46 +74,46 @@ public class LoginScreen extends Screen {
 		draw();
 		if (this.selectionCooldown.checkFinished()
 				&& this.inputDelay.checkFinished()) {
-				if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
-					this.nameCharSelected = this.nameCharSelected == 2 ? 0
-							: this.nameCharSelected + 1;
-					this.selectionCooldown.reset();
-				}
-				if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
-					this.nameCharSelected = this.nameCharSelected == 0 ? 2
-							: this.nameCharSelected - 1;
-					this.selectionCooldown.reset();
-				}
-				if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
-					this.name[this.nameCharSelected] =
-							(char) (this.name[this.nameCharSelected]
-									== LAST_CHAR ? FIRST_CHAR
-									: this.name[this.nameCharSelected] + 1);
-					this.selectionCooldown.reset();
-				}
-				if (inputManager.isKeyDown(KeyEvent.VK_DOWN)) {
-					this.name[this.nameCharSelected] =
-							(char) (this.name[this.nameCharSelected]
-									== FIRST_CHAR ? LAST_CHAR
-									: this.name[this.nameCharSelected] - 1);
-					this.selectionCooldown.reset();
-				}
-				if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-					try {
-						Player loadedPlayer = Core.getFileManager().loadPlayer(name);
-						if(loadedPlayer == null){
-							Core.getFileManager().saveNewPlayer(name);
-							logger.info("New player saved successfully");
-						} else {
-							logger.info("Player loaded successfully");
-						}
-					} catch (IOException e) {
-						logger.warning("Couldn't load or save player! Error: " + e.getMessage());
+			if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+				this.nameCharSelected = this.nameCharSelected == 2 ? 0
+						: this.nameCharSelected + 1;
+				this.selectionCooldown.reset();
+			}
+			if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+				this.nameCharSelected = this.nameCharSelected == 0 ? 2
+						: this.nameCharSelected - 1;
+				this.selectionCooldown.reset();
+			}
+			if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
+				this.name[this.nameCharSelected] =
+						(char) (this.name[this.nameCharSelected]
+								== LAST_CHAR ? FIRST_CHAR
+								: this.name[this.nameCharSelected] + 1);
+				this.selectionCooldown.reset();
+			}
+			if (inputManager.isKeyDown(KeyEvent.VK_DOWN)) {
+				this.name[this.nameCharSelected] =
+						(char) (this.name[this.nameCharSelected]
+								== FIRST_CHAR ? LAST_CHAR
+								: this.name[this.nameCharSelected] - 1);
+				this.selectionCooldown.reset();
+			}
+			if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+				try {
+					Player loadedPlayer = Core.getFileManager().loadPlayer(name);
+					if(loadedPlayer == null){
+						Core.getFileManager().saveNewPlayer(name);
+						logger.info("New player saved successfully");
+					} else {
+						logger.info("Player loaded successfully");
 					}
+				} catch (IOException e) {
+					logger.warning("Couldn't load or save player! Error: " + e.getMessage());
+				}
 
-					// Proceed to main menu.
-					this.returnCode = 1;
-					this.isRunning = false;
+				// Proceed to main menu.
+				this.returnCode = 1;
+				this.isRunning = false;
 			}
 		}
 

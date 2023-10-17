@@ -8,9 +8,9 @@ import java.util.logging.LogRecord;
 
 /**
  * Implements a simple logging format.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
+ *
  */
 public class MinimalFormatter extends Formatter {
 

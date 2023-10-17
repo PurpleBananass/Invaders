@@ -1,7 +1,8 @@
 package engine;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
+import engine.DrawManager.SpriteType;
+
+import java.awt.*;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
@@ -16,22 +17,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import engine.DrawManager.SpriteType;
-
 /**
  * Manages files used in the application.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
  */
 public final class FileManager {
 
-	/** Singleton instance of the class. */
+	/**
+	 * Singleton instance of the class.
+	 */
 	private static FileManager instance;
-	/** Application logger. */
+	/**
+	 * Application logger.
+	 */
 	private static Logger logger;
-	/** Max number of high scores. */
+	/**
+	 * Max number of high scores.
+	 */
 	private static final int MAX_SCORES = 7;
+	private static final int SCORE_COIN_RATE = 80;
 
 	/**
 	 * private constructor.
@@ -42,7 +47,7 @@ public final class FileManager {
 
 	/**
 	 * Returns shared instance of FileManager.
-	 * 
+	 *
 	 * @return Shared instance of FileManager.
 	 */
 	protected static FileManager getInstance() {
@@ -53,12 +58,10 @@ public final class FileManager {
 
 	/**
 	 * Loads sprites from disk.
-	 * 
-	 * @param spriteMap
-	 *            Mapping of sprite type and empty boolean matrix that will
-	 *            contain the image.
-	 * @throws IOException
-	 *             In case of loading problems.
+	 *
+	 * @param spriteMap Mapping of sprite type and empty boolean matrix that will
+	 *                  contain the image.
+	 * @throws IOException In case of loading problems.
 	 */
 	public void loadSprite(final Map<SpriteType, boolean[][]> spriteMap)
 			throws IOException {
@@ -95,14 +98,11 @@ public final class FileManager {
 
 	/**
 	 * Loads a font of a given size.
-	 * 
-	 * @param size
-	 *            Point size of the font.
+	 *
+	 * @param size Point size of the font.
 	 * @return New font.
-	 * @throws IOException
-	 *             In case of loading problems.
-	 * @throws FontFormatException
-	 *             In case of incorrect font format.
+	 * @throws IOException         In case of loading problems.
+	 * @throws FontFormatException In case of incorrect font format.
 	 */
 	public Font loadFont(final float size) throws IOException,
 			FontFormatException {
@@ -126,10 +126,9 @@ public final class FileManager {
 	/**
 	 * Returns the application default scores if there is no user high scores
 	 * file.
-	 * 
+	 *
 	 * @return Default high scores.
-	 * @throws IOException
-	 *             In case of loading problems.
+	 * @throws IOException In case of loading problems.
 	 */
 	private List<Score> loadDefaultHighScores() throws IOException {
 		List<Score> highScores = new ArrayList<Score>();
@@ -144,12 +143,18 @@ public final class FileManager {
 			Score highScore = null;
 			String name = reader.readLine();
 			String score = reader.readLine();
+			String coin = reader.readLine();//myupdate
 
 			while ((name != null) && (score != null)) {
-				highScore = new Score(name, Integer.parseInt(score));
+				if (coin != null) {//myupdate
+					highScore = new Score(name, Integer.parseInt(score), Integer.parseInt(coin));//myupdate
+				} else {//myupdate
+					highScore = new Score(name, Integer.parseInt(score));
+				}//myupdate
 				highScores.add(highScore);
 				name = reader.readLine();
 				score = reader.readLine();
+				coin = reader.readLine();//myupdate
 			}
 		} finally {
 			if (inputStream != null)
@@ -162,10 +167,9 @@ public final class FileManager {
 	/**
 	 * Loads high scores from file, and returns a sorted list of pairs score -
 	 * value.
-	 * 
+	 *
 	 * @return Sorted list of scores - players.
-	 * @throws IOException
-	 *             In case of loading problems.
+	 * @throws IOException In case of loading problems.
 	 */
 	public List<Score> loadHighScores() throws IOException {
 
@@ -192,12 +196,18 @@ public final class FileManager {
 			Score highScore = null;
 			String name = bufferedReader.readLine();
 			String score = bufferedReader.readLine();
+			String coin = bufferedReader.readLine();//myupdate
 
 			while ((name != null) && (score != null)) {
-				highScore = new Score(name, Integer.parseInt(score));
+				if (coin != null) {//myupdate
+					highScore = new Score(name, Integer.parseInt(score), Integer.parseInt(coin));//myupdate
+				} else {//myupdate
+					highScore = new Score(name, Integer.parseInt(score));
+				}//myupdate
 				highScores.add(highScore);
 				name = bufferedReader.readLine();
 				score = bufferedReader.readLine();
+				coin = bufferedReader.readLine();//myupdate
 			}
 
 		} catch (FileNotFoundException e) {
@@ -215,20 +225,17 @@ public final class FileManager {
 
 	/**
 	 * Saves user high scores to disk.
-	 * 
-	 * @param highScores
-	 *            High scores to save.
-	 * @throws IOException
-	 *             In case of loading problems.
+	 *
+	 * @param highScores High scores to save.
+	 * @throws IOException In case of loading problems.
 	 */
-	public void saveHighScores(final List<Score> highScores) 
+	public void saveHighScores(final List<Score> highScores)
 			throws IOException {
 		OutputStream outputStream = null;
 		BufferedWriter bufferedWriter = null;
 
 		try {
-			String jarPath = FileManager.class.getProtectionDomain()
-					.getCodeSource().getLocation().getPath();
+			String jarPath = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 			jarPath = URLDecoder.decode(jarPath, "UTF-8");
 
 			String scoresPath = new File(jarPath).getParent();
@@ -241,8 +248,7 @@ public final class FileManager {
 				scoresFile.createNewFile();
 
 			outputStream = new FileOutputStream(scoresFile);
-			bufferedWriter = new BufferedWriter(new OutputStreamWriter(
-					outputStream, Charset.forName("UTF-8")));
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, Charset.forName("UTF-8")));
 
 			logger.info("Saving user high scores.");
 
@@ -254,7 +260,10 @@ public final class FileManager {
 				bufferedWriter.write(score.getName());
 				bufferedWriter.newLine();
 				bufferedWriter.write(Integer.toString(score.getScore()));
+				//bufferedWriter.write(Integer.toString(remainder));//myupdate
 				bufferedWriter.newLine();
+				bufferedWriter.write(Integer.toString(score.getCoin()));//myupdate
+				bufferedWriter.newLine();//myupdate
 				savedCount++;
 			}
 
@@ -263,6 +272,7 @@ public final class FileManager {
 				bufferedWriter.close();
 		}
 	}
+
 	public Player loadPlayer(char[] name) throws IOException {
 
 		Player player = null;
@@ -277,7 +287,6 @@ public final class FileManager {
 		File playerFile = new File(playerPath);
 		File currentPlayerFile = new File(currentPlayerPath);
 		currentPlayerFile.createNewFile();
-
 
 
 		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(playerFile), Charset.forName("UTF-8")));
@@ -300,7 +309,7 @@ public final class FileManager {
 					}
 					bufferedWriter.flush();
 					break;
-				}else {
+				} else {
 					loadedName = bufferedReader.readLine();
 					currency = bufferedReader.readLine();
 				}
@@ -313,6 +322,7 @@ public final class FileManager {
 
 		return player;
 	}
+
 	public void saveNewPlayer(final char[] name) throws IOException {
 		// Get the path to the JAR file.
 		String jarPath = FileManager.class.getProtectionDomain()
@@ -395,12 +405,14 @@ public final class FileManager {
 		}
 	}
 
+	//Indicates the change in the number of currencies to be updated
 	public void updateCurrencyOfCurrentPlayer(int difference) throws IOException {
 		String jarPath = FileManager.class.getProtectionDomain()
 				.getCodeSource().getLocation().getPath();
 		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
 
 		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+		//Contains information about the current player, including name and currency quantity
 
 		if (!Files.exists(playerPath)) {
 			logger.warning("Player file not found at: " + playerPath);
@@ -413,7 +425,7 @@ public final class FileManager {
 			return;
 		}
 
-		String loadedName = lines.get(0);
+		String loadedName = lines.get(0);//Obtain the player's name
 		int currentCurrency;
 		try {
 			currentCurrency = Integer.parseInt(lines.get(1));
@@ -422,18 +434,20 @@ public final class FileManager {
 			return;
 		}
 
-		int newBalance = currentCurrency + difference;
-		lines.set(1, String.valueOf(newBalance));
+		int newBalance = currentCurrency + difference;//Calculate the number of new currencies
+		lines.set(1, String.valueOf(newBalance));//Write the new currency quantity into it
 
 		try {
 			Files.write(playerPath, lines, StandardCharsets.UTF_8);
 			logger.info("Successfully changed amount of player: " + loadedName + " to " + newBalance);
+			//Successfully changed the player's currency count to a new value.
 		} catch (IOException e) {
 			logger.warning("Failed to write updated player data to file: " + e.getMessage());
 			throw e;
 		}
 	}
 
+	//Obtain the current player's currency quantity
 	public int getCurrentPlayerCurrency() throws IOException {
 		String jarPath = FileManager.class.getProtectionDomain()
 				.getCodeSource().getLocation().getPath();
@@ -452,7 +466,7 @@ public final class FileManager {
 			throw new IOException("Invalid data in current player file");
 		}
 
-		int currency;
+		int currency;//Store the player's currency quantity.
 		try {
 			currency = Integer.parseInt(lines.get(1));
 		} catch (NumberFormatException e) {
