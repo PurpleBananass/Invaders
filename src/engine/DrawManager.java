@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Random;
 import java.util.logging.Logger;
 import java.lang.Integer;
 
@@ -19,7 +20,7 @@ import entity.ItemQueue;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
-import entity.ShowItem;
+// import entity.ShowItem;
 import screen.SettingScreen;
 
 /**
@@ -322,7 +323,8 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 20, screen.getHeight() + 25);
-		ShowItem dummyItem = new ShowItem(0, 0);
+		Random random = new Random();
+		Item dummyItem = new Item(0, 0, random.nextInt(10000));
 		for (int i = 0; i < ItemQueue.size; i++)
 			drawEntity(dummyItem, 40 + 35 * i, screen.getHeight() + 25);
 	}
@@ -331,7 +333,8 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 420, screen.getHeight() + 25);
-		ShowItem dummyItem = new ShowItem(0, 0);
+		Random random = new Random();
+		Item dummyItem = new Item(0, 0, random.nextInt(10000));
 		for (int i = 0; i < ItemQueue.size; i++)
 			drawEntity(dummyItem, 440 + 35 * i, screen.getHeight() + 25);
 	}
