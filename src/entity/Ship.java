@@ -18,7 +18,7 @@ import engine.DrawManager.SpriteType;
 public class Ship extends Entity {
 
 	/** Time between shots. */
-	private static final int SHOOTING_INTERVAL = 750;
+	private int shootingInterval = 750;
 
 	/** Original speed of the bullets shot by the ship. */
 	private static final int ORIGINAL_BULLET_SPEED = -6;
@@ -51,6 +51,7 @@ public class Ship extends Entity {
 	private Cooldown skillCooldown;
 	private List<Ship> auxiliaryShips = new ArrayList<>();
 	private boolean existAuxiliaryShips = false;
+	private int FASTER_SHOOTING_INTERVAL = 300;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -68,7 +69,7 @@ public class Ship extends Entity {
 		super(positionX, positionY, 13 * 2, 8 * 2, color);
 
 		this.spriteType = spriteType;
-		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
+		this.shootingCooldown = Core.getCooldown(shootingInterval);
 		this.itemCooldown = Core.getCooldown(ITEM_USE_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
 		this.skillCooldown = Core.getCooldown(1000);
@@ -188,7 +189,7 @@ public class Ship extends Entity {
 	/**
 	 * Re-Setter for the sh용ip's shooting frequency speed.
 	 */
-	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);}
+	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(shootingInterval);}
 	
 	/** Set item_speed for 10sec when ship get speed item **/
 	public void setItemSpeed() {
@@ -270,5 +271,9 @@ public class Ship extends Entity {
 
 	public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
 		this.existAuxiliaryShips = existAuxiliaryShips;
+	}
+
+	public void applyFasterShootingItem(){
+		this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
 	}
 }
