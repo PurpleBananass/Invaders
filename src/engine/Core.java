@@ -75,9 +75,9 @@ public final class Core {
 	 * 2P.LEFT, 2P.RIGHT, 2P.ATTACK, 2P.BURST 1, 2P.BURST 2, 2P.RELOAD, 2P.BOOSTER, 2P.ITEM} */
 	private static String[] keySettingString = new String[16];
 	/** Sound Volume  */
-	private static int soundVolume;
+	public static int soundVolume;
 	/** Check BGM is On/Off  */
-	private static boolean bgmOn;
+	public static boolean bgmOn;
 	public static List<Settings> setting;
 	/**
 	 * Test implementation.
