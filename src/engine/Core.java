@@ -245,7 +245,7 @@ public final class Core {
 				// Setting.
 				currentScreen = new SettingScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
+						+ " setting screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing setting screen.");
 				break;
@@ -253,7 +253,7 @@ public final class Core {
 				//  Achievement.
 				currentScreen = new AchievementScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
+						+ " achievement screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing Achievement screen.");
 				break;
@@ -261,9 +261,9 @@ public final class Core {
 				// Select2P
 				currentScreen = new SelectScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
+						+ " select screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing setting screen.");
+				LOGGER.info("Closing select screen.");
 				break;
 			default:
 				break;
