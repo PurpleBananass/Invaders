@@ -291,9 +291,9 @@ public class GameScreen extends Screen {
 				if(!this.ship.isDestroyed()){
 					List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
 					if (this.ship.isExistAuxiliaryShips()) {
-						auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
+						auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 25);
 						auxiliaryShips.get(0).setPositionY(ship.getPositionY());
-						auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
+						auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 25);
 						auxiliaryShips.get(1).setPositionY(ship.getPositionY());
 					} else {
 						auxiliaryShips.get(0).destroy();
@@ -400,7 +400,7 @@ public class GameScreen extends Screen {
 							auxiliaryShips.get(0).destroy();
 							auxiliaryShips.get(1).destroy();
 						}
-						if (inputManager.isKeyDown(KeyEvent.VK_G))
+						if (inputManager.isKeyDown(KeyEvent.VK_TAB))
 							if(this.ship.itemCoolTime())
 								useItem(this.ship.getItemQueue().deque(), this.ship);
 					}
@@ -682,26 +682,19 @@ public class GameScreen extends Screen {
 				}
 			}
 
-		Set<Item> recyclableItem = new HashSet<Item>();
+		Set<Item> recycableItem = new HashSet<Item>();
 		for (Item item : this.items){
 			if (checkCollision(item, this.ship) && !this.levelFinished){
-				recyclableItem.add(item);
+				recycableItem.add(item);
 				this.ship.getItemQueue().enque(item);
-				this.logger.info("Item Acquired. 1p has " + this.ship.getItemQueue().getSize() + " items");
-			}
-
-			if (this.gameState.getMode() == 2 && checkCollision(item, this.ship2) && !this.levelFinished) {
-				recyclableItem.add(item);
-				this.ship2.getItemQueue().enque(item);
-				this.logger.info("Item Acquired. 2p has " + this.ship2.getItemQueue().getSize() + " items");
 			}
 		}
 
 
 		this.bullets.removeAll(recyclable);
-		this.items.removeAll(recyclableItem);
+		this.items.removeAll(recycableItem);
 		BulletPool.recycle(recyclable);
-		ItemPool.recycle(recyclableItem);
+		ItemPool.recycle(recycableItem);
 	}
 
 	/** Use skill*/
@@ -814,7 +807,7 @@ public class GameScreen extends Screen {
 	/** 아이템 종류에 맞는 기능 실행 */
 	private void useItem(Item item, Ship ship) {
 		if(item == null) {
-			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
+			this.logger.info("보유한 아이템이 없습니다");
 		}
 		else{
 			if (!item.getIsGet() &&
@@ -824,7 +817,7 @@ public class GameScreen extends Screen {
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
-				ship.set_item_Speed();
+				ship.setItemSpeed();
 				this.logger.info("SpeedUp Item 사용");
 			}
 			else if (!item.getIsGet() &&
