@@ -11,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import engine.AchievementManager.Achievement;
+
 import java.lang.Integer;
 
 import screen.Screen;
@@ -993,15 +996,15 @@ public final class DrawManager {
 	 * @param screen      Screen to draw on.
 	 * @param achievements Map of achievements with their completion status.
 	 */
-	public void drawAchievements(final Screen screen, Map<String, Boolean> achievements) {
+	public void drawAchievements(final Screen screen, Map<Achievement, Boolean> achievements) {
 		backBufferGraphics.setFont(fontRegular);
 
 		int x = 20; // Fixed X-coordinate for achievement titles.
 		int y = 50; // Fixed Y-coordinate for the initial position.
 
 		// Loop through the achievements map and display each achievement.
-		for (Map.Entry<String, Boolean> entry : achievements.entrySet()) {
-				String achievementTitle = entry.getKey();
+		for (Map.Entry<Achievement, Boolean> entry : achievements.entrySet()) {
+				String achievementTitle = entry.getKey().toString().replace('_', ' ');
 				boolean isCompleted = entry.getValue();
 
 				// Display the achievement title.
