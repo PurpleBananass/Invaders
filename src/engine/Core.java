@@ -354,14 +354,14 @@ public final class  Core {
 	 * Get Key Setting Code
 	 */
 	public static int getKeySettingCode(int num){
-		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
 		return keySetting[num];
 	}
 	/**
 	 * Get Key Setting String
 	 */
 	public static String getKeySettingString(int num){
-		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
 		return keySettingString[num];
 	}
 	/**
@@ -372,14 +372,14 @@ public final class  Core {
 	 * Set Key Setting Code
 	 */
 	public static void setKeySettingCode(int num, int value){
-		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
 		keySetting[num] = value;
 	}
 	/**
 	 * Set Key Setting String
 	 */
 	public static void setKeySettingString(int num, String value){
-		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
 		keySettingString[num] = value;
 	}
 	/**
