@@ -1,6 +1,5 @@
 package screen;
 
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -683,19 +682,24 @@ public class GameScreen extends Screen {
 				}
 			}
 
-		Set<Item> recycableItem = new HashSet<Item>();
+		Set<Item> recyclableItem = new HashSet<Item>();
 		for (Item item : this.items){
 			if (checkCollision(item, this.ship) && !this.levelFinished){
-				recycableItem.add(item);
+				recyclableItem.add(item);
 				this.ship.getItemQueue().enque(item);
+			}
+
+			if (this.gameState.getMode() == 2 && checkCollision(item, this.ship2) && !this.levelFinished) {
+				recyclableItem.add(item);
+				this.ship2.getItemQueue().enque(item);
 			}
 		}
 
 
 		this.bullets.removeAll(recyclable);
-		this.items.removeAll(recycableItem);
+		this.items.removeAll(recyclableItem);
 		BulletPool.recycle(recyclable);
-		ItemPool.recycle(recycableItem);
+		ItemPool.recycle(recyclableItem);
 	}
 
 	/** Use skill*/
@@ -818,12 +822,12 @@ public class GameScreen extends Screen {
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
-				this.ship.setItemSpeed();
+				ship.setItemSpeed();
 				this.logger.info("SpeedUp Item 사용");
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.InvincibleItem) {
-				this.ship.runInvincible();
+				ship.runInvincible();
 				this.logger.info("Invincible Item 사용");
 			}
 			else if (!item.getIsGet() &&
@@ -832,6 +836,7 @@ public class GameScreen extends Screen {
 				this.logger.info("Bomb Item 사용");
 			}
 			item.setIsGet();
+			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
 		}
 	}
 

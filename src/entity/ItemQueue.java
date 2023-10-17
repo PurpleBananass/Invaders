@@ -31,9 +31,13 @@ public class ItemQueue {
 
     public Item deque(){
         Item x = itemQue[front++];
-        size--;
+        if(size != 0)
+            size--;
         if(front == capacity)
             front = 0;
         return x;
     }
+
+    public int getSize(){return this.size;}
+
 }

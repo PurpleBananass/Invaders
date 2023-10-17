@@ -30,8 +30,6 @@ public class Item extends Entity {
 
     private ItemType itemType;
 
-    private int ItemRange;
-
     private boolean isGet;
 
     /**
