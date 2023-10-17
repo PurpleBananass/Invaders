@@ -636,7 +636,7 @@ public class GameScreen extends Screen {
 					}
 				}
 
-				if (this.gameState.getMode() == 2 && checkCollision(bullet, this.ship2) && !this.levelFinished) {
+				if (this.gameState.getMode() == 2 && checkCollision(bullet, this.ship2) && !this.levelFinished && !this.ship2.isInvincible()) {
 					recyclable.add(bullet);
 					if (!this.ship2.isDestroyed()) {
 						this.ship2.destroy();
