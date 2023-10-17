@@ -323,13 +323,13 @@ public class GameScreen extends Screen {
 						} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7 && bullet_count <= 7) {
 							per = 2;
 						}
-						if (inputManager.magazine) {
+						if (inputManager.magazine && this.bullet_count==10){
 							inputManager.magazine = false;
 							inputManager.countH_d = 0;
 							inputManager.countH_u = 0;
 							inputManager.speed = 0;
 							this.magazine--;
-							this.bullet_count = 0;
+							this.bullet_count=0;
 						}
 					}
 
@@ -422,13 +422,14 @@ public class GameScreen extends Screen {
 							per = 1;
 						if (inputManager.one >= 7 && inputManager.two >= 7 && bullet_count <= 7)
 							per = 2;
-						if (inputManager.magazine) {
-							inputManager.magazine = false;
-							inputManager.one = 0;
+						if (inputManager.magazine1 && this.bullet_count==10) {
+							inputManager.magazine1 = false;
+							inputManager.one= 0;
 							inputManager.two = 0;
-							inputManager.speed1 = 0;
+							inputManager.speed = 0;
 							this.magazine--;
-							this.bullet_count = 0;
+							this.bullet_count=0;
+
 						}
 
 						if (!this.ship.isDestroyed()) {
@@ -452,10 +453,10 @@ public class GameScreen extends Screen {
 							if (this.ship2.shoot(this.bullets)) {
 								this.bulletsShot2++;
 								this.bullet_count2++;
-								if(this.ship.isExistAuxiliaryShips()){
-									for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
+								if(this.ship2.isExistAuxiliaryShips()){
+									for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips()) {
 										if(auxiliaryShip.shoot(this.bullets))
-											this.bulletsShot1++;
+											this.bulletsShot2++;
 									}
 								}
 							}
@@ -465,12 +466,14 @@ public class GameScreen extends Screen {
 						if (inputManager.seven >= 7 && inputManager.eight >= 7 && bullet_count2 <= 7)
 							per = 4;
 						if (inputManager.magazine2) {
-							inputManager.magazine2 = false;
-							inputManager.seven = 0;
-							inputManager.eight = 0;
-							inputManager.speed2 = 0;
-							this.magazine2--;
-							this.bullet_count2 = 0;
+							if(this.bullet_count2==10){
+								inputManager.magazine2 = false;
+								inputManager.seven = 0;
+								inputManager.eight = 0;
+								inputManager.speed2 = 0;
+								this.magazine2--;
+								this.bullet_count2=0;
+							}
 						}
 
 						// item
@@ -532,11 +535,16 @@ public class GameScreen extends Screen {
 					this.enemyShipSpecial = null;
 				}
 
-			/** If you use up all your magazines and bullets and then recharge your magazine, you will die.*/
-			if(this.magazine<0)
-				this.lives =0;
-			if(this.magazine2<0)
-				this.lives2 =0;
+				/** If you use up all your magazines and bullets and then recharge your magazine,
+				 * you'll have one less live and five new magazines.*/
+				if(this.magazine<0){
+					this.lives--;
+					this.magazine = 5;
+				}
+				if(this.magazine2<0){
+					this.lives2--;
+					this.magazine2 = 5;
+				}
 
 
 				this.ship.update();
