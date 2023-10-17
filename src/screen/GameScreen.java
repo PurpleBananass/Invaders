@@ -110,6 +110,9 @@ public class GameScreen extends Screen {
 	/**  Checks item is bomb **/
 	private boolean isBomb = false;
 
+	/** Checks life increase item is used. **/
+	private boolean lifeItemUsed = false;
+
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -137,7 +140,7 @@ public class GameScreen extends Screen {
 		this.bonusLife = bonusLife;
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
-		this.lives = gameState.getLivesRemaining1p();
+		this.lives = gameState.getLivesRemaining1p() ;
 		this.bulletsShot1 = gameState.getBulletsShot1();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
 
@@ -232,6 +235,14 @@ public class GameScreen extends Screen {
 	 */
 	protected final void update() {
 		super.update();
+
+		if (ship.getLifeIncreaseItem() && this.gameState.getLevel() == 1 && !this.lifeItemUsed){
+			this.lives++;
+			if (this.gameState.getMode() == 2){
+				this.lives2++;
+			}
+			this.lifeItemUsed = true;
+		}
 
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
