@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.lang.Integer;
 
+import entity.Item;
+import entity.ItemQueue;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
@@ -288,26 +291,6 @@ public final class DrawManager {
 			drawEntity(dummyShip, 40 + 35 * i, 10);
 	}
 
-
-
-	/**
-	 * Draws number of remaining items on screen.
-	 *
-	 * @param screen
-	 *            Screen to draw on.
-	 * @param items
-	 *            Current items the player has.
-	 */
-	public void drawItems(final Screen screen, final int items) {
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(items), 170, 25);
-		ShowItem dummyItem = new ShowItem(0, 0);
-		for (int i = 0; i < items; i++)
-			drawEntity(dummyItem, 190 + 35 * i, 10);
-	}
-
-
 	/**
 	 * Draws number of remaining lives from player2 on screen.
 	 *
@@ -324,6 +307,35 @@ public final class DrawManager {
 		for (int i = 0; i < lives2; i++)
 			drawEntity(dummyShip, 180 + 35 * i, 10);
 	}
+
+
+
+	/**
+	 * Draws number of remaining items on screen.
+	 *
+	 * @param screen
+	 *            Screen to draw on.
+	 * @param items
+	 *            Current items the player has.
+	 */
+	public void drawItems(final Screen screen, final Set<Item> items) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 20, screen.getHeight() + 25);
+		ShowItem dummyItem = new ShowItem(0, 0);
+		for (int i = 0; i < ItemQueue.size; i++)
+			drawEntity(dummyItem, 40 + 35 * i, screen.getHeight() + 25);
+	}
+
+	public void drawItems2(final Screen screen, final Set<Item> items) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 420, screen.getHeight() + 25);
+		ShowItem dummyItem = new ShowItem(0, 0);
+		for (int i = 0; i < ItemQueue.size; i++)
+			drawEntity(dummyItem, 440 + 35 * i, screen.getHeight() + 25);
+	}
+
 
 	/**
 	 * Draws a thick line from side to side of the screen.

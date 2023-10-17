@@ -72,6 +72,7 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 
 	private Set<Item> items;
+	private Set<Item> items2;
 	/** Current score. */
 	private int score;
 	/** First Player's lives left. */
@@ -566,7 +567,11 @@ public class GameScreen extends Screen {
 
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
-		if (this.gameState.getMode() == 2) drawManager.drawLives2(this, this.lives2);
+		drawManager.drawItems(this, this.items);
+		if (this.gameState.getMode() == 2) {
+			drawManager.drawLives2(this, this.lives2);
+			drawManager.drawItems2(this, this.items2);
+		}
 		drawManager.drawHighScore(this, this.highScore);
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
 		drawManager.drawHorizontalLine(this, this.height - 1); //separation line for bottom hud

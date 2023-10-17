@@ -8,12 +8,12 @@ public class ItemQueue {
     private final int capacity;
     private int front;
     private int rear;
-    private int size;
+    public static int size;
 
     public ItemQueue(){
         this.capacity = 3;
         itemQue = new Item[capacity];
-        this.front = this.rear = this.size = 0;
+        this.front = this.rear = size = 0;
     }
 
     public void enque(Item item){
