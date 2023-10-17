@@ -51,6 +51,7 @@ public class Ship extends Entity {
 	private Cooldown skillCooldown;
 	private List<Ship> auxiliaryShips = new ArrayList<>();
 	private boolean existAuxiliaryShips = false;
+	private int FASTER_SHOOTING_INTERVAL = 300;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -270,5 +271,9 @@ public class Ship extends Entity {
 
 	public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
 		this.existAuxiliaryShips = existAuxiliaryShips;
+	}
+
+	public void applyFasterShootingItem(){
+		this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
 	}
 }
