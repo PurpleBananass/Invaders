@@ -11,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import engine.AchievementManager.Achievement;
+
 import java.lang.Integer;
 
 import screen.Screen;
@@ -1144,4 +1147,47 @@ public final class DrawManager {
 		}
 	}
 
+	/**
+	 * Draws achievement information on the screen based on the achievements map.
+	 *
+	 * @param screen      Screen to draw on.
+	 * @param achievements Map of achievements with their completion status.
+	 */
+	public void drawAchievements(final Screen screen, Map<Achievement, Boolean> achievements) {
+		backBufferGraphics.setFont(fontRegular);
+
+		int x = 20; // Fixed X-coordinate for achievement titles.
+		int y = 50; // Fixed Y-coordinate for the initial position.
+
+		// Loop through the achievements map and display each achievement.
+		for (Map.Entry<Achievement, Boolean> entry : achievements.entrySet()) {
+				String achievementTitle = entry.getKey().toString().replace('_', ' ');
+				boolean isCompleted = entry.getValue();
+
+				// Display the achievement title.
+				backBufferGraphics.setColor(Color.YELLOW);
+				backBufferGraphics.drawString(achievementTitle, x, y);
+
+				// Check if the achievement is completed and adjust the color accordingly.
+				if (isCompleted) {
+						backBufferGraphics.setColor(Color.GREEN);
+				} else {
+						backBufferGraphics.setColor(Color.RED);
+				}
+
+				// Calculate the position to display achievementStatus (completed or incomplete) on the right of achievementTitle.
+				int titleWidth = fontRegularMetrics.stringWidth(achievementTitle);
+				int statusX = x + titleWidth + 10; // You can adjust the spacing as needed.
+
+				// Display whether the achievement is completed or not.
+				String achievementStatus = isCompleted ? "Completed" : "Incomplete";
+				backBufferGraphics.drawString(achievementStatus, statusX, y);
+
+				// You can add more information about the achievement if needed.
+				// For example, you can display the progress or description.
+
+				// Increase the Y-coordinate for the next achievement entry.
+				y += 40;
+		}
+	}
 }

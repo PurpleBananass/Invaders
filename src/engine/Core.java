@@ -9,15 +9,16 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import engine.AchievementManager.Achievement;
 import screen.*;
 
 /**
  * Implements core game logic.
- * 
+ *
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- * 
+ *
  */
-public final class  Core {
+public final class Core {
 
 	/** Width of current screen. */
 	private static final int WIDTH = 448;
@@ -32,7 +33,7 @@ public final class  Core {
 	private static final int EXTRA_LIFE_FRECUENCY = 3;
 	/** Total number of levels. */
 	private static final int NUM_LEVELS = 7;
-	
+
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 			new GameSettings(5, 4, 60, 2000);
@@ -54,7 +55,7 @@ public final class  Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500);
-	
+
 	/** Frame to draw the screen on. */
 	private static Frame frame;
 	/** Screen currently shown. */
@@ -132,6 +133,9 @@ public final class  Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
+
+		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
+
 		GameState gameState;
 
 		int returnCode = 1;
@@ -144,7 +148,7 @@ public final class  Core {
 			switch (returnCode) {
 			case 1:
 				// Main menu.
-				mainBgm.loop();
+				SoundManager.playSound("res/menu.wav", "menu", true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
@@ -159,8 +163,7 @@ public final class  Core {
 				LOGGER.info("Closing SkinSelection screen.");
 				// Game & score.
 				do {
-					mainBgm.stop();
-
+					SoundManager.stopSound("menu", 1.5f);
 					// One extra live every few levels.
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
@@ -265,8 +268,6 @@ public final class  Core {
 				break;
 			default:
 				break;
-
-				
 			}
 
 		} while (returnCode != 0);
