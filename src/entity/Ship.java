@@ -257,7 +257,18 @@ public class Ship extends Entity {
 	}
 
 	public void setAuxiliaryShipsMode() {
-		this.existAuxiliaryShips = true;
+		setExistAuxiliaryShips(true);
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				setExistAuxiliaryShips(false);
+				timer.cancel();
+			}
+		};
+		timer.schedule(task, 10000);
 	}
 
+	public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
+		this.existAuxiliaryShips = existAuxiliaryShips;
+	}
 }
