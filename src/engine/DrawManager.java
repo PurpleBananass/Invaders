@@ -208,21 +208,21 @@ public final class DrawManager {
 					backBufferGraphics.drawRect(positionX + i * 2, positionY
 							+ j * 2, 1, 1);
 	}
-	/**
- 	 * Clears a previously drawn entity by drawing the background over its position.
- 	 *
- 	 * @param entity Entity to be cleared.
- 	 * @param positionX X-coordinate of the entity's position.
- 	 * @param positionY Y-coordinate of the entity's position.
- 	 * @param screen Screen where the entity is cleared.
- 	 */
-	  public void clearEntity(final Entity entity, final int positionX, final int positionY) {
-    	int entityWidth = entity.getSpriteType().ordinal().getWidth(); // Assuming you have a getWidth() method in your SpriteType enum
-    	int entityHeight = entity.getSpriteType().ordinal().getHeight(); // Assuming you have a getHeight() method in your SpriteType enum
+	public void clearEntity(final Entity entity, final int positionX, final int positionY) {
+		boolean[][] image = spriteMap.get(entity.getSpriteType());
 
-    	backBufferGraphics.setColor(Color.BLACK); // You can use any appropriate color for the background
-    	backBufferGraphics.fillRect(positionX, positionY, entityWidth, entityHeight);
+		Color clearColor = Color.black;
+
+		backBufferGraphics.setColor(clearColor);
+		for (int i = 0; i < image.length; i++) {
+			for (int j = 0; j < image[i].length; j++) {
+				if (image[i][j]) {
+					backBufferGraphics.fillRect(positionX + i * 2, positionY + j * 2, 1, 1);
+				}
+			}
+		}
 	}
+
 
 	/**
 	 * For debugging purpouses, draws the canvas borders.
