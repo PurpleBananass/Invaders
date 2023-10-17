@@ -18,14 +18,14 @@ import engine.DrawManager.SpriteType;
 public class Ship extends Entity {
 
 	/** Time between shots. */
-	private static final int SHOOTING_INTERVAL = 750;
+	private int shootingInterval = 750;
 
 	/** Original speed of the bullets shot by the ship. */
 	private static final int ORIGINAL_BULLET_SPEED = -6;
 	/** Original movement of the ship for each unit of time. */
 	private static int ORIGINAL_SPEED = 2;
 
-	private static final int ITEM_USE_INTERVAL = 50;
+	private static final int ITEM_USE_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship.
 	private static final int BULLET_SPEED = -6;
 	/** Movement of the ship for each unit of time.
@@ -51,8 +51,7 @@ public class Ship extends Entity {
 	private Cooldown skillCooldown;
 	private List<Ship> auxiliaryShips = new ArrayList<>();
 	private boolean existAuxiliaryShips = false;
-	private boolean isAuxiliaryShip = false;
-
+	private int FASTER_SHOOTING_INTERVAL = 300;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -70,7 +69,7 @@ public class Ship extends Entity {
 		super(positionX, positionY, 13 * 2, 8 * 2, color);
 
 		this.spriteType = spriteType;
-		this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);
+		this.shootingCooldown = Core.getCooldown(shootingInterval);
 		this.itemCooldown = Core.getCooldown(ITEM_USE_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
 		this.skillCooldown = Core.getCooldown(1000);
@@ -80,8 +79,8 @@ public class Ship extends Entity {
 		this.Invincible = false;
 
         if(!isAuxiliaryShip){
-            this.auxiliaryShips.add(new Ship(positionX - 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
-            this.auxiliaryShips.add(new Ship(positionX + 30, positionY, Color.GREEN, DrawManager.SpriteType.EnemyShipA1, true));
+            this.auxiliaryShips.add(new Ship(positionX - 25, positionY, this.getColor(), SpriteType.AuxiliaryShips, true));
+            this.auxiliaryShips.add(new Ship(positionX + 25, positionY, this.getColor(), DrawManager.SpriteType.AuxiliaryShips, true));
         }
     }
 
@@ -188,12 +187,22 @@ public class Ship extends Entity {
 	public final void setShootingInterval(int cldwn) {this.shootingCooldown = Core.getCooldown(cldwn);}
 
 	/**
-	 * Re-Setter for the ship's shooting frequency speed.
+	 * Re-Setter for the sh용ip's shooting frequency speed.
 	 */
-	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(SHOOTING_INTERVAL);}
-
-	/** Set item_speed when ship get speed item **/
-	public void set_item_Speed() {this.SPEED = item_SPEED;}
+	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(shootingInterval);}
+	
+	/** Set item_speed for 10sec when ship get speed item **/
+	public void setItemSpeed() {
+		this.SPEED = item_SPEED;
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				resetSpeed();
+				timer.cancel();
+			}
+		};
+		timer.schedule(task, 10000);
+	}
 
 
 	public final boolean isInvincible() {
@@ -201,23 +210,42 @@ public class Ship extends Entity {
 	}
 
 	public final void runInvincible() {
+		Color c = this.getColor();
 
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			public void run() {
-				Invincible = false;
-				changeColor(Color.GREEN);
-				timer.cancel();
+		if (c == Color.GREEN) {
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					Invincible = false;
+					changeColor(Color.GREEN);
+					timer.cancel();
+				}
+			};
+
+			if (!this.isInvincible()) {
+				this.Invincible = true;
+				this.changeColor(Color.BLUE);
+				timer.schedule(task, 10000);
 			}
-		};
+		} else {
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				public void run() {
+					Invincible = false;
+					changeColor(Color.RED);
+					timer.cancel();
+				}
+			};
 
-		if (!this.isInvincible()) {
-			this.Invincible = true;
-			this.changeColor(Color.BLUE);
-			timer.schedule(task, 10000);
+			if (!this.isInvincible()) {
+				this.Invincible = true;
+				this.changeColor(Color.magenta);
+				timer.schedule(task, 10000);
+			}
 		}
-
 	}
+
+
 
 	public final ItemQueue getItemQueue(){return this.itemQueue;}
 
@@ -230,6 +258,22 @@ public class Ship extends Entity {
 	}
 
 	public void setAuxiliaryShipsMode() {
-		this.existAuxiliaryShips = true;
+		setExistAuxiliaryShips(true);
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				setExistAuxiliaryShips(false);
+				timer.cancel();
+			}
+		};
+		timer.schedule(task, 10000);
+	}
+
+	public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
+		this.existAuxiliaryShips = existAuxiliaryShips;
+	}
+
+	public void applyFasterShootingItem(){
+		this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
 	}
 }

@@ -107,6 +107,10 @@ public class GameScreen extends Screen {
 	/** list of past high scores */
 	private int highScore;
 
+	/**  Checks item is bomb **/
+	private boolean isBomb = false;
+
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 *
@@ -287,9 +291,9 @@ public class GameScreen extends Screen {
 				if(!this.ship.isDestroyed()){
 					List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
 					if (this.ship.isExistAuxiliaryShips()) {
-						auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
+						auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 25);
 						auxiliaryShips.get(0).setPositionY(ship.getPositionY());
-						auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
+						auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 25);
 						auxiliaryShips.get(1).setPositionY(ship.getPositionY());
 					} else {
 						auxiliaryShips.get(0).destroy();
@@ -631,7 +635,7 @@ public class GameScreen extends Screen {
 					}
 				}
 
-				if (this.gameState.getMode() == 2 && checkCollision(bullet, this.ship2) && !this.levelFinished) {
+				if (this.gameState.getMode() == 2 && checkCollision(bullet, this.ship2) && !this.levelFinished && !this.ship2.isInvincible()) {
 					recyclable.add(bullet);
 					if (!this.ship2.isDestroyed()) {
 						this.ship2.destroy();
@@ -645,13 +649,24 @@ public class GameScreen extends Screen {
 				for (EnemyShip enemyShip : this.enemyShipFormation)
 					if (!enemyShip.isDestroyed()
 							&& checkCollision(bullet, enemyShip)) {
-						this.score += enemyShip.getPointValue();
-						this.shipsDestroyed++;
+						if (this.isBomb){
+							List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+							for(EnemyShip enemy : enemyShips) {
+								this.score += enemy.getPointValue();
+								this.shipsDestroyed++;
+							}
+						}
+						else {
+							this.score += enemyShip.getPointValue();
+							this.shipsDestroyed++;
+							this.enemyShipFormation.destroy(enemyShip);
+						}
+
 						if(enemyShip.hasItem()){
 							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
 						}
-						this.enemyShipFormation.destroy(enemyShip);
 
+						setBomb(false);
 						recyclable.add(bullet);
 					}
 
@@ -666,19 +681,24 @@ public class GameScreen extends Screen {
 				}
 			}
 
-		Set<Item> recycableItem = new HashSet<Item>();
+		Set<Item> recyclableItem = new HashSet<Item>();
 		for (Item item : this.items){
 			if (checkCollision(item, this.ship) && !this.levelFinished){
-				recycableItem.add(item);
+				recyclableItem.add(item);
 				this.ship.getItemQueue().enque(item);
+			}
+
+			if (this.gameState.getMode() == 2 && checkCollision(item, this.ship2) && !this.levelFinished) {
+				recyclableItem.add(item);
+				this.ship2.getItemQueue().enque(item);
 			}
 		}
 
 
 		this.bullets.removeAll(recyclable);
-		this.items.removeAll(recycableItem);
+		this.items.removeAll(recyclableItem);
 		BulletPool.recycle(recyclable);
-		ItemPool.recycle(recycableItem);
+		ItemPool.recycle(recyclableItem);
 	}
 
 	/** Use skill*/
@@ -801,20 +821,26 @@ public class GameScreen extends Screen {
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
-				// 여기에 스피드업 아이템 코드 작성
+				ship.setItemSpeed();
 				this.logger.info("SpeedUp Item 사용");
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.InvincibleItem) {
-				this.ship.runInvincible();
+				ship.runInvincible();
 				this.logger.info("Invincible Item 사용");
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.BombItem) {
-				// 여기에 폭탄 아이템 코드 작성
+				setBomb(true);
 				this.logger.info("Bomb Item 사용");
 			}
 			item.setIsGet();
+			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
 		}
 	}
+
+	public void setBomb(boolean isBomb){
+		this.isBomb = isBomb;
+	}
+
 }
