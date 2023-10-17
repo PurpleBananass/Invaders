@@ -109,6 +109,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
 
+		AchievementManager.getInstance().markAchievementAsAchieved("adventure start");
+
 		GameState gameState;
 
 		int returnCode = 1;
