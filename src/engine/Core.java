@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
@@ -12,9 +13,9 @@ import screen.*;
 
 /**
  * Implements core game logic.
- *
+ * 
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- *
+ * 
  */
 public final class  Core {
 
@@ -31,7 +32,7 @@ public final class  Core {
 	private static final int EXTRA_LIFE_FRECUENCY = 3;
 	/** Total number of levels. */
 	private static final int NUM_LEVELS = 7;
-
+	
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 			new GameSettings(5, 4, 60, 2000);
@@ -53,7 +54,7 @@ public final class  Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500);
-
+	
 	/** Frame to draw the screen on. */
 	private static Frame frame;
 	/** Screen currently shown. */
@@ -68,9 +69,20 @@ public final class  Core {
 	/** Logger handler for printing to console. */
 	private static ConsoleHandler consoleHandler;
 
+	public static int[] keySetting = new int[16];
+	/** { 1P.LEFT, 1P.RIGHT, 1P.ATTACK, 1P.BURST 1, 1P.BURST 2, 1P.RELOAD, 1P.BOOSTER, 1P.ITEM,
+	 * 2P.LEFT, 2P.RIGHT, 2P.ATTACK, 2P.BURST 1, 2P.BURST 2, 2P.RELOAD, 2P.BOOSTER, 2P.ITEM} */
+	public static String[] keySettingString = new String[16];
+	/** Check what key is selected */
+	/** Sound Volume  */
+	public static int soundVolume;
 	private static SoundManager mainBgm = new SoundManager("res/menu.wav");
 
 
+	/** Check BGM is On/Off  */
+	public static boolean bgmOn;
+
+	public static List<Settings> setting;
 	/**
 	 * Test implementation.
 	 *
@@ -78,6 +90,21 @@ public final class  Core {
 	 *            Program args, ignored.
 	 */
 	public static void main(final String[] args) {
+		try {
+			setting = Core.getFileManager().loadSettings();
+			soundVolume = setting.get(0).getValue();
+			if(setting.get(1).getValue()==1){
+				bgmOn = true;
+			}
+			else bgmOn = false;
+			for (int i =2; i < 18; i++) {
+				keySettingString[i-2] = setting.get(i).getName();
+				keySetting[i-2] = setting.get(i).getValue();
+			}
+
+		} catch (NumberFormatException | IOException e) {
+			LOGGER.info("Couldn't load Settings!");
+		}
 		try {
 			LOGGER.setUseParentHandlers(false);
 
@@ -109,7 +136,6 @@ public final class  Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
-
 		GameState gameState;
 
 		int returnCode = 1;

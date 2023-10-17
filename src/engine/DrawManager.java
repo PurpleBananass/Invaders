@@ -992,8 +992,8 @@ public final class DrawManager {
 
 
 	public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
-								  int volume, boolean bgmOn, int keyNum) {
-		String[] keyString = SettingScreen.getKeySettingString();
+								  int volume, boolean bgmon, int keyNum) {
+		String[] keyString = SettingScreen.getkeySettingString();
 		if(option == 0 || option == 1){
 			if (option == 0 && selected)
 				backBufferGraphics.setColor(Color.GREEN);
@@ -1012,7 +1012,7 @@ public final class DrawManager {
 			else
 				backBufferGraphics.setColor(Color.WHITE);
 
-			if(bgmOn) drawSevenTenthRegularString(screen,"ON",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+			if(bgmon) drawSevenTenthRegularString(screen,"ON",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
 			else drawSevenTenthRegularString(screen,"OFF",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
 		}
 
