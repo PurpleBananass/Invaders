@@ -62,8 +62,12 @@ public class SettingScreen extends Screen {
             SoundManager.setMasterVolume(soundVolume);
             if(this.setting.get(1).getValue()==1){
                 bgmOn = true;
+                SoundManager.bgmSetting(true);
             }
-            else bgmOn = false;
+            else{
+                bgmOn = false;
+                SoundManager.bgmSetting(false);
+            }
             for (int i =2; i < 18; i++) {
                 keySettingString[i-2] = this.setting.get(i).getName();
                 keySetting[i-2] = this.setting.get(i).getValue();
@@ -125,6 +129,7 @@ public class SettingScreen extends Screen {
                     /** BGM On/Off */
                     case 1:
                         bgmOn = !bgmOn;
+                        SoundManager.bgmSetting(bgmOn);
                         this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */
@@ -149,6 +154,7 @@ public class SettingScreen extends Screen {
                     /** BGM On/Off */
                     case 1:
                         bgmOn = !bgmOn;
+                        SoundManager.bgmSetting(bgmOn);
                         this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */

@@ -3,6 +3,8 @@ package engine;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -10,14 +12,15 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.FloatControl.Type;
 
 public class SoundManager {
-    public static HashMap<String, Clip> clips = new HashMap<>();
+    private static HashMap<String, Clip> clips = new HashMap<>();
+    private static ArrayList<Clip> bgms = new ArrayList<>();
     private static float masterVolume = screen.SettingScreen.getSoundVolume();
     private static final float minimum = -80;
     private static final float maximum = 6;
     private static final float one = Math.abs((minimum-maximum)/100);
     private static float master = (float)(minimum + one*(50*Math.log10(masterVolume)));
 
-    public static void playSound(String soundFilePath, String clipName, boolean isLoop) {
+    public static void playSound(String soundFilePath, String clipName, boolean isLoop, boolean isBgm) {
         Clip clip = clips.get(clipName);
         if (clip != null && clip.isActive()) {
             return;
@@ -37,6 +40,7 @@ public class SoundManager {
                         clip.start();
                     }
                     clips.put(clipName, clip);
+                    if(isBgm) bgms.add(clip);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -44,7 +48,7 @@ public class SoundManager {
         }).start();
     }
 
-    public static void playSound(String soundFilePath, String clipName, boolean isLoop, float fadeInSpeed) {
+    public static void playSound(String soundFilePath, String clipName, boolean isLoop, boolean isBgm, float fadeInSpeed) {
         Clip clip = clips.get(clipName);
         if (clip != null && clip.isActive()) {
             return;
@@ -64,6 +68,7 @@ public class SoundManager {
                         clip.start();
                     }
                     clips.put(clipName, clip);
+                    if(isBgm) bgms.add(clip);
                     fadeIn(clipName, fadeInSpeed);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -76,6 +81,7 @@ public class SoundManager {
         Clip clip = clips.get(clipName);
         if (clip != null && clip.isActive()) {
             clip.stop();
+            bgms.remove(clip);
         }
     }
 
@@ -96,6 +102,7 @@ public class SoundManager {
                         }
                     }
                     clip.stop();
+                    bgms.remove(clip);
                 }
             }).start();
         }
@@ -131,6 +138,21 @@ public class SoundManager {
                 master = (float)(minimum + one*(50*Math.log10(volume)));
                 floatControl.setValue(master);
                 System.out.println(volume+" = "+ master);
+            }
+        }
+    }
+
+    public static void bgmSetting(boolean bgm){
+        if(bgm){
+            for(Clip clip : bgms){
+                FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+                floatControl.setValue(master);
+            }
+        }
+        else{
+            for(Clip clip : bgms){
+                FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+                floatControl.setValue((float)(minimum + one*(50*Math.log10(0))));
             }
         }
     }
