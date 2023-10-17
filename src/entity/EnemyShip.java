@@ -41,7 +41,7 @@ public class EnemyShip extends Entity {
 	protected int HP;
 
 	/** 총알 속도 */
-	private static final int BULLET_SPEED = 4;
+	protected static final int BULLET_SPEED = 4;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -106,9 +106,10 @@ public class EnemyShip extends Entity {
 		return;
 	}
 
-	public void shoot(final Set<Bullet> bullets) {
+	public void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown) {
 		bullets.add(BulletPool.getBullet(positionX
 				+ width / 2, positionY, BULLET_SPEED));
+		shootingCooldown.timedown(0);
 	}
 
 	/**
