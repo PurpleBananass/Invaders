@@ -8,6 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import engine.AchievementManager.Achievement;
 import screen.*;
 
 /**
@@ -109,7 +110,7 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
 
-		AchievementManager.getInstance().markAchievementAsAchieved("adventure start");
+		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 
 		GameState gameState;
 
