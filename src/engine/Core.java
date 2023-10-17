@@ -69,20 +69,16 @@ public final class  Core {
 	/** Logger handler for printing to console. */
 	private static ConsoleHandler consoleHandler;
 
-	public static int[] keySetting = new int[16];
+	private static int[] keySetting = new int[16];
 	/** { 1P.LEFT, 1P.RIGHT, 1P.ATTACK, 1P.BURST 1, 1P.BURST 2, 1P.RELOAD, 1P.BOOSTER, 1P.ITEM,
 	 * 2P.LEFT, 2P.RIGHT, 2P.ATTACK, 2P.BURST 1, 2P.BURST 2, 2P.RELOAD, 2P.BOOSTER, 2P.ITEM} */
-	public static String[] keySettingString = new String[16];
-	/** Check what key is selected */
+	private static String[] keySettingString = new String[16];
 	/** Sound Volume  */
 	public static int soundVolume;
-	private static SoundManager mainBgm = new SoundManager("res/menu.wav");
-
-
 	/** Check BGM is On/Off  */
 	public static boolean bgmOn;
-
 	public static List<Settings> setting;
+	private static SoundManager mainBgm = new SoundManager("res/menu.wav");
 	/**
 	 * Test implementation.
 	 *
@@ -354,4 +350,44 @@ public final class  Core {
 	public static int getMaxLives() {
 		return MAX_LIVES;
 	}
+	/**
+	 * Get Key Setting Code
+	 */
+	public static int getKeySettingCode(int num){
+		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		return keySetting[num];
+	}
+	/**
+	 * Get Key Setting String
+	 */
+	public static String getKeySettingString(int num){
+		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		return keySettingString[num];
+	}
+	/**
+	 * Get Key Setting String Array
+	 */
+	public static String[] getKeySettingStringArray(){return keySettingString;}
+	/**
+	 * Set Key Setting Code
+	 */
+	public static void setKeySettingCode(int num, int value){
+		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		keySetting[num] = value;
+	}
+	/**
+	 * Set Key Setting String
+	 */
+	public static void setKeySettingString(int num, String value){
+		if(num<16 && num>=0) throw new NullPointerException("it exceeds array");
+		keySettingString[num] = value;
+	}
+	/**
+	 * Get Sound Volume
+	 */
+	public static int getSoundVolume(){return soundVolume;}
+	/**
+	 * Is BGM ON
+	 */
+	public static boolean isBgmOn(){return bgmOn;}
 }

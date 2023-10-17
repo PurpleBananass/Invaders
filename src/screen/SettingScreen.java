@@ -3,23 +3,15 @@ import engine.*;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.List;
 
 
 public class SettingScreen extends Screen {
-
-    private List<Settings> settings1 = null;
-
-
     /** Milliseconds between changes in user selection. */
     private static final int SELECTION_TIME = 200;
-
     /** Time between changes in user selection. */
     private Cooldown selectionCooldown;
-
     /** What is selected setting item? */
     private int itemCode =0;
-
     /** Check select  */
     private boolean selected =false;
     /** Check what key is selected */
@@ -29,9 +21,6 @@ public class SettingScreen extends Screen {
     /** For the situation some keys are not set */
     private int tempKeyCode;
     private String tempKeyString;
-
-
-
     /**
      * Constructor, establishes the properties of the screen.
      *
@@ -47,7 +36,6 @@ public class SettingScreen extends Screen {
         this.returnCode = 1;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
-
     }
 
     /**
@@ -96,11 +84,7 @@ public class SettingScreen extends Screen {
                         this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */
-                    case 2:
-                        if(keyNum>0) keyNum--;
-                        this.selectionCooldown.reset();
-                        break;
-                    case 3:
+                    case 2, 3:
                         if(keyNum>0) keyNum--;
                         this.selectionCooldown.reset();
                         break;
@@ -121,11 +105,7 @@ public class SettingScreen extends Screen {
                         this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */
-                    case 2:
-                        if(keyNum<7) keyNum++;
-                        this.selectionCooldown.reset();
-                        break;
-                    case 3:
+                    case 2, 3:
                         if(keyNum<7) keyNum++;
                         this.selectionCooldown.reset();
                         break;
@@ -147,29 +127,29 @@ public class SettingScreen extends Screen {
              * */
             if (itemCode == 2 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
                 keyChangeMode =true;
-                tempKeyCode = Core.keySetting[keyNum];
-                tempKeyString = Core.keySettingString[keyNum];
-                Core.keySettingString[keyNum] = "";
+                tempKeyCode = Core.getKeySettingCode(keyNum);
+                tempKeyString = Core.getKeySettingString(keyNum);
+                Core.setKeySettingString(keyNum, "");
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 3 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))){
                 keyChangeMode =true;
-                tempKeyCode = Core.keySetting[keyNum];
-                tempKeyString = Core.keySettingString[keyNum];
-                Core.keySettingString[keyNum + 8] = "";
+                tempKeyCode = Core.getKeySettingCode(keyNum +8);
+                tempKeyString = Core.getKeySettingString(keyNum +8);
+                Core.setKeySettingString(keyNum +8, "");
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
-                for(int i=0;i<14;i++){
-                    if(Core.keySetting[i] == temp){
-                        Core.keySetting[i] = tempKeyCode;
-                        Core.keySettingString[i] = tempKeyString;
+                for(int i=0;i<16;i++){
+                    if(Core.getKeySettingCode(i) == temp){
+                        Core.setKeySettingCode(i,tempKeyCode);
+                        Core.setKeySettingString(i,tempKeyString);
                     }
                 }
-                Core.keySettingString[keyNum] = tempS;
-                Core.keySetting[keyNum] = temp;
+                Core.setKeySettingString(keyNum, tempS);
+                Core.setKeySettingCode(keyNum, temp);
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
@@ -177,13 +157,13 @@ public class SettingScreen extends Screen {
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
                 for(int i=0;i<16;i++){
-                    if(Core.keySetting[i] == temp){
-                        Core.keySetting[i] = tempKeyCode;
-                        Core.keySettingString[i] = tempKeyString;
+                    if(Core.getKeySettingCode(i) == temp){
+                        Core.setKeySettingCode(i, tempKeyCode);
+                        Core.setKeySettingString(i, tempKeyString);
                     }
                 }
-                Core.keySettingString[keyNum + 8] = tempS;
-                Core.keySetting[keyNum + 8] = temp;
+                Core.setKeySettingString(keyNum +8, tempS);
+                Core.setKeySettingCode(keyNum +8, temp);
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
@@ -236,8 +216,8 @@ public class SettingScreen extends Screen {
         Core.setting.get(0).value = Core.soundVolume;
         Core.setting.get(1).value = Core.bgmOn ? 1:0;
         for (int i =0; i < 16; i++) {
-            Core.setting.get(i+2).value = Core.keySetting[i];
-            Core.setting.get(i+2).name = Core.keySettingString[i];
+            Core.setting.get(i+2).value = Core.getKeySettingCode(i);
+            Core.setting.get(i+2).name = Core.getKeySettingString(i);
         }
         try {
             FileManager.saveSettings(Core.setting);
@@ -245,10 +225,4 @@ public class SettingScreen extends Screen {
             throw new RuntimeException(e);
         }
     }
-
-    public final int getCoresoundVolume(){return Core.soundVolume;}
-    public final boolean isbgmon(){return Core.bgmOn;}
-
-    public final int[] getkeySetting(){return Core.keySetting;}
-    public static final String[] getkeySettingString(){return Core.keySettingString;}
 }

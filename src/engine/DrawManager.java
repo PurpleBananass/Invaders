@@ -17,7 +17,6 @@ import screen.Screen;
 import entity.Entity;
 import entity.Ship;
 import screen.SelectScreen;
-import screen.SettingScreen;
 
 /**
  * Manages screen drawing.
@@ -126,7 +125,7 @@ public final class DrawManager {
 		} catch (IOException e) {
 			logger.warning("Loading failed.");
 		} catch (FontFormatException e) {
-			logger.warning("Font formating failed.");
+			logger.warning("Font formatting failed.");
 		}
 	}
 
@@ -992,8 +991,8 @@ public final class DrawManager {
 
 
 	public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
-								  int volume, boolean bgmon, int keyNum) {
-		String[] keyString = SettingScreen.getkeySettingString();
+								  int volume, boolean bgmOn, int keyNum) {
+		String[] keyString = Core.getKeySettingStringArray();
 		if(option == 0 || option == 1){
 			if (option == 0 && selected)
 				backBufferGraphics.setColor(Color.GREEN);
@@ -1012,7 +1011,7 @@ public final class DrawManager {
 			else
 				backBufferGraphics.setColor(Color.WHITE);
 
-			if(bgmon) drawSevenTenthRegularString(screen,"ON",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
+			if(bgmOn) drawSevenTenthRegularString(screen,"ON",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
 			else drawSevenTenthRegularString(screen,"OFF",screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 4);
 		}
 
