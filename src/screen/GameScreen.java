@@ -324,21 +324,21 @@ public class GameScreen extends Screen {
 				boolean isLeftBorder2p = this.ship2.getPositionX()
 						- this.ship2.getSpeed() < 1;
 
-				if (moveRight1p && !isRightBorder1p) {
+				if (moveRight1p && !isRightBorder1p && (this.lives > 0)) {
 					this.ship.moveRight();
 				}
-				if (moveRight2p && !isRightBorder2p) {
+				if (moveRight2p && !isRightBorder2p && (this.lives2 > 0)) {
 					this.ship2.moveRight();
 				}
-				if (moveLeft1p && !isLeftBorder1p) {
+				if (moveLeft1p && !isLeftBorder1p && (this.lives > 0)) {
 					this.ship.moveLeft();
 				}
-				if (moveLeft2p && !isLeftBorder2p) {
+				if (moveLeft2p && !isLeftBorder2p && (this.lives2 > 0)) {
 					this.ship2.moveLeft();
 				}
 
 				if (replayability.getReplay()==0){
-					if (inputManager.isKeyDown(KeyEvent.VK_W)) {
+					if (inputManager.isKeyDown(KeyEvent.VK_W) && (this.lives > 0)) {
 						if (this.ship.shoot(this.bullets, 1)) {
 							this.bulletsShot1++;
 							this.bullet_count++;
@@ -350,7 +350,7 @@ public class GameScreen extends Screen {
 								}
 						}
 					}
-					if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
+					if (inputManager.isKeyDown(KeyEvent.VK_UP) && (this.lives2 > 0)) {
 						if (this.ship2.shoot(this.bullets, 2)) {
 							this.bulletsShot2++;
 							this.bullet_count2++;
@@ -364,7 +364,7 @@ public class GameScreen extends Screen {
 					}
 				}else if (replayability.getReplay()==1){
 					//player1
-					if (this.bullet_count<=9 && inputManager.isKeyDown(KeyEvent.VK_W)) {
+					if (this.bullet_count<=9 && inputManager.isKeyDown(KeyEvent.VK_W) && (this.lives > 0)) {
 						if(this.ship.shoot(this.bullets, 1)){
 							this.bulletsShot1++;
 							this.bullet_count++;
@@ -407,7 +407,7 @@ public class GameScreen extends Screen {
 					}
 
 					//player2
-					if (this.bullet_count2<=9 && inputManager.isKeyDown(KeyEvent.VK_UP)) {
+					if (this.bullet_count2<=9 && inputManager.isKeyDown(KeyEvent.VK_UP) && (this.lives2 > 0)) {
 						if(this.ship2.shoot(this.bullets, 2)){
 							this.bulletsShot2++;
 							this.bullet_count2++;
