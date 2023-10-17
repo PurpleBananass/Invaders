@@ -382,12 +382,4 @@ public final class Core {
 		if(num<0 || num>16) throw new IndexOutOfBoundsException("it exceeds array");
 		keySettingString[num] = value;
 	}
-	/**
-	 * Get Sound Volume
-	 */
-	public static int getSoundVolume(){return soundVolume;}
-	/**
-	 * Is BGM ON
-	 */
-	public static boolean isBgmOn(){return bgmOn;}
 }
