@@ -79,7 +79,6 @@ public final class Core {
 	/** Check BGM is On/Off  */
 	public static boolean bgmOn;
 	public static List<Settings> setting;
-	private static SoundManager mainBgm = new SoundManager("res/menu.wav");
 	/**
 	 * Test implementation.
 	 *
@@ -373,14 +372,14 @@ public final class Core {
 	 * Set Key Setting Code
 	 */
 	public static void setKeySettingCode(int num, int value){
-		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
+		if(num<0 || num>16) throw new IndexOutOfBoundsException("it exceeds array");
 		keySetting[num] = value;
 	}
 	/**
 	 * Set Key Setting String
 	 */
 	public static void setKeySettingString(int num, String value){
-		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
+		if(num<0 || num>16) throw new IndexOutOfBoundsException("it exceeds array");
 		keySettingString[num] = value;
 	}
 	/**
