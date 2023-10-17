@@ -25,6 +25,8 @@ public class Ship extends Entity {
 	/** Original movement of the ship for each unit of time. */
 	private static int ORIGINAL_SPEED = 2;
 
+	private boolean lifeIncreaseItem = false;
+
 	private static final int ITEM_USE_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship.
 	private static final int BULLET_SPEED = -6;
@@ -276,4 +278,13 @@ public class Ship extends Entity {
 	public void applyFasterShootingItem(){
 		this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
 	}
+
+	public void applyLifeIncreaseItem(boolean isUsed){
+		this.lifeIncreaseItem = isUsed;
+	}
+
+	public boolean getLifeIncreaseItem(){
+		return this.lifeIncreaseItem;
+	}
+
 }

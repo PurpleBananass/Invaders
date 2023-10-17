@@ -469,27 +469,25 @@ public class GameScreen extends Screen {
 			if (this.enemyShipSpecial != null
 					&& this.enemyShipSpecial.getPositionX() > this.width) {
 				this.escapeCnt++;
-				if(this.level==7){
+				if (this.level == 7) {
 					this.lives--;
 					this.logger.info("This level is 7 and escaped ship is 1, so you lost on life.");
-				}
-				else if(this.level==6 && this.escapeCnt==2){
+				} else if (this.level == 6 && this.escapeCnt == 2) {
 					this.lives--;
 					this.logger.info("Escaped 2.");
 					this.escapeCnt = 0;
 					this.logger.info("This level is 6 and escaped ship is 2, so you lost on life.");
-				}
-				else if(this.level==5 && this.escapeCnt==3){
+				} else if (this.level == 5 && this.escapeCnt == 3) {
 					this.lives--;
 					this.logger.info("Escaped 3.");
 					this.escapeCnt = 0;
 					this.logger.info("This level is 5 and escaped ship is 3, so you lost on life.");
-				}
-				else{
+				} else {
 					this.logger.info("The special ship has escaped");
 				}
 				this.enemyShipSpecial = null;
 			}
+
 
 			if(this.magazine==0)
 				this.lives =0;
@@ -838,7 +836,6 @@ public class GameScreen extends Screen {
 			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
 		}
 	}
-
 	public void setBomb(boolean isBomb){
 		this.isBomb = isBomb;
 	}
