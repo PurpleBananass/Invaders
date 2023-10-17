@@ -11,8 +11,17 @@ import javax.sound.sampled.FloatControl.Type;
 
 public class SoundManager {
     public static HashMap<String, Clip> clips = new HashMap<>();
+    private static float masterVolume = screen.SettingScreen.getSoundVolume();
+    private static final float minimum = -80;
+    private static final float maximum = 6;
+    private static final float one = Math.abs((minimum-maximum)/100);
+    private static float master = (float)(minimum + one*(50*Math.log10(masterVolume)));
 
     public static void playSound(String soundFilePath, String clipName, boolean isLoop) {
+        Clip clip = clips.get(clipName);
+        if (clip != null && clip.isActive()) {
+            return;
+        }
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -20,12 +29,14 @@ public class SoundManager {
                     AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
                     Clip clip = AudioSystem.getClip();
                     clip.open(audioIn);
+                    FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+                    floatControl.setValue(master);
                     if (isLoop) {
                         clip.loop(-1);
                     } else {
                         clip.start();
                     }
-                    clips.put(clipName, clip); // Clip 객체를 배열에 저장
+                    clips.put(clipName, clip);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -34,6 +45,10 @@ public class SoundManager {
     }
 
     public static void playSound(String soundFilePath, String clipName, boolean isLoop, float fadeInSpeed) {
+        Clip clip = clips.get(clipName);
+        if (clip != null && clip.isActive()) {
+            return;
+        }
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -42,14 +57,14 @@ public class SoundManager {
                     Clip clip = AudioSystem.getClip();
                     clip.open(audioIn);
                     FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-                    floatControl.setValue(-40);
+                    floatControl.setValue(minimum);
                     if (isLoop) {
                         clip.loop(-1);
                     } else {
                         clip.start();
                     }
                     clips.put(clipName, clip);
-                    fadeIn(clipName, fadeInSpeed);// Clip 객체를 배열에 저장
+                    fadeIn(clipName, fadeInSpeed);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -71,7 +86,7 @@ public class SoundManager {
                 public void run() {
                     float volume = ((FloatControl) clip.getControl(Type.MASTER_GAIN)).getValue();
                     FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
-                    while (volume > -40) {
+                    while (volume > minimum) {
                         floatControl.setValue(volume);
                         volume -= (0.4 * fadeoutSpeed);
                         try {
@@ -94,7 +109,7 @@ public class SoundManager {
                 float volume = ((FloatControl) clip.getControl(Type.MASTER_GAIN)).getValue();
                 FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
                 floatControl.setValue(-80);
-                while (volume < 0) {
+                while (volume < master) {
                     floatControl.setValue(volume);
                     volume += (0.4 * fadeInSpeed);
                     if(volume>0) volume = 0;
@@ -106,6 +121,18 @@ public class SoundManager {
                 }
             }
         }).start();
+    }
+
+    public static void setMasterVolume(float volume) {
+        masterVolume = volume;
+        for (Clip clip : clips.values()) {
+            if (clip != null && clip.isActive()) {
+                FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
+                master = (float)(minimum + one*(50*Math.log10(volume)));
+                floatControl.setValue(master);
+                System.out.println(volume+" = "+ master);
+            }
+        }
     }
 
     public static void setVolume(String clipName, double percent){

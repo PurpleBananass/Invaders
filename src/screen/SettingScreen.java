@@ -25,7 +25,7 @@ public class SettingScreen extends Screen {
     private boolean selected =false;
 
     /** Sound Volume  */
-    private int soundVolume;
+    private static int soundVolume;
 
     /** Check BGM is On/Off  */
     private boolean bgmOn;
@@ -59,6 +59,7 @@ public class SettingScreen extends Screen {
         try {
             this.setting = Core.getFileManager().loadSettings();
             soundVolume = this.setting.get(0).getValue();
+            SoundManager.setMasterVolume(soundVolume);
             if(this.setting.get(1).getValue()==1){
                 bgmOn = true;
             }
@@ -116,7 +117,10 @@ public class SettingScreen extends Screen {
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(soundVolume < 100) soundVolume ++;
+                        if(soundVolume < 100){
+                            soundVolume ++;
+                            SoundManager.setMasterVolume(soundVolume);
+                        }
                         break;
                     /** BGM On/Off */
                     case 1:
@@ -137,7 +141,10 @@ public class SettingScreen extends Screen {
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(soundVolume >0) soundVolume --;
+                        if(soundVolume >0){
+                            soundVolume --;
+                            SoundManager.setMasterVolume(soundVolume);
+                        }
                         break;
                     /** BGM On/Off */
                     case 1:
@@ -266,7 +273,7 @@ public class SettingScreen extends Screen {
         }
     }
 
-    public final int getSoundVolume(){return soundVolume;}
+    public static final int getSoundVolume(){return soundVolume;}
     public final boolean isBgmOn(){return bgmOn;}
 
     public final int[] getKeySetting(){return keySetting;}
