@@ -682,19 +682,24 @@ public class GameScreen extends Screen {
 				}
 			}
 
-		Set<Item> recycableItem = new HashSet<Item>();
+		Set<Item> recyclableItem = new HashSet<Item>();
 		for (Item item : this.items){
 			if (checkCollision(item, this.ship) && !this.levelFinished){
-				recycableItem.add(item);
+				recyclableItem.add(item);
 				this.ship.getItemQueue().enque(item);
+			}
+
+			if (this.gameState.getMode() == 2 && checkCollision(item, this.ship2) && !this.levelFinished) {
+				recyclableItem.add(item);
+				this.ship2.getItemQueue().enque(item);
 			}
 		}
 
 
 		this.bullets.removeAll(recyclable);
-		this.items.removeAll(recycableItem);
+		this.items.removeAll(recyclableItem);
 		BulletPool.recycle(recyclable);
-		ItemPool.recycle(recycableItem);
+		ItemPool.recycle(recyclableItem);
 	}
 
 	/** Use skill*/
