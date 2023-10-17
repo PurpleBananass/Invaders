@@ -138,7 +138,9 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		for (int i = 0; i < this.nShipsWide; i++)
 			this.enemyShips.add(new ArrayList<EnemyShip>());
 
+		int setfpos = positionX;
 		for (List<EnemyShip> column : this.enemyShips) {
+			int index = 0;
 			for (int i = 0; i < this.nShipsHigh; i++) {
 				if (i / (float) this.nShipsHigh < PROPORTION_C)
 					spriteType = SpriteType.EnemyShipC1;
@@ -150,34 +152,45 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 				EnemyShip enemyShip = null;
 
+				if(nShipsWide>7) {
+					if (index%2!=0) {
+						System.out.println(index);
+						setfpos = 120;
+					} else {
+						System.out.println(index);
+						setfpos = positionX;
+					}
+				}
+
 				switch (spriteType)
 				{
 					case EnemyShipA1:
 						enemyShip = new EnemyShipA((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setfpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipB1:
 						enemyShip = new EnemyShipB((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setfpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipC1:
 						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setfpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
 					default:
 						enemyShip = new EnemyShip((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setfpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 				}
 				column.add(enemyShip);
 				this.shipCount++;
+				index++;
 			}
 		}
 
@@ -326,7 +339,15 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 			for (List<EnemyShip> column : this.enemyShips)
 				for (EnemyShip enemyShip : column) {
-					enemyShip.move(movementX, movementY);
+					if (nShipsWide>7) {
+						if ((int)((enemyShip.getpositionY()-100)/40)%2!=0) {
+							enemyShip.move(-movementX,movementY);
+						} else {
+							enemyShip.move(movementX,movementY);
+						}
+					} else {
+						enemyShip.move(movementX, movementY);
+					}
 					enemyShip.update();
 				}
 		}
