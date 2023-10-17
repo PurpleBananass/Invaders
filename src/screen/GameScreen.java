@@ -732,6 +732,14 @@ public class GameScreen extends Screen {
 				this.ship.getItemQueue().enque(item);
 			}
 		}
+		if (gameState.getMode() == 2) {
+			for (Item item : this.items) {
+				if (checkCollision(item, this.ship2) && !this.levelFinished) {
+					recyclableItem.add(item);
+					this.ship2.getItemQueue().enque(item);
+				}
+			}
+		}
 
 		this.bullets.removeAll(recyclable);
 		this.items.removeAll(recyclableItem);
