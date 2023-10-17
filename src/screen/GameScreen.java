@@ -46,7 +46,7 @@ public class GameScreen extends Screen {
 	/** Current game difficulty settings. */
 	private GameSettings gameSettings;
 	/** Player's freedom. */
-	private Replayability replayability = new Replayability(1);
+	private Replayability replayability = new Replayability(SelectScreen.skillModeOn ? 1:0);
 	/** Current difficulty level number. */
 	private int level;
 	/** Formation of enemy ships. */
