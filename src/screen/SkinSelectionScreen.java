@@ -2,6 +2,8 @@ package screen;
 
 import engine.Cooldown;
 import engine.Core;
+import engine.DrawManager;
+
 import java.awt.event.KeyEvent;
 
 public class SkinSelectionScreen extends Screen{
