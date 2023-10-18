@@ -773,6 +773,11 @@ public final class DrawManager {
 			backBufferGraphics.setFont(fontBig);
 			backBufferGraphics.setColor(Color.WHITE);
 			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
 		}
 			backBufferGraphics.setColor(Color.GREEN);
 			drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
