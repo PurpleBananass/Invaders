@@ -513,7 +513,6 @@ public final class FileManager {
     public Player loadPlayer(char[] name) throws IOException {
 
         Player player = null;
-        int amountOfItems = 0;
 
         String jarPath = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         jarPath = URLDecoder.decode(jarPath, "UTF-8");
@@ -525,36 +524,35 @@ public final class FileManager {
         File currentPlayerFile = new File(currentPlayerPath);
         currentPlayerFile.createNewFile();
 
-
-
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(playerFile), Charset.forName("UTF-8")));
              BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentPlayerFile, false), Charset.forName("UTF-8")))) {
 
 			String loadedName = bufferedReader.readLine();
 			String currency = bufferedReader.readLine();
 			String loginTime = bufferedReader.readLine();
+			String itemList = bufferedReader.readLine();
 
-			while ((loadedName != null) && (currency != null) && (loginTime != null)) {
+			while ((loadedName != null) && (currency != null) && (loginTime != null) && (itemList != null)) {
 				if (loadedName.equals(String.valueOf(name))) {
-					player = new Player(loadedName, Integer.parseInt(currency), loginTime);
-					logger.info(String.valueOf(player.getCurrency()));
+                    List<Boolean> items = convertStringToBooleanList(itemList);
+                    player = new Player(loadedName, Integer.parseInt(currency), loginTime, items);
+                    logger.info(String.valueOf(player.getCurrency()));
 					bufferedWriter.write(loadedName);
 					bufferedWriter.newLine();
 					bufferedWriter.write(currency);
 					bufferedWriter.newLine();
 					bufferedWriter.write(loginTime);
 					bufferedWriter.newLine();
+                    bufferedWriter.write(itemList);
+                    bufferedWriter.newLine();
 
-					for (int i = 0; i < amountOfItems; i++) {
-						bufferedWriter.write(bufferedReader.readLine());
-						bufferedWriter.newLine();
-					}
 					bufferedWriter.flush();
 					break;
 				}else {
 					loadedName = bufferedReader.readLine();
 					currency = bufferedReader.readLine();
 					loginTime = bufferedReader.readLine();
+                    itemList = bufferedReader.readLine();
 				}
 			}
 
@@ -590,6 +588,10 @@ public final class FileManager {
 			bufferedWriter.newLine();
 			bufferedWriter.write(currentDate(name));
 			bufferedWriter.newLine();
+            bufferedWriter.write("false, false, false");
+            bufferedWriter.newLine();
+			bufferedWriter.flush();
+			loadPlayer(name); //I know I can make a separate function to overwrite it but I have to set priorities on other things
 		} catch (IOException e) {
 			logger.warning("Failed to write new player data to file: " + e.getMessage());
 			throw e; // Re-throw the exception after logging it.
@@ -626,16 +628,18 @@ public final class FileManager {
 			String loadedName = currentBufferedReader.readLine();
 			String currency = currentBufferedReader.readLine();
 			String loginTime = currentBufferedReader.readLine();
+            String itemList = currentBufferedReader.readLine();
 
-			if (loadedName == null || currency == null || loginTime == null) {
+			if (loadedName == null || currency == null || loginTime == null || itemList == null) {
 				logger.warning("Invalid data in current player file");
 				return;
 			}
 
 			Player player = loadPlayer(loadedName.toCharArray());
-			String inputStr = inputBuffer.toString().replace(
-					loadedName + "\n" + player.getCurrency() + "\n" + player.getLoginTime() + "\n",
-					loadedName + "\n" + currency + "\n" + loginTime + "\n");
+            List<Boolean> items = player.getItem();
+            String inputStr = inputBuffer.toString().replace(
+					loadedName + "\n" + player.getCurrency() + "\n" + player.getLoginTime() + "\n"+ items.get(0)+", "+items.get(1)+", "+items.get(2)+"\n",
+					loadedName + "\n" + currency + "\n" + loginTime + "\n"+ itemList+ "\n");
 
 			try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8)) {
 				bufferedWriter.write(inputStr);
@@ -661,7 +665,7 @@ public final class FileManager {
 			logger.warning("Player file not found at: " + playerPath);
 			return;
 		}
-		int linesBelongingToAPlayer = 3;
+		int linesBelongingToAPlayer = 4;
 		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
 		if (lines.size() < linesBelongingToAPlayer) {
 			logger.warning("Invalid data in current player file");
@@ -702,7 +706,7 @@ public final class FileManager {
         }
 
 		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
-		if (lines.size() < 3) {
+		if (lines.size() < 4) {
 			logger.warning("Invalid data in current player file");
 			throw new IOException("Invalid data in current player file");
 		}
@@ -807,5 +811,16 @@ public final class FileManager {
 			throw e;
 		}
 		return date;
+	}
+
+	public static List<Boolean> convertStringToBooleanList(String input) {
+		String[] splitStrings = input.split(",");
+		List<Boolean> booleanList = new ArrayList<>();
+
+		for (String s : splitStrings) {
+			booleanList.add(Boolean.parseBoolean(s.trim()));
+		}
+
+		return booleanList;
 	}
 }
