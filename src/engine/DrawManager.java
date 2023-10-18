@@ -576,16 +576,20 @@ public final class DrawManager {
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
-		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 		Ship[] shipskin = new Ship[6];
+		try {
+			fileManager.changeSprite(spriteMap, SpriteType.Ship, 0);
+		} catch (IOException e) {
+			logger.warning("Loading failed.");
+		}
 		for (int i = 0; i < 6; i++) {
-			Ship dummyShip1 = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
-			shipskin[i] = dummyShip1;
+			Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+			shipskin[i] = dummyShip;
 			// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 			drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
 			if(i !=5) {
 				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
+					fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
 				} catch (IOException e) {
 					logger.warning("Loading failed.");
 				}
