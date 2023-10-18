@@ -104,8 +104,11 @@ public class SoundManager {
                     float volume = masterVolume;
                     while (volume > minimum) {
                         volume -= fadeoutSpeed;
-                        if(volume<minimum) volume = minimum;
-                        floatControl.setValue((float)(minimum + one*(50*Math.log10(volume))));
+                        if(volume<minimum){
+                            floatControl.setValue((float)(minimum + one*(50*Math.log10(minimum))));
+                            break;
+                        }
+
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException e) {
@@ -129,8 +132,9 @@ public class SoundManager {
                 floatControl.setValue(minimum);
                 while (volume < masterVolume) {
                     volume += fadeInSpeed;
-                    if(volume>masterVolume) volume = masterVolume;
-                    floatControl.setValue((float)(minimum + one*(50*Math.log10(volume))));
+                    if(volume>masterVolume){
+                        floatControl.setValue((float)(minimum + one*(50*Math.log10(masterVolume))));
+                    }
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
