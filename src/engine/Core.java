@@ -151,7 +151,7 @@ public final class Core {
 			switch (returnCode) {
 			case 1:
 				// Main menu.
-				SoundManager.playSound("res/menu.wav", "menu", true, true, 2f);
+				SoundManager.playSound("BGM/B_Main_b", "menu", true, true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
