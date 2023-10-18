@@ -215,26 +215,40 @@ public class GameScreen extends Screen {
 		this.bullet_count=0;
 		this.bullet_count2=0;
 
-		// Adjust bullet shooting interval by level.
+		// Adjust bullet shooting interval and speed by level.
 		if (this.level==1) {
+			this.ship.setSpeed(4);
+			this.ship2.setSpeed(4);
 			this.ship.resetShootingInterval();
 			this.ship2.resetShootingInterval();
 		} else if (this.level==2) {
+			this.ship.setSpeed(4);
+			this.ship2.setSpeed(4);
 			this.ship.setShootingInterval(800);
 			this.ship2.setShootingInterval(800);
 		} else if (this.level==3) {
+			this.ship.setSpeed(3);
+			this.ship2.setSpeed(3);
 			this.ship.setShootingInterval(850);
 			this.ship2.setShootingInterval(850);
 		} else if (this.level==4) {
+			this.ship.setSpeed(3);
+			this.ship2.setSpeed(3);
 			this.ship.setShootingInterval(900);
 			this.ship2.setShootingInterval(900);
 		} else if (this.level==5) {
+			this.ship.setSpeed(3);
+			this.ship2.setSpeed(3);
 			this.ship.setShootingInterval(950);
 			this.ship2.setShootingInterval(950);
 		} else if (this.level==6) {
+			this.ship.resetSpeed();
+			this.ship2.resetSpeed();
 			this.ship.setShootingInterval(1000);
 			this.ship2.setShootingInterval(1000);
 		} else {
+			this.ship.resetSpeed();
+			this.ship2.resetSpeed();
 			this.ship.setShootingInterval(1100);
 			this.ship2.setShootingInterval(1100);
 		}
@@ -315,7 +329,7 @@ public class GameScreen extends Screen {
 						} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7 && bullet_count <=7) {
 							per = 2;
 						}
-						if (inputManager.magazine){
+						if (inputManager.magazine && this.bullet_count==10){
 							inputManager.magazine = false;
 							inputManager.countH_d = 0;
 							inputManager.countH_u = 0;
@@ -398,19 +412,19 @@ public class GameScreen extends Screen {
 									}
 							}
 						}
-						if (inputManager.speed == 3) {
+						/*if (inputManager.speed == 3) {
 							per = 1;
 						} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7 && bullet_count <= 7) {
 							per = 2;
-						}
-						if (inputManager.magazine) {
+						}*/
+						/*if (inputManager.magazine && this.bullet_count==10) {
 							inputManager.magazine = false;
 							inputManager.countH_d = 0;
 							inputManager.countH_u = 0;
 							inputManager.speed = 0;
 							this.magazine--;
 							this.bullet_count = 0;
-						}
+						}*/
 
 				}else if (replayability.getReplay()==1) {
 						//player1
@@ -418,6 +432,7 @@ public class GameScreen extends Screen {
 							if (this.ship.shoot(this.bullets, 1)) {
 								this.bulletsShot1++;
 								this.bullet_count++;
+								this.logger.info("player1_bullet"+bullet_count);
 							}
 							if (this.ship.isExistAuxiliaryShips()) {
 								for (Ship auxiliaryShip : this.ship.getAuxiliaryShips())
@@ -431,13 +446,16 @@ public class GameScreen extends Screen {
 							per = 1;
 						if (inputManager.one >= 7 && inputManager.two >= 7 && bullet_count <= 7)
 							per = 2;
-						if (inputManager.magazine) {
-							inputManager.magazine = false;
-							inputManager.one = 0;
-							inputManager.two = 0;
-							inputManager.speed1 = 0;
-							this.magazine--;
-							this.bullet_count = 0;
+						if (inputManager.magazine1) {
+							if(this.bullet_count==10){
+								inputManager.one= 0;
+								inputManager.two = 0;
+								inputManager.speed = 0;
+								this.magazine--;
+								this.bullet_count=0;
+								this.logger.info("player1_magazine"+this.magazine);
+							}
+							inputManager.magazine1 = false;
 						}
 
 						if (!this.ship.isDestroyed()) {
@@ -461,12 +479,13 @@ public class GameScreen extends Screen {
 							if (this.ship2.shoot(this.bullets, 2)) {
 								this.bulletsShot2++;
 								this.bullet_count2++;
-								if (this.ship.isExistAuxiliaryShips()) {
-									for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
-										if (auxiliaryShip.shoot(this.bullets, 2))
+								this.logger.info("player2_"+this.bullet_count2);
+							}
+							if(this.ship2.isExistAuxiliaryShips()){
+								for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips()) {
+										if(auxiliaryShip.shoot(this.bullets,2))
 											this.bulletsShot2++;
 									}
-								}
 							}
 						}
 						if (inputManager.speed2 == 3)
@@ -474,12 +493,15 @@ public class GameScreen extends Screen {
 						if (inputManager.seven >= 7 && inputManager.eight >= 7 && bullet_count2 <= 7)
 							per = 4;
 						if (inputManager.magazine2) {
-							inputManager.magazine2 = false;
-							inputManager.seven = 0;
-							inputManager.eight = 0;
-							inputManager.speed2 = 0;
-							this.magazine2--;
-							this.bullet_count2 = 0;
+							if(this.bullet_count2==10){
+								inputManager.seven = 0;
+								inputManager.eight = 0;
+								inputManager.speed2 = 0;
+								this.magazine2--;
+								this.bullet_count2=0;
+								this.logger.info("player2_magazine"+this.magazine2);
+							}
+							inputManager.magazine2=false;
 						}
 
 						// item
@@ -542,12 +564,16 @@ public class GameScreen extends Screen {
 					this.enemyShipSpecial = null;
 				}
 
-				/** If you use up all your magazines and bullets and then recharge your magazine, you will die.*/
-				if(this.magazine<0)
-					this.lives = 0;
-				if(this.magazine2<0)
-					this.lives2 = 0;
-
+				/** If you use up all your magazines and bullets and then recharge your magazine,
+				 * you'll have one less live and five new magazines.*/
+				if(this.magazine<0){
+					this.lives--;
+					this.magazine = 5;
+				}
+				if(this.magazine2<0){
+					this.lives2--;
+					this.magazine2 = 5;
+				}
 
 				this.ship.update();
 				if (this.gameState.getMode() == 2) {

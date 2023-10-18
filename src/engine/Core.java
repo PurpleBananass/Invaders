@@ -184,7 +184,7 @@ public final class Core {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
-					LOGGER.info("Closing Game screen.");
+					LOGGER.info("Closing game screen.");
 
 					if (returnCode == 1) break;
 
@@ -206,9 +206,22 @@ public final class Core {
 								gameState.getShipsDestroyed(),
 								gameState.getShipsDestroyed2());
 					}
-          AchievementManager.getInstance().checkAchievements(gameState);
-				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
+					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
+							&& gameState.getLevel() <= NUM_LEVELS) {
+						currentScreen = new ClearScreen(width, height, FPS, gameState);
+						LOGGER.info("Starting 	" + WIDTH + "x" + HEIGHT
+								+ " clear screen at " + FPS + " fps.");
+						returnCode = frame.setScreen(currentScreen);
+						LOGGER.info("Closing clear screen.");
+						if (returnCode == 1)
+							break;
+					}
+
+					AchievementManager.getInstance().checkAchievements(gameState);
+
+				} while (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
 
 				if (returnCode == 1) break;
