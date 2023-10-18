@@ -3,7 +3,6 @@ package screen;
 import engine.Cooldown;
 import engine.Core;
 import engine.Player;
-import screen.Screen;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;

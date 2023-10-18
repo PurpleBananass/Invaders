@@ -143,18 +143,18 @@ public final class FileManager {
 			Score highScore = null;
 			String name = reader.readLine();
 			String score = reader.readLine();
-			String coin = reader.readLine();
+			String coin = reader.readLine();//myupdate
 
 			while ((name != null) && (score != null)) {
-				if (coin != null) {//Check variables
-					highScore = new Score(name, Integer.parseInt(score), Integer.parseInt(coin));//assignment
-				} else {
+				if (coin != null) {//myupdate
+					highScore = new Score(name, Integer.parseInt(score), Integer.parseInt(coin));//myupdate
+				} else {//myupdate
 					highScore = new Score(name, Integer.parseInt(score));
-				}
+				}//myupdate
 				highScores.add(highScore);
 				name = reader.readLine();
 				score = reader.readLine();
-				coin = reader.readLine();//Read and Store
+				coin = reader.readLine();//myupdate
 			}
 		} finally {
 			if (inputStream != null)
@@ -196,18 +196,18 @@ public final class FileManager {
 			Score highScore = null;
 			String name = bufferedReader.readLine();
 			String score = bufferedReader.readLine();
-			String coin = bufferedReader.readLine();//Read and Store
+			String coin = bufferedReader.readLine();//myupdate
 
 			while ((name != null) && (score != null)) {
-				if (coin != null) {//determine
-					highScore = new Score(name, Integer.parseInt(score), Integer.parseInt(coin));//assignment
-				} else {
+				if (coin != null) {//myupdate
+					highScore = new Score(name, Integer.parseInt(score), Integer.parseInt(coin));//myupdate
+				} else {//myupdate
 					highScore = new Score(name, Integer.parseInt(score));
-				}//
+				}//myupdate
 				highScores.add(highScore);
 				name = bufferedReader.readLine();
 				score = bufferedReader.readLine();
-				coin = bufferedReader.readLine();//Read and Store
+				coin = bufferedReader.readLine();//myupdate
 			}
 
 		} catch (FileNotFoundException e) {
@@ -260,10 +260,10 @@ public final class FileManager {
 				bufferedWriter.write(score.getName());
 				bufferedWriter.newLine();
 				bufferedWriter.write(Integer.toString(score.getScore()));
-				//bufferedWriter.write(Integer.toString(remainder));
+				//bufferedWriter.write(Integer.toString(remainder));//myupdate
 				bufferedWriter.newLine();
-				bufferedWriter.write(Integer.toString(score.getCoin()));//Convert to String
-				bufferedWriter.newLine();
+				bufferedWriter.write(Integer.toString(score.getCoin()));//myupdate
+				bufferedWriter.newLine();//myupdate
 				savedCount++;
 			}
 

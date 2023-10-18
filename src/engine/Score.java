@@ -25,7 +25,7 @@ public class Score implements Comparable<Score> {
 	 */
 	public Score(final String name, final int score) {
 		this.name = name;
-		this.score = score;//initialization
+		this.score = score;
 	}
 
 	public Score(String name, int score, int coin) {
@@ -52,7 +52,6 @@ public class Score implements Comparable<Score> {
 		return this.score;
 	}
 
-	//Obtain Coins
 	public final int getCoin() {
 		return this.coin;
 	}

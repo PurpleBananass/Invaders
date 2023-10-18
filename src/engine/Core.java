@@ -148,7 +148,7 @@ public final class Core {
 
 						gameState = new GameState(gameState.getLevel() + 1,
 								gameState.getScore(),
-								gameState.getCoin(),//Obtain the number of coins
+								gameState.getCoin(),//myupdate
 								gameState.getLivesRemaining(),
 								gameState.getBulletsShot(),
 								gameState.getShipsDestroyed());
@@ -159,7 +159,7 @@ public final class Core {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " score screen at " + FPS + " fps, with a score of "
 							+ gameState.getScore() + ", "
-							+ gameState.getCoin() + ", "
+							+ gameState.getCoin() + ", "//myupdate
 							+ gameState.getLivesRemaining() + " lives remaining, "
 							+ gameState.getBulletsShot() + " bullets shot and "
 							+ gameState.getShipsDestroyed() + " ships destroyed.");

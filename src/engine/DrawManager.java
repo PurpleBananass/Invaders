@@ -278,7 +278,6 @@ public final class DrawManager {
 		//backBufferGraphics.drawString(scoreString + "/ $" + coinString, screen.getWidth() - 120, 25);//myupdate
 		backBufferGraphics.drawString(scoreString, screen.getWidth() - 60, 25);//myupdate
 	}
-
 	/**
 	 * Draws number of remaining lives on screen.
 	 *
