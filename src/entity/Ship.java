@@ -204,6 +204,11 @@ public class Ship extends Entity {
 		timer.schedule(task, 10000);
 	}
 
+	/** Set item_speed when ship buy speed item in store**/
+	public void buyItemSpeed() {
+		this.SPEED = item_SPEED - 2;
+	}
+
 
 	public final boolean isInvincible() {
 		return this.Invincible;
