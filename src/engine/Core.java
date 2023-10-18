@@ -230,7 +230,9 @@ public final class Core {
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				SoundManager.playSound("SFX/S_Gameover","S_gameover",false,false);
 				returnCode = frame.setScreen(currentScreen);
+				SoundManager.stopSound("S_gameover",2f);
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
