@@ -307,7 +307,7 @@ public class GameScreen extends Screen {
 
 
 
-			} else if (gameState.getMode() == 2 && !this.ship2.isDestroyed()) {
+			} else if (gameState.getMode() == 2 && !(this.ship.isDestroyed() && this.ship2.isDestroyed())) {
 				boolean moveRight1p = inputManager.isKeyDown(KeyEvent.VK_D);
 				boolean moveLeft1p = inputManager.isKeyDown(KeyEvent.VK_A);
 
@@ -514,7 +514,7 @@ public class GameScreen extends Screen {
 		updateItems();
 		draw();
 
-		if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives2 == 0))
+		if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
 				&& !this.levelFinished) {
 			this.levelFinished = true;
 			this.screenFinishedCooldown.reset();

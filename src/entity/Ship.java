@@ -133,7 +133,9 @@ public class Ship extends Entity {
 		this.skillCooldown.checkFinished();
 		if (!this.destructionCooldown.checkFinished())
 			this.spriteType = SpriteType.ShipDestroyed;
-		this.spriteType = SpriteType.Ship;
+		else{
+			this.spriteType = SpriteType.Ship;
+		}
 	}
 
 	/**
