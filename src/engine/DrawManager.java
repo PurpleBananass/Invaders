@@ -305,6 +305,25 @@ public final class DrawManager {
 			drawEntity(dummyShip, 180 + 35 * i, 10);
 	}
 
+	public void drawMagazines(final Screen screen, final int magazine) {
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("MAG " + Integer.toString(magazine), 10, 515);
+	}
+	public void drawMagazines2(final Screen screen, final int magazine2) {
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("MAG " + Integer.toString(magazine2), 335, 515);
+	}
+
+	public void drawBullets(final Screen screen, final int bullet_count) {
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("BUL " + Integer.toString(10-bullet_count), 60, 515);
+	}
+
+	public void drawBullets2(final Screen screen, final int bullet_count2) {
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("BUL " + Integer.toString(10-bullet_count2), 385, 515);
+	}
+
 	/**
 	 * Draws a thick line from side to side of the screen.
 	 *

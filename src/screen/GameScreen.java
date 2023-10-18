@@ -526,6 +526,18 @@ public class GameScreen extends Screen {
 	private void draw() {
 		drawManager.initDrawing(this);
 
+
+		drawManager.drawMagazines(this, this.magazine);
+		drawManager.drawBullets(this, this.bullet_count);
+
+		if (this.gameState.getMode() == 2) {
+			drawManager.drawMagazines2(this, this.magazine2);
+		}
+		if (this.gameState.getMode() == 2) {
+			drawManager.drawBullets2(this, this.bullet_count2);
+		}
+
+
 		if (this.gameState.getMode() == 1) {
 			drawManager.drawEntity(this.ship, this.ship.getPositionX(),
 					this.ship.getPositionY());
