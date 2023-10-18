@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.Date;
+
 /**
  * Implements a high currency record.
  * 
@@ -12,7 +14,7 @@ public class Player implements Comparable<Player> {
 	private String name;
 	/** currency points. */
 	private int currency;
-
+	private String loginTime;
 	/**
 	 * Constructor.
 	 *
@@ -21,9 +23,10 @@ public class Player implements Comparable<Player> {
 	 * @param currency
 	 *            Player currency.
 	 */
-	public Player(final String name, final int currency) {
+	public Player(final String name, final int currency, final String loginTime) {
 		this.name = name;
 		this.currency = currency;
+		this.loginTime = loginTime;
 	}
 
 	/**
@@ -44,6 +47,10 @@ public class Player implements Comparable<Player> {
 		return this.currency;
 	}
 
+	public final String getLoginTime() {
+		return this.loginTime;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -51,6 +58,8 @@ public class Player implements Comparable<Player> {
 	public void setCurrency(int currency) {
 		this.currency = currency;
 	}
+
+	public void setLoginTime(String loginTime) {this.loginTime = loginTime;}
 
 	/**
 	 * Orders the currencys descending by currency.
@@ -61,10 +70,7 @@ public class Player implements Comparable<Player> {
 	 *         smaller, positive if its bigger, zero if its the same.
 	 */
 	@Override
-	public final int compareTo(final Player currency) {
-		int comparison = this.currency < currency.getCurrency() ? 1 : this.currency > currency
-				.getCurrency() ? -1 : 0;
-		return comparison;
+	public int compareTo(Player o) {
+		return 0;
 	}
-
 }

@@ -83,7 +83,6 @@ public final class Core {
 
 			fileHandler = new FileHandler("log");
 			fileHandler.setFormatter(new MinimalFormatter());
-
 			consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(new MinimalFormatter());
 
@@ -247,7 +246,11 @@ public final class Core {
 			}
 
 		} while (returnCode != 0);
-
+		try {
+			getFileManager().updateAccounts();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		fileHandler.flush();
 		fileHandler.close();
 		System.exit(0);

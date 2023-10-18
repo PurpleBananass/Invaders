@@ -104,6 +104,7 @@ public class LoginScreen extends Screen {
 							Core.getFileManager().saveNewPlayer(name);
 							logger.info("New player saved successfully");
 						} else {
+							Core.getFileManager().updateLoginTimeOfCurrentPlayer();
 							logger.info("Player loaded successfully");
 						}
 					} catch (IOException e) {
