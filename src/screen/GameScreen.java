@@ -111,7 +111,7 @@ public class GameScreen extends Screen {
 	private boolean isBomb = false;
 
 	/** Checks life increase item is used. **/
-	private boolean lifeItemUsed = false;
+	private boolean haslifeItemUsed = false;
 
 
 	/**
@@ -236,12 +236,12 @@ public class GameScreen extends Screen {
 	protected final void update() {
 		super.update();
 
-		if (ship.getLifeIncreaseItem() && this.gameState.getLevel() == 1 && !this.lifeItemUsed){
+		if (ship.getHasLifeIncreaseItem() && this.gameState.getLevel() == 1 && !this.haslifeItemUsed){
 			this.lives++;
 			if (this.gameState.getMode() == 2){
 				this.lives2++;
 			}
-			this.lifeItemUsed = true;
+			this.haslifeItemUsed = true;
 		}
 
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {

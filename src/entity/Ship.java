@@ -26,7 +26,7 @@ public class Ship extends Entity {
 	private static int ORIGINAL_SPEED = 2;
 
 	/** Life item purchase status **/
-	private boolean lifeIncreaseItem = false;
+	private boolean hasLifeIncreaseItem = false;
 
 	private static final int ITEM_USE_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship.
@@ -281,11 +281,11 @@ public class Ship extends Entity {
 	}
 
 	public void applyLifeIncreaseItem(boolean isUsed){
-		this.lifeIncreaseItem = isUsed;
+		this.hasLifeIncreaseItem = isUsed;
 	}
 
-	public boolean getLifeIncreaseItem(){
-		return this.lifeIncreaseItem;
+	public boolean getHasLifeIncreaseItem(){
+		return this.hasLifeIncreaseItem;
 	}
 
 }
