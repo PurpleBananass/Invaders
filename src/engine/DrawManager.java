@@ -58,8 +58,10 @@ public final class DrawManager {
 
 	/** Sprite types. */
 	public static enum SpriteType {
-		/** Player ship. */
+		/** Player1 ship. */
 		Ship,
+		/** Player2 ship. */
+		Ship2,
 		/** Destroyed player ship. */
 		ShipDestroyed,
 		/** Player bullet. */
@@ -102,6 +104,7 @@ public final class DrawManager {
 			spriteMap = new LinkedHashMap<SpriteType, boolean[][]>();
 
 			spriteMap.put(SpriteType.Ship, new boolean[13][8]);
+			spriteMap.put(SpriteType.Ship2, new boolean[13][8]);
 			spriteMap.put(SpriteType.ShipDestroyed, new boolean[13][8]);
 			spriteMap.put(SpriteType.Bullet, new boolean[3][5]);
 			spriteMap.put(SpriteType.EnemyBullet, new boolean[3][5]);
@@ -119,6 +122,7 @@ public final class DrawManager {
 
 			fileManager.changeSprite(spriteMap,SpriteType.Bullet,0);
 			fileManager.changeSprite(spriteMap,SpriteType.Ship,0);
+			fileManager.changeSprite(spriteMap,SpriteType.Ship2,0);
 			logger.info("Finished loading the sprites.");
 
 			// Font loading.
@@ -698,7 +702,7 @@ public final class DrawManager {
 				logger.warning("Loading failed.");
 			}
 			try {
-				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
+				fileManager.changeSprite(spriteMap, SpriteType.Ship2, skincode2p);
 			} catch (IOException e) {
 				logger.warning("Loading failed.");
 			}
@@ -773,6 +777,11 @@ public final class DrawManager {
 			backBufferGraphics.setFont(fontBig);
 			backBufferGraphics.setColor(Color.WHITE);
 			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
 		}
 			backBufferGraphics.setColor(Color.GREEN);
 			drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);

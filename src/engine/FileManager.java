@@ -155,6 +155,10 @@ public final class FileManager {
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("shipGraphics");
 		}
+		else if(spriteType == SpriteType.Ship2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("shipGraphics");
+		}
 		else if(spriteType == SpriteType.EnemyBullet){
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("bulletGraphics");

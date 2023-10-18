@@ -185,7 +185,7 @@ public class GameScreen extends Screen {
 		}
 		if (gameState.getMode() == 2) {
 			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
-			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, DrawManager.SpriteType.Ship, false);
+			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, DrawManager.SpriteType.Ship2, false);
 		}
 
 		// Appears each 10-30 seconds.
@@ -496,7 +496,7 @@ public class GameScreen extends Screen {
 
 			this.ship.update();
 			if (this.gameState.getMode() == 2) {
-				this.ship2.update();
+				this.ship2.updatep_2();
 			}
 
 			this.enemyShipFormation.update();
