@@ -144,7 +144,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		// Each sub-list is a column on the formation.
 		for (int i = 0; i < this.nShipsWide; i++)
 			this.enemyShips.add(new ArrayList<EnemyShip>());
-		
+
 		if (nShipsWide > 7)
 			lastStage = true;
 
@@ -319,7 +319,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 			positionX += movementX;
 			positionY += movementY;
-			System.out.println((int)((positionY-100) / 20) % 2);
 
 			// Cleans explosions.
 			List<EnemyShip> destroyed;
@@ -336,10 +335,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				column.removeAll(destroyed);
 			}
 
-			if (trackYpos > 1) {
-				movementX = -movementX;
-			}
-
 			// From level 4, the ships moves more complicatedly.
 			if (moreDiff) {
 				for (List<EnemyShip> column : this.enemyShips) {
@@ -351,6 +346,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					}
 				}
 				complexSpeed = -complexSpeed;
+			}
+			
+			if (trackYpos > 1) {
+				movementX = -movementX;
 			}
 
 			for (List<EnemyShip> column : this.enemyShips)
