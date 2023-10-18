@@ -108,7 +108,6 @@ public class SoundManager {
                     float minimumValue = getValue(0);
                     float value = getValue(volume);
                     while(floatControl.getValue()>minimumValue){
-                        System.out.println("volume = " + volume + " one = "+one+"value = "+value);
                         if(value<minimum){
                             floatControl.setValue(minimum);
                             break;
