@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -932,12 +933,12 @@ public final class DrawManager {
 				screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
 	}
 
-	public void drawPauseWindow(final Screen screen){
+	public void drawWindow(final Screen screen, int x, int y, int w){
 		int rectWidth = screen.getWidth();
 		int rectHeight = screen.getHeight() / 6;
 		backBufferGraphics.setColor(Color.BLACK);
-		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - rectHeight / 2 - 40,
-				rectWidth, rectHeight + 40);
+		backBufferGraphics.fillRect(x, y,
+				rectWidth, rectHeight + w);
 	}
 
 	public void drawPauseMenu(final Screen screen, final int option) {
@@ -960,6 +961,31 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.YELLOW);
 		drawCenteredRegularString(screen, "Change: Ctrl" + " / " + "Select: Spacebar",
 				screen.getHeight() / 2 - screen.getHeight() / 12 - 15);
+	}
+	public void drawManualMenu(final Screen screen) {
+
+		String[] keyInfo = {"left", "right", "attack", "burst1", "burst2", "reload", "booster", "item"};
+		String[] keyValue = Core.getKeySettingStringArray();
+
+		backBufferGraphics.setColor(Color.CYAN);
+		drawCenteredRegularString(screen, "Play manual", screen.getHeight() / 2 - 105);
+		backBufferGraphics.drawString("Player1", screen.getWidth() / 2 - 140, screen.getHeight() / 2 - 60);
+		backBufferGraphics.drawString("Player2", screen.getWidth() / 2 + 65, screen.getHeight() / 2 - 60);
+
+		backBufferGraphics.setColor(Color.WHITE);
+		int y = screen.getHeight() / 2 - 30;
+		int x1 = screen.getWidth() / 2 - 150; //player1_manual
+		int x2 = screen.getWidth() / 2 - 50; //player1_setting
+		int x3 = screen.getWidth() / 2 + 50; //player2
+		int x4 = screen.getWidth() / 2 + 150; //player2_setting
+		for(int i=0; i<8; i++){
+			backBufferGraphics.drawString(keyInfo[i], x1-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyValue[i], x2-fontRegularMetrics.stringWidth(keyValue[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyInfo[i], x3-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyValue[i+8], x4-fontRegularMetrics.stringWidth(keyValue[i+8])/2, y+20*i);
+		}
+
+
 	}
 
 	public void drawOneFifthRegularString(final Screen screen,
