@@ -27,7 +27,7 @@ public class SoundManager {
 
     private static final float minimum = -80;
     private static final float maximum = 6;
-    private static final float one = Math.abs((minimum-maximum)/100);
+    private static final float one = ((Math.abs(minimum)+Math.abs(maximum))/100);
     private static float master = (float)(minimum + one*(50*Math.log10(masterVolume)));
 
     public static void playSound(String soundFilePath, String clipName, boolean isLoop, boolean isBgm) {
@@ -102,13 +102,14 @@ public class SoundManager {
                 public void run() {
                     FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
                     float volume = masterVolume;
-                    while (volume > minimum) {
-                        volume -= fadeoutSpeed;
-                        if(volume<minimum){
-                            floatControl.setValue((float)(minimum + one*(50*Math.log10(minimum))));
+                    while (volume > 0) {
+                        float value = (float)(minimum + one*(50*Math.log10(volume)));
+                        if(value<minimum){
+                            floatControl.setValue(minimum);
                             break;
                         }
-
+                        floatControl.setValue(value);
+                        volume -= fadeoutSpeed;
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException e) {
@@ -130,11 +131,14 @@ public class SoundManager {
                 float volume = 0;
                 FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
                 floatControl.setValue(minimum);
-                while (volume < masterVolume) {
-                    volume += fadeInSpeed;
-                    if(volume>masterVolume){
-                        floatControl.setValue((float)(minimum + one*(50*Math.log10(masterVolume))));
+                while (volume < 100) {
+                    float value = (float)(minimum + one*(50*Math.log10(volume)));
+                    if(value>maximum){
+                        floatControl.setValue(maximum);
+                        break;
                     }
+                    floatControl.setValue(value);
+                    volume += fadeInSpeed;
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
