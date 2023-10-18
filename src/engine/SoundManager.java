@@ -27,7 +27,7 @@ public class SoundManager {
 
     private static final float minimum = -80;
     private static final float maximum = 6;
-    private static final float one = ((Math.abs(minimum)+Math.abs(maximum))/100);
+    private static final float one = (float)((Math.abs(minimum)+Math.abs(maximum))/100);
     private static float master = (float)(minimum + one*(50*Math.log10(masterVolume)));
 
     public static void playSound(String soundFilePath, String clipName, boolean isLoop, boolean isBgm) {
@@ -71,7 +71,7 @@ public class SoundManager {
                     Clip clip = AudioSystem.getClip();
                     clip.open(audioIn);
                     FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-                    floatControl.setValue(minimum);
+                    floatControl.setValue((float)minimum);
                     if (isLoop) {
                         clip.loop(-1);
                     } else {
@@ -79,7 +79,7 @@ public class SoundManager {
                     }
                     clips.put(clipName, clip);
                     if(isBgm) bgms.add(clip);
-                    fadeIn(clipName, fadeInSpeed);
+                    fadeIn(clip, fadeInSpeed);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -102,14 +102,18 @@ public class SoundManager {
                 public void run() {
                     FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
                     float volume = masterVolume;
-                    while (volume > 0) {
-                        float value = (float)(minimum + one*(50*Math.log10(volume)));
+                    float tmpOne = volume/100;
+                    float minimumValue = getValue(0);
+                    float value = getValue(volume);
+                    while(floatControl.getValue()>minimumValue){
+                        System.out.println("volume = " + volume + " one = "+one+"value = "+value);
                         if(value<minimum){
                             floatControl.setValue(minimum);
                             break;
                         }
                         floatControl.setValue(value);
-                        volume -= fadeoutSpeed;
+                        volume-=(tmpOne*fadeoutSpeed);
+                        value = getValue(volume);
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException e) {
@@ -123,22 +127,21 @@ public class SoundManager {
         }
     }
 
-    private static void fadeIn(String clipName, float fadeInSpeed) {
+    private static void fadeIn(Clip clip, float fadeInSpeed) {
         new Thread(new Runnable() {
-            Clip clip = clips.get(clipName);
 
             public void run() {
-                float volume = 0;
-                FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
+                FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
                 floatControl.setValue(minimum);
-                while (volume < masterVolume) {
-                    float value = (float)(minimum + one*(50*Math.log10(volume)));
-                    if(value>maximum){
-                        floatControl.setValue(maximum);
-                        break;
-                    }
+                float volume = 0;
+                float value = getValue(volume);
+                float tmpOne = masterVolume/100;
+                float maxValue = getValue(masterVolume);
+                while(value<maxValue){
                     floatControl.setValue(value);
-                    volume += fadeInSpeed;
+                    volume+=(tmpOne*fadeInSpeed);
+                    value = getValue(volume);
+                    floatControl.setValue(value);
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
@@ -151,7 +154,10 @@ public class SoundManager {
 
     public static void setMasterVolume(float volume) {
         masterVolume = volume;
-        master = (float)(minimum + one*(50*Math.log10(volume)));
+        master = getValue(masterVolume);
+        System.out.println("master = "+master + "masterVolume = "+masterVolume);
+        if(master > maximum) master = maximum;
+        else if(master < minimum) master = minimum;
         for (Clip clip : clips.values()) {
             if (clip != null && clip.isActive()) {
                 FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
@@ -164,15 +170,22 @@ public class SoundManager {
         if(bgm){
             for(Clip clip : bgms){
                 FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
-                floatControl.setValue(master);
+                floatControl.setValue(getValue(master));
             }
         }
         else{
             for(Clip clip : bgms){
                 FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
-                floatControl.setValue((float)(minimum + one*(50*Math.log10(0))));
+                floatControl.setValue(getValue(0));
             }
         }
+    }
+
+    private static float getValue(float volume){
+        float res = (float)(minimum + one*(50*Math.log10(volume)));
+        if(res<minimum) return minimum;
+        else if(res>maximum) return maximum;
+        else return res;
     }
 
     public static void setVolume(String clipName, double percent){
