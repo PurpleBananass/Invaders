@@ -108,8 +108,12 @@ public class EnemyShip extends Entity {
 
 	public void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown) {
 		bullets.add(BulletPool.getBullet(positionX
+<<<<<<< HEAD
 				+ width / 2, positionY, BULLET_SPEED));
 		shootingCooldown.timedown(0);
+=======
+				+ width / 2, positionY, BULLET_SPEED, 0));
+>>>>>>> dfe2b11bba2e7f80f3917d80625568adeb9a70b7
 	}
 
 	/**
