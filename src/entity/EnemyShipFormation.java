@@ -94,9 +94,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private boolean moreDiff = false;
 	/** speed of complex movements. */
 	private int complexSpeed;
+	/** check the last stage. */
 	private boolean lastStage = false;
+	/** setting the x position of the last stage ships. */
 	private int setXpos;
-	private int even;
+	/** track the y position of the last stage ships. */
+	private int trackYpos;
 
 
 	/** Directions the formation can move. */
@@ -141,7 +144,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		// Each sub-list is a column on the formation.
 		for (int i = 0; i < this.nShipsWide; i++)
 			this.enemyShips.add(new ArrayList<EnemyShip>());
-
+		
 		if (nShipsWide > 7)
 			lastStage = true;
 
@@ -289,7 +292,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						previousDirection = currentDirection;
 						currentDirection = Direction.DOWN;
 						this.logger.info("Formation now moving down 3");
-						even++;
+						trackYpos++;
 					} else {
 						currentDirection = Direction.RIGHT;
 						this.logger.info("Formation now moving right 4");
@@ -300,7 +303,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						previousDirection = currentDirection;
 						currentDirection = Direction.DOWN;
 						this.logger.info("Formation now moving down 5");
-						even++;
+						trackYpos++;
 					} else {
 						currentDirection = Direction.LEFT;
 						this.logger.info("Formation now moving left 6");
@@ -332,7 +335,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				}
 				column.removeAll(destroyed);
 			}
-			if (even > 1) {
+
+			if (trackYpos > 1) {
 				movementX = -movementX;
 			}
 
