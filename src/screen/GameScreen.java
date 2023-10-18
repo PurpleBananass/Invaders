@@ -44,7 +44,7 @@ public class GameScreen extends Screen {
 	/** Current game difficulty settings. */
 	private GameSettings gameSettings;
 	/** Player's freedom. */
-	private Replayability replayability = new Replayability(SelectScreen.skillModeOn ? 1:0);
+	private Replayability replayability = new Replayability(1);
 	/** Current difficulty level number. */
 	private int level;
 	/** Formation of enemy ships. */
@@ -531,16 +531,22 @@ public class GameScreen extends Screen {
 		drawManager.initDrawing(this);
 
 		if (this.gameState.getMode() == 1) {
-			drawManager.drawEntity(this.ship, this.ship.getPositionX(),
-					this.ship.getPositionY());
+			if (this.lives > 0) {
+				drawManager.drawEntity(this.ship, this.ship.getPositionX(),
+						this.ship.getPositionY());
+			}
 			if (this.lives < 1) {
 				drawManager.clearEntity(this.ship, this.ship.getPositionX(), this.ship.getPositionY());
 			}
 		} else {
-			drawManager.drawEntity(this.ship, this.ship.getPositionX(),
-					this.ship.getPositionY());
-			drawManager.drawEntity(this.ship2, this.ship2.getPositionX(),
-					this.ship2.getPositionY());
+			if (this.lives > 0) {
+				drawManager.drawEntity(this.ship, this.ship.getPositionX(),
+						this.ship.getPositionY());
+			}
+			if (this.lives2 > 0) {
+				drawManager.drawEntity(this.ship2, this.ship2.getPositionX(),
+						this.ship2.getPositionY());
+			}
 			if (this.lives < 1) {
 				drawManager.clearEntity(this.ship, this.ship.getPositionX(), this.ship.getPositionY());
 			}
@@ -745,14 +751,6 @@ public class GameScreen extends Screen {
 			if (checkCollision(item, this.ship) && !this.levelFinished) {
 				recyclableItem.add(item);
 				this.ship.getItemQueue().enque(item);
-			}
-		}
-		if (gameState.getMode() == 2) {
-			for (Item item : this.items) {
-				if (checkCollision(item, this.ship2) && !this.levelFinished) {
-					recyclableItem.add(item);
-					this.ship2.getItemQueue().enque(item);
-				}
 			}
 		}
 
