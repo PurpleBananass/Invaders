@@ -173,4 +173,7 @@ public class SoundManager {
         float volume = floatcontrol.getValue();
         floatcontrol.setValue((float)(volume*percent));
     }
+    void getLevelBGM(int levelNum){
+        // 레벨 BGM 추상 매서드
+    }
 }
