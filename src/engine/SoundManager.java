@@ -131,7 +131,7 @@ public class SoundManager {
                 float volume = 0;
                 FloatControl floatControl = (FloatControl) clips.get(clipName).getControl(Type.MASTER_GAIN);
                 floatControl.setValue(minimum);
-                while (volume < 100) {
+                while (volume < masterVolume) {
                     float value = (float)(minimum + one*(50*Math.log10(volume)));
                     if(value>maximum){
                         floatControl.setValue(maximum);
