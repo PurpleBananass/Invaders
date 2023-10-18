@@ -391,8 +391,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				if (shot.get(index))continue;
 				shot.set(index, true);
 				EnemyShip shooter = this.shooters.get(index);
-				shooter.shoot(bullets,shootingCooldown);
-
+				shooter.shoot(bullets, shootingCooldown);
 			}
 		}
 	}

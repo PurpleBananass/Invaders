@@ -36,5 +36,4 @@ public class EnemyShipC extends EnemyShip {
                 + width / 2, positionY, (int)(super.BULLET_SPEED * BULLETSPEEDPOWER),0));
         shootingCooldown.timedown(BULLETCOOLDOWN);
     }
-
 }
