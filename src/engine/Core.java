@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
@@ -8,6 +9,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import engine.AchievementManager.Achievement;
 import screen.*;
 
 /**
@@ -68,8 +70,15 @@ public final class Core {
 	/** Logger handler for printing to console. */
 	private static ConsoleHandler consoleHandler;
 
-
-
+	private static int[] keySetting = new int[16];
+	/** { 1P.LEFT, 1P.RIGHT, 1P.ATTACK, 1P.BURST 1, 1P.BURST 2, 1P.RELOAD, 1P.BOOSTER, 1P.ITEM,
+	 * 2P.LEFT, 2P.RIGHT, 2P.ATTACK, 2P.BURST 1, 2P.BURST 2, 2P.RELOAD, 2P.BOOSTER, 2P.ITEM} */
+	private static String[] keySettingString = new String[16];
+	/** Sound Volume  */
+	public static int soundVolume;
+	/** Check BGM is On/Off  */
+	public static boolean bgmOn;
+	public static List<Settings> setting;
 	/**
 	 * Test implementation.
 	 *
@@ -77,6 +86,21 @@ public final class Core {
 	 *            Program args, ignored.
 	 */
 	public static void main(final String[] args) {
+		try {
+			setting = Core.getFileManager().loadSettings();
+			soundVolume = setting.get(0).getValue();
+			if(setting.get(1).getValue()==1){
+				bgmOn = true;
+			}
+			else bgmOn = false;
+			for (int i =2; i < 18; i++) {
+				keySettingString[i-2] = setting.get(i).getName();
+				keySetting[i-2] = setting.get(i).getValue();
+			}
+
+		} catch (NumberFormatException | IOException e) {
+			LOGGER.info("Couldn't load Settings!");
+		}
 		try {
 			LOGGER.setUseParentHandlers(false);
 
@@ -109,7 +133,7 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
 
-		AchievementManager.getInstance().markAchievementAsAchieved("adventure start");
+		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 
 		GameState gameState;
 
@@ -131,6 +155,11 @@ public final class Core {
 				LOGGER.info("Closing title screen.");
 				break;
 			case 7:
+				currentScreen = new SkinSelectionScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " Skin Selection screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing SkinSelection screen.");
 				// Game & score.
 				do {
 					SoundManager.stopSound("menu", 1.5f);
@@ -217,7 +246,7 @@ public final class Core {
 				// Setting.
 				currentScreen = new SettingScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
+						+ " setting screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing setting screen.");
 				break;
@@ -225,7 +254,7 @@ public final class Core {
 				//  Achievement.
 				currentScreen = new AchievementScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
+						+ " achievement screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing Achievement screen.");
 				break;
@@ -233,9 +262,9 @@ public final class Core {
 				// Select2P
 				currentScreen = new SelectScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
+						+ " select screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing setting screen.");
+				LOGGER.info("Closing select screen.");
 				break;
 			default:
 				break;
@@ -321,5 +350,37 @@ public final class Core {
 	 */
 	public static int getMaxLives() {
 		return MAX_LIVES;
+	}
+	/**
+	 * Get Key Setting Code
+	 */
+	public static int getKeySettingCode(int num){
+		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
+		return keySetting[num];
+	}
+	/**
+	 * Get Key Setting String
+	 */
+	public static String getKeySettingString(int num){
+		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
+		return keySettingString[num];
+	}
+	/**
+	 * Get Key Setting String Array
+	 */
+	public static String[] getKeySettingStringArray(){return keySettingString;}
+	/**
+	 * Set Key Setting Code
+	 */
+	public static void setKeySettingCode(int num, int value){
+		if(num<0 || num>16) throw new IndexOutOfBoundsException("it exceeds array");
+		keySetting[num] = value;
+	}
+	/**
+	 * Set Key Setting String
+	 */
+	public static void setKeySettingString(int num, String value){
+		if(num<0 || num>16) throw new IndexOutOfBoundsException("it exceeds array");
+		keySettingString[num] = value;
 	}
 }
