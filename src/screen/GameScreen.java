@@ -689,20 +689,20 @@ public class GameScreen extends Screen {
 					/ 12, Color.GREEN);
 		}
 
-		if (isPause){
-			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 40, 40);
-			drawManager.drawPauseMenu(this, pauseCnt%2);
-			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 40, Color.YELLOW);
-			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
-			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
-		}
-
 		if(manual){
 			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 90, 180);
 			drawManager.drawManualMenu(this);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 90, Color.CYAN);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 50, Color.CYAN);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12 + 90, Color.CYAN);
+		}
+
+		if (isPause){
+			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 40, 40);
+			drawManager.drawPauseMenu(this, pauseCnt%2);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 40, Color.YELLOW);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
+			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}
 
 		drawManager.completeDrawing(this);
