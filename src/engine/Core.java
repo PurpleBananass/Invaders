@@ -205,7 +205,7 @@ public final class Core {
 					}
           AchievementManager.getInstance().checkAchievements(gameState);
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0))
+						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
 						&& gameState.getLevel() <= NUM_LEVELS);
 
 				if (gameState.getMode() == 1) {
