@@ -4,7 +4,7 @@ package entity;
 /** 현재 사용자가 보유한 아이템을 저장하는 Queue */
 public class ItemQueue {
 
-    private final Item[] itemQue;
+    public static Item[] itemQue;
     private final int capacity;
     private int front;
     private int rear;
