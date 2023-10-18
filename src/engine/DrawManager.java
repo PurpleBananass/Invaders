@@ -211,6 +211,21 @@ public final class DrawManager {
 					backBufferGraphics.drawRect(positionX + i * 2, positionY
 							+ j * 2, 1, 1);
 	}
+	public void clearEntity(final Entity entity, final int positionX, final int positionY) {
+		boolean[][] image = spriteMap.get(entity.getSpriteType());
+
+		Color clearColor = Color.black;
+
+		backBufferGraphics.setColor(clearColor);
+		for (int i = 0; i < image.length; i++) {
+			for (int j = 0; j < image[i].length; j++) {
+				if (image[i][j]) {
+					backBufferGraphics.fillRect(positionX + i * 2, positionY + j * 2, 1, 1);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * For debugging purpouses, draws the canvas borders.
@@ -509,7 +524,7 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredRegularString(screen, newRecordString, screen.getHeight()
-				/ 4 + fontRegularMetrics.getHeight() * 10);
+				* 11 / 60);
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, introduceNameString,
 				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 12);
