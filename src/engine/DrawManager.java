@@ -576,17 +576,19 @@ public final class DrawManager {
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
-
-		int numShips = 6; // 6개의 Ship 객체 생성
-		Ship[] shipskin = new Ship[numShips];
 		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
-		for (int i = 0; i < numShips; i++) {
-			shipskin[i] = dummyShip;
+		Ship[] shipskin = new Ship[6];
+		for (int i = 0; i < 6; i++) {
+			Ship dummyShip1 = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+			shipskin[i] = dummyShip1;
 			// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-			try {
-				fileManager.changeSprite(spriteMap, SpriteType.Ship, i);
-			} catch (IOException e) {
-				logger.warning("Loading failed.");
+			drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
+			if(i !=5) {
+				try {
+					fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
+				} catch (IOException e) {
+					logger.warning("Loading failed.");
+				}
 			}
 		}
 
@@ -601,13 +603,6 @@ public final class DrawManager {
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
-
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
-
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
@@ -616,12 +611,6 @@ public final class DrawManager {
 			if (skincode1p == 1) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
-
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
@@ -629,11 +618,6 @@ public final class DrawManager {
 			if (skincode1p == 2) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
@@ -642,11 +626,6 @@ public final class DrawManager {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
 
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
@@ -654,11 +633,6 @@ public final class DrawManager {
 			if (skincode1p == 4) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
@@ -666,11 +640,6 @@ public final class DrawManager {
 			if (skincode1p == 5) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
@@ -678,11 +647,6 @@ public final class DrawManager {
 			if (skincode2p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
@@ -690,11 +654,6 @@ public final class DrawManager {
 			if (skincode2p == 1) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 215, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 215, 30, 30);
@@ -702,11 +661,6 @@ public final class DrawManager {
 			if (skincode2p == 2) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 265, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 265, 30, 30);
@@ -714,11 +668,6 @@ public final class DrawManager {
 			if (skincode2p == 3) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 315, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 315, 30, 30);
@@ -726,11 +675,6 @@ public final class DrawManager {
 			if (skincode2p == 4) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 365, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 365, 30, 30);
@@ -738,24 +682,29 @@ public final class DrawManager {
 			if (skincode2p == 5) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
-				try {
-					fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
-				} catch (IOException e) {
-					logger.warning("Loading failed.");
-				}
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
 			}
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+
 		} else {
-
-
-			drawEntity(shipskin[0], screen.getWidth() / 2 - 13, 172);
+			/*drawEntity(dummyShip, screen.getWidth() / 2 - 13, 172);
 			drawEntity(shipskin[1], screen.getWidth() / 2 - 13, 222);
 			drawEntity(shipskin[2], screen.getWidth() / 2 - 13, 272);
 			drawEntity(shipskin[3], screen.getWidth() / 2 - 13, 322);
 			drawEntity(shipskin[4], screen.getWidth() / 2 - 13, 372);
 			drawEntity(shipskin[5], screen.getWidth() / 2 - 13, 422);
+			*/
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 165, 30, 30);
@@ -803,11 +752,6 @@ public final class DrawManager {
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 415, 30, 30);
-			}
-			try {
-				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode2p);
-			} catch (IOException e) {
-				logger.warning("Loading failed.");
 			}
 			backBufferGraphics.setFont(fontBig);
 			backBufferGraphics.setColor(Color.WHITE);
