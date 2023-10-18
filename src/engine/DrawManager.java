@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -964,6 +965,7 @@ public final class DrawManager {
 	public void drawManualMenu(final Screen screen) {
 
 		String[] keyInfo = {"left", "right", "attack", "burst1", "burst2", "reload", "booster", "item"};
+		String[] keyValue = Core.getKeySettingStringArray();
 
 		backBufferGraphics.setColor(Color.CYAN);
 		drawCenteredRegularString(screen, "Play manual", screen.getHeight() / 2 - 105);
@@ -972,11 +974,15 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.WHITE);
 		int y = screen.getHeight() / 2 - 30;
-		int x1 = screen.getWidth() / 2 - 150; //player1
-		int x2 = screen.getWidth() / 2 + 55; //player2
+		int x1 = screen.getWidth() / 2 - 150; //player1_manual
+		int x2 = screen.getWidth() / 2 - 50; //player1_setting
+		int x3 = screen.getWidth() / 2 + 50; //player2
+		int x4 = screen.getWidth() / 2 + 150; //player2_setting
 		for(int i=0; i<8; i++){
 			backBufferGraphics.drawString(keyInfo[i], x1-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
-			backBufferGraphics.drawString(keyInfo[i], x2-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyValue[i], x2-fontRegularMetrics.stringWidth(keyValue[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyInfo[i], x3-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyValue[i+8], x4-fontRegularMetrics.stringWidth(keyValue[i+8])/2, y+20*i);
 		}
 
 
