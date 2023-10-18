@@ -586,8 +586,27 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 			backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
 			backBufferGraphics.drawString(skin2p, 3 * screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 2, 130);
-
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, 0);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			for (int i = 0; i < 6; i++) {
+				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+				shipskin[i] = dummyShip;
+				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
+				drawEntity(shipskin[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
+				if(i !=5) {
+					try {
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+					} catch (IOException e) {
+						logger.warning("Loading failed.");
+					}
+				}
+			}
 			if (skincode1p == 0) {
+
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
 			} else {
