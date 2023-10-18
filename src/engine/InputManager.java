@@ -1,5 +1,6 @@
 package engine;
 
+import engine.Core;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -23,6 +24,7 @@ public final class InputManager implements KeyListener {
 	private static Integer keyCode;
 	private static String keyString;
 	private boolean checkKeyPressed=false;
+	private int[] keySetting = Core.getKeySettingCodeArray();
 
 	/**
 	 * Private constructor.
@@ -65,7 +67,8 @@ public final class InputManager implements KeyListener {
 			keys[key.getKeyCode()] = true;
 		keyCode = key.getKeyCode();
 		keyString = key.getKeyText(keyCode);
-		checkKeyPressed = true;
+		if(!(keyCode == KeyEvent.VK_CONTROL || keyCode == KeyEvent.VK_SHIFT))
+			checkKeyPressed = true;
 	}
 	public boolean isKeyUp(int keyCode) {
 		return !keys[keyCode];
@@ -92,43 +95,15 @@ public final class InputManager implements KeyListener {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = false;
 		checkKeyPressed = false;
-
-		switch (key.getKeyCode()){
-			case 38: // 위
-				countH_u++;
-				break;
-			case 40: // 아래
-				countH_d++;
-				break;
-			case 32: // 스페이스
-				if (keyUp == 0) {
-					keyUp = 1;
-				}
-				break;
-			case 83: //s
-				speed ++;
-				break;
-			case 81: //q
-				magazine = true;
-				break;
-
-			case 48: // 0
-				magazine2=true; break;
-			case 49: // 1
-				one++; break;
-			case 50: // 2
-				two++; break;
-			case 51: //3
-				speed1++; break;
-			case 52: //4
-				magazine = true; break;
-			case 55: //7
-				seven++; break;
-			case 56: //8
-				eight++; break;
-			case 57: //9
-				speed2++; break;
-		}
+		int code = key.getKeyCode();
+		if(code == keySetting[3]){countH_u++;one++;}
+		if(code == keySetting[4]){countH_d++;two++;}
+		if(code == keySetting[5]) magazine = true;
+		if(code == keySetting[6]) {speed++; speed1++;}
+		if(code == keySetting[11]) seven++;
+		if(code == keySetting[12]) eight++;
+		if(code == keySetting[13]) magazine2=true;
+		if(code == keySetting[14]) speed2++;
 	}
 
 

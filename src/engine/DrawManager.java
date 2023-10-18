@@ -925,8 +925,8 @@ public final class DrawManager {
 
 	public void drawSetting(final Screen screen, final int option, final boolean selected){
 		String settingString = "Setting";
-		String instructionsString1 = "Move with UP, DOWN / Select with RIGHT arrow";
-		String instructionsString2 = "Press Space to return";
+		String instructionsString1 = "Move with UP, DOWN / Select with SPACE";
+		String instructionsString2 = "Press ESC to return";
 
 		String volumeString = "Volume";
 		String bgmString = "BGM";

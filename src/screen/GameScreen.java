@@ -4,13 +4,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -232,8 +230,8 @@ public class GameScreen extends Screen {
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
 			if (gameState.getMode() == 1 && !this.ship.isDestroyed()) {
-				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
-				boolean moveLeft = inputManager.isKeyDown(KeyEvent.VK_LEFT);
+				boolean moveRight = inputManager.isKeyDown(Core.getKeySettingCode(1));
+				boolean moveLeft = inputManager.isKeyDown(Core.getKeySettingCode(0));
 
 				boolean isRightBorder = this.ship.getPositionX()
 						+ this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
@@ -246,7 +244,7 @@ public class GameScreen extends Screen {
 				if (moveLeft && !isLeftBorder) {
 					this.ship.moveLeft();
 				}
-				if ( replayability.getReplay()==0 && inputManager.isKeyDown(KeyEvent.VK_SPACE)){
+				if ( replayability.getReplay()==0 && inputManager.isKeyDown(Core.getKeySettingCode(2))){
 					if (this.ship.shoot(this.bullets))
 						this.bulletsShot1++;
 					if(this.ship.isExistAuxiliaryShips()){
@@ -257,7 +255,7 @@ public class GameScreen extends Screen {
 					}
 				}
 				if (replayability.getReplay()==1) {
-					if (this.bullet_count<=9 && inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+					if (this.bullet_count<=9 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
 						if(this.ship.shoot(this.bullets)){
 							this.bulletsShot1++;
 							this.bullet_count++;
@@ -295,7 +293,7 @@ public class GameScreen extends Screen {
 						auxiliaryShips.get(0).destroy();
 						auxiliaryShips.get(1).destroy();
 					}
-					if (inputManager.isKeyDown(KeyEvent.VK_G))
+					if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
 						if(this.ship.itemCoolTime())
 							useItem(this.ship.getItemQueue().deque(), this.ship);
 				}
@@ -303,11 +301,11 @@ public class GameScreen extends Screen {
 
 
 			} else if (gameState.getMode() == 2 && !this.ship2.isDestroyed()) {
-				boolean moveRight1p = inputManager.isKeyDown(KeyEvent.VK_D);
-				boolean moveLeft1p = inputManager.isKeyDown(KeyEvent.VK_A);
+				boolean moveRight1p = inputManager.isKeyDown(Core.getKeySettingCode(1));
+				boolean moveLeft1p = inputManager.isKeyDown(Core.getKeySettingCode(0));
 
-				boolean moveRight2p = inputManager.isKeyDown(KeyEvent.VK_RIGHT);
-				boolean moveLeft2p = inputManager.isKeyDown(KeyEvent.VK_LEFT);
+				boolean moveRight2p = inputManager.isKeyDown(Core.getKeySettingCode(9));
+				boolean moveLeft2p = inputManager.isKeyDown(Core.getKeySettingCode(8));
 
 				boolean isRightBorder1p = this.ship.getPositionX()
 						+ this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
@@ -333,7 +331,7 @@ public class GameScreen extends Screen {
 				}
 
 				if (replayability.getReplay()==0){
-					if (inputManager.isKeyDown(KeyEvent.VK_W)) {
+					if (inputManager.isKeyDown(Core.getKeySettingCode(2))) {
 						if (this.ship.shoot(this.bullets)) {
 							this.bulletsShot1++;
 							this.bullet_count++;
@@ -345,7 +343,7 @@ public class GameScreen extends Screen {
 								}
 						}
 					}
-					if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
+					if (inputManager.isKeyDown(Core.getKeySettingCode(10))) {
 						if (this.ship2.shoot(this.bullets)) {
 							this.bulletsShot2++;
 							this.bullet_count2++;
@@ -359,7 +357,7 @@ public class GameScreen extends Screen {
 					}
 				}else if (replayability.getReplay()==1){
 					//player1
-					if (this.bullet_count<=9 && inputManager.isKeyDown(KeyEvent.VK_W)) {
+					if (this.bullet_count<=9 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
 						if(this.ship.shoot(this.bullets)){
 							this.bulletsShot1++;
 							this.bullet_count++;
@@ -396,13 +394,13 @@ public class GameScreen extends Screen {
 							auxiliaryShips.get(0).destroy();
 							auxiliaryShips.get(1).destroy();
 						}
-						if (inputManager.isKeyDown(KeyEvent.VK_TAB))
+						if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
 							if(this.ship.itemCoolTime())
 								useItem(this.ship.getItemQueue().deque(), this.ship);
 					}
 
 					//player2
-					if (this.bullet_count2<=9 && inputManager.isKeyDown(KeyEvent.VK_UP)) {
+					if (this.bullet_count2<=9 && inputManager.isKeyDown(Core.getKeySettingCode(10))) {
 						if(this.ship2.shoot(this.bullets)){
 							this.bulletsShot2++;
 							this.bullet_count2++;
@@ -440,7 +438,7 @@ public class GameScreen extends Screen {
 							auxiliaryShips.get(0).destroy();
 							auxiliaryShips.get(1).destroy();
 						}
-						if (inputManager.isKeyDown(KeyEvent.VK_ENTER))
+						if (inputManager.isKeyDown(Core.getKeySettingCode(15)))
 							if(this.ship2.itemCoolTime())
 								useItem(this.ship2.getItemQueue().deque(), this.ship2);
 					}
