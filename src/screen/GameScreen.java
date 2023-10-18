@@ -462,6 +462,7 @@ public class GameScreen extends Screen {
 
 			if (this.enemyShipSpecial == null
 					&& this.enemyShipSpecialCooldown.checkFinished()) {
+				SoundManager.playSound("SFX/S_Enemy_Special", "specialEnemyAppear", false, false);
 				this.enemyShipSpecial = new EnemyShip();
 				this.enemyShipSpecialCooldown.reset();
 				this.logger.info("A special ship appears");
