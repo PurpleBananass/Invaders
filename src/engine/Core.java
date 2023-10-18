@@ -110,6 +110,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
 
+
+
 		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 
 		GameState gameState;
@@ -134,7 +136,7 @@ public final class Core {
 			case 7:
 				// Game & score.
 				do {
-					SoundManager.stopSound("menu", 1.5f);
+					SoundManager.stopSound("menu");
 					// One extra live every few levels.
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
@@ -152,7 +154,13 @@ public final class Core {
 					currentScreen = new GameScreen(gameState,
 							gameSettings.get(gameState.getLevel() - 1),
 							bonusLife, width, height, FPS);
-					// 여기에 레벨별 사운드를 추가하면 될 듯
+
+					if(gameState.getLevel() == 1) {
+						SoundManager.resetBGM();
+					} else {
+						SoundManager.stopBGM(gameState.getLevel() - 2, 1.5f);
+					}
+					SoundManager.playBGM(gameState.getLevel() - 1);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);

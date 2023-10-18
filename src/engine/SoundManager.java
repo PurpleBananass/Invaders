@@ -2,10 +2,7 @@ package engine;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -27,8 +24,11 @@ public class SoundManager {
 
     private static final float minimum = -80;
     private static final float maximum = 6;
-    private static final float one = Math.abs((minimum-maximum)/100);
-    private static float master = (float)(minimum + one*(50*Math.log10(masterVolume)));
+    private static final float one = Math.abs((minimum - maximum) / 100);
+    private static float master = (float) (minimum + one * (50 * Math.log10(masterVolume)));
+
+    private static String[] bgmList = {"res/sound/BGM/BGM_LevelDesign_GameScreen_Level1_SpaceInvadersOST_Venus.wav", "res/sound/BGM/BGM_LevelDesign_GameScreen_Level2_SpaceInvadersOST_Uranus.wav", "res/sound/BGM/BGM_LevelDesign_GameScreen_Level3_SpaceInvadersOST_Earth.wav", "res/sound/BGM/BGM_LevelDesign_GameScreen_Level4_SpaceInvadersOST_Jupiter.wav", "res/sound/BGM/BGM_LevelDesign_GameScreen_Level5_SpaceInvadersOST_Neptune.wav", "res/sound/BGM/BGM_LevelDesign_GameScreen_Level6_SpaceInvadersOST_Pluto.wav", "res/sound/BGM/BGM_LevelDesign_GameScreen_Level7_SpaceInvaders OST_Saturn.wav", "res/sound/BGM/BGM_MainMenu_TitleScreen_Main_AlienSpaceship.wav", "res/sound/BGM/BGM_MainMenu_TitleScreen_Main_AmbientSpace.wav", "res/sound/BGM/BGM_MainMenu_TitleScreen_Main_SpaceHanger.wav", "res/sound/BGM/BGM_MainMenu_TitleScreen_Main_Spacedrone.wav", "res/sound/BGM/BGM_Player&EnemyShipVariety_Ship_ShipMoving_ShipMoving.wav", "res/sound/BGM/BGM_Records&Achievement_AchievementScreen_AchievementScreen_MorseCode.wav", "res/sound/BGM/BGM_Records&Achievement_HighScoreScreen_HighScoreScreen_UfoSounds.wav", "res/sound/BGM/BGM_Records&Achievement_ScoreScreen_GameOver_UfoLanding.wav"};
+    private static ArrayList<String> bgmArray = new ArrayList<>(Arrays.asList(bgmList));
 
     public static void playSound(String soundFilePath, String clipName, boolean isLoop, boolean isBgm) {
         Clip clip = clips.get(clipName);
@@ -42,7 +42,7 @@ public class SoundManager {
                     AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
                     Clip clip = AudioSystem.getClip();
                     clip.open(audioIn);
-                    FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+                    FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
                     floatControl.setValue(master);
                     if (isLoop) {
                         clip.loop(-1);
@@ -50,7 +50,7 @@ public class SoundManager {
                         clip.start();
                     }
                     clips.put(clipName, clip);
-                    if(isBgm) bgms.add(clip);
+                    if (isBgm) bgms.add(clip);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -78,7 +78,7 @@ public class SoundManager {
                         clip.start();
                     }
                     clips.put(clipName, clip);
-                    if(isBgm) bgms.add(clip);
+                    if (isBgm) bgms.add(clip);
                     fadeIn(clipName, fadeInSpeed);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -104,8 +104,8 @@ public class SoundManager {
                     float volume = masterVolume;
                     while (volume > minimum) {
                         volume -= fadeoutSpeed;
-                        if(volume<minimum) volume = minimum;
-                        floatControl.setValue((float)(minimum + one*(50*Math.log10(volume))));
+                        if (volume < minimum) volume = minimum;
+                        floatControl.setValue((float) (minimum + one * (50 * Math.log10(volume))));
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException e) {
@@ -129,8 +129,8 @@ public class SoundManager {
                 floatControl.setValue(minimum);
                 while (volume < masterVolume) {
                     volume += fadeInSpeed;
-                    if(volume>masterVolume) volume = masterVolume;
-                    floatControl.setValue((float)(minimum + one*(50*Math.log10(volume))));
+                    if (volume > masterVolume) volume = masterVolume;
+                    floatControl.setValue((float) (minimum + one * (50 * Math.log10(volume))));
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
@@ -143,7 +143,7 @@ public class SoundManager {
 
     public static void setMasterVolume(float volume) {
         masterVolume = volume;
-        master = (float)(minimum + one*(50*Math.log10(volume)));
+        master = (float) (minimum + one * (50 * Math.log10(volume)));
         for (Clip clip : clips.values()) {
             if (clip != null && clip.isActive()) {
                 FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
@@ -152,28 +152,42 @@ public class SoundManager {
         }
     }
 
-    public static void bgmSetting(boolean bgm){
-        if(bgm){
-            for(Clip clip : bgms){
-                FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+    public static void bgmSetting(boolean bgm) {
+        if (bgm) {
+            for (Clip clip : bgms) {
+                FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
                 floatControl.setValue(master);
             }
-        }
-        else{
-            for(Clip clip : bgms){
-                FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
-                floatControl.setValue((float)(minimum + one*(50*Math.log10(0))));
+        } else {
+            for (Clip clip : bgms) {
+                FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
+                floatControl.setValue((float) (minimum + one * (50 * Math.log10(0))));
             }
         }
     }
 
-    public static void setVolume(String clipName, double percent){
+    public static void setVolume(String clipName, double percent) {
         Clip clip = clips.get(clipName);
-        FloatControl floatcontrol = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+        FloatControl floatcontrol = (FloatControl) clip.getControl(Type.MASTER_GAIN);
         float volume = floatcontrol.getValue();
-        floatcontrol.setValue((float)(volume*percent));
+        floatcontrol.setValue((float) (volume * percent));
     }
-    void getLevelBGM(int levelNum){
-        // 레벨 BGM 추상 매서드
+
+    public static void playBGM(int levelNum) {
+        String soundFilePath = bgmArray.get(levelNum);
+        String clipName = "level" + Integer.toString(levelNum);
+        playSound(soundFilePath, clipName, true, true);
+    }
+
+    public static void stopBGM(int levelNum, float fadeOutSpeed) {
+        String clipName = "level" + Integer.toString(levelNum);
+        stopSound(clipName, fadeOutSpeed);
+    }
+    
+    public static void resetBGM(){
+        for (int i = 0; i < bgmList.length; i++) {
+            String clipName = "level" + Integer.toString(i);
+            stopSound(clipName);
+        }
     }
 }
