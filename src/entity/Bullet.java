@@ -18,7 +18,12 @@ public class Bullet extends Entity {
 	 */
 	private int speed;
 
+	/**
+	 * Entity that shot a bullet
+	 * 0 for enemy, 1 for first-player, 2 for second-player
+	 */
 	private int shooter;
+
 	/**
 	 * Constructor, establishes the bullet's properties.
 	 * 
