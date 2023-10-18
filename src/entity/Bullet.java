@@ -19,6 +19,12 @@ public class Bullet extends Entity {
 	private int speed;
 
 	/**
+	 * Entity that shot a bullet
+	 * 0 for enemy, 1 for first-player, 2 for second-player
+	 */
+	private int shooter;
+
+	/**
 	 * Constructor, establishes the bullet's properties.
 	 * 
 	 * @param positionX
@@ -29,10 +35,11 @@ public class Bullet extends Entity {
 	 *            Speed of the bullet, positive or negative depending on
 	 *            direction - positive is down.
 	 */
-	public Bullet(final int positionX, final int positionY, final int speed) {
+	public Bullet(final int positionX, final int positionY, final int speed, final int shooter) {
 		super(positionX, positionY, 3 * 2, 5 * 2, Color.WHITE);
 
 		this.speed = speed;
+		this.shooter = shooter;
 		setSprite();
 	}
 
@@ -79,5 +86,9 @@ public class Bullet extends Entity {
 	 */
 	public final int getSpeed() {
 		return this.speed;
+	}
+
+	public final int getShooter() {
+		return this.shooter;
 	}
 }

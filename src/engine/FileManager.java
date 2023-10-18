@@ -235,6 +235,10 @@ public final class FileManager {
 		BufferedReader reader = null;
 
 		try {
+			File scoresFile = new File("res"+File.separator+"scores");
+			if(!scoresFile.exists())
+				scoresFile.createNewFile();
+
 			inputStream = FileManager.class.getClassLoader()
 					.getResourceAsStream("scores");
 			reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -273,18 +277,17 @@ public final class FileManager {
 		BufferedReader bufferedReader = null;
 
 		try {
-			String jarPath = FileManager.class.getProtectionDomain()
-					.getCodeSource().getLocation().getPath();
-			jarPath = URLDecoder.decode(jarPath, "UTF-8");
-
-			String scoresPath = new File(jarPath).getParent();
+			String scoresPath = "";
 			scoresPath += File.separator;
 			if (gameMode == 1)
 				scoresPath += "scores_1p";
 			else
 				scoresPath += "scores_2p";
 
-			File scoresFile = new File(scoresPath);
+			File scoresFile = new File("res"+File.separator+scoresPath);
+			if(!scoresFile.exists())
+				scoresFile.createNewFile();
+
 			inputStream = new FileInputStream(scoresFile);
 			bufferedReader = new BufferedReader(new InputStreamReader(
 					inputStream, Charset.forName("UTF-8")));
@@ -331,20 +334,14 @@ public final class FileManager {
 		BufferedWriter bufferedWriter = null;
 
 		try {
-			String jarPath = FileManager.class.getProtectionDomain()
-					.getCodeSource().getLocation().getPath();
-			jarPath = URLDecoder.decode(jarPath, "UTF-8");
-
-			String scoresPath = new File(jarPath).getParent();
-			scoresPath += File.separator;
+			String scoresPath = "";
 			if (gameMode == 1)
 				scoresPath += "scores_1p";
 			else
 				scoresPath += "scores_2p";
 
-			File scoresFile = new File(scoresPath);
-
-			if (!scoresFile.exists())
+			File scoresFile = new File("res"+File.separator+scoresPath);
+			if(!scoresFile.exists())
 				scoresFile.createNewFile();
 
 			outputStream = new FileOutputStream(scoresFile);
