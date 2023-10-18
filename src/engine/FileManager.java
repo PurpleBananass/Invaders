@@ -536,7 +536,6 @@ public final class FileManager {
 				if (loadedName.equals(String.valueOf(name))) {
                     List<Boolean> items = convertStringToBooleanList(itemList);
                     player = new Player(loadedName, Integer.parseInt(currency), loginTime, items);
-                    logger.info(String.valueOf(player.getCurrency()));
 					bufferedWriter.write(loadedName);
 					bufferedWriter.newLine();
 					bufferedWriter.write(currency);
@@ -693,36 +692,6 @@ public final class FileManager {
         }
     }
 
-    public int getCurrentPlayerCurrency() throws IOException {
-        String jarPath = FileManager.class.getProtectionDomain()
-                .getCodeSource().getLocation().getPath();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-
-        Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
-
-        if (!Files.exists(playerPath)) {
-            logger.warning("Player file not found at: " + playerPath);
-            throw new FileNotFoundException("Player file not found at: " + playerPath);
-        }
-
-		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
-		if (lines.size() < 4) {
-			logger.warning("Invalid data in current player file");
-			throw new IOException("Invalid data in current player file");
-		}
-
-        int currency;
-        try {
-            currency = Integer.parseInt(lines.get(1));
-        } catch (NumberFormatException e) {
-            logger.warning("Invalid currency value in current player file");
-            throw new NumberFormatException("Invalid currency value in current player file");
-        }
-
-		return currency;
-	}
-
-
 // Get the player current login time
 	public String currentDate(final char[] name) throws IOException {
 
@@ -784,35 +753,6 @@ public final class FileManager {
         }
     }
 
-
-	public Date getCurrentPlayerDate() throws IOException, ParseException {
-		String jarPath = FileManager.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-
-		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
-
-		if (!Files.exists(playerPath)) {
-			logger.warning("Player Time not found at: " + playerPath);
-			throw new FileNotFoundException("Player not found at: " + playerPath);
-		}
-
-		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
-		if (lines.size() < 3) {
-			logger.warning("Invalid data in current player file");
-			throw new IOException("Invalid data in current player file");
-		}
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date;
-		try {
-			date = dateFormat.parse(lines.get(2));
-		} catch (ParseException e) {
-			logger.warning("Invalid date format in current player file");
-			throw e;
-		}
-		return date;
-	}
-
 	public static List<Boolean> convertStringToBooleanList(String input) {
 		String[] splitStrings = input.split(",");
 		List<Boolean> booleanList = new ArrayList<>();
@@ -822,5 +762,50 @@ public final class FileManager {
 		}
 
 		return booleanList;
+	}
+
+	/**
+	 * Retrieves the current player's data from a file.
+	 *
+	 * @return The Player object representing the current player.
+	 * @throws IOException If there is an I/O error while reading the player data file.
+	 *                    This can occur if the file is not found or if its contents are invalid.
+	 * @throws FileNotFoundException If the player data file is not found.
+	 * @throws NumberFormatException If there is an issue with parsing a numeric value from the file.
+	 */
+	public Player getCurrentPlayer() throws IOException {
+		// Get the path to the JAR file
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+		// Construct the path to the player data file
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		// Check if the player data file exists
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			throw new FileNotFoundException("Player file not found at: " + playerPath);
+		}
+
+		// Read the lines from the player data file
+		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+
+		// Check if the file contains valid data
+		if (lines.size() < 4) {
+			logger.warning("Invalid data in current player file");
+			throw new IOException("Invalid data in current player file");
+		}
+
+		Player player;
+		try {
+			// Parse the player data from the file
+			player = new Player(lines.get(0), Integer.parseInt(lines.get(1)), lines.get(2), convertStringToBooleanList(lines.get(3)));
+		} catch (NumberFormatException e) {
+			logger.warning("Invalid value in current player file");
+			throw new NumberFormatException("Invalid value in current player file");
+		}
+
+		return player;
 	}
 }
