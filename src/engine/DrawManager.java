@@ -332,11 +332,11 @@ public final class DrawManager {
 	public void drawItems2(final Screen screen, final Set<Item> items) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 420, screen.getHeight() + 25);
+		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 120, screen.getHeight() + 25);
 		Random random = new Random();
 		Item dummyItem = new Item(0, 0, random.nextInt(10000));
 		for (int i = 0; i < ItemQueue.size; i++)
-			drawEntity(dummyItem, 440 + 35 * i, screen.getHeight() + 25);
+			drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
 	}
 
 
