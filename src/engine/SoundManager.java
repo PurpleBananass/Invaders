@@ -153,7 +153,6 @@ public class SoundManager {
     public static void setMasterVolume(float volume) {
         masterVolume = volume;
         master = getValue(masterVolume);
-        System.out.println("master = "+master + "masterVolume = "+masterVolume);
         if(master > maximum) master = maximum;
         else if(master < minimum) master = minimum;
         for (Clip clip : clips.values()) {
@@ -168,7 +167,7 @@ public class SoundManager {
         if(bgm){
             for(Clip clip : bgms){
                 FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
-                floatControl.setValue(getValue(master));
+                floatControl.setValue(getValue(masterVolume));
             }
         }
         else{
