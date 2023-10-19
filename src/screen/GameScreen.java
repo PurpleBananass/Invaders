@@ -185,14 +185,42 @@ public class GameScreen extends Screen {
 
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings, this.gameState);
 		enemyShipFormation.attach(this);
-
+		Player player;
+		List<Boolean> existShopItems;
+		try {
+			player = Core.getFileManager().getCurrentPlayer();
+			existShopItems= player.getItem();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		// 게임 모드 별 함선 생성 제어
 		if (gameState.getMode() == 1){
 			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
+			if(existShopItems.get(0)){
+				this.ship.buyItemSpeed();
+			}
+			if(existShopItems.get(1)){
+				this.ship.applyLifeIncreaseItem(true);
+			}
+			if(existShopItems.get(2)){
+				this.ship.applyFasterShootingItem();
+			}
 		}
 		if (gameState.getMode() == 2) {
 			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
 			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, DrawManager.SpriteType.Ship2, false);
+			if(existShopItems.get(0)){
+				this.ship.buyItemSpeed();
+				this.ship2.buyItemSpeed();
+			}
+			if(existShopItems.get(1)){
+				this.ship.applyLifeIncreaseItem(true);
+				this.ship2.applyLifeIncreaseItem(true);
+			}
+			if(existShopItems.get(2)){
+				this.ship.applyFasterShootingItem();
+				this.ship2.applyFasterShootingItem();
+			}
 		}
 
 		// Appears each 10-30 seconds.
