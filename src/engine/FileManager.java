@@ -7,17 +7,25 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Logger;
 import engine.DrawManager.SpriteType;
 
@@ -321,8 +329,8 @@ public final class FileManager {
 		Collections.sort(highScores);
 		return highScores;
 	}
-	
-	
+
+
 
 	/**
 	 * Saves user high scores to disk.
@@ -506,10 +514,302 @@ public final class FileManager {
 		}
 	}
 
+    public Player loadPlayer(char[] name) throws IOException {
 
-		
+        Player player = null;
+
+        String jarPath = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, "UTF-8");
+
+        String playerPath = new File(jarPath).getParent() + File.separator + "accounts";
+        String currentPlayerPath = new File(jarPath).getParent() + File.separator + "currentPlayer";
+
+        File playerFile = new File(playerPath);
+        File currentPlayerFile = new File(currentPlayerPath);
+        currentPlayerFile.createNewFile();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(playerFile), Charset.forName("UTF-8")));
+             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentPlayerFile, false), Charset.forName("UTF-8")))) {
+
+			String loadedName = bufferedReader.readLine();
+			String currency = bufferedReader.readLine();
+			String loginTime = bufferedReader.readLine();
+			String itemList = bufferedReader.readLine();
+
+			while ((loadedName != null) && (currency != null) && (loginTime != null) && (itemList != null)) {
+				if (loadedName.equals(String.valueOf(name))) {
+                    List<Boolean> items = convertStringToBooleanList(itemList);
+                    player = new Player(loadedName, Integer.parseInt(currency), loginTime, items);
+					bufferedWriter.write(loadedName);
+					bufferedWriter.newLine();
+					bufferedWriter.write(currency);
+					bufferedWriter.newLine();
+					bufferedWriter.write(loginTime);
+					bufferedWriter.newLine();
+                    bufferedWriter.write(itemList);
+                    bufferedWriter.newLine();
+
+					bufferedWriter.flush();
+					break;
+				}else {
+					loadedName = bufferedReader.readLine();
+					currency = bufferedReader.readLine();
+					loginTime = bufferedReader.readLine();
+                    itemList = bufferedReader.readLine();
+				}
+			}
+
+        } catch (FileNotFoundException e) {
+            // create new player if player not found.
+            logger.info("Account list not found.");
+        }
+
+        return player;
+    }
+    public void saveNewPlayer(final char[] name) throws IOException {
+        // Get the path to the JAR file.
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        // Construct the path to the player file.
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
+
+        // Create the player file if it doesn't exist.
+        File playerFile = playerPath.toFile();
+        if (!playerFile.exists() && !playerFile.createNewFile()) {
+            logger.warning("Failed to create new player file at: " + playerPath);
+            return;
+        }
+
+		// Write the new player data to the file.
+		try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
+			logger.info("Creating new user with name: " + String.valueOf(name));
+			bufferedWriter.write(String.valueOf(name));
+			bufferedWriter.newLine();
+			bufferedWriter.write("0");
+			bufferedWriter.newLine();
+			bufferedWriter.write(currentDate(name));
+			bufferedWriter.newLine();
+            bufferedWriter.write("false, false, false");
+            bufferedWriter.newLine();
+			bufferedWriter.flush();
+			loadPlayer(name); //I know I can make a separate function to overwrite it but I have to set priorities on other things
+		} catch (IOException e) {
+			logger.warning("Failed to write new player data to file: " + e.getMessage());
+			throw e; // Re-throw the exception after logging it.
+		}
+	}
+
+    //Overwrites the content of currentPlayer.txt to accounts.txt.
+    public void updateAccounts() throws IOException {
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
+
+        if (!Files.exists(playerPath)) {
+            logger.warning("Player file not found at: " + playerPath);
+            return;
+        }
+
+        StringBuilder inputBuffer = new StringBuilder();
+        try (BufferedReader bufferedReader = Files.newBufferedReader(playerPath, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                inputBuffer.append(line).append('\n');
+            }
+        } catch (IOException e) {
+            logger.warning("Failed to read player data from file: " + e.getMessage());
+            throw e;
+        }
+
+        Path currentPlayerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		try (BufferedReader currentBufferedReader = Files.newBufferedReader(currentPlayerPath, StandardCharsets.UTF_8)) {
+			String loadedName = currentBufferedReader.readLine();
+			String currency = currentBufferedReader.readLine();
+			String loginTime = currentBufferedReader.readLine();
+            String itemList = currentBufferedReader.readLine();
+
+			if (loadedName == null || currency == null || loginTime == null || itemList == null) {
+				logger.warning("Invalid data in current player file");
+				return;
+			}
+
+			Player player = loadPlayer(loadedName.toCharArray());
+            List<Boolean> items = player.getItem();
+            String inputStr = inputBuffer.toString().replace(
+					loadedName + "\n" + player.getCurrency() + "\n" + player.getLoginTime() + "\n"+ items.get(0)+", "+items.get(1)+", "+items.get(2)+"\n",
+					loadedName + "\n" + currency + "\n" + loginTime + "\n"+ itemList+ "\n");
+
+			try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8)) {
+				bufferedWriter.write(inputStr);
+				logger.info("Successfully changed amount of player: " + loadedName + " to " + currency + "and" + loginTime);
+			} catch (IOException e) {
+				logger.warning("Failed to write updated player data to file: " + e.getMessage());
+				throw e;
+			}
+		} catch (IOException e) {
+			logger.warning("Failed to read current player data from file: " + e.getMessage());
+			throw e;
+		}
+	}
+
+    public void updateCurrencyOfCurrentPlayer(int difference) throws IOException {
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			return;
+		}
+		int linesBelongingToAPlayer = 4;
+		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+		if (lines.size() < linesBelongingToAPlayer) {
+			logger.warning("Invalid data in current player file");
+			return;
+		}
+
+        String loadedName = lines.get(0);
+        int currentCurrency;
+        try {
+            currentCurrency = Integer.parseInt(lines.get(1));
+        } catch (NumberFormatException e) {
+            logger.warning("Invalid currency value in current player file");
+            return;
+        }
+
+        int newBalance = currentCurrency + difference;
+        lines.set(1, String.valueOf(newBalance));
+
+        try {
+            Files.write(playerPath, lines, StandardCharsets.UTF_8);
+            logger.info("Successfully changed amount of player: " + loadedName + " to " + newBalance);
+        } catch (IOException e) {
+            logger.warning("Failed to write updated player data to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+// Get the player current login time
+	public String currentDate(final char[] name) throws IOException {
+
+		// Write the new player data to the file.
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			return dateFormat.format(new Date());
+
+	}
+	//Logic for updating the login time of current player
+	public void updateLoginTimeOfCurrentPlayer() throws IOException {
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+        if (!Files.exists(playerPath)) {
+            logger.warning("Player file not found at: " + playerPath);
+            return;
+        }
+
+        List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+        if (lines.size() < 3) {
+            logger.warning("Invalid data in current player file");
+            return;
+        }
+        String loadedName = lines.get(0);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String newDateStr = dateFormat.format(new Date());
+        Date currentDate = null;
+        Date newDate;
+        try {
+            newDate = dateFormat.parse(newDateStr);
+            currentDate = dateFormat.parse(lines.get(2));
+        } catch (ParseException e) {
+            logger.warning("Invalid date value in current player file");
+            return;
+        }
+
+        // Calculate the time difference in milliseconds
+        long timeDifference = (newDate.getTime() - currentDate.getTime());
+
+
+        // Check if the time difference is more than 24 hours (in milliseconds)
+        if (timeDifference > 24 * 60 * 60 * 1000) {
+            // Update the date only if the condition is met
+            lines.set(2, dateFormat.format(newDate));
+
+            try {
+                Files.write(playerPath, lines, StandardCharsets.UTF_8);
+                logger.info("Successfully updated player's date and login bonus: " + loadedName);
+				updateCurrencyOfCurrentPlayer(10);
+            } catch (IOException e) {
+                logger.warning("Failed to write updated player data to file: " + e.getMessage());
+                throw e;
+            }
+        } else {
+            logger.info("Time difference is less than 24 hours, no update is made.");
+        }
+    }
+
+	public static List<Boolean> convertStringToBooleanList(String input) {
+		String[] splitStrings = input.split(",");
+		List<Boolean> booleanList = new ArrayList<>();
+
+		for (String s : splitStrings) {
+			booleanList.add(Boolean.parseBoolean(s.trim()));
+		}
+
+		return booleanList;
+	}
+
+	/**
+	 * Retrieves the current player's data from a file.
+	 *
+	 * @return The Player object representing the current player.
+	 * @throws IOException If there is an I/O error while reading the player data file.
+	 *                    This can occur if the file is not found or if its contents are invalid.
+	 * @throws FileNotFoundException If the player data file is not found.
+	 * @throws NumberFormatException If there is an issue with parsing a numeric value from the file.
+	 */
+	public Player getCurrentPlayer() throws IOException {
+		// Get the path to the JAR file
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+		// Construct the path to the player data file
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		// Check if the player data file exists
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			throw new FileNotFoundException("Player file not found at: " + playerPath);
+		}
+
+		// Read the lines from the player data file
+		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+
+		// Check if the file contains valid data
+		if (lines.size() < 4) {
+			logger.warning("Invalid data in current player file");
+			throw new IOException("Invalid data in current player file");
+		}
+
+		Player player;
+		try {
+			// Parse the player data from the file
+			player = new Player(lines.get(0), Integer.parseInt(lines.get(1)), lines.get(2), convertStringToBooleanList(lines.get(3)));
+		} catch (NumberFormatException e) {
+			logger.warning("Invalid value in current player file");
+			throw new NumberFormatException("Invalid value in current player file");
+		}
+
+		return player;
+	}
 }
-
-
-
-
