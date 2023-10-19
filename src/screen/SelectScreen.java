@@ -2,6 +2,7 @@ package screen;
 
 import engine.Cooldown;
 import engine.Core;
+import engine.SoundManager;
 
 import java.awt.event.KeyEvent;
 
@@ -60,6 +61,7 @@ public class SelectScreen extends Screen{
                     else gameMode= 1;
                     this.selectionCooldown.reset();}
                 if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
+                    SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                     canEscape = true;
                     this.selectionCooldown.reset();
 
@@ -72,8 +74,11 @@ public class SelectScreen extends Screen{
                     skillModeOn = !skillModeOn;
                     this.selectionCooldown.reset();
                 }
-                if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
+                if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
                     this.isRunning = false;
+                    SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
+                }
+
             }
 
         }
