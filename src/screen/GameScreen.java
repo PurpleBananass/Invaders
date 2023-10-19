@@ -262,7 +262,7 @@ public class GameScreen extends Screen {
 				}
 				if (replayability.getReplay()==1) {
 					if (this.bullet_count<=9 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
-						if(this.ship.shoot(this.bullets)){
+						if(this.ship.shoot(this.bullets, 1)){
 							this.bulletsShot1++;
 							this.bullet_count++;
 						}
