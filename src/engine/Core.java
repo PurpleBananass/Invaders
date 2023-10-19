@@ -160,11 +160,6 @@ public final class Core {
 				LOGGER.info("Closing title screen.");
 				break;
 			case 7:
-				currentScreen = new SkinSelectionScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " Skin Selection screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing SkinSelection screen.");
 				// Game & score.
 				do {
 					SoundManager.stopSound("menu", 1.5f);
@@ -264,12 +259,20 @@ public final class Core {
 				LOGGER.info("Closing Achievement screen.");
 				break;
 			case 2:
-				// Select2P
+				// Select Mode.
 				currentScreen = new SelectScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " select screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing select screen.");
+				break;
+			case 8:
+				// Select Skin.
+				currentScreen = new SkinSelectionScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " Skin Selection screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing SkinSelection screen.");
 				break;
 			default:
 				break;
@@ -375,6 +378,10 @@ public final class Core {
 		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
 		return keySettingString[num];
 	}
+	/**
+	 * Get Key Setting Code Array
+	 */
+	public static int[] getKeySettingCodeArray(){return keySetting;}
 	/**
 	 * Get Key Setting String Array
 	 */

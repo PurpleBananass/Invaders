@@ -70,9 +70,9 @@ public class SettingScreen extends Screen {
                 this.selectionCooldown.reset();
             }
 
-            /** Move up and down when selected */
-            if((inputManager.isKeyDown(KeyEvent.VK_UP)
-                    || inputManager.isKeyDown(KeyEvent.VK_W)) && selected && !keyChangeMode){
+            /** Setting Sound */
+            if((inputManager.isKeyDown(KeyEvent.VK_RIGHT)
+                    || inputManager.isKeyDown(KeyEvent.VK_D)) && itemCode<2 && selected && !keyChangeMode){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
@@ -83,17 +83,12 @@ public class SettingScreen extends Screen {
                         Core.bgmOn = !Core.bgmOn;
                         this.selectionCooldown.reset();
                         break;
-                    /** Keys Setting */
-                    case 2, 3:
-                        if(keyNum>0) keyNum--;
-                        this.selectionCooldown.reset();
-                        break;
                     default:
                         break;
                 }
             }
-            if((inputManager.isKeyDown(KeyEvent.VK_DOWN)
-                    || inputManager.isKeyDown(KeyEvent.VK_S)) && selected && !keyChangeMode){
+            if((inputManager.isKeyDown(KeyEvent.VK_LEFT)
+                    || inputManager.isKeyDown(KeyEvent.VK_A)) && itemCode<2 && selected && !keyChangeMode){
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
@@ -104,17 +99,24 @@ public class SettingScreen extends Screen {
                         Core.bgmOn = !Core.bgmOn;
                         this.selectionCooldown.reset();
                         break;
-                    /** Keys Setting */
-                    case 2, 3:
-                        if(keyNum<7) keyNum++;
-                        this.selectionCooldown.reset();
-                        break;
                     default:
                         break;
                 }
             }
-
-            if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected){
+            /** Move up and down when selecting key */
+            if((inputManager.isKeyDown(KeyEvent.VK_UP)
+                    || inputManager.isKeyDown(KeyEvent.VK_W)) && itemCode>1 && selected && !keyChangeMode){
+                /** Keys Setting */
+                if(keyNum>0) keyNum--;
+                this.selectionCooldown.reset();
+            }
+            if((inputManager.isKeyDown(KeyEvent.VK_DOWN)
+                    || inputManager.isKeyDown(KeyEvent.VK_S)) && itemCode>1 && selected && !keyChangeMode){
+                /** Keys Setting */
+                if(keyNum<7) keyNum++;
+                this.selectionCooldown.reset();
+            }
+            if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE) && !selected){
                 saveSetting();
                 this.isRunning = false;
             }
@@ -125,14 +127,14 @@ public class SettingScreen extends Screen {
              * Receive 2P Keys Setting Input
              * Selected
              * */
-            if (itemCode == 2 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))) {
+            if (itemCode == 2 && selected && !keyChangeMode && inputManager.isKeyDown(KeyEvent.VK_SPACE)){
                 keyChangeMode =true;
                 tempKeyCode = Core.getKeySettingCode(keyNum);
                 tempKeyString = Core.getKeySettingString(keyNum);
                 Core.setKeySettingString(keyNum, "");
                 this.selectionCooldown.reset();
             }
-            else if(itemCode == 3 && selected && !keyChangeMode &&(inputManager.isKeyDown(KeyEvent.VK_RIGHT) || inputManager.isKeyDown(KeyEvent.VK_D))){
+            else if(itemCode == 3 && selected && !keyChangeMode && inputManager.isKeyDown(KeyEvent.VK_SPACE)){
                 keyChangeMode =true;
                 tempKeyCode = Core.getKeySettingCode(keyNum +8);
                 tempKeyString = Core.getKeySettingString(keyNum +8);
@@ -167,14 +169,19 @@ public class SettingScreen extends Screen {
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
-            else if ((inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
-                    || inputManager.isKeyDown(KeyEvent.VK_SPACE)) && selected && !keyChangeMode) {
+            else if ((inputManager.isKeyDown(KeyEvent.VK_SPACE) ||  inputManager.isKeyDown(KeyEvent.VK_ESCAPE))
+                    && selected && !keyChangeMode && itemCode<2) {
                 keyNum = 0;
                 selected = false;
                 this.selectionCooldown.reset();
             }
-            else if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
-                    || inputManager.isKeyDown(KeyEvent.VK_D) && !selected && !keyChangeMode) {
+            else if ((inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
+                    || inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) && selected && !keyChangeMode && itemCode>1) {
+                keyNum = 0;
+                selected = false;
+                this.selectionCooldown.reset();
+            }
+            else if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected && !keyChangeMode) {
                 selected = true;
                 this.selectionCooldown.reset();
             }
