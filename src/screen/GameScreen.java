@@ -649,10 +649,13 @@ public class GameScreen extends Screen {
 						recyclable.add(bullet);
 						if (!this.ship.isDestroyed()) {
 							this.ship.destroy();
-							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							if (this.lives > 0) {
 								this.lives--;
 							}
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
 						}
 					}
@@ -689,10 +692,13 @@ public class GameScreen extends Screen {
 						recyclable.add(bullet);
 						if (!this.ship.isDestroyed()) {
 							this.ship.destroy();
-							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							if (this.lives > 0) {
 								this.lives--;
 							}
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
 						}
 					}
@@ -700,10 +706,13 @@ public class GameScreen extends Screen {
 						recyclable.add(bullet);
 						if (!this.ship2.isDestroyed()) {
 							this.ship2.destroy();
-							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							if (this.lives2 > 0) {
 								this.lives2--;
 							}
+							if (this.lives2 <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							this.logger.info("Hit on player2 ship, " + this.lives2 + " lives remaining.");
 						}
 					}
