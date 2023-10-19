@@ -30,7 +30,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	/** Downwards speed of the formation. */
 	private static final int Y_SPEED = 4;
 	/** Speed of the bullets shot by the members. */
-	//private static final int BULLET_SPEED = 4;
+	private static int BULLET_SPEED = 4;
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
@@ -43,7 +43,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int MINIMUM_SPEED = 10;
 	/** 적의 타입에 따라 총 쿨타임이 줄어듬 */
 	private static final double[] BULLETCOOLDOWN = {0.05,0.1,0.2};
-
 	/** DrawManager instance. */
 	private DrawManager drawManager;
 	/** Application logger. */
@@ -90,6 +89,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private List<EnemyShip> shooters;
 	/** Number of not destroyed ships. */
 	private int shipCount;
+    /** check where the last ship is. */
+    private int flag = 1;
 	/** need to make complex movements. */
 	private boolean moreDiff = false;
 	/** speed of complex movements. */
@@ -100,7 +101,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int setXpos;
 	/** track the y position of the last stage ships. */
 	private int trackYpos;
-
+	/** check to print only one log: The last enemy ship moves faster. */
+	private int checkFirst = 1;
 
 	/** Directions the formation can move. */
 	private enum Direction {
@@ -260,7 +262,15 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		this.movementSpeed = (int) (Math.pow(remainingProportion, 2)
 				* this.baseSpeed);
 		this.movementSpeed += MINIMUM_SPEED;
-		
+
+		/** If the number of remain enemyShip is one, it moves quickly in odd row. */
+		if(shipCount == 1 && flag == 1){
+			if(checkFirst==1){
+				this.movementSpeed = 5;
+				this.logger.info("The last enemy ship moves faster");
+				checkFirst++;
+			}
+		}
 		movementInterval++;
 		if (movementInterval >= this.movementSpeed) {
 			movementInterval = 0;
@@ -287,7 +297,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					}
 				}
 			} else if (currentDirection == Direction.LEFT) {
-				if (isAtLeftSide)
+				if (isAtLeftSide) {
 					if (!isAtBottom) {
 						previousDirection = currentDirection;
 						currentDirection = Direction.DOWN;
@@ -297,8 +307,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						currentDirection = Direction.RIGHT;
 						this.logger.info("Formation now moving right 4");
 					}
+					/** if ship remains one switch flag.
+					 * it works only on odd row
+					 * */
+					if (shipCount == 1) flag *= -1;
+				}
 			} else {
-				if (isAtRightSide)
+				if (isAtRightSide) {
 					if (!isAtBottom) {
 						previousDirection = currentDirection;
 						currentDirection = Direction.DOWN;
@@ -308,6 +323,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						currentDirection = Direction.LEFT;
 						this.logger.info("Formation now moving left 6");
 					}
+					/** if ship remains one switch flag.
+					 * it works only on odd row
+					 * */
+					if(shipCount==1) flag*= -1;
+				}
 			}
 
 			if (currentDirection == Direction.RIGHT)
@@ -427,6 +447,15 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		if (this.shootingCooldown.checkFinished()) {
 			this.shootingCooldown.reset();
+			/** if shipcount remains one, Bullet_speed is speed up. */
+			if(shipCount == 1) {
+				if (flag == 1){
+					BULLET_SPEED = 8;
+				}
+				else{
+					BULLET_SPEED = 4;
+				}
+			}
 			ArrayList<Boolean> shot = new ArrayList<>();// 적이 한번만 발사
 			for (int i=0;i<this.shooters.size();i++) shot.add(false);
 			for (int i = 0; i < gameState.getLevel(); i++) {
@@ -467,8 +496,9 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			for (int i = 0; i < column.size(); i++)
 				if (column.get(i).equals(destroyedShip)) {
 					column.get(i).destroy();
+					int row = this.enemyShips.indexOf(column);
 					this.logger.info("Destroyed ship in ("
-							+ this.enemyShips.indexOf(column) + "," + i + ")");
+							+ row + "," + i + ")");
 				}
 
 		// Updates the list of ships that can shoot the player.
