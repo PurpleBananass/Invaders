@@ -29,8 +29,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int X_SPEED = 8;
 	/** Downwards speed of the formation. */
 	private static final int Y_SPEED = 4;
-	/** Speed of the bullets shot by the members. */
-	private static int BULLET_SPEED = 4;
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
@@ -89,8 +87,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private List<EnemyShip> shooters;
 	/** Number of not destroyed ships. */
 	private int shipCount;
-    /** check where the last ship is. */
-    private int flag = 1;
+	/** check where the last ship is. */
+	private int flag = 1;
+	/** Speed of the bullets shot by the members. */
+	private int bulletSpeed = 4;
 	/** need to make complex movements. */
 	private boolean moreDiff = false;
 	/** speed of complex movements. */
@@ -116,7 +116,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/**
 	 * Constructor, sets the initial conditions.
-	 * 
+	 *
 	 * @param gameSettings
 	 *            Current game settings.
 	 */
@@ -226,7 +226,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/**
 	 * Associates the formation to a given screen.
-	 * 
+	 *
 	 * @param newScreen
 	 *            Screen to attach.
 	 */
@@ -381,9 +381,9 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					// so their coordinates changed accordingly.
 					if (lastStage) {
 						if ((int)((enemyShip.getpositionY() - 100) / 40) % 2 != 0) {
-								enemyShip.move(-movementX, movementY);
+							enemyShip.move(-movementX, movementY);
 						} else {
-								enemyShip.move(movementX, movementY);
+							enemyShip.move(movementX, movementY);
 						}
 					} else {
 						enemyShip.move(movementX, movementY);
@@ -420,7 +420,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		int leftMostPoint = 0;
 		int rightMostPoint = 0;
-		
+
 		for (List<EnemyShip> column : this.enemyShips) {
 			if (!column.isEmpty()) {
 				if (leftMostPoint == 0)
@@ -438,7 +438,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/**
 	 * Shoots a bullet downwards.
-	 * 
+	 *
 	 * @param bullets
 	 *            Bullets set to add the bullet being shot.
 	 */
@@ -450,10 +450,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			/** if shipcount remains one, Bullet_speed is speed up. */
 			if(shipCount == 1) {
 				if (flag == 1){
-					BULLET_SPEED = 8;
+					bulletSpeed = 8;
 				}
 				else{
-					BULLET_SPEED = 4;
+					bulletSpeed = 4;
 				}
 			}
 			ArrayList<Boolean> shot = new ArrayList<>();// 적이 한번만 발사
