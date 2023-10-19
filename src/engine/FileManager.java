@@ -163,6 +163,10 @@ public final class FileManager {
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("shipGraphics");
 		}
+		else if(spriteType == SpriteType.Ship2){
+			inputStream = DrawManager.class.getClassLoader()
+					.getResourceAsStream("shipGraphics");
+		}
 		else if(spriteType == SpriteType.EnemyBullet){
 			inputStream = DrawManager.class.getClassLoader()
 					.getResourceAsStream("bulletGraphics");
@@ -566,7 +570,7 @@ public final class FileManager {
         // Get the path to the JAR file.
         String jarPath = FileManager.class.getProtectionDomain()
                 .getCodeSource().getLocation().getPath();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.toString());
 
         // Construct the path to the player file.
         Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
@@ -601,7 +605,7 @@ public final class FileManager {
     public void updateAccounts() throws IOException {
         String jarPath = FileManager.class.getProtectionDomain()
                 .getCodeSource().getLocation().getPath();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.toString());
 
         Path playerPath = Paths.get(new File(jarPath).getParent(), "accounts");
 
@@ -656,7 +660,7 @@ public final class FileManager {
     public void updateCurrencyOfCurrentPlayer(int difference) throws IOException {
         String jarPath = FileManager.class.getProtectionDomain()
                 .getCodeSource().getLocation().getPath();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.toString());
 
         Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
 
@@ -704,7 +708,7 @@ public final class FileManager {
 	public void updateLoginTimeOfCurrentPlayer() throws IOException {
         String jarPath = FileManager.class.getProtectionDomain()
                 .getCodeSource().getLocation().getPath();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.toString());
 
         Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
 
@@ -777,7 +781,7 @@ public final class FileManager {
 		// Get the path to the JAR file
 		String jarPath = FileManager.class.getProtectionDomain()
 				.getCodeSource().getLocation().getPath();
-		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.toString());
 
 		// Construct the path to the player data file
 		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");

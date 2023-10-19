@@ -35,7 +35,7 @@ public class AchievementScreen extends Screen {
 	protected final void update() {
 		super.update();
 		draw();
-		if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE) && this.inputDelay.checkFinished()){
+		if ((inputManager.isKeyDown(KeyEvent.VK_ESCAPE) || inputManager.isKeyDown(KeyEvent.VK_SPACE)) && this.inputDelay.checkFinished()){
 			SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
 			this.isRunning = false;
 		}
