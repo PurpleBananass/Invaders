@@ -6,6 +6,7 @@ import java.util.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.FloatControl.Type;
 
@@ -42,13 +43,21 @@ public class SoundManager {
                     clip.open(audioIn);
                     FloatControl floatControl = (FloatControl)clip.getControl(Type.MASTER_GAIN);
                     floatControl.setValue(master);
+                    clips.put(clipName, clip);
+                    if(isBgm) {
+                        bgms.add(clip);
+                    } else {
+                        clip.addLineListener(event -> {
+                            if (event.getType() == LineEvent.Type.STOP) {
+                                clip.close();
+                            }
+                        });
+                    }
                     if (isLoop) {
                         clip.loop(-1);
                     } else {
                         clip.start();
                     }
-                    clips.put(clipName, clip);
-                    if(isBgm) bgms.add(clip);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -71,13 +80,21 @@ public class SoundManager {
                     clip.open(audioIn);
                     FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
                     floatControl.setValue(minimum);
+                    clips.put(clipName, clip);
+                    if(isBgm) {
+                        bgms.add(clip);
+                    } else {
+                        clip.addLineListener(event -> {
+                            if (event.getType() == LineEvent.Type.STOP) {
+                                clip.close();
+                            }
+                        });
+                    }
                     if (isLoop) {
                         clip.loop(-1);
                     } else {
                         clip.start();
                     }
-                    clips.put(clipName, clip);
-                    if(isBgm) bgms.add(clip);
                     fadeIn(clip, fadeInSpeed);
                 } catch (Exception e) {
                     e.printStackTrace();
