@@ -61,7 +61,7 @@ public class HighScoreScreen extends Screen {
 		super.update();
 
 		draw();
-		if (inputManager.isKeyDown(KeyEvent.VK_SPACE)
+		if ((inputManager.isKeyDown(KeyEvent.VK_SPACE) || inputManager.isKeyDown(KeyEvent.VK_ESCAPE))
 				&& this.inputDelay.checkFinished())
 			this.isRunning = false;
 	}
@@ -71,7 +71,6 @@ public class HighScoreScreen extends Screen {
 	 */
 	private void draw() {
 		drawManager.initDrawing(this);
-
 		drawManager.drawHighScoreMenu(this);
 		drawManager.drawHighScores_1p(this, this.highScores_1p);
 		drawManager.drawHighScores_2p(this, this.highScores_2p);
