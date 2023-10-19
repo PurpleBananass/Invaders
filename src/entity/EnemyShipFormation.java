@@ -9,9 +9,9 @@ import engine.DrawManager.SpriteType;
 
 /**
  * Groups enemy ships into a formation that moves together.
- *
+ * 
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
- *
+ * 
  */
 public class EnemyShipFormation implements Iterable<EnemyShip> {
 
@@ -487,7 +487,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/**
 	 * Destroys a ship.
-	 *
+	 * 
 	 * @param destroyedShip
 	 *            Ship to be destroyed.
 	 */
@@ -596,7 +596,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/**
 	 * Gets the ship on a given column that will be in charge of shooting.
-	 *
+	 * 
 	 * @param column
 	 *            Column to search.
 	 * @return New shooter ship.
@@ -615,7 +615,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/**
 	 * Returns an iterator over the ships in the formation.
-	 *
+	 * 
 	 * @return Iterator over the enemy ships.
 	 */
 	@Override
@@ -631,7 +631,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 	/**
 	 * Checks if there are any ships remaining.
-	 *
+	 * 
 	 * @return True when all ships have been destroyed.
 	 */
 	public final boolean isEmpty() {
