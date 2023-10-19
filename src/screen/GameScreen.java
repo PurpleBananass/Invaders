@@ -299,6 +299,16 @@ public class GameScreen extends Screen {
 					this.ship.moveLeft();
 				}
 
+
+				if((moveRight || moveLeft)) {
+					if (!SoundManager.isPlaying("ship_moving")) {
+						SoundManager.playSound("BGM/B_Ship", "ship_moving", true, true);
+						System.out.println("sound play");
+					}
+				} else {
+					SoundManager.stopSound("ship_moving");
+				}
+
 				if ( replayability.getReplay()==0 && inputManager.isKeyDown(Core.getKeySettingCode(2))){
 					if (this.ship.shoot(this.bullets, 1))
 						this.bulletsShot1++;
