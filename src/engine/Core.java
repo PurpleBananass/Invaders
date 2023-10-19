@@ -110,7 +110,6 @@ public final class Core {
 
 			fileHandler = new FileHandler("log");
 			fileHandler.setFormatter(new MinimalFormatter());
-
 			consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(new MinimalFormatter());
 
@@ -143,7 +142,7 @@ public final class Core {
 
 		GameState gameState;
 
-		int returnCode = 1;
+		int returnCode = 0;
 		do {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
@@ -151,6 +150,12 @@ public final class Core {
 			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
+                case 0:
+                    currentScreen = new LoginScreen(width, height, FPS);LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+                        + " title screen at " + FPS + " fps.");
+                    returnCode = frame.setScreen(currentScreen);
+                    LOGGER.info("Closing title screen.");
+                    break;
 			case 1:
 				// Main menu.
 				SoundManager.playSound("BGM/B_Main_a", "menu", true, true, 2f);
@@ -218,7 +223,7 @@ public final class Core {
 					}
           AchievementManager.getInstance().checkAchievements(gameState);
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)
+						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
 
 				if (gameState.getMode() == 1) {
@@ -296,6 +301,11 @@ public final class Core {
 			}
 
 		} while (returnCode != 0);
+		try {
+			getFileManager().updateAccounts();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		fileHandler.flush();
 		fileHandler.close();
 		System.exit(0);
