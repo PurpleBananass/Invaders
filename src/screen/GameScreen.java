@@ -696,7 +696,7 @@ public class GameScreen extends Screen {
                         if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
 
                             if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
                             }
 
                             if (this.isBomb) {
