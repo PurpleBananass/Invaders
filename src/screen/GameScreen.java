@@ -456,12 +456,15 @@ public class GameScreen extends Screen {
 			if (this.enemyShipSpecial != null) {
 				if (!this.enemyShipSpecial.isDestroyed())
 					this.enemyShipSpecial.move(2, 0);
-				else if (this.enemyShipSpecialExplosionCooldown.checkFinished())
+				else if (this.enemyShipSpecialExplosionCooldown.checkFinished()) {
+					SoundManager.playSound("SFX/S_Enemy_Destroy_b", "SpecialEnemyShipDestroyed", false, false);
 					this.enemyShipSpecial = null;
+				}
 			}
 
 			if (this.enemyShipSpecial == null
 					&& this.enemyShipSpecialCooldown.checkFinished()) {
+				SoundManager.playSound("SFX/S_Enemy_Special", "specialEnemyAppear", false, false);
 				this.enemyShipSpecial = new EnemyShip();
 				this.enemyShipSpecialCooldown.reset();
 				this.logger.info("A special ship appears");
