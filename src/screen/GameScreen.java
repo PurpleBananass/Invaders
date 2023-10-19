@@ -1032,6 +1032,9 @@ public class GameScreen extends Screen {
 					item.getItemType() == Item.ItemType.BombItem) {
 				setBomb(true);
 				this.logger.info("Bomb Item 사용");
+				SoundManager.playSound("SFX/S_Item_Bomb_Equipped", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
+
 			}
 			item.setIsGet();
 			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
