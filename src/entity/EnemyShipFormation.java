@@ -347,9 +347,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				}
 				complexSpeed = -complexSpeed;
 			}
-			
-			if (trackYpos > 1) {
-				movementX = -movementX;
+
+			// Change movementX value according to trackYpos variable only in last stage.
+			if (lastStage) {
+				if (trackYpos > 1) {
+					movementX = -movementX;
+				}
 			}
 
 			for (List<EnemyShip> column : this.enemyShips)
