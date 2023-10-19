@@ -2,10 +2,7 @@ package engine;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -193,5 +190,23 @@ public class SoundManager {
         Clip clip = clips.get(clipName);
         FloatControl floatcontrol = (FloatControl)clip.getControl(Type.MASTER_GAIN);
         floatcontrol.setValue(getValue(volume));
+    }
+
+    public static void playBGM(int levelNum) {
+        String soundFilePathShort = "BGM/B_Level" + Integer.toString(levelNum);
+        String clipName = "level" + Integer.toString(levelNum);
+        playSound(soundFilePathShort, clipName, true, true);
+    }
+
+    public static void stopBGM(int levelNum, float fadeOutSpeed) {
+        String clipName = "level" + Integer.toString(levelNum);
+        stopSound(clipName, fadeOutSpeed);
+    }
+
+    public static void resetBGM(){
+        for (int i = 0; i < 7; i++) {
+            String clipName = "level" + Integer.toString(i);
+            stopSound(clipName);
+        }
     }
 }
