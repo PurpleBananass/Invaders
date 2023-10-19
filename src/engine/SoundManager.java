@@ -186,6 +186,12 @@ public class SoundManager {
         else return res;
     }
 
+    public static boolean isPlaying(String clipName){
+        Clip clip = clips.get(clipName);
+        if(clip!=null && clip.isActive()) return true;
+        else return false;
+    }
+
     public static void setVolume(String clipName, float volume){
         Clip clip = clips.get(clipName);
         FloatControl floatcontrol = (FloatControl)clip.getControl(Type.MASTER_GAIN);
