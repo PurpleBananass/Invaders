@@ -723,6 +723,7 @@ public class GameScreen extends Screen {
 
                             if (this.isBomb) {
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for (EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -791,6 +792,7 @@ public class GameScreen extends Screen {
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for(EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -810,6 +812,7 @@ public class GameScreen extends Screen {
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for(EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
