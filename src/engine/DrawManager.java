@@ -618,9 +618,6 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, continueOrExitString,
 				screen.getHeight() / 2 + fontRegularMetrics.getHeight() * 10);
-
-		SoundManager.resetBGM();
-		SoundManager.playBGM(14);
 	}
 
 	/**
