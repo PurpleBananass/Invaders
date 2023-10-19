@@ -36,25 +36,25 @@ public final class Core {
 
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
-			new GameSettings(5, 4, 60, 2000);
+			new GameSettings(5, 4, 60, 2000, 5.5);
 	/** Difficulty settings for level 2. */
 	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(5, 5, 50, 2500);
+			new GameSettings(5, 5, 50, 2500, 5.5);
 	/** Difficulty settings for level 3. */
 	private static final GameSettings SETTINGS_LEVEL_3 =
-			new GameSettings(6, 5, 40, 1500);
+			new GameSettings(6, 5, 40, 1500, 5.5);
 	/** Difficulty settings for level 4. */
 	private static final GameSettings SETTINGS_LEVEL_4 =
-			new GameSettings(6, 6, 30, 1500);
+			new GameSettings(6, 6, 30, 1500, 5);
 	/** Difficulty settings for level 5. */
 	private static final GameSettings SETTINGS_LEVEL_5 =
-			new GameSettings(7, 6, 20, 1000);
+			new GameSettings(7, 6, 20, 1000,5);
 	/** Difficulty settings for level 6. */
 	private static final GameSettings SETTINGS_LEVEL_6 =
-			new GameSettings(7, 7, 10, 1000);
+			new GameSettings(7, 7, 10, 1000,4.8);
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
-			new GameSettings(8, 7, 2, 500);
+			new GameSettings(8, 7, 2, 500,4.8);
 	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
@@ -80,6 +80,8 @@ public final class Core {
 	/** Check BGM is On/Off  */
 	public static boolean bgmOn;
 	public static List<Settings> setting;
+	/** control bottom HUD height */
+	public static int bottomHudHeight = 40;
 	/**
 	 * Test implementation.
 	 *
@@ -92,8 +94,12 @@ public final class Core {
 			soundVolume = setting.get(0).getValue();
 			if(setting.get(1).getValue()==1){
 				bgmOn = true;
+				SoundManager.bgmSetting(true);
 			}
-			else bgmOn = false;
+			else{
+				bgmOn = false;
+				SoundManager.bgmSetting(false);
+			}
 			for (int i =2; i < 18; i++) {
 				keySettingString[i-2] = setting.get(i).getName();
 				keySetting[i-2] = setting.get(i).getValue();
@@ -107,7 +113,6 @@ public final class Core {
 
 			fileHandler = new FileHandler("log");
 			fileHandler.setFormatter(new MinimalFormatter());
-
 			consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(new MinimalFormatter());
 
@@ -120,7 +125,7 @@ public final class Core {
 			e.printStackTrace();
 		}
 
-		frame = new Frame(WIDTH, HEIGHT);
+		frame = new Frame(WIDTH, HEIGHT, bottomHudHeight);
 		DrawManager.getInstance().setFrame(frame);
 		int width = frame.getWidth();
 		int height = frame.getHeight();
@@ -138,7 +143,7 @@ public final class Core {
 
 		GameState gameState;
 
-		int returnCode = 1;
+		int returnCode = 0;
 		do {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
@@ -146,9 +151,15 @@ public final class Core {
 			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
+                case 0:
+                    currentScreen = new LoginScreen(width, height, FPS);LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+                        + " title screen at " + FPS + " fps.");
+                    returnCode = frame.setScreen(currentScreen);
+                    LOGGER.info("Closing title screen.");
+                    break;
 			case 1:
 				// Main menu.
-				SoundManager.playSound("res/menu.wav", "menu", true, 2f);
+				SoundManager.playSound("BGM/B_Main_a", "menu", true, true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
@@ -156,14 +167,9 @@ public final class Core {
 				LOGGER.info("Closing title screen.");
 				break;
 			case 7:
-				currentScreen = new SkinSelectionScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " Skin Selection screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing SkinSelection screen.");
 				// Game & score.
 				do {
-					SoundManager.stopSound("menu", 1.5f);
+					SoundManager.stopSound("menu");
 					// One extra live every few levels.
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
@@ -181,12 +187,14 @@ public final class Core {
 					currentScreen = new GameScreen(gameState,
 							gameSettings.get(gameState.getLevel() - 1),
 							bonusLife, width, height, FPS);
+
+					SoundManager.resetBGM();
+					SoundManager.playBGM(gameState.getLevel());
+
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
-					LOGGER.info("Closing game screen.");
-
-					if (returnCode == 1) break;
+					LOGGER.info("Closing Game screen.");
 
 					if (mode == 1) {
 						gameState = ((GameScreen) currentScreen).getGameState1p();
@@ -206,25 +214,10 @@ public final class Core {
 								gameState.getShipsDestroyed(),
 								gameState.getShipsDestroyed2());
 					}
-					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
-							&& gameState.getLevel() <= NUM_LEVELS) {
-						currentScreen = new ClearScreen(width, height, FPS, gameState);
-						LOGGER.info("Starting 	" + WIDTH + "x" + HEIGHT
-								+ " clear screen at " + FPS + " fps.");
-						returnCode = frame.setScreen(currentScreen);
-						LOGGER.info("Closing clear screen.");
-						if (returnCode == 1)
-							break;
-					}
-
-					AchievementManager.getInstance().checkAchievements(gameState);
-
-				} while (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-						|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
+          AchievementManager.getInstance().checkAchievements(gameState);
+				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
-
-				if (returnCode == 1) break;
 
 				if (gameState.getMode() == 1) {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -244,16 +237,25 @@ public final class Core {
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				SoundManager.resetBGM();
+				SoundManager.playSound("BGM/B_Gameover", "B_gameover", true, true, 2f);
+				SoundManager.playSound("SFX/S_Gameover","S_gameover",false,false);
 				returnCode = frame.setScreen(currentScreen);
+				SoundManager.stopSound("B_gameover",2f);
+				SoundManager.stopSound("S_gameover",2f);
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
 				// High scores.
+				SoundManager.playSound("BGM/B_HighScore", "highscore", true, true);
+				SoundManager.setVolume("menu",0.0001f);
 				currentScreen = new HighScoreScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
+				SoundManager.stopSound("highscore",2f);
+				SoundManager.setVolume("menu",0.5f);
 				break;
 			case 4:
 				// Shop
@@ -270,25 +272,42 @@ public final class Core {
 				break;
 			case 6:
 				//  Achievement.
+				SoundManager.playSound("BGM/B_Achieve", "achievement", true, true);
+				SoundManager.setVolume("menu",0.0001f);
 				currentScreen = new AchievementScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " achievement screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing Achievement screen.");
+				SoundManager.stopSound("achievement",2f);
+				SoundManager.setVolume("menu",0.5f);
 				break;
 			case 2:
-				// Select2P
+				// Select Mode.
 				currentScreen = new SelectScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " select screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing select screen.");
 				break;
+			case 8:
+				// Select Skin.
+				currentScreen = new SkinSelectionScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " Skin Selection screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing SkinSelection screen.");
+				break;
 			default:
 				break;
 			}
 
 		} while (returnCode != 0);
+		try {
+			getFileManager().updateAccounts();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		fileHandler.flush();
 		fileHandler.close();
 		System.exit(0);
@@ -383,6 +402,10 @@ public final class Core {
 		if(num<0 || num>16) throw new NullPointerException("it exceeds array");
 		return keySettingString[num];
 	}
+	/**
+	 * Get Key Setting Code Array
+	 */
+	public static int[] getKeySettingCodeArray(){return keySetting;}
 	/**
 	 * Get Key Setting String Array
 	 */
