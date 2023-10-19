@@ -21,6 +21,8 @@ public class Frame extends JFrame {
 	private int height;
 	/** Screen currently shown. */
 	private Screen currentScreen;
+	/** bottom hud space not shown by getHeight to not break relative positioning **/
+	private int bottomHudHeight;
 
 	/**
 	 * Initializes the new frame.
@@ -30,8 +32,8 @@ public class Frame extends JFrame {
 	 * @param height
 	 *            Frame height.
 	 */
-	public Frame(final int width, final int height) {
-		setSize(width, height);
+	public Frame(final int width, final int height, final int bottomHudHeight) {
+		setSize(width, height+bottomHudHeight);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -40,7 +42,8 @@ public class Frame extends JFrame {
 
 		Insets insets = getInsets();
 		this.width = width - insets.left - insets.right;
-		this.height = height - insets.top + insets.bottom;
+		this.height = height + bottomHudHeight - insets.top + insets.bottom;
+		this.bottomHudHeight = bottomHudHeight;
 		setTitle("Invaders");
 
 		addKeyListener(Core.getInputManager());
@@ -70,11 +73,21 @@ public class Frame extends JFrame {
 
 	/**
 	 * Getter for frame height.
-	 * 
+	 *
 	 * @return Frame height.
 	 */
 
 	public final int getHeight() {
-		return this.height;
+		return this.height - bottomHudHeight;
+	}
+
+	/**
+	 * Getter for bottom hud height.
+	 *
+	 * @return bottom hud height.
+	 */
+
+	public final int getBottomHudHeight() {
+		return bottomHudHeight;
 	}
 }
