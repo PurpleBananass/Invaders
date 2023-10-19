@@ -110,6 +110,9 @@ public class GameScreen extends Screen {
 	/** Checks life increase item is used. **/
 	private boolean haslifeItemUsed = false;
 
+	/** Ship moving status **/
+	private boolean isShipMoving = false;
+
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -293,6 +296,11 @@ public class GameScreen extends Screen {
 				if (moveLeft && !isLeftBorder) {
 					this.ship.moveLeft();
 				}
+
+				if (moveRight || moveLeft) isShipMoving = true;
+				if (!isShipMoving) SoundManager.playSound("BGM/B_Ship", "ship_moving_sound", true, true);
+				else SoundManager.stopSound("ship_moving_sound");
+
 				if ( replayability.getReplay()==0 && inputManager.isKeyDown(Core.getKeySettingCode(2))){
 					if (this.ship.shoot(this.bullets, 1))
 						this.bulletsShot1++;
