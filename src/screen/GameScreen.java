@@ -366,6 +366,7 @@ public class GameScreen extends Screen {
 					//player1
 					if (this.bullet_count<=9 && inputManager.isKeyDown(KeyEvent.VK_W) && (this.lives > 0)) {
 						if(this.ship.shoot(this.bullets, 1)){
+							SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShoota", false, false);
 							this.bulletsShot1++;
 							this.bullet_count++;
 						}
@@ -373,6 +374,7 @@ public class GameScreen extends Screen {
 							for (Ship auxiliaryShip : this.ship.getAuxiliaryShips())
 								if(auxiliaryShip.shoot(this.bullets, 1)){
 									this.bulletsShot1++;
+									SoundManager.playSound("SFX/S_Ally_Shoot_b", "AllyShootb", false, false);
 								}
 						}
 
@@ -411,9 +413,11 @@ public class GameScreen extends Screen {
 						if(this.ship2.shoot(this.bullets, 2)){
 							this.bulletsShot2++;
 							this.bullet_count2++;
+							SoundManager.playSound("SFX/S_Ally_Shoot_c", "AllyShootc", false, false);
 							if(this.ship2.isExistAuxiliaryShips()){
 								for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips())
 									if(auxiliaryShip.shoot(this.bullets, 2)){
+										SoundManager.playSound("SFX/S_Ally_Shoot_d", "AllyShootd", false, false);
 										this.bulletsShot2++;
 									}
 							}
