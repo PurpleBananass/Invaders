@@ -6,6 +6,7 @@ import java.util.List;
 
 import engine.Core;
 import engine.Score;
+import engine.SoundManager;
 
 /**
  * Implements the high scores screen, it shows player records.
@@ -62,8 +63,10 @@ public class HighScoreScreen extends Screen {
 
 		draw();
 		if ((inputManager.isKeyDown(KeyEvent.VK_SPACE) || inputManager.isKeyDown(KeyEvent.VK_ESCAPE))
-				&& this.inputDelay.checkFinished())
+				&& this.inputDelay.checkFinished()) {
+			SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
 			this.isRunning = false;
+		}
 	}
 
 	/**

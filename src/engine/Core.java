@@ -91,8 +91,12 @@ public final class Core {
 			soundVolume = setting.get(0).getValue();
 			if(setting.get(1).getValue()==1){
 				bgmOn = true;
+				SoundManager.bgmSetting(true);
 			}
-			else bgmOn = false;
+			else{
+				bgmOn = false;
+				SoundManager.bgmSetting(false);
+			}
 			for (int i =2; i < 18; i++) {
 				keySettingString[i-2] = setting.get(i).getName();
 				keySetting[i-2] = setting.get(i).getValue();
@@ -132,6 +136,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
 
+
+
 		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 
 		GameState gameState;
@@ -152,7 +158,7 @@ public final class Core {
                     break;
 			case 1:
 				// Main menu.
-				SoundManager.playSound("res/menu.wav", "menu", true, 2f);
+				SoundManager.playSound("BGM/B_Main_a", "menu", true, true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
@@ -162,7 +168,7 @@ public final class Core {
 			case 7:
 				// Game & score.
 				do {
-					SoundManager.stopSound("menu", 1.5f);
+					SoundManager.stopSound("menu");
 					// One extra live every few levels.
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
@@ -180,6 +186,10 @@ public final class Core {
 					currentScreen = new GameScreen(gameState,
 							gameSettings.get(gameState.getLevel() - 1),
 							bonusLife, width, height, FPS);
+
+					SoundManager.resetBGM();
+					SoundManager.playBGM(gameState.getLevel());
+
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
@@ -226,16 +236,25 @@ public final class Core {
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				SoundManager.resetBGM();
+				SoundManager.playSound("BGM/B_Gameover", "B_gameover", true, true, 2f);
+				SoundManager.playSound("SFX/S_Gameover","S_gameover",false,false);
 				returnCode = frame.setScreen(currentScreen);
+				SoundManager.stopSound("B_gameover",2f);
+				SoundManager.stopSound("S_gameover",2f);
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
 				// High scores.
+				SoundManager.playSound("BGM/B_HighScore", "highscore", true, true);
+				SoundManager.setVolume("menu",0.0001f);
 				currentScreen = new HighScoreScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
+				SoundManager.stopSound("highscore",2f);
+				SoundManager.setVolume("menu",0.5f);
 				break;
 			case 4:
 				// Shop
@@ -252,11 +271,15 @@ public final class Core {
 				break;
 			case 6:
 				//  Achievement.
+				SoundManager.playSound("BGM/B_Achieve", "achievement", true, true);
+				SoundManager.setVolume("menu",0.0001f);
 				currentScreen = new AchievementScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " achievement screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing Achievement screen.");
+				SoundManager.stopSound("achievement",2f);
+				SoundManager.setVolume("menu",0.5f);
 				break;
 			case 2:
 				// Select Mode.
