@@ -85,6 +85,9 @@ public class ClearScreen extends Screen {
                 || inputManager.isKeyDown(KeyEvent.VK_DOWN)
                 || inputManager.isKeyDown(KeyEvent.VK_S)) {
             nextMenuItem();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) { }
         }
         if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
             this.isRunning = false;
