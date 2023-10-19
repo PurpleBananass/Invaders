@@ -114,6 +114,7 @@ public class GameScreen extends Screen {
 	private boolean haslifeItemUsed = false;
 
 
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 *
@@ -297,6 +298,7 @@ public class GameScreen extends Screen {
 				if (moveLeft && !isLeftBorder) {
 					this.ship.moveLeft();
 				}
+
 				if ( replayability.getReplay()==0 && inputManager.isKeyDown(Core.getKeySettingCode(2))){
 					if (this.ship.shoot(this.bullets, 1))
 						this.bulletsShot1++;
@@ -304,6 +306,7 @@ public class GameScreen extends Screen {
 						for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
 							if(auxiliaryShip.shoot(this.bullets, 1))
 								this.bulletsShot1++;
+
 						}
 					}
 				}
@@ -312,11 +315,14 @@ public class GameScreen extends Screen {
 						if(this.ship.shoot(this.bullets, 1)){
 							this.bulletsShot1++;
 							this.bullet_count++;
+							SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShootA", false, false);
 						}
 						if(this.ship.isExistAuxiliaryShips()){
 							for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
-								if(auxiliaryShip.shoot(this.bullets, 1))
+								if(auxiliaryShip.shoot(this.bullets, 1)) {
 									this.bulletsShot1++;
+									SoundManager.playSound("SFX/S_Ally_Shoot_b", "AllyShootB", false, false);
+								}
 							}
 						}
 					}
@@ -412,6 +418,7 @@ public class GameScreen extends Screen {
 					//player1
 					if (this.bullet_count<=9 && inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
 						if(this.ship.shoot(this.bullets, 1)){
+							SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShoota", false, false);
 							this.bulletsShot1++;
 							this.bullet_count++;
 						}
@@ -419,6 +426,7 @@ public class GameScreen extends Screen {
 							for (Ship auxiliaryShip : this.ship.getAuxiliaryShips())
 								if(auxiliaryShip.shoot(this.bullets, 1)){
 									this.bulletsShot1++;
+									SoundManager.playSound("SFX/S_Ally_Shoot_b", "AllyShootb", false, false);
 								}
 						}
 
@@ -457,9 +465,11 @@ public class GameScreen extends Screen {
 						if(this.ship2.shoot(this.bullets, 2)){
 							this.bulletsShot2++;
 							this.bullet_count2++;
+							SoundManager.playSound("SFX/S_Ally_Shoot_c", "AllyShootc", false, false);
 							if(this.ship2.isExistAuxiliaryShips()){
 								for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips())
 									if(auxiliaryShip.shoot(this.bullets, 2)){
+										SoundManager.playSound("SFX/S_Ally_Shoot_d", "AllyShootd", false, false);
 										this.bulletsShot2++;
 									}
 							}
@@ -502,12 +512,15 @@ public class GameScreen extends Screen {
 			if (this.enemyShipSpecial != null) {
 				if (!this.enemyShipSpecial.isDestroyed())
 					this.enemyShipSpecial.move(2, 0);
-				else if (this.enemyShipSpecialExplosionCooldown.checkFinished())
+				else if (this.enemyShipSpecialExplosionCooldown.checkFinished()) {
+					SoundManager.playSound("SFX/S_Enemy_Destroy_b", "SpecialEnemyShipDestroyed", false, false);
 					this.enemyShipSpecial = null;
+				}
 			}
 
 			if (this.enemyShipSpecial == null
 					&& this.enemyShipSpecialCooldown.checkFinished()) {
+				SoundManager.playSound("SFX/S_Enemy_Special", "specialEnemyAppear", false, false);
 				this.enemyShipSpecial = new EnemyShip();
 				this.enemyShipSpecialCooldown.reset();
 				this.logger.info("A special ship appears");
@@ -641,6 +654,11 @@ public class GameScreen extends Screen {
 			int countdown = (int) ((INPUT_DELAY
 					- (System.currentTimeMillis()
 					- this.gameStartTime)) / 1000);
+			long beep = ((INPUT_DELAY - (System.currentTimeMillis() - this.gameStartTime)));
+			if ((beep<4000 && beep>3984) || (beep<3000 && beep>2984) || (beep<2000 && beep>1984))
+				SoundManager.playSound("SFX/S_LevelStart_b", "level_start_beep", false, false);
+			if ((beep<1000 && beep>984))
+				SoundManager.playSound("SFX/S_LevelStart_a", "level_start_count", false, false);
 			drawManager.drawCountDown(this, this.level, countdown,
 					this.bonusLife);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height
@@ -697,6 +715,10 @@ public class GameScreen extends Screen {
                             if (this.lives > 0) {
                                 this.lives--;
                             }
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
                             this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
                         }
                     }
@@ -748,6 +770,10 @@ public class GameScreen extends Screen {
 							if (this.lives > 0) {
 								this.lives--;
 							}
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
 						}
 					}
@@ -758,6 +784,10 @@ public class GameScreen extends Screen {
 							if (this.lives2 > 0) {
 								this.lives2--;
 							}
+							if (this.lives2 <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							this.logger.info("Hit on player2 ship, " + this.lives2 + " lives remaining.");
 						}
 					}
@@ -848,6 +878,7 @@ public class GameScreen extends Screen {
 		BulletPool.recycle(recyclable);
 		ItemPool.recycle(recyclableItem);
 	}
+
 
 	/** Use skill*/
 	private void useSkill(){

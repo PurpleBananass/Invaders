@@ -2,6 +2,8 @@ package screen;
 
 import engine.Cooldown;
 import engine.Core;
+import engine.SoundManager;
+
 import engine.DrawManager;
 import engine.FileManager;
 
@@ -52,7 +54,7 @@ public class SkinSelectionScreen extends Screen{
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-
+                SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                 this.isRunning = false;
             }
         }
