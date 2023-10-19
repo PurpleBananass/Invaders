@@ -762,7 +762,7 @@ public class GameScreen extends Screen {
 							this.score += enemyShip.getPointValue();
 
 							if (enemyShip.hasItem()) {
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
 							}
 							this.enemyShipFormation.destroy(enemyShip);
 							recyclable.add(bullet);
@@ -807,7 +807,7 @@ public class GameScreen extends Screen {
 							this.score += enemyShip.getPointValue();
 
 							if (enemyShip.hasItem()) {
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
 							}
 							this.enemyShipFormation.destroy(enemyShip);
 							recyclable.add(bullet);
@@ -816,7 +816,7 @@ public class GameScreen extends Screen {
 							this.score += enemyShip.getPointValue();
 
 							if (enemyShip.hasItem()) {
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
 							}
 							this.enemyShipFormation.destroy(enemyShip);
 							recyclable.add(bullet);
