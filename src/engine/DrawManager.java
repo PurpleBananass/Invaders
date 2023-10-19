@@ -24,8 +24,6 @@ import screen.Screen;
 import screen.SelectScreen;
 import screen.SettingScreen;
 
-import entity.ItemQueue;
-
 
 /**
  * Manages screen drawing.
@@ -341,8 +339,12 @@ public final class DrawManager {
 
 
 	/**
-	 * Draws number of remaining items on screen.
+	 * Draws number of items currently in inventory on screen.
 	 *
+	 * @param ItemQ
+	 * 		  	ItemQueue
+	 * @param inventory
+	 * 			Number of items in inventory
 	 * @param screen
 	 *            Screen to draw on.
 	 */
@@ -351,14 +353,7 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(inventory), 20, screen.getHeight() + 25);
 		for (int i = 0; i < inventory; i++)
-			if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem)
-				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
-			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem)
-				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
-			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem)
-				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
-			else if (ItemQ[i].getItemType() == Item.ItemType.BombItem)
-				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+			drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
 	}
 
 	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
@@ -366,14 +361,7 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(inventory), 120, screen.getHeight() + 25);
 		for (int i = 0; i < inventory; i++)
-			if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem)
-				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
-			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem)
-				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
-			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem)
-				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
-			else if (ItemQ[i].getItemType() == Item.ItemType.BombItem)
-				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+			drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
 	}
 
 

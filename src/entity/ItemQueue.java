@@ -17,8 +17,7 @@ public class ItemQueue {
     }
 
     public void enque(Item item){
-        if(size >= capacity) return;
-        else {
+        if(size < capacity){
             itemQue[rear++] = item;
             size++;
         }
