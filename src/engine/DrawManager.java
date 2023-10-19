@@ -10,17 +10,19 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Random;
 import java.util.logging.Logger;
 import engine.AchievementManager.Achievement;
 
 import java.lang.Integer;
 
+import entity.*;
 import screen.GameScreen;
 import screen.Screen;
-import entity.Entity;
-import entity.Ship;
 import screen.SelectScreen;
 import screen.SettingScreen;
+
 
 /**
  * Manages screen drawing.
@@ -171,7 +173,7 @@ public final class DrawManager {
 	 *            Screen to draw in.
 	 */
 	public void initDrawing(final Screen screen) {
-		backBuffer = new BufferedImage(screen.getWidth(), screen.getHeight(),
+		backBuffer = new BufferedImage(screen.getWidth(), screen.getHeight() + frame.getBottomHudHeight(),
 				BufferedImage.TYPE_INT_RGB);
 
 		graphics = frame.getGraphics();
@@ -179,7 +181,7 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics
-				.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+				.fillRect(0, 0, screen.getWidth(), screen.getHeight() + frame.getBottomHudHeight());
 
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
@@ -332,6 +334,35 @@ public final class DrawManager {
 		for (int i = 0; i < lives2; i++)
 			drawEntity(dummyShip, 180 + 30 * i, 13);
 	}
+
+
+
+	/**
+	 * Draws number of items currently in inventory on screen.
+	 *
+	 * @param ItemQ
+	 * 		  	ItemQueue
+	 * @param inventory
+	 * 			Number of items in inventory
+	 * @param screen
+	 *            Screen to draw on.
+	 */
+	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(inventory), 20, screen.getHeight() + 25);
+		for (int i = 0; i < inventory; i++)
+			drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+	}
+
+	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(inventory), 120, screen.getHeight() + 25);
+		for (int i = 0; i < inventory; i++)
+			drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+	}
+
 
 	/**
 	 * Draws a thick line from side to side of the screen.
