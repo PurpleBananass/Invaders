@@ -1,91 +1,147 @@
 package engine;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
 public class AchievementManager {
-  
-    /** Singleton instance of the class. */
-    private static AchievementManager instance;
-    private int LuckyScore = 770;
 
-    private static final Logger LOGGER = Logger.getLogger(Core.class
+	/** Singleton instance of the class. */
+	private static AchievementManager instance;
+	private int LuckyScore = 770; // '7' means the lucky number
+	private int UnluckyScore = 440; // '4' means the unlucky number
+	private int AceScore = 1110; // '1' means the ace in one card
+
+	private static final Logger LOGGER = Logger.getLogger(Core.class
 			.getSimpleName());
-  
-    // Map to store achievements and their completion status
-    static private Map<String, Boolean> achievements;
 
-    private AchievementManager() {
-        achievements = new HashMap<>();
+	public enum Achievement {
+		ADVENTURE_START,
+		SHARP_SHOOTER,
+		DEADLY_ACCURACY,
+		LUCKY_GUY,
+		UNLUCKY_GUY,
+		GAME_ACE,
+		SOUL_MATES,
+		AVIOPHOBIA,
+		BUDDY_FXXKER,
+		PAT_AND_MAT
+	}
 
-        // Initialize predefined achievements
-        achievements.put("adventure start", false);
-        achievements.put("sharp shooter", false);
-        achievements.put("perfect shooter", false);
-        achievements.put("lucky guy", false);
-    }
-  
-    /**
-     * @return Shared instance of AchievementManager.
-     */
-    public static AchievementManager getInstance() {
-        if (instance == null)
-            instance = new AchievementManager();
-        return instance;
-    }
+	// Map to store achievements and their completion status
+	static private Map<Achievement, Boolean> achievements;
 
-    /**
-     * Mark an achievement as achieved.
-     *
-     * @param achievementName The name of the achievement to mark as achieved.
-     */
-    public static void markAchievementAsAchieved(String achievementName) {
-        if (isAchievementAchieved(achievementName)) {
-            return;
-        }
+	private AchievementManager() {
+		achievements = new EnumMap<>(Achievement.class);
 
-        if (achievements.containsKey(achievementName)) {
-            achievements.put(achievementName, true);
-        }
+		for (Achievement achievement : Achievement.values()) {
+			achievements.put(achievement, false);
+		}
+	}
 
-        LOGGER.info(achievementName + " achievement achieved!");
-    }
+	public Map<Achievement, Boolean> getAchievements() {
+		return achievements;
+	}
 
-    /**
-     * Check if an achievement has been achieved.
-     *
-     * @param achievementName The name of the achievement to check.
-     * @return true if the achievement is achieved, false otherwise.
-     */
-    public static boolean isAchievementAchieved(String achievementName) {
-        if (achievements.containsKey(achievementName)) {
-            return achievements.get(achievementName);
-        }
-        return false;
-    }
+	/**
+	 * @return Shared instance of AchievementManager.
+	 */
+	public static AchievementManager getInstance() {
+		if (instance == null)
+			instance = new AchievementManager();
+		return instance;
+	}
 
-    /**
-     * Check if the requirments for sharp shooter are met
-     */
-    public void checkAchievements (GameState gameState) {
-        int level = gameState.getLevel();
-        int shot = gameState.getBulletsShot1() + gameState.getBulletsShot2();
-        
-        double accuracy = ((double)gameState.getShipsDestroyed() / (double)shot) * 100;
-        if (shot > 0 && accuracy >= 10 && level >= 3) {
-            markAchievementAsAchieved("sharp shooter");
-        }
-    }
+	/**
+	 * Mark an achievement as achieved.
+	 *
+	 * @param achievementName The name of the achievement to mark as achieved.
+	 */
+	public void markAchievementAsAchieved(Achievement achievementName) {
+		if (isAchievementAchieved(achievementName)) {
+			return;
+		}
 
-    /**
-     * Check if the requirments for 'Lucky Guy' are met
-     */
-    public void checkLuckySeven(int score) {
-        if ( score == LuckyScore ) {
-            markAchievementAsAchieved("lucky guy");
-        }
-    }
+		if (achievements.containsKey(achievementName)) {
+			achievements.put(achievementName, true);
+		}
 
+		LOGGER.info(achievementName + " achievement achieved!");
+	}
+
+	/**
+	 * Check if an achievement has been achieved.
+	 *
+	 * @param achievementName The name of the achievement to check.
+	 * @return true if the achievement is achieved, false otherwise.
+	 */
+	public static boolean isAchievementAchieved(Achievement achievementName) {
+		if (achievements.containsKey(achievementName)) {
+			return achievements.get(achievementName);
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the requirments for achievements about accuracy and life
+	 */
+	public void checkAchievements(GameState gameState) {
+		int level = gameState.getLevel();
+		int shot = gameState.getBulletsShot1() + gameState.getBulletsShot2();
+		int life_1 = gameState.getLivesRemaining1p();
+		int life_2 = gameState.getLivesRemaining2p();
+		int gamemode = gameState.getMode();
+		double accuracy = ((double) gameState.getShipsDestroyed() / (double) shot) * 100;
+
+		// if the player play with good accuracy
+		if (shot > 0 && accuracy >= 90.0 && level >= 3) {
+			markAchievementAsAchieved(Achievement.ADVENTURE_START);
+		}
+
+		// Check if the players recorded perfect accuracy, if the player want to clear
+		// level 1, he has to shot 20 times at least
+		if (shot >= 20 && accuracy == 100) {
+			markAchievementAsAchieved(Achievement.DEADLY_ACCURACY);
+		}
+
+		// Check if the player didn't hit enemy's ships in 1p mode
+		if (gamemode == 1 && shot > 0 && accuracy == 0) {
+			markAchievementAsAchieved(Achievement.AVIOPHOBIA);
+		}
+
+		// Check if two players didn't hit enemy's ships
+		if (gamemode == 2 && shot > 0 && accuracy == 0) {
+			markAchievementAsAchieved(Achievement.PAT_AND_MAT);
+		}
+
+		// Check if two players clear level or gameover with same lives
+		if (gamemode == 2 && life_1 == life_2) {
+			markAchievementAsAchieved(Achievement.SOUL_MATES);
+		}
+
+		// Check one player has max life but the partner doesn't have
+		if (gamemode == 2 && (life_1 - life_2 == 3 || life_2 - life_1 == 3)) {
+			markAchievementAsAchieved(Achievement.BUDDY_FXXKER);
+		}
+
+	}
+
+	/*
+	 * Check if the score equals to the achievement
+	 * 
+	 * @param score the score of the player
+	 */
+	public void checkScore(int score) {
+		if (score == LuckyScore) {
+			markAchievementAsAchieved(Achievement.LUCKY_GUY);
+		}
+
+		else if (score == UnluckyScore) {
+			markAchievementAsAchieved(Achievement.UNLUCKY_GUY);
+		}
+
+		else if (score == AceScore) {
+			markAchievementAsAchieved(Achievement.GAME_ACE);
+		}
+	}
 }
