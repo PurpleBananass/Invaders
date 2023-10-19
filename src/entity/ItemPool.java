@@ -15,7 +15,7 @@ public final class ItemPool {
     }
 
 
-    public static Item getItem(final int positionX, final int positionY, final int itemRange) {
+    public static Item getItem(final int positionX, final int positionY, final int itemRange, final double itemSpeed) {
         Item item;
         if (!pool.isEmpty()) {
             item = pool.iterator().next();
@@ -23,7 +23,7 @@ public final class ItemPool {
             item.setPositionX(positionX - item.getWidth() / 2);
             item.setPositionY(positionY);
         } else {
-            item = new Item(positionX, positionY, itemRange);
+            item = new Item(positionX, positionY, itemRange, itemSpeed);
             item.setPositionX(positionX - item.getWidth() / 2);
         }
         return item;
