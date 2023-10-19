@@ -400,12 +400,15 @@ public class GameScreen extends Screen {
                             per = 2;
                         }
                         if (inputManager.magazine) {
+                            if (this.bullet_count == 10) {
+                                inputManager.countH_d = 0;
+                                inputManager.countH_u = 0;
+                                inputManager.speed = 0;
+                                this.magazine--;
+                                this.bullet_count = 0;
+                                this.logger.info("player1_magazine" + this.magazine);
+                            }
                             inputManager.magazine = false;
-                            inputManager.countH_d = 0;
-                            inputManager.countH_u = 0;
-                            inputManager.speed = 0;
-                            this.magazine--;
-                            this.bullet_count = 0;
                         }
                     }
 
@@ -948,26 +951,26 @@ public class GameScreen extends Screen {
 						}
 					}
 
-					if (this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
-							&& checkCollision(bullet, this.enemyShipSpecial)) {
-						shipsDestroyed++;
-						this.score += this.enemyShipSpecial.getPointValue();
-						this.enemyShipSpecial.destroy();
-						this.enemyShipSpecialExplosionCooldown.reset();
-						recyclable.add(bullet);
-					}
+                    if (this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
+                            && checkCollision(bullet, this.enemyShipSpecial)) {
+                        shipsDestroyed++;
+                        this.score += this.enemyShipSpecial.getPointValue();
+                        this.enemyShipSpecial.destroy();
+                        this.enemyShipSpecialExplosionCooldown.reset();
+                        recyclable.add(bullet);
+                    }
 
-					if (this.enemyShipSpecial != null && bullet.getShooter() == 2 && !this.enemyShipSpecial.isDestroyed()
-							&& checkCollision(bullet, this.enemyShipSpecial)) {
-						shipsDestroyed2++;
-						this.score += this.enemyShipSpecial.getPointValue();
-						this.enemyShipSpecial.destroy();
-						this.enemyShipSpecialExplosionCooldown.reset();
-						recyclable.add(bullet);
-					}
-				}
-			}
-		}
+                    if (this.enemyShipSpecial != null && bullet.getShooter() == 2 && !this.enemyShipSpecial.isDestroyed()
+                            && checkCollision(bullet, this.enemyShipSpecial)) {
+                        shipsDestroyed2++;
+                        this.score += this.enemyShipSpecial.getPointValue();
+                        this.enemyShipSpecial.destroy();
+                        this.enemyShipSpecialExplosionCooldown.reset();
+                        recyclable.add(bullet);
+                    }
+                }
+            }
+        }
 
 		Set<Item> recyclableItem = new HashSet<Item>();
 
