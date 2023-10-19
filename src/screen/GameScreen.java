@@ -852,6 +852,7 @@ public class GameScreen extends Screen {
 		for (Item item : this.items) {
 			if (checkCollision(item, this.ship) && !this.levelFinished) {
 				recyclableItem.add(item);
+				SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
 				this.ship.getItemQueue().enque(item);
 			}
 		}
@@ -859,6 +860,7 @@ public class GameScreen extends Screen {
 			for (Item item : this.items) {
 				if (checkCollision(item, this.ship2) && !this.levelFinished) {
 					recyclableItem.add(item);
+					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
 					this.ship2.getItemQueue().enque(item);
 				}
 			}
