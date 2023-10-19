@@ -5,23 +5,24 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Random;
 import java.util.logging.Logger;
 import engine.AchievementManager.Achievement;
 
 import java.lang.Integer;
 
-
+import entity.*;
 import screen.GameScreen;
 import screen.Screen;
-import entity.Entity;
-import entity.Ship;
 import screen.SelectScreen;
+import screen.SettingScreen;
+
 
 /**
  * Manages screen drawing.
@@ -59,8 +60,10 @@ public final class DrawManager {
 
 	/** Sprite types. */
 	public static enum SpriteType {
-		/** Player ship. */
+		/** Player1 ship. */
 		Ship,
+		/** Player2 ship. */
+		Ship2,
 		/** Destroyed player ship. */
 		ShipDestroyed,
 		/** Player bullet. */
@@ -87,9 +90,11 @@ public final class DrawManager {
 		EnemyShipSpecial,
 		/** Destroyed enemy ship. */
 		Explosion,
-
 		Item,
-		Barrier
+
+		Life,
+
+		AuxiliaryShips
 	};
 
 	/**
@@ -104,6 +109,7 @@ public final class DrawManager {
 			spriteMap = new LinkedHashMap<SpriteType, boolean[][]>();
 
 			spriteMap.put(SpriteType.Ship, new boolean[13][8]);
+			spriteMap.put(SpriteType.Ship2, new boolean[13][8]);
 			spriteMap.put(SpriteType.ShipDestroyed, new boolean[13][8]);
 			spriteMap.put(SpriteType.Bullet, new boolean[3][5]);
 			spriteMap.put(SpriteType.EnemyBullet, new boolean[3][5]);
@@ -115,12 +121,15 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.EnemyShipC2, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipSpecial, new boolean[16][7]);
 			spriteMap.put(SpriteType.Explosion, new boolean[13][7]);
-			spriteMap.put(SpriteType.Item, new boolean[13][7]);
+			spriteMap.put(SpriteType.Item, new boolean[3][3]);
+			spriteMap.put(SpriteType.Life, new boolean[7][7]);
+			spriteMap.put(SpriteType.AuxiliaryShips, new boolean[12][8]);
 
 			fileManager.loadSprite(spriteMap);
 
 			fileManager.changeSprite(spriteMap,SpriteType.Bullet,0);
 			fileManager.changeSprite(spriteMap,SpriteType.Ship,0);
+			fileManager.changeSprite(spriteMap,SpriteType.Ship2,0);
 			logger.info("Finished loading the sprites.");
 
 			// Font loading.
@@ -164,7 +173,7 @@ public final class DrawManager {
 	 *            Screen to draw in.
 	 */
 	public void initDrawing(final Screen screen) {
-		backBuffer = new BufferedImage(screen.getWidth(), screen.getHeight(),
+		backBuffer = new BufferedImage(screen.getWidth(), screen.getHeight() + frame.getBottomHudHeight(),
 				BufferedImage.TYPE_INT_RGB);
 
 		graphics = frame.getGraphics();
@@ -172,7 +181,7 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics
-				.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+				.fillRect(0, 0, screen.getWidth(), screen.getHeight() + frame.getBottomHudHeight());
 
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
@@ -213,6 +222,21 @@ public final class DrawManager {
 					backBufferGraphics.drawRect(positionX + i * 2, positionY
 							+ j * 2, 1, 1);
 	}
+	public void clearEntity(final Entity entity, final int positionX, final int positionY) {
+		boolean[][] image = spriteMap.get(entity.getSpriteType());
+
+		Color clearColor = Color.black;
+
+		backBufferGraphics.setColor(clearColor);
+		for (int i = 0; i < image.length; i++) {
+			for (int j = 0; j < image[i].length; j++) {
+				if (image[i][j]) {
+					backBufferGraphics.fillRect(positionX + i * 2, positionY + j * 2, 1, 1);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * For debugging purpouses, draws the canvas borders.
@@ -288,9 +312,9 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
-		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Life, false);
 		for (int i = 0; i < lives; i++)
-			drawEntity(dummyShip, 40 + 35 * i, 10);
+			drawEntity(dummyShip, 40 + 30 * i, 13);
 	}
 
 
@@ -306,10 +330,39 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives2), 160, 25);
-		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Ship, false);
+		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Life, false);
 		for (int i = 0; i < lives2; i++)
-			drawEntity(dummyShip, 180 + 35 * i, 10);
+			drawEntity(dummyShip, 180 + 30 * i, 13);
 	}
+
+
+
+	/**
+	 * Draws number of items currently in inventory on screen.
+	 *
+	 * @param ItemQ
+	 * 		  	ItemQueue
+	 * @param inventory
+	 * 			Number of items in inventory
+	 * @param screen
+	 *            Screen to draw on.
+	 */
+	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(inventory), 20, screen.getHeight() + 25);
+		for (int i = 0; i < inventory; i++)
+			drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+	}
+
+	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(inventory), 120, screen.getHeight() + 25);
+		for (int i = 0; i < inventory; i++)
+			drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+	}
+
 
 	/**
 	 * Draws a thick line from side to side of the screen.
@@ -511,7 +564,7 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredRegularString(screen, newRecordString, screen.getHeight()
-				/ 4 + fontRegularMetrics.getHeight() * 10);
+				* 11 / 60);
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, introduceNameString,
 				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 12);
@@ -542,7 +595,41 @@ public final class DrawManager {
 							* 14);
 		}
 	}
+	//Login Screen Name Input
+	public void drawUsernameInput(final Screen screen, final char[] name,
+							  final int nameCharSelected) {
+		String introduceUsernameString = "Username:";
 
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, introduceUsernameString,
+				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 3);
+
+		// 3 letters name.
+		int positionX = screen.getWidth()
+				/ 2
+				- (fontRegularMetrics.getWidths()[name[0]]
+				+ fontRegularMetrics.getWidths()[name[1]]
+				+ fontRegularMetrics.getWidths()[name[2]]
+				+ fontRegularMetrics.getWidths()[' ']) / 2;
+
+		for (int i = 0; i < 3; i++) {
+			if (i == nameCharSelected)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+
+			positionX += fontRegularMetrics.getWidths()[name[i]] / 2;
+			positionX = i == 0 ? positionX
+					: positionX
+					+ (fontRegularMetrics.getWidths()[name[i - 1]]
+					+ fontRegularMetrics.getWidths()[' ']) / 2;
+
+			backBufferGraphics.drawString(Character.toString(name[i]),
+					positionX,
+					screen.getHeight() / 4 + fontRegularMetrics.getHeight()
+							* 6);
+		}
+	}
 	/**
 	 * Draws basic content of game over screen.
 	 *
@@ -583,60 +670,82 @@ public final class DrawManager {
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
-		if(SelectScreen.gameMode == 2){
+		Ship[] shipskin = new Ship[6];
+		Ship[] shipskin2 = new Ship[6];
+
+
+		if (SelectScreen.gameMode == 2) {
 			backBufferGraphics.setColor(Color.white);
 			backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
 			backBufferGraphics.setFont(fontBig);
 			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2-1, 130);
-			backBufferGraphics.drawString(skin2p, 3*screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2-2, 130);
-		if (skincode1p == 0) {
-			backBufferGraphics.setColor(Color.GREEN);
-			backBufferGraphics.drawRect(screen.getWidth()/4 -15 , 165, 30,30);
-		}
-		else {
-			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 165, 30,30);
-		}
-		if (skincode1p == 1) {
-			backBufferGraphics.setColor(Color.GREEN);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 215, 30,30);
-		}
-		else {
-			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 215, 30,30);
-		}
-		if (skincode1p == 2) {
-			backBufferGraphics.setColor(Color.GREEN);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 265, 30,30);
-		}
-		else {
-			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 265, 30,30);
-		}if (skincode1p == 3) {
-			backBufferGraphics.setColor(Color.GREEN);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 315, 30,30);
-		}
-		else {
-			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 315, 30,30);
-		}
-		if (skincode1p == 4) {
-			backBufferGraphics.setColor(Color.GREEN);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 365, 30,30);
-		}
-		else {
-			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 365, 30,30);
-		}
-		if (skincode1p == 5) {
-			backBufferGraphics.setColor(Color.GREEN);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 415, 30,30);
-		}
-		else {
-			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawRect(screen.getWidth()/4 - 15, 415, 30,30);
-		}
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
+			backBufferGraphics.drawString(skin2p, 3 * screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 2, 130);
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, 0);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			for (int i = 0; i < 6; i++) {
+				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+				Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
+				shipskin[i] = dummyShip;
+				shipskin2[i] = dummyShip2;
+				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
+				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
+				if(i !=5) {
+					try {
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+					} catch (IOException e) {
+						logger.warning("Loading failed.");
+					}
+				}
+			}
+			if (skincode1p == 0) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
+
+			}
+			if (skincode1p == 1) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
+			}
+			if (skincode1p == 2) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
+			}
+			if (skincode1p == 3) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
+			}
+			if (skincode1p == 4) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
+			}
+			if (skincode1p == 5) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
+			}
 			if (skincode2p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
@@ -679,62 +788,98 @@ public final class DrawManager {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
 			}
-		}
-		else{
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship2, skincode2p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+
+		} else {
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, 0);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			for (int i = 0; i < 6; i++) {
+				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+				shipskin[i] = dummyShip;
+				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
+				if(i !=5) {
+					try {
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+					} catch (IOException e) {
+						logger.warning("Loading failed.");
+					}
+				}
+			}
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth()/2 -15 , 165, 30,30);
-			}
-			else {
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 165, 30, 30);
+
+			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 165, 30,30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 165, 30, 30);
 			}
 			if (skincode1p == 1) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 215, 30,30);
-			}
-			else {
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 215, 30, 30);
+
+			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 215, 30,30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 215, 30, 30);
 			}
 			if (skincode1p == 2) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 265, 30,30);
-			}
-			else {
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 265, 30, 30);
+
+			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 265, 30,30);
-			}if (skincode1p == 3) {
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 265, 30, 30);
+			}
+			if (skincode1p == 3) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 315, 30,30);
-			}
-			else {
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 315, 30, 30);
+
+			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 315, 30,30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 315, 30, 30);
 			}
 			if (skincode1p == 4) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 365, 30,30);
-			}
-			else {
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 365, 30, 30);
+
+			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 365, 30,30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 365, 30, 30);
 			}
 			if (skincode1p == 5) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 415, 30,30);
-			}
-			else {
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 415, 30, 30);
+
+			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth()/2 - 15, 415, 30,30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 415, 30, 30);
 			}
 			backBufferGraphics.setFont(fontBig);
 			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2-1, 130);
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
 		}
-		backBufferGraphics.setColor(Color.GREEN);
-		drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
-	}
+			backBufferGraphics.setColor(Color.GREEN);
+			drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
+		}
+
+
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
 		String instructionsString = "Press Space to return";
@@ -1013,8 +1158,8 @@ public final class DrawManager {
 
 	public void drawSetting(final Screen screen, final int option, final boolean selected){
 		String settingString = "Setting";
-		String instructionsString1 = "Move with UP, DOWN / Select with RIGHT arrow";
-		String instructionsString2 = "Press Space to return";
+		String instructionsString1 = "Move with UP, DOWN / Select with SPACE";
+		String instructionsString2 = "Press ESC to return";
 
 		String volumeString = "Volume";
 		String bgmString = "BGM";
@@ -1233,7 +1378,6 @@ public final class DrawManager {
 					- fontRegularMetrics.stringWidth("OFF") / 2 , screen.getHeight()
 					/ 8 * 5 + fontRegularMetrics.getHeight() * 2);
 		}
-
 	}
 
 	/**
