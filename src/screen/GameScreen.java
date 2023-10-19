@@ -738,7 +738,9 @@ public class GameScreen extends Screen {
 
                             if (enemyShip.hasItem()) {
                                 items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-                            }
+								SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
+
+							}
 
                             if (this.isBomb) {
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
