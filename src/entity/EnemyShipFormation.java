@@ -43,7 +43,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int MINIMUM_SPEED = 10;
 	/** 적의 타입에 따라 총 쿨타임이 줄어듬 */
 	private static final double[] BULLETCOOLDOWN = {0.05,0.1,0.2};
-
 	/** DrawManager instance. */
 	private DrawManager drawManager;
 	/** Application logger. */
@@ -102,7 +101,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int setXpos;
 	/** track the y position of the last stage ships. */
 	private int trackYpos;
-
+	/** check to print only one log: The last enemy ship moves faster. */
+	private int checkFirst = 1;
 
 	/** Directions the formation can move. */
 	private enum Direction {
@@ -265,7 +265,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		/** If the number of remain enemyShip is one, it moves quickly in odd row. */
 		if(shipCount == 1 && flag == 1){
-			this.movementSpeed = 5;
+			if(checkFirst==1){
+				this.movementSpeed = 5;
+				this.logger.info("The last enemy ship moves faster");
+				checkFirst++;
+			}
 		}
 		movementInterval++;
 		if (movementInterval >= this.movementSpeed) {
@@ -364,8 +368,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				complexSpeed = -complexSpeed;
 			}
 
-			if (trackYpos > 1) {
-				movementX = -movementX;
+			// Change movementX value according to trackYpos variable only in last stage.
+			if (lastStage) {
+				if (trackYpos > 1) {
+					movementX = -movementX;
+				}
 			}
 
 			for (List<EnemyShip> column : this.enemyShips)
