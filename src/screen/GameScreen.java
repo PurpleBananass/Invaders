@@ -998,7 +998,7 @@ public class GameScreen extends Screen {
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
 				ship.setItemSpeed();
-				SoundManager.playSound("SFX/S_Item_SpeedUpItem", "SpeedUpItem", false, true); // 속도 증가 아이템 bgm
+				SoundManager.playSound("SFX/S_Item_SpeedUp", "SpeedUpItem", false, true); // 속도 증가 아이템 bgm
 
 
 			}
@@ -1006,7 +1006,7 @@ public class GameScreen extends Screen {
 					item.getItemType() == Item.ItemType.InvincibleItem) {
 				ship.runInvincible();
 				this.logger.info("Invincible Item 사용");
-				SoundManager.playSound("SFX/S_Item_isInvincible", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+				SoundManager.playSound("SFX/S_Item_Invicible", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
 
 			}
 			else if (!item.getIsGet() &&
