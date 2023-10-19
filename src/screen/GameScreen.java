@@ -751,7 +751,6 @@ public class GameScreen extends Screen {
                 }
             }
         }
-
 		if (gameState.getMode() == 2) {
 			for (Bullet bullet : this.bullets) {
 				if (bullet.getSpeed() > 0) {
@@ -993,16 +992,22 @@ public class GameScreen extends Screen {
 					item.getItemType() == Item.ItemType.SubPlaneItem) {
 				ship.setAuxiliaryShipsMode();
 				this.logger.info("SubPlane Item 사용");
+				SoundManager.playSound("SFX/S_Item_SubShip", "SubPlaneItem", false, true); // 보조비행기 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
 				ship.setItemSpeed();
-				this.logger.info("SpeedUp Item 사용");
+				SoundManager.playSound("SFX/S_Item_SpeedUpItem", "SpeedUpItem", false, true); // 속도 증가 아이템 bgm
+
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.InvincibleItem) {
 				ship.runInvincible();
 				this.logger.info("Invincible Item 사용");
+				SoundManager.playSound("SFX/S_Item_isInvincible", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.BombItem) {
