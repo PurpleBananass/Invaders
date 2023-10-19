@@ -123,6 +123,7 @@ public class SettingScreen extends Screen {
             }
 
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && !selected){
+                SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                 saveSetting();
                 this.isRunning = false;
             }
@@ -177,6 +178,7 @@ public class SettingScreen extends Screen {
             }
             else if ((inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
                     || inputManager.isKeyDown(KeyEvent.VK_SPACE)) && selected && !keyChangeMode) {
+                SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                 keyNum = 0;
                 selected = false;
                 this.selectionCooldown.reset();

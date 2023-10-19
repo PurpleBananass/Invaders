@@ -24,8 +24,8 @@ public class SoundManager {
 
     private static final float minimum = -80;
     private static final float maximum = 6;
-    private static final float one = (float)((Math.abs(minimum)+Math.abs(maximum))/100);
-    private static float master = (float)(minimum + one*(50*Math.log10(masterVolume)));
+    private static final float one = ((Math.abs(minimum)+Math.abs(maximum))/100);
+    private static float master = getValue(masterVolume);
 
     public static void playSound(String soundFilePathShort, String clipName, boolean isLoop, boolean isBgm) {
         String soundFilePath = "res/sound/"+soundFilePathShort+".wav";
@@ -186,11 +186,10 @@ public class SoundManager {
         else return res;
     }
 
-    public static void setVolume(String clipName, double percent){
+    public static void setVolume(String clipName, float volume){
         Clip clip = clips.get(clipName);
         FloatControl floatcontrol = (FloatControl)clip.getControl(Type.MASTER_GAIN);
-        float volume = floatcontrol.getValue();
-        floatcontrol.setValue((float)(volume*percent));
+        floatcontrol.setValue(getValue(volume));
     }
 
     public static void playBGM(int levelNum) {

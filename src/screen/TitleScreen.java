@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import engine.Cooldown;
 import engine.Core;
 import engine.InputManager;
+import engine.SoundManager;
 
 /**
  * Implements the title screen.
@@ -70,8 +71,10 @@ public class TitleScreen extends Screen {
 				nextMenuItem();
 				this.selectionCooldown.reset();
 			}
-			if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
+			if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
+				SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
 				this.isRunning = false;
+			}
 		}
 	}
 

@@ -394,6 +394,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				shot.set(index, true);
 				EnemyShip shooter = this.shooters.get(index);
 				shooter.shoot(bullets);
+				SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
 				switch (shooter.spriteType)
 				{
 					case EnemyShipA1:

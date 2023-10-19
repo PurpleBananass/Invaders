@@ -153,7 +153,7 @@ public final class Core {
 			switch (returnCode) {
 			case 1:
 				// Main menu.
-				SoundManager.playSound("BGM/B_Main_b", "menu", true, true, 2f);
+				SoundManager.playSound("BGM/B_Main_a", "menu", true, true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " title screen at " + FPS + " fps.");
@@ -239,16 +239,24 @@ public final class Core {
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				SoundManager.playSound("BGM/B_Gameover", "B_gameover", true, true, 2f);
+				SoundManager.playSound("SFX/S_Gameover","S_gameover",false,false);
 				returnCode = frame.setScreen(currentScreen);
+				SoundManager.stopSound("B_gameover",2f);
+				SoundManager.stopSound("S_gameover",2f);
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
 				// High scores.
+				SoundManager.playSound("BGM/B_HighScore", "highscore", true, true);
+				SoundManager.setVolume("menu",0.0001f);
 				currentScreen = new HighScoreScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " high score screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing high score screen.");
+				SoundManager.stopSound("highscore",2f);
+				SoundManager.setVolume("menu",0.5f);
 				break;
 			case 4:
 				// Shop
@@ -265,11 +273,15 @@ public final class Core {
 				break;
 			case 6:
 				//  Achievement.
+				SoundManager.playSound("BGM/B_Achieve", "achievement", true, true);
+				SoundManager.setVolume("menu",0.0001f);
 				currentScreen = new AchievementScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " achievement screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing Achievement screen.");
+				SoundManager.stopSound("achievement",2f);
+				SoundManager.setVolume("menu",0.5f);
 				break;
 			case 2:
 				// Select2P
