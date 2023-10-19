@@ -18,18 +18,14 @@ import engine.AchievementManager.Achievement;
 
 import java.lang.Integer;
 
-import entity.Item;
-import entity.ItemQueue;
+import entity.*;
 import screen.GameScreen;
 import screen.Screen;
-import entity.Entity;
-import entity.Ship;
 import screen.SelectScreen;
 import screen.SettingScreen;
 
 import entity.ItemQueue;
 
-import static entity.ItemQueue.itemQue;
 
 /**
  * Manages screen drawing.
@@ -350,38 +346,34 @@ public final class DrawManager {
 	 * @param screen
 	 *            Screen to draw on.
 	 */
-	public void drawItems(final Screen screen) {
+	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 20, screen.getHeight() + 25);
-		Random random = new Random();
-		Item dummyItem = new Item(0, 0, random.nextInt(10000));
-		for (int i = 0; i < ItemQueue.size; i++)
-			if (itemQue[i].getItemType() == Item.ItemType.SubPlaneItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
-			else if (itemQue[i].getItemType() == Item.ItemType.SpeedUpItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
-			else if (itemQue[i].getItemType() == Item.ItemType.InvincibleItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
-			else if (itemQue[i].getItemType() == Item.ItemType.BombItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
+		backBufferGraphics.drawString(Integer.toString(inventory), 20, screen.getHeight() + 25);
+		for (int i = 0; i < inventory; i++)
+			if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem)
+				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem)
+				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem)
+				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+			else if (ItemQ[i].getItemType() == Item.ItemType.BombItem)
+				drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
 	}
 
-	public void drawItems2(final Screen screen) {
+	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(ItemQueue.size), 120, screen.getHeight() + 25);
-		Random random = new Random();
-		Item dummyItem = new Item(0, 0, random.nextInt(10000));
-		for (int i = 0; i < ItemQueue.size; i++)
-			if (itemQue[i].getItemType() == Item.ItemType.SubPlaneItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
-			else if (itemQue[i].getItemType() == Item.ItemType.SpeedUpItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
-			else if (itemQue[i].getItemType() == Item.ItemType.InvincibleItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
-			else if (itemQue[i].getItemType() == Item.ItemType.BombItem)
-				drawEntity(dummyItem, 140 + 35 * i, screen.getHeight() + 25);
+		backBufferGraphics.drawString(Integer.toString(inventory), 120, screen.getHeight() + 25);
+		for (int i = 0; i < inventory; i++)
+			if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem)
+				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem)
+				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem)
+				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+			else if (ItemQ[i].getItemType() == Item.ItemType.BombItem)
+				drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
 	}
 
 
