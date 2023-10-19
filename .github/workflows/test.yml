@@ -1,0 +1,40 @@
+name: Notification on PR
+
+on:
+  pull_request:
+    branches:
+      - main
+      - team/react
+
+jobs:
+  send-slack-notification:
+    if: github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Send Slack Notification
+      run: |
+        pr_url=$(jq -r .pull_request.html_url $GITHUB_EVENT_PATH)
+        curl -X POST -H 'Content-type: application/json' --data "{
+          \"link\": \"$pr_url\"
+        }" ${{ secrets.SLACK_WEBHOOK_URL }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  discord:
+    if: github.event.pull_request.base.ref == 'team/react'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: https://discord.com/api/webhooks/1160910886848954418/AkUpK5d9IDtWuRkVguBxxoIZuAe21kMUOjNG1vZHi2w-5eNR9i0HvyccG09k3VjJuxcF
+        DISCORD_USERNAME: PR bot
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'A new PR has been created at front-project'
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: https://discord.com/api/webhooks/1160910886848954418/AkUpK5d9IDtWuRkVguBxxoIZuAe21kMUOjNG1vZHi2w-5eNR9i0HvyccG09k3VjJuxcF
+      uses: Ilshidur/action-discord@master
