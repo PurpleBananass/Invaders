@@ -258,6 +258,7 @@ public class GameScreen extends Screen {
 						for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
 							if(auxiliaryShip.shoot(this.bullets, 1))
 								this.bulletsShot1++;
+
 						}
 					}
 				}
@@ -266,11 +267,14 @@ public class GameScreen extends Screen {
 						if(this.ship.shoot(this.bullets, 1)){
 							this.bulletsShot1++;
 							this.bullet_count++;
+							SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShootA", false, false);
 						}
 						if(this.ship.isExistAuxiliaryShips()){
 							for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
-								if(auxiliaryShip.shoot(this.bullets, 1))
+								if(auxiliaryShip.shoot(this.bullets, 1)) {
 									this.bulletsShot1++;
+									SoundManager.playSound("SFX/S_Ally_Shoot_b", "AllyShootB", false, false);
+								}
 							}
 						}
 					}
