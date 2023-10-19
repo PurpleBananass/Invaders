@@ -25,6 +25,9 @@ public class Ship extends Entity {
 	/** Original movement of the ship for each unit of time. */
 	private static int ORIGINAL_SPEED = 2;
 
+	/** Life item purchase status **/
+	private boolean hasLifeIncreaseItem = false;
+
 	private static final int ITEM_USE_INTERVAL = 750;
 	/** Speed of the bullets shot by the ship.
 	private static final int BULLET_SPEED = -6;
@@ -107,11 +110,11 @@ public class Ship extends Entity {
 	 *            List of bullets on screen, to add the new bullet.
 	 * @return Checks if the bullet was shot correctly.
 	 */
-	public final boolean shoot(final Set<Bullet> bullets) {
+	public final boolean shoot(final Set<Bullet> bullets, final int shooter) {
 		if (this.shootingCooldown.checkFinished()) {
 			this.shootingCooldown.reset();
 			bullets.add(BulletPool.getBullet(positionX + this.width / 2,
-					positionY, BULLET_SPEED));
+					positionY, BULLET_SPEED,shooter));
 			return true;
 		}
 		return false;
@@ -132,7 +135,15 @@ public class Ship extends Entity {
 		this.skillCooldown.checkFinished();
 		if (!this.destructionCooldown.checkFinished())
 			this.spriteType = SpriteType.ShipDestroyed;
-		this.spriteType = SpriteType.Ship;
+		else{
+			this.spriteType = SpriteType.Ship;
+		}
+	}
+	public final void updatep_2() {
+		this.skillCooldown.checkFinished();
+		if (!this.destructionCooldown.checkFinished())
+			this.spriteType = SpriteType.ShipDestroyed;
+		this.spriteType = SpriteType.Ship2;
 	}
 
 	/**
@@ -187,7 +198,7 @@ public class Ship extends Entity {
 	public final void setShootingInterval(int cldwn) {this.shootingCooldown = Core.getCooldown(cldwn);}
 
 	/**
-	 * Re-Setter for the sh용ip's shooting frequency speed.
+	 * Re-Setter for the ship's shooting frequency speed.
 	 */
 	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(shootingInterval);}
 	
@@ -281,4 +292,13 @@ public class Ship extends Entity {
 	public void applyFasterShootingItem(){
 		this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
 	}
+
+	public void applyLifeIncreaseItem(boolean isUsed){
+		this.hasLifeIncreaseItem = isUsed;
+	}
+
+	public boolean getHasLifeIncreaseItem(){
+		return this.hasLifeIncreaseItem;
+	}
+
 }
