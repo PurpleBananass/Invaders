@@ -69,7 +69,6 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 
 	private Set<Item> items;
-	private Set<Item> items2;
 	/** Current score. */
 	private int score;
 	/** First Player's lives left. */
@@ -236,7 +235,6 @@ public class GameScreen extends Screen {
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
-		this.items2 = new HashSet<Item>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -865,7 +863,7 @@ public class GameScreen extends Screen {
 			}
 		}
 		if (gameState.getMode() == 2) {
-			for (Item item : this.items2) {
+			for (Item item : this.items) {
 				if (checkCollision(item, this.ship2) && !this.levelFinished) {
 					recyclableItem.add(item);
 					this.ship2.getItemQueue().enque(item);
