@@ -94,6 +94,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private boolean moreDiff = false;
 	/** speed of complex movements. */
 	private int complexSpeed;
+	/** check the last stage. */
+	private boolean lastStage = false;
+	/** setting the x position of the last stage ships. */
+	private int setXpos;
+	/** track the y position of the last stage ships. */
+	private int trackYpos;
 
 
 	/** Directions the formation can move. */
@@ -129,6 +135,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		this.positionX = INIT_POS_X;
 		this.positionY = INIT_POS_Y;
 		this.shooters = new ArrayList<EnemyShip>();
+		this.setXpos = INIT_POS_X;
 		SpriteType spriteType;
 
 		this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh
@@ -138,7 +145,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		for (int i = 0; i < this.nShipsWide; i++)
 			this.enemyShips.add(new ArrayList<EnemyShip>());
 
+		if (nShipsWide > 7)
+			lastStage = true;
+
 		for (List<EnemyShip> column : this.enemyShips) {
+			int ship_index = 0;
 			for (int i = 0; i < this.nShipsHigh; i++) {
 				if (i / (float) this.nShipsHigh < PROPORTION_C)
 					spriteType = SpriteType.EnemyShipC1;
@@ -150,34 +161,44 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 				EnemyShip enemyShip = null;
 
+				// In the last stage, odd row ships initial position set differently.
+				if (lastStage) {
+					if (ship_index%2!=0) {
+						this.setXpos = 120;
+					} else {
+						this.setXpos = positionX;
+					}
+				}
+
 				switch (spriteType)
 				{
 					case EnemyShipA1:
 						enemyShip = new EnemyShipA((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipB1:
 						enemyShip = new EnemyShipB((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipC1:
 						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
 					default:
 						enemyShip = new EnemyShip((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
-								+ positionX, (SEPARATION_DISTANCE * i)
+								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 				}
 				column.add(enemyShip);
 				this.shipCount++;
+				ship_index++;
 			}
 		}
 
@@ -256,7 +277,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			boolean isAtHorizontalAltitude = positionY % DESCENT_DISTANCE == 0;
 
 			if (currentDirection == Direction.DOWN) {
-				if (isAtHorizontalAltitude)
+				if (isAtHorizontalAltitude) {
 					if (previousDirection == Direction.RIGHT) {
 						currentDirection = Direction.LEFT;
 						this.logger.info("Formation now moving left 1");
@@ -264,12 +285,14 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						currentDirection = Direction.RIGHT;
 						this.logger.info("Formation now moving right 2");
 					}
+				}
 			} else if (currentDirection == Direction.LEFT) {
 				if (isAtLeftSide)
 					if (!isAtBottom) {
 						previousDirection = currentDirection;
 						currentDirection = Direction.DOWN;
 						this.logger.info("Formation now moving down 3");
+						trackYpos++;
 					} else {
 						currentDirection = Direction.RIGHT;
 						this.logger.info("Formation now moving right 4");
@@ -280,6 +303,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						previousDirection = currentDirection;
 						currentDirection = Direction.DOWN;
 						this.logger.info("Formation now moving down 5");
+						trackYpos++;
 					} else {
 						currentDirection = Direction.LEFT;
 						this.logger.info("Formation now moving left 6");
@@ -323,10 +347,24 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				}
 				complexSpeed = -complexSpeed;
 			}
+			
+			if (trackYpos > 1) {
+				movementX = -movementX;
+			}
 
 			for (List<EnemyShip> column : this.enemyShips)
 				for (EnemyShip enemyShip : column) {
-					enemyShip.move(movementX, movementY);
+					// In the last stage, the enemy's ships started out in different positions,
+					// so their coordinates changed accordingly.
+					if (lastStage) {
+						if ((int)((enemyShip.getpositionY() - 100) / 40) % 2 != 0) {
+								enemyShip.move(-movementX, movementY);
+						} else {
+								enemyShip.move(movementX, movementY);
+						}
+					} else {
+						enemyShip.move(movementX, movementY);
+					}
 					enemyShip.update();
 				}
 		}
