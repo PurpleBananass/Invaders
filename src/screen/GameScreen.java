@@ -602,6 +602,8 @@ public class GameScreen extends Screen {
 			long beep = ((INPUT_DELAY - (System.currentTimeMillis() - this.gameStartTime)));
 			if ((beep<4000 && beep>3984) || (beep<3000 && beep>2984) || (beep<2000 && beep>1984))
 				SoundManager.playSound("SFX/S_LevelStart_b", "level_start_beep", false, false);
+			if ((beep<1000 && beep>984))
+				SoundManager.playSound("SFX/S_LevelStart_a", "level_start_count", false, false);
 			drawManager.drawCountDown(this, this.level, countdown,
 					this.bonusLife);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height
