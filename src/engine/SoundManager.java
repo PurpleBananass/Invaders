@@ -70,7 +70,7 @@ public class SoundManager {
                     Clip clip = AudioSystem.getClip();
                     clip.open(audioIn);
                     FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-                    floatControl.setValue((float)minimum);
+                    floatControl.setValue(minimum);
                     if (isLoop) {
                         clip.loop(-1);
                     } else {
@@ -91,6 +91,7 @@ public class SoundManager {
         if (clip != null && clip.isActive()) {
             clip.stop();
             bgms.remove(clip);
+            clips.remove(clipName);
         }
     }
 
@@ -120,6 +121,7 @@ public class SoundManager {
                     }
                     clip.stop();
                     bgms.remove(clip);
+                    clips.remove(clipName);
                 }
             }).start();
         }
