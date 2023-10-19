@@ -280,7 +280,7 @@ public class GameScreen extends Screen {
 					if (moveLeft && !isLeftBorder) {
 						this.ship.moveLeft();
 					}
-					if (replayability.getReplay() == 0 && inputManager.isKeyDown(KeyEvent.VK_SPACE))
+					if (replayability.getReplay() == 0 && inputManager.isKeyDown(KeyEvent.VK_SPACE)){
 						if (this.ship.shoot(this.bullets))
 							this.bulletsShot1++;
 						if(this.ship.isExistAuxiliaryShips()){
@@ -289,6 +289,7 @@ public class GameScreen extends Screen {
 									this.bulletsShot1++;
 							}
 						}
+					}
 					if (replayability.getReplay() == 1) {
 						if (this.bullet_count <= 9 && inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
 							if (this.ship.shoot(this.bullets)) {
