@@ -106,9 +106,9 @@ public class SoundManager {
     public static void stopSound(String clipName) {
         Clip clip = clips.get(clipName);
         if (clip != null && clip.isActive()) {
-            clip.stop();
             bgms.remove(clip);
             clips.remove(clipName);
+            clip.close();
         }
     }
 
@@ -136,9 +136,9 @@ public class SoundManager {
                             throw new RuntimeException(e);
                         }
                     }
-                    clip.stop();
                     bgms.remove(clip);
                     clips.remove(clipName);
+                    clip.close();
                 }
             }).start();
         }
