@@ -649,6 +649,7 @@ public class GameScreen extends Screen {
 						recyclable.add(bullet);
 						if (!this.ship.isDestroyed()) {
 							this.ship.destroy();
+							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							if (this.lives > 0) {
 								this.lives--;
 							}
@@ -688,6 +689,7 @@ public class GameScreen extends Screen {
 						recyclable.add(bullet);
 						if (!this.ship.isDestroyed()) {
 							this.ship.destroy();
+							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							if (this.lives > 0) {
 								this.lives--;
 							}
@@ -698,6 +700,7 @@ public class GameScreen extends Screen {
 						recyclable.add(bullet);
 						if (!this.ship2.isDestroyed()) {
 							this.ship2.destroy();
+							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							if (this.lives2 > 0) {
 								this.lives2--;
 							}
