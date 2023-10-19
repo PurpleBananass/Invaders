@@ -20,6 +20,10 @@ public final class InputManager implements KeyListener {
 
 	private static int keyUp = 0;
 
+	private static Integer keyCode;
+	private static String keyString;
+	private boolean checkKeyPressed=false;
+
 	/**
 	 * Private constructor.
 	 */
@@ -59,6 +63,9 @@ public final class InputManager implements KeyListener {
 	public void keyPressed(final KeyEvent key) {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = true;
+		keyCode = key.getKeyCode();
+		keyString = key.getKeyText(keyCode);
+		checkKeyPressed = true;
 	}
 	public boolean isKeyUp(int keyCode) {
 		return !keys[keyCode];
@@ -73,6 +80,7 @@ public final class InputManager implements KeyListener {
 	public int speed = 0;
 	public int speed1=0, speed2=0;
 	public boolean magazine = false;
+	public boolean magazine1 = false;
 	public boolean magazine2 = false;
 	/**
 	 * Changes the state of the key to not pressed.
@@ -84,6 +92,7 @@ public final class InputManager implements KeyListener {
 	public void keyReleased(final KeyEvent key) {
 		if (key.getKeyCode() >= 0 && key.getKeyCode() < NUM_KEYS)
 			keys[key.getKeyCode()] = false;
+		checkKeyPressed = false;
 
 		switch (key.getKeyCode()){
 			case 38: // 위
@@ -113,7 +122,7 @@ public final class InputManager implements KeyListener {
 			case 51: //3
 				speed1++; break;
 			case 52: //4
-				magazine = true; break;
+				magazine1 = true; break;
 			case 55: //7
 				seven++; break;
 			case 56: //8
@@ -135,4 +144,8 @@ public final class InputManager implements KeyListener {
 	public void keyTyped(final KeyEvent key) {
 
 	}
+
+	public Integer getKeyCode(){return keyCode;}
+	public String getKeyString(){return keyString;}
+	public boolean getcheck(){return checkKeyPressed;}
 }
