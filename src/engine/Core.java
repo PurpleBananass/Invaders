@@ -192,12 +192,9 @@ public final class Core {
 							gameSettings.get(gameState.getLevel() - 1),
 							bonusLife, width, height, FPS);
 
-					if(gameState.getLevel() == 1) {
-						SoundManager.resetBGM();
-					} else {
-						SoundManager.stopBGM(gameState.getLevel() - 1, 1.5f);
-					}
+					SoundManager.resetBGM();
 					SoundManager.playBGM(gameState.getLevel());
+
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);
@@ -244,6 +241,7 @@ public final class Core {
 							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
+				SoundManager.resetBGM();1
 				SoundManager.playSound("BGM/B_Gameover", "B_gameover", true, true, 2f);
 				SoundManager.playSound("SFX/S_Gameover","S_gameover",false,false);
 				returnCode = frame.setScreen(currentScreen);
