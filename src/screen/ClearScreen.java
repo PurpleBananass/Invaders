@@ -13,13 +13,9 @@ import java.util.NoSuchElementException;
 
 public class ClearScreen extends Screen {
 
-    /** Milliseconds between changes in user selection. */
-    private static final int SELECTION_TIME = 200;
     /** Height of the interface separation line. */
     private static final int SEPARATION_LINE_HEIGHT = 40;
 
-    /** Time between changes in user selection. */
-    private Cooldown selectionCooldown;
     private GameState gameState;
 
     /** Current game level. */
@@ -64,8 +60,6 @@ public class ClearScreen extends Screen {
         }
 
         this.returnCode = 2;
-        this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
-        this.selectionCooldown.reset();
     }
 
     /**
@@ -86,19 +80,14 @@ public class ClearScreen extends Screen {
         super.update();
 
         draw();
-        if (this.selectionCooldown.checkFinished()
-                && this.inputDelay.checkFinished()) {
-
-            if (inputManager.isKeyDown(KeyEvent.VK_UP)
-                    || inputManager.isKeyDown(KeyEvent.VK_W)
-                    || inputManager.isKeyDown(KeyEvent.VK_DOWN)
-                    || inputManager.isKeyDown(KeyEvent.VK_S)) {
-                nextMenuItem();
-                this.selectionCooldown.reset();
-            }
-            if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
-                this.isRunning = false;
+        if (inputManager.isKeyDown(KeyEvent.VK_UP)
+                || inputManager.isKeyDown(KeyEvent.VK_W)
+                || inputManager.isKeyDown(KeyEvent.VK_DOWN)
+                || inputManager.isKeyDown(KeyEvent.VK_S)) {
+            nextMenuItem();
         }
+        if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
+            this.isRunning = false;
     }
 
     /**
