@@ -79,6 +79,8 @@ public final class Core {
 	/** Check BGM is On/Off  */
 	public static boolean bgmOn;
 	public static List<Settings> setting;
+	/** control bottom HUD height */
+	public static int bottomHudHeight = 40;
 	/**
 	 * Test implementation.
 	 *
@@ -122,7 +124,7 @@ public final class Core {
 			e.printStackTrace();
 		}
 
-		frame = new Frame(WIDTH, HEIGHT);
+		frame = new Frame(WIDTH, HEIGHT, bottomHudHeight);
 		DrawManager.getInstance().setFrame(frame);
 		int width = frame.getWidth();
 		int height = frame.getHeight();
