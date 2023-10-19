@@ -464,6 +464,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				shot.set(index, true);
 				EnemyShip shooter = this.shooters.get(index);
 				shooter.shoot(bullets);
+				SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
 				switch (shooter.spriteType)
 				{
 					case EnemyShipA1:
@@ -501,7 +502,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 							+ row + "," + i + ")");
 				}
 
-		// Updates the list of ships that can shoot the player.
 		if (this.shooters.contains(destroyedShip)) {
 			int destroyedShipIndex = this.shooters.indexOf(destroyedShip);
 			int destroyedShipColumnIndex = -1;
@@ -523,8 +523,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						+ this.shooters.size() + " members.");
 			}
 		}
-		if (destroyedShip.isDestroyed())
-			this.shipCount--;
+		if (destroyedShip.isDestroyed()) this.shipCount--;
 	}
 
 	/**
@@ -539,22 +538,32 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	public final List<EnemyShip> destroyByBomb(final EnemyShip destroyedShip) {
 		List<EnemyShip> destroyedByBombEnemyShips = new ArrayList<>();
 		int howManyEnemyIsDead = 0;
+
 		int[] dx = {0, 0, 1, 1, 1, -1, -1, -1};
 		int[] dy = {-1, 1, -1, 0, 1, -1, 0, 1};
+
 		for (int i = 0; i < this.enemyShips.size(); i++){
 			for (int j = 0; j < this.enemyShips.get(i).size(); j++) {
-				if (this.enemyShips.get(i).get(j) == destroyedShip && true) {
+				if (this.enemyShips.get(i).get(j) == destroyedShip) {
 					destroyedByBombEnemyShips.add(this.enemyShips.get(i).get(j));
-					this.enemyShips.get(i).get(j).destroy();
+					this.enemyShips.get(i).get(j).destroyByBomb();
 					this.logger.info("Destroyed ship in ("
 							+ i + "," + j + ")");
 					howManyEnemyIsDead++;
+
+					int xPos = destroyedShip.positionX;
+					int yPos = destroyedShip.positionY;
+
 					for(int n = 0; n < 8; n++){
 						int nx = i + dx[n]; int ny = j + dy[n];
 						if(!(nx >= 0 && nx <= this.enemyShips.size() - 1 && ny >= 0 && ny <= this.enemyShips.get(nx).size() - 1)) continue;
-						if(this.enemyShips.get(nx).get(ny).isDestroyed()) continue;
-						destroyedByBombEnemyShips.add(this.enemyShips.get(nx).get(ny));
-						this.enemyShips.get(nx).get(ny).destroy();
+						EnemyShip enemyShip = this.enemyShips.get(nx).get(ny);
+						if(enemyShip.positionX - xPos > 40 || enemyShip.positionX - xPos < -40) continue;
+						if(enemyShip.positionY - yPos > 40 || enemyShip.positionY - yPos < -40) continue;
+						if(enemyShip.isDestroyed()) continue;
+
+						destroyedByBombEnemyShips.add(enemyShip);
+						enemyShip.destroyByBomb();
 						this.logger.info("Destroyed ship in ("
 								+ nx + "," + ny + ")");
 						howManyEnemyIsDead++;
@@ -562,10 +571,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				}
 			}
 		}
-
-
 		for(EnemyShip enemyShip : destroyedByBombEnemyShips)
-			// Updates the list of ships that can shoot the player.
 			if (this.shooters.contains(enemyShip)) {
 				int destroyedShipIndex = this.shooters.indexOf(enemyShip);
 				int destroyedShipColumnIndex = -1;
@@ -587,7 +593,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 							+ this.shooters.size() + " members.");
 				}
 			}
-
 
 		this.shipCount -= howManyEnemyIsDead;
 		return destroyedByBombEnemyShips;
