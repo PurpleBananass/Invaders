@@ -45,6 +45,7 @@ public class Screen {
 	
 	protected boolean soundSelect;
 
+
 	/**
 	 * Constructor, establishes the properties of the screen.
 	 * 

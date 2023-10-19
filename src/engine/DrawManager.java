@@ -11,11 +11,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import engine.AchievementManager.Achievement;
+
 import java.lang.Integer;
 
+import screen.GameScreen;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
+import screen.SelectScreen;
 import screen.SettingScreen;
 
 /**
@@ -54,8 +59,10 @@ public final class DrawManager {
 
 	/** Sprite types. */
 	public static enum SpriteType {
-		/** Player ship. */
+		/** Player1 ship. */
 		Ship,
+		/** Player2 ship. */
+		Ship2,
 		/** Destroyed player ship. */
 		ShipDestroyed,
 		/** Player bullet. */
@@ -101,6 +108,7 @@ public final class DrawManager {
 			spriteMap = new LinkedHashMap<SpriteType, boolean[][]>();
 
 			spriteMap.put(SpriteType.Ship, new boolean[13][8]);
+			spriteMap.put(SpriteType.Ship2, new boolean[13][8]);
 			spriteMap.put(SpriteType.ShipDestroyed, new boolean[13][8]);
 			spriteMap.put(SpriteType.Bullet, new boolean[3][5]);
 			spriteMap.put(SpriteType.EnemyBullet, new boolean[3][5]);
@@ -120,6 +128,7 @@ public final class DrawManager {
 
 			fileManager.changeSprite(spriteMap,SpriteType.Bullet,0);
 			fileManager.changeSprite(spriteMap,SpriteType.Ship,0);
+			fileManager.changeSprite(spriteMap,SpriteType.Ship2,0);
 			logger.info("Finished loading the sprites.");
 
 			// Font loading.
@@ -130,7 +139,7 @@ public final class DrawManager {
 		} catch (IOException e) {
 			logger.warning("Loading failed.");
 		} catch (FontFormatException e) {
-			logger.warning("Font formating failed.");
+			logger.warning("Font formatting failed.");
 		}
 	}
 
@@ -212,6 +221,21 @@ public final class DrawManager {
 					backBufferGraphics.drawRect(positionX + i * 2, positionY
 							+ j * 2, 1, 1);
 	}
+	public void clearEntity(final Entity entity, final int positionX, final int positionY) {
+		boolean[][] image = spriteMap.get(entity.getSpriteType());
+
+		Color clearColor = Color.black;
+
+		backBufferGraphics.setColor(clearColor);
+		for (int i = 0; i < image.length; i++) {
+			for (int j = 0; j < image[i].length; j++) {
+				if (image[i][j]) {
+					backBufferGraphics.fillRect(positionX + i * 2, positionY + j * 2, 1, 1);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * For debugging purpouses, draws the canvas borders.
@@ -455,22 +479,25 @@ public final class DrawManager {
 	 * @param shipsDestroyed
 	 *            Total ships destroyed.
 	 * @param accuracy
-	 *            Total accuracy.
-	 *
+	 *            1p's accuracy.
+	 * @param accuracy2
+	 * 			  2p's accuracy.
 	 * @param isNewRecord
 	 *            If the score is a new high score.
 	 */
 	public void drawResults(final Screen screen, final int score,
 							final int livesRemaining1, final int livesRemaining2, final int shipsDestroyed,
-							final float accuracy, final boolean isNewRecord) {
+							final float accuracy, final float accuracy2, final boolean isNewRecord) {
 		String scoreString = String.format("score %04d", score);
 		String lives1RemainingString = "1p's lives remaining " + livesRemaining1;
 		String lives2RemainingString = "2p's lives remaining " + livesRemaining2;
 		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
 		String accuracyString = String
-				.format("accuracy %.2f%%", accuracy * 100);
+				.format("1p's accuracy %.2f%%", accuracy * 100);
+		String accuracyString2 = String
+				.format("2p's accuracy %.2f%%", accuracy2 * 100);
 
-		int height = isNewRecord ? 4 : 2;
+		int height = isNewRecord ? 4 : 3;
 
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, scoreString, screen.getHeight()
@@ -486,6 +513,8 @@ public final class DrawManager {
 						* 6);
 		drawCenteredRegularString(screen, accuracyString, screen.getHeight()
 				/ height + fontRegularMetrics.getHeight() * 8);
+		drawCenteredRegularString(screen, accuracyString2, screen.getHeight()
+				/ height + fontRegularMetrics.getHeight() * 10);
 	}
 
 	/**
@@ -505,7 +534,7 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredRegularString(screen, newRecordString, screen.getHeight()
-				/ 4 + fontRegularMetrics.getHeight() * 10);
+				* 11 / 60);
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, introduceNameString,
 				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 12);
@@ -536,7 +565,41 @@ public final class DrawManager {
 							* 14);
 		}
 	}
+	//Login Screen Name Input
+	public void drawUsernameInput(final Screen screen, final char[] name,
+							  final int nameCharSelected) {
+		String introduceUsernameString = "Username:";
 
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, introduceUsernameString,
+				screen.getHeight() / 4 + fontRegularMetrics.getHeight() * 3);
+
+		// 3 letters name.
+		int positionX = screen.getWidth()
+				/ 2
+				- (fontRegularMetrics.getWidths()[name[0]]
+				+ fontRegularMetrics.getWidths()[name[1]]
+				+ fontRegularMetrics.getWidths()[name[2]]
+				+ fontRegularMetrics.getWidths()[' ']) / 2;
+
+		for (int i = 0; i < 3; i++) {
+			if (i == nameCharSelected)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+
+			positionX += fontRegularMetrics.getWidths()[name[i]] / 2;
+			positionX = i == 0 ? positionX
+					: positionX
+					+ (fontRegularMetrics.getWidths()[name[i - 1]]
+					+ fontRegularMetrics.getWidths()[' ']) / 2;
+
+			backBufferGraphics.drawString(Character.toString(name[i]),
+					positionX,
+					screen.getHeight() / 4 + fontRegularMetrics.getHeight()
+							* 6);
+		}
+	}
 	/**
 	 * Draws basic content of game over screen.
 	 *
@@ -553,7 +616,7 @@ public final class DrawManager {
 		String continueOrExitString =
 				"Press Space to play again, Escape to exit";
 
-		int height = isNewRecord ? 4 : 2;
+		int height = isNewRecord ? 4 : 3;
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, gameOverString, screen.getHeight()
@@ -573,6 +636,220 @@ public final class DrawManager {
 	 * @param screen
 	 *            Screen to draw on.
 	 */
+	public void drawSkinSelectionMenu(final Screen screen, final int skincode1p,final int skincode2p){
+		String SkinString = "Select Your Ship Design!";
+		String skin1p = "1P";
+		String skin2p = "2P";
+		Ship[] shipskin = new Ship[6];
+		Ship[] shipskin2 = new Ship[6];
+
+
+		if (SelectScreen.gameMode == 2) {
+			backBufferGraphics.setColor(Color.white);
+			backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
+			backBufferGraphics.setFont(fontBig);
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
+			backBufferGraphics.drawString(skin2p, 3 * screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 2, 130);
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, 0);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			for (int i = 0; i < 6; i++) {
+				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+				Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
+				shipskin[i] = dummyShip;
+				shipskin2[i] = dummyShip2;
+				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
+				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
+				if(i !=5) {
+					try {
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+					} catch (IOException e) {
+						logger.warning("Loading failed.");
+					}
+				}
+			}
+			if (skincode1p == 0) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
+
+			}
+			if (skincode1p == 1) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
+			}
+			if (skincode1p == 2) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
+			}
+			if (skincode1p == 3) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
+			}
+			if (skincode1p == 4) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
+			}
+			if (skincode1p == 5) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
+			}
+			if (skincode2p == 0) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
+			}
+			if (skincode2p == 1) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 215, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 215, 30, 30);
+			}
+			if (skincode2p == 2) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 265, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 265, 30, 30);
+			}
+			if (skincode2p == 3) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 315, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 315, 30, 30);
+			}
+			if (skincode2p == 4) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 365, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 365, 30, 30);
+			}
+			if (skincode2p == 5) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
+			}
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship2, skincode2p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+
+		} else {
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, 0);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+			for (int i = 0; i < 6; i++) {
+				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+				shipskin[i] = dummyShip;
+				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
+				if(i !=5) {
+					try {
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+					} catch (IOException e) {
+						logger.warning("Loading failed.");
+					}
+				}
+			}
+			if (skincode1p == 0) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 165, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 165, 30, 30);
+			}
+			if (skincode1p == 1) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 215, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 215, 30, 30);
+			}
+			if (skincode1p == 2) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 265, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 265, 30, 30);
+			}
+			if (skincode1p == 3) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 315, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 315, 30, 30);
+			}
+			if (skincode1p == 4) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 365, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 365, 30, 30);
+			}
+			if (skincode1p == 5) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 415, 30, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 415, 30, 30);
+			}
+			backBufferGraphics.setFont(fontBig);
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
+			try {
+				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
+			} catch (IOException e) {
+				logger.warning("Loading failed.");
+			}
+		}
+			backBufferGraphics.setColor(Color.GREEN);
+			drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
+		}
+
+
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
 		String instructionsString = "Press Space to return";
@@ -708,6 +985,7 @@ public final class DrawManager {
 				- fontBigMetrics.stringWidth(string) / 2, height);
 	}
 
+
 	/**
 	 * Countdown to game start.
 	 *
@@ -770,8 +1048,8 @@ public final class DrawManager {
 
 	public void drawSetting(final Screen screen, final int option, final boolean selected){
 		String settingString = "Setting";
-		String instructionsString1 = "Move with UP, DOWN / Select with RIGHT arrow";
-		String instructionsString2 = "Press Space to return";
+		String instructionsString1 = "Move with UP, DOWN / Select with SPACE";
+		String instructionsString2 = "Press ESC to return";
 
 		String volumeString = "Volume";
 		String bgmString = "BGM";
@@ -840,7 +1118,7 @@ public final class DrawManager {
 
 	public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
 								  int volume, boolean bgmOn, int keyNum) {
-		String[] keyString = SettingScreen.getKeySettingString();
+		String[] keyString = Core.getKeySettingStringArray();
 		if(option == 0 || option == 1){
 			if (option == 0 && selected)
 				backBufferGraphics.setColor(Color.GREEN);
@@ -998,15 +1276,15 @@ public final class DrawManager {
 	 * @param screen      Screen to draw on.
 	 * @param achievements Map of achievements with their completion status.
 	 */
-	public void drawAchievements(final Screen screen, Map<String, Boolean> achievements) {
+	public void drawAchievements(final Screen screen, Map<Achievement, Boolean> achievements) {
 		backBufferGraphics.setFont(fontRegular);
 
 		int x = 20; // Fixed X-coordinate for achievement titles.
 		int y = 50; // Fixed Y-coordinate for the initial position.
 
 		// Loop through the achievements map and display each achievement.
-		for (Map.Entry<String, Boolean> entry : achievements.entrySet()) {
-				String achievementTitle = entry.getKey();
+		for (Map.Entry<Achievement, Boolean> entry : achievements.entrySet()) {
+				String achievementTitle = entry.getKey().toString().replace('_', ' ');
 				boolean isCompleted = entry.getValue();
 
 				// Display the achievement title.
