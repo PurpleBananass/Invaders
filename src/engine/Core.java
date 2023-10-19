@@ -190,9 +190,9 @@ public final class Core {
 					if(gameState.getLevel() == 1) {
 						SoundManager.resetBGM();
 					} else {
-						SoundManager.stopBGM(gameState.getLevel() - 2, 1.5f);
+						SoundManager.stopBGM(gameState.getLevel() - 1, 1.5f);
 					}
-					SoundManager.playBGM(gameState.getLevel() - 1);
+					SoundManager.playBGM(gameState.getLevel());
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " title screen at " + FPS + " fps.");
 					returnCode = frame.setScreen(currentScreen);

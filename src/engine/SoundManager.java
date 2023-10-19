@@ -194,9 +194,9 @@ public class SoundManager {
     }
 
     public static void playBGM(int levelNum) {
-        String soundFilePath = bgmArray.get(levelNum);
+        String soundFilePathShort = "BGM/B_Level" + Integer.toString(levelNum);
         String clipName = "level" + Integer.toString(levelNum);
-        playSound(soundFilePath, clipName, true, true);
+        playSound(soundFilePathShort, clipName, true, true);
     }
 
     public static void stopBGM(int levelNum, float fadeOutSpeed) {
@@ -205,7 +205,7 @@ public class SoundManager {
     }
 
     public static void resetBGM(){
-        for (int i = 0; i < bgmList.length; i++) {
+        for (int i = 0; i < 7; i++) {
             String clipName = "level" + Integer.toString(i);
             stopSound(clipName);
         }
