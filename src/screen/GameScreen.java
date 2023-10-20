@@ -674,10 +674,9 @@ public class GameScreen extends Screen {
 			}
 		}
 
+		//AchievementManager.getInstance().checkLuckySeven(this.score);
 
-		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
-			this.isRunning = false;
-
+		draw();
 	}
 
 	/**
@@ -849,7 +848,6 @@ public class GameScreen extends Screen {
                 } else {
                     for (EnemyShip enemyShip : this.enemyShipFormation) {
                         if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-
                             if (this.isBomb) {
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
                                 for (EnemyShip enemy : enemyShips) {
@@ -863,9 +861,7 @@ public class GameScreen extends Screen {
                             }
 
 							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
-
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
 							}
 
                             setBomb(false);
@@ -935,9 +931,7 @@ public class GameScreen extends Screen {
                             }
 
 							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
-
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
 							}
 
                             setBomb(false);
@@ -958,9 +952,7 @@ public class GameScreen extends Screen {
                             }
 
 							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
-
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
 							}
 
                             setBomb(false);
