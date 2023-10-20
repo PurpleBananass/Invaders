@@ -687,6 +687,15 @@ public class GameScreen extends Screen {
 	private void draw() {
 		drawManager.initDrawing(this);
 
+		if (SelectScreen.skillModeOn) {
+			drawManager.drawAmmo(this, this.magazine, this.bullet_count);
+
+			if (this.gameState.getMode() == 2) {
+				drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
+			}
+		}
+
+
 		if (this.gameState.getMode() == 1) {
 			if (this.lives > 0) {
 				drawManager.drawEntity(this.ship, this.ship.getPositionX(),
