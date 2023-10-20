@@ -95,7 +95,17 @@ public final class DrawManager {
 
 		Life,
 
-		AuxiliaryShips
+		AuxiliaryShips,
+
+		BombShape,
+
+		InvincibleShape,
+
+		SpeedUpShape,
+
+		AuxiliaryShape
+
+
 	};
 
 	/**
@@ -125,6 +135,10 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.Item, new boolean[3][3]);
 			spriteMap.put(SpriteType.Life, new boolean[7][7]);
 			spriteMap.put(SpriteType.AuxiliaryShips, new boolean[12][8]);
+			spriteMap.put(SpriteType.BombShape, new boolean[4][6]);
+			spriteMap.put(SpriteType.InvincibleShape, new boolean[5][5]);
+			spriteMap.put(SpriteType.SpeedUpShape, new boolean[5][4]);
+			spriteMap.put(SpriteType.AuxiliaryShape, new boolean[5][4]);
 
 			fileManager.loadSprite(spriteMap);
 
@@ -351,17 +365,52 @@ public final class DrawManager {
 	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 20, screen.getHeight() + 25);
-		for (int i = 0; i < inventory; i++)
-			drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+		backBufferGraphics.drawString(Integer.toString(inventory), 150, screen.getHeight() + 20);
+
+		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
+		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
+		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
+		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
+
+		for (int i = 0; i < inventory; i++) {
+			if (ItemQ[i].getItemType() == Item.ItemType.BombItem) {
+				drawEntity(bombItem, 20 + 35 * i, screen.getHeight() + 10);
+			}
+			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem) {
+				drawEntity(invincibleItem, 20 + 35 * i, screen.getHeight() + 10);
+			}
+			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem) {
+				drawEntity(SpeedUpItem, 20 + 35 * i, screen.getHeight() + 10);
+			}
+			else if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem) {
+				drawEntity(SubPlaneItem, 20 + 35 * i, screen.getHeight() + 10);
+			}
+		}
 	}
 
 	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 120, screen.getHeight() + 25);
-		for (int i = 0; i < inventory; i++)
-			drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+		backBufferGraphics.drawString(Integer.toString(inventory), 355, screen.getHeight() + 20);
+
+		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
+		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
+		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
+		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
+		for (int i = 0; i < inventory; i++) {
+			if (ItemQ[i].getItemType() == Item.ItemType.BombItem) {
+				drawEntity(bombItem, 250 + 35 * i, screen.getHeight() + 10);
+			}
+			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem) {
+				drawEntity(invincibleItem, 250 + 35 * i, screen.getHeight() + 10);
+			}
+			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem) {
+				drawEntity(SpeedUpItem, 250 + 35 * i, screen.getHeight() + 10);
+			}
+			else if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem) {
+				drawEntity(SubPlaneItem, 250 + 35 * i, screen.getHeight() + 10);
+			}
+		}
 	}
 
 
