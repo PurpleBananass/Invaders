@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Random;
 import java.util.logging.Logger;
-
 import engine.AchievementManager.Achievement;
 
 import java.lang.Integer;
@@ -363,9 +362,6 @@ public final class DrawManager {
 	 *            Screen to draw on.
 	 */
 	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 150, screen.getHeight() + 25);
 
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
@@ -374,41 +370,64 @@ public final class DrawManager {
 
 		for (int i = 0; i < inventory; i++) {
 			if (ItemQ[i].getItemType() == Item.ItemType.BombItem) {
-				drawEntity(bombItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(bombItem, 100 + 35 * i, screen.getHeight() + 10);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem) {
-				drawEntity(invincibleItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(invincibleItem, 100 + 35 * i, screen.getHeight() + 10);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem) {
-				drawEntity(SpeedUpItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SpeedUpItem, 100 + 35 * i, screen.getHeight() + 10);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem) {
-				drawEntity(SubPlaneItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SubPlaneItem, 100 + 35 * i, screen.getHeight() + 10);
 			}
 		}
 	}
 
 	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
+
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
 		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
 		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
+
 		for (int i = 0; i < inventory; i++) {
 			if (ItemQ[i].getItemType() == Item.ItemType.BombItem) {
-				drawEntity(bombItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(bombItem, 310 + 35 * i, screen.getHeight() + 10);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem) {
-				drawEntity(invincibleItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(invincibleItem, 310 + 35 * i, screen.getHeight() + 10);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem) {
-				drawEntity(SpeedUpItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SpeedUpItem, 310 + 35 * i, screen.getHeight() + 10);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem) {
-				drawEntity(SubPlaneItem, 20 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SubPlaneItem, 310 + 35 * i, screen.getHeight() + 10);
 			}
 		}
 	}
 
+
+	/**
+	 * Draws number of items currently in inventory on screen.
+	 *
+	 * @param magazine
+	 * 		  	Number of remaining magazines
+	 * @param bullet_count
+	 * 			Number of bullets fired
+	 * @param screen
+	 *            Screen to draw on.
+	 */
+	public void drawAmmo(final Screen screen, final int magazine, final int bullet_count) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count) + "/" + Integer.toString(magazine), 10, screen.getHeight() + 25);
+	}
+	public void drawAmmo2(final Screen screen, final int magazine2, final int bullet_count2) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count2) + "/" + Integer.toString(magazine2), 224, screen.getHeight() + 25);
+	}
 
 	/**
 	 * Draws a thick line from side to side of the screen.
@@ -418,15 +437,15 @@ public final class DrawManager {
 	 * @param positionY
 	 *            Y coordinate of the line.
 	 */
-	public void drawHorizontalLine(final Screen screen, final int positionY) {
-		backBufferGraphics.setColor(Color.GREEN);
+	public void drawHorizontalLine(final Screen screen, final int positionY, Color color) {
+		backBufferGraphics.setColor(color);
 		backBufferGraphics.drawLine(0, positionY, screen.getWidth(), positionY);
 		backBufferGraphics.drawLine(0, positionY + 1, screen.getWidth(),
 				positionY + 1);
 	}
 
 	/**
-	 * Draws game title.
+	 * Draws game title.x
 	 *
 	 * @param screen
 	 *            Screen to draw on.
@@ -1100,6 +1119,86 @@ public final class DrawManager {
 			drawCenteredBigString(screen, "GO!", screen.getHeight() / 2
 					+ fontBigMetrics.getHeight() / 3);
 	}
+
+	public void drawClear(final Screen screen, final int option, final int level) {
+		String titleString = "LEVEL  " + level + "  Clear";
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
+
+		String continueString = "Continue";
+		String exitString = "Exit";
+
+		if (option == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, continueString,
+				screen.getHeight() / 4 * 3);
+
+		if (option == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, exitString,
+				screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
+	}
+
+	public void drawWindow(final Screen screen, int x, int y, int w){
+		int rectWidth = screen.getWidth();
+		int rectHeight = screen.getHeight() / 6;
+		backBufferGraphics.setColor(Color.BLACK);
+		backBufferGraphics.fillRect(x, y,
+				rectWidth, rectHeight + w);
+	}
+
+	public void drawPauseMenu(final Screen screen, final int option) {
+		String quit = "Quit";
+		String resume = "Resume";
+
+		if (option == 1)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, quit, screen.getHeight() / 2 - 10);
+
+		if (option == 0)
+			backBufferGraphics.setColor(Color.YELLOW);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, resume, screen.getHeight() / 2 + 20 );
+
+		//How to operate in the pause window
+		backBufferGraphics.setColor(Color.YELLOW);
+		drawCenteredRegularString(screen, "Change: Ctrl" + " / " + "Select: Spacebar",
+				screen.getHeight() / 2 - screen.getHeight() / 12 - 15);
+	}
+	public void drawManualMenu(final Screen screen) {
+
+		String[] keyInfo = {"left", "right", "attack", "burst1", "burst2", "reload", "booster", "item"};
+		String[] keyValue = Core.getKeySettingStringArray();
+
+		backBufferGraphics.setColor(Color.CYAN);
+		drawCenteredRegularString(screen, "Play manual", screen.getHeight() / 2 - 105);
+		backBufferGraphics.drawString("Player1", screen.getWidth() / 2 - 140, screen.getHeight() / 2 - 60);
+		backBufferGraphics.drawString("Player2", screen.getWidth() / 2 + 65, screen.getHeight() / 2 - 60);
+
+		backBufferGraphics.setColor(Color.WHITE);
+		int y = screen.getHeight() / 2 - 30;
+		int x1 = screen.getWidth() / 2 - 150; //player1_manual
+		int x2 = screen.getWidth() / 2 - 50; //player1_setting
+		int x3 = screen.getWidth() / 2 + 50; //player2
+		int x4 = screen.getWidth() / 2 + 150; //player2_setting
+		for(int i=0; i<8; i++){
+			backBufferGraphics.drawString(keyInfo[i], x1-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyValue[i], x2-fontRegularMetrics.stringWidth(keyValue[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyInfo[i], x3-fontRegularMetrics.stringWidth(keyInfo[i])/2, y+20*i);
+			backBufferGraphics.drawString(keyValue[i+8], x4-fontRegularMetrics.stringWidth(keyValue[i+8])/2, y+20*i);
+		}
+
+
+	}
+
 	public void drawOneFifthRegularString(final Screen screen,
 										  final String string, final int height) {
 		backBufferGraphics.setFont(fontRegular);

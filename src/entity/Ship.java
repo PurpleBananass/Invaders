@@ -135,15 +135,8 @@ public class Ship extends Entity {
 		this.skillCooldown.checkFinished();
 		if (!this.destructionCooldown.checkFinished())
 			this.spriteType = SpriteType.ShipDestroyed;
-		else{
+		else
 			this.spriteType = SpriteType.Ship;
-		}
-	}
-	public final void updatep_2() {
-		this.skillCooldown.checkFinished();
-		if (!this.destructionCooldown.checkFinished())
-			this.spriteType = SpriteType.ShipDestroyed;
-		this.spriteType = SpriteType.Ship2;
 	}
 
 	/**
@@ -201,7 +194,7 @@ public class Ship extends Entity {
 	 * Re-Setter for the ship's shooting frequency speed.
 	 */
 	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(shootingInterval);}
-	
+
 	/** Set item_speed for 10sec when ship get speed item **/
 	public void setItemSpeed() {
 		this.SPEED = item_SPEED;
@@ -261,9 +254,7 @@ public class Ship extends Entity {
 		}
 	}
 
-
-
-	public final ItemQueue getItemQueue(){return this.itemQueue;}
+	public final ItemQueue getItemQueue(){ return this.itemQueue; }
 
 	public List<Ship> getAuxiliaryShips() {
 		return auxiliaryShips;
