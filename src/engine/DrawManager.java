@@ -351,37 +351,29 @@ public final class DrawManager {
 	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 20, screen.getHeight() + 25);
+		backBufferGraphics.drawString("ITM: ", 100, screen.getHeight() + 25);
 		for (int i = 0; i < inventory; i++)
-			drawEntity(ItemQ[i], 40 + 35 * i, screen.getHeight() + 25);
+			drawEntity(ItemQ[i], 140 + 25 * i, screen.getHeight() + 17);
 	}
 
 	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 120, screen.getHeight() + 25);
+		backBufferGraphics.drawString("ITM: ", 314, screen.getHeight() + 25);
 		for (int i = 0; i < inventory; i++)
-			drawEntity(ItemQ[i], 140 + 35 * i, screen.getHeight() + 25);
+			drawEntity(ItemQ[i], 354 + 25 * i, screen.getHeight() + 17);
 	}
 
 
-	public void drawMagazines(final Screen screen, final int magazine) {
+	public void drawAmmo(final Screen screen, final int magazine, final int bullet_count) {
+		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString("MAG " + Integer.toString(magazine), 10, 508);
+		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count) + "/" + Integer.toString(magazine), 10, screen.getHeight() + 25);
 	}
-	public void drawMagazines2(final Screen screen, final int magazine2) {
+	public void drawAmmo2(final Screen screen, final int magazine2, final int bullet_count2) {
+		backBufferGraphics.setFont(fontRegular);1
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString("MAG " + Integer.toString(magazine2), 335, 508);
-	}
-
-	public void drawBullets(final Screen screen, final int bullet_count) {
-		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString("BUL " + Integer.toString(10-bullet_count), 60, 508);
-	}
-
-	public void drawBullets2(final Screen screen, final int bullet_count2) {
-		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString("BUL " + Integer.toString(10-bullet_count2), 385, 508);
+		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count2) + "/" + Integer.toString(magazine2), 224, screen.getHeight() + 25);
 	}
 
 	/**

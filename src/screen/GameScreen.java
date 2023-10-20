@@ -588,14 +588,10 @@ public class GameScreen extends Screen {
 		drawManager.initDrawing(this);
 
 
-		drawManager.drawMagazines(this, this.magazine);
-		drawManager.drawBullets(this, this.bullet_count);
+		drawManager.drawAmmo(this, this.magazine, this.bullet_count);
 
 		if (this.gameState.getMode() == 2) {
-			drawManager.drawMagazines2(this, this.magazine2);
-		}
-		if (this.gameState.getMode() == 2) {
-			drawManager.drawBullets2(this, this.bullet_count2);
+			drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
 		}
 
 
