@@ -138,12 +138,6 @@ public class Ship extends Entity {
 		else
 			this.spriteType = SpriteType.Ship;
 	}
-	public final void updatep_2() {
-		this.skillCooldown.checkFinished();
-		if (!this.destructionCooldown.checkFinished())
-			this.spriteType = SpriteType.ShipDestroyed;
-		this.spriteType = SpriteType.Ship2;
-	}
 
 	/**
 	 * Switches the ship to its destroyed state.

@@ -69,7 +69,6 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 
 	private Set<Item> items;
-	private Set<Item> items2;
 	/** Current score. */
 	private int score;
 	/** First Player's lives left. */
@@ -243,7 +242,6 @@ public class GameScreen extends Screen {
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
-		this.items2 = new HashSet<Item>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -636,7 +634,7 @@ public class GameScreen extends Screen {
 
 				this.ship.update();
 				if (this.gameState.getMode() == 2) {
-					this.ship2.updatep_2();
+					this.ship2.update();
 				}
 
 				this.enemyShipFormation.update();
@@ -686,6 +684,15 @@ public class GameScreen extends Screen {
 	 */
 	private void draw() {
 		drawManager.initDrawing(this);
+
+		if (SelectScreen.skillModeOn) {
+			drawManager.drawAmmo(this, this.magazine, this.bullet_count);
+
+			if (this.gameState.getMode() == 2) {
+				drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
+			}
+		}
+
 
 		if (this.gameState.getMode() == 1) {
 			if (this.lives > 0) {
@@ -750,14 +757,14 @@ public class GameScreen extends Screen {
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
-
 			int countdown = (int) ((INPUT_DELAY
 					- (System.currentTimeMillis()
 					- this.gameStartTime)) / 1000);
 			long beep = ((INPUT_DELAY - (System.currentTimeMillis() - this.gameStartTime)));
-			if ((beep<4000 && beep>3984) || (beep<3000 && beep>2984) || (beep<2000 && beep>1984))
+
+			if ((beep<3995 && beep>3975) || (beep<2995 && beep>2975) || (beep<1995 && beep>1975))
 				SoundManager.playSound("SFX/S_LevelStart_b", "level_start_beep", false, false);
-			if ((beep<1000 && beep>984))
+			if ((beep<995 && beep>975))
 				SoundManager.playSound("SFX/S_LevelStart_a", "level_start_count", false, false);
 			drawManager.drawCountDown(this, this.level, countdown,
 					this.bonusLife);
@@ -841,13 +848,9 @@ public class GameScreen extends Screen {
                 } else {
                     for (EnemyShip enemyShip : this.enemyShipFormation) {
                         if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-                            }
-
                             if (this.isBomb) {
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for (EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -857,6 +860,11 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+								SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
+							}
 
                             setBomb(false);
 
@@ -910,12 +918,10 @@ public class GameScreen extends Screen {
 				} else {
 					for (EnemyShip enemyShip : this.enemyShipFormation) {
 						if (bullet.getShooter() == 1 && !enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for(EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -926,15 +932,18 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+							}
+
                             setBomb(false);
 							recyclable.add(bullet);
 						} else if(!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for(EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -945,6 +954,10 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed2++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+							}
 
                             setBomb(false);
 							recyclable.add(bullet);
@@ -977,13 +990,15 @@ public class GameScreen extends Screen {
 		for (Item item : this.items) {
 			if (checkCollision(item, this.ship) && !this.levelFinished) {
 				recyclableItem.add(item);
+				SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
 				this.ship.getItemQueue().enque(item);
 			}
 		}
 		if (gameState.getMode() == 2) {
-			for (Item item : this.items2) {
+			for (Item item : this.items) {
 				if (checkCollision(item, this.ship2) && !this.levelFinished) {
 					recyclableItem.add(item);
+					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
 					this.ship2.getItemQueue().enque(item);
 				}
 			}
@@ -1113,21 +1128,30 @@ public class GameScreen extends Screen {
 					item.getItemType() == Item.ItemType.SubPlaneItem) {
 				ship.setAuxiliaryShipsMode();
 				this.logger.info("SubPlane Item 사용");
+				SoundManager.playSound("SFX/S_Item_SubShip", "SubPlaneItem", false, true); // 보조비행기 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
 				ship.setItemSpeed();
-				this.logger.info("SpeedUp Item 사용");
+				SoundManager.playSound("SFX/S_Item_SpeedUp", "SpeedUpItem", false, true); // 속도 증가 아이템 bgm
+
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.InvincibleItem) {
 				ship.runInvincible();
 				this.logger.info("Invincible Item 사용");
+				SoundManager.playSound("SFX/S_Item_Invicible", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.BombItem) {
 				setBomb(true);
 				this.logger.info("Bomb Item 사용");
+				SoundManager.playSound("SFX/S_Item_Bomb_Equipped", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
+
 			}
 			item.setIsGet();
 			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");

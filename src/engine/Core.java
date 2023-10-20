@@ -255,11 +255,11 @@ public final class Core {
 				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				SoundManager.resetBGM();
+				SoundManager.stopSound("ship_moving");
 				SoundManager.playSound("BGM/B_Gameover", "B_gameover", true, true, 2f);
 				SoundManager.playSound("SFX/S_Gameover","S_gameover",false,false);
 				returnCode = frame.setScreen(currentScreen);
 				SoundManager.stopSound("B_gameover",2f);
-				SoundManager.stopSound("S_gameover",2f);
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
