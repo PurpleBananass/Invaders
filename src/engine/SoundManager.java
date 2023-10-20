@@ -193,9 +193,11 @@ public class SoundManager {
         else return false;
     }
 
-    public static void setVolume(String clipName, float volume){
+    public static void setVolume(String clipName, float percent){
         Clip clip = clips.get(clipName);
         FloatControl floatcontrol = (FloatControl)clip.getControl(Type.MASTER_GAIN);
+        float volume = floatcontrol.getValue();
+        floatcontrol.setValue((percent/100)*volume);
         floatcontrol.setValue(getValue(volume));
     }
 
