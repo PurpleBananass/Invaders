@@ -69,7 +69,6 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 
 	private Set<Item> items;
-	private Set<Item> items2;
 	/** Current score. */
 	private int score;
 	/** First Player's lives left. */
@@ -243,7 +242,6 @@ public class GameScreen extends Screen {
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
-		this.items2 = new HashSet<Item>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -850,12 +848,6 @@ public class GameScreen extends Screen {
                 } else {
                     for (EnemyShip enemyShip : this.enemyShipFormation) {
                         if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-								SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
-                            }
-
                             if (this.isBomb) {
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
 								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
@@ -868,6 +860,11 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+								SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
+							}
 
                             setBomb(false);
 
@@ -921,9 +918,6 @@ public class GameScreen extends Screen {
 				} else {
 					for (EnemyShip enemyShip : this.enemyShipFormation) {
 						if (bullet.getShooter() == 1 && !enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
@@ -938,12 +932,14 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+							}
+
                             setBomb(false);
 							recyclable.add(bullet);
 						} else if(!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
@@ -958,6 +954,10 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed2++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+							}
 
                             setBomb(false);
 							recyclable.add(bullet);
@@ -995,7 +995,7 @@ public class GameScreen extends Screen {
 			}
 		}
 		if (gameState.getMode() == 2) {
-			for (Item item : this.items2) {
+			for (Item item : this.items) {
 				if (checkCollision(item, this.ship2) && !this.levelFinished) {
 					recyclableItem.add(item);
 					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
