@@ -2,6 +2,7 @@ package screen;
 
 import engine.Cooldown;
 import engine.Core;
+import engine.SoundManager;
 
 import java.awt.event.KeyEvent;
 
@@ -28,7 +29,7 @@ public class SelectScreen extends Screen{
      */
     public SelectScreen(int width, int height, int fps){
         super(width, height, fps);
-        this.returnCode = 7;
+        this.returnCode = 8;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
@@ -54,12 +55,17 @@ public class SelectScreen extends Screen{
         if (this.selectionCooldown.checkFinished()
                 && this.inputDelay.checkFinished()) {
             if(!canEscape){
+                if(inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){
+                    this.returnCode = 1;
+                    this.isRunning = false;
+                }
                 if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
                         || inputManager.isKeyDown(KeyEvent.VK_D)|| inputManager.isKeyDown(KeyEvent.VK_LEFT)|| inputManager.isKeyDown(KeyEvent.VK_A)) {
                     if(gameMode == 1) gameMode = 2;
                     else gameMode= 1;
                     this.selectionCooldown.reset();}
                 if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
+                    SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                     canEscape = true;
                     this.selectionCooldown.reset();
 
@@ -67,13 +73,20 @@ public class SelectScreen extends Screen{
                 }
             }
             else{
+                if(inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){
+                    canEscape = false;
+                    this.selectionCooldown.reset();
+                }
                 if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)
                         || inputManager.isKeyDown(KeyEvent.VK_D)|| inputManager.isKeyDown(KeyEvent.VK_LEFT)|| inputManager.isKeyDown(KeyEvent.VK_A)) {
                     skillModeOn = !skillModeOn;
                     this.selectionCooldown.reset();
                 }
-                if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
+                if (inputManager.isKeyDown(KeyEvent.VK_SPACE)){
                     this.isRunning = false;
+                    SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
+                }
+
             }
 
         }
