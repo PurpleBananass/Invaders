@@ -636,7 +636,7 @@ public class GameScreen extends Screen {
 
 				this.ship.update();
 				if (this.gameState.getMode() == 2) {
-					this.ship2.updatep_2();
+					this.ship2.update();
 				}
 
 				this.enemyShipFormation.update();
@@ -686,6 +686,15 @@ public class GameScreen extends Screen {
 	 */
 	private void draw() {
 		drawManager.initDrawing(this);
+
+		if (SelectScreen.skillModeOn) {
+			drawManager.drawAmmo(this, this.magazine, this.bullet_count);
+
+			if (this.gameState.getMode() == 2) {
+				drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
+			}
+		}
+
 
 		if (this.gameState.getMode() == 1) {
 			if (this.lives > 0) {
