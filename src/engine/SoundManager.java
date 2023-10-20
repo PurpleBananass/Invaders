@@ -197,6 +197,11 @@ public class SoundManager {
         }
     }
 
+    private static float getVolume(float res) {
+        double temp = (res - minimum) / one;
+        return (float) Math.pow(10, temp / 50);
+    }
+
     private static float getValue(float volume){
         float res = (float)(minimum + one*(50*Math.log10(volume)));
         if(res<minimum) return minimum;
@@ -213,9 +218,8 @@ public class SoundManager {
     public static void setVolume(String clipName, float percent){
         Clip clip = clips.get(clipName);
         FloatControl floatcontrol = (FloatControl)clip.getControl(Type.MASTER_GAIN);
-        float volume = floatcontrol.getValue();
-        floatcontrol.setValue((percent/100)*volume);
-        floatcontrol.setValue(getValue(volume));
+        float volume = getVolume(floatcontrol.getValue());
+        floatcontrol.setValue(getValue((percent/100)*volume));
     }
 
     public static void playBGM(int levelNum) {
