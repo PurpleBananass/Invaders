@@ -636,7 +636,7 @@ public class GameScreen extends Screen {
 
 				this.ship.update();
 				if (this.gameState.getMode() == 2) {
-					this.ship2.updatep_2();
+					this.ship2.update();
 				}
 
 				this.enemyShipFormation.update();
