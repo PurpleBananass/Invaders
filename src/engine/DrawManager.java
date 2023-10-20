@@ -362,6 +362,9 @@ public final class DrawManager {
 	 *            Screen to draw on.
 	 */
 	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(inventory), 205, screen.getHeight() + 20);
 
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
@@ -386,11 +389,14 @@ public final class DrawManager {
 
 	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
 
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString(Integer.toString(inventory), 415, screen.getHeight() + 20);
+
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
 		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
 		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
-
 		for (int i = 0; i < inventory; i++) {
 			if (ItemQ[i].getItemType() == Item.ItemType.BombItem) {
 				drawEntity(bombItem, 310 + 35 * i, screen.getHeight() + 10);
