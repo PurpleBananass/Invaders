@@ -13,7 +13,7 @@ public class Item extends Entity {
      * Speed of the item, only positive number
      * positive is down.
      */
-    private int speed;
+    private double speed;
 
 
     public static enum ItemType {
@@ -40,9 +40,9 @@ public class Item extends Entity {
      * @param positionY
      *            Initial position of the item in the Y axis.
      */
-    public Item(final int positionX, final int positionY, int itemRange) {
+    public Item(final int positionX, final int positionY, int itemRange, double itemSpeed) {
         super(positionX, positionY, 30, 30, Color.YELLOW);
-        this.speed = 5;
+        this.speed = itemSpeed;
         this.spriteType = SpriteType.Item;
         setItemType(itemRange);
     }
@@ -74,7 +74,7 @@ public class Item extends Entity {
      *
      * @return Speed of the item.
      */
-    public final int getSpeed() {
+    public final double getSpeed() {
         return this.speed;
     }
 
