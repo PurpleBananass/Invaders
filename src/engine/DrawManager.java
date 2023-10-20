@@ -365,13 +365,23 @@ public final class DrawManager {
 	}
 
 
+	/**
+	 * Draws number of items currently in inventory on screen.
+	 *
+	 * @param magazine
+	 * 		  	Number of remaining magazines
+	 * @param bullet_count
+	 * 			Number of bullets fired
+	 * @param screen
+	 *            Screen to draw on.
+	 */
 	public void drawAmmo(final Screen screen, final int magazine, final int bullet_count) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count) + "/" + Integer.toString(magazine), 10, screen.getHeight() + 25);
 	}
 	public void drawAmmo2(final Screen screen, final int magazine2, final int bullet_count2) {
-		backBufferGraphics.setFont(fontRegular);1
+		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count2) + "/" + Integer.toString(magazine2), 224, screen.getHeight() + 25);
 	}
