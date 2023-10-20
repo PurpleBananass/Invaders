@@ -579,6 +579,7 @@ public class GameScreen extends Screen {
 
 		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
 			this.isRunning = false;
+
 	}
 
 	/**
@@ -1017,6 +1018,7 @@ public class GameScreen extends Screen {
 			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");
 		}
 	}
+
 	public void setBomb(boolean isBomb){
 		this.isBomb = isBomb;
 	}
