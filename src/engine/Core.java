@@ -36,25 +36,26 @@ public final class Core {
 
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
-			new GameSettings(5, 4, 60, 2000);
+			new GameSettings(5, 4, 60, 2000, 5.5);
 	/** Difficulty settings for level 2. */
 	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(5, 5, 50, 2500);
+			new GameSettings(5, 5, 50, 2500, 5.5);
 	/** Difficulty settings for level 3. */
 	private static final GameSettings SETTINGS_LEVEL_3 =
-			new GameSettings(6, 5, 40, 1500);
+			new GameSettings(6, 5, 40, 1500, 5.5);
 	/** Difficulty settings for level 4. */
 	private static final GameSettings SETTINGS_LEVEL_4 =
-			new GameSettings(6, 6, 30, 1500);
+			new GameSettings(6, 6, 30, 1500, 5);
 	/** Difficulty settings for level 5. */
 	private static final GameSettings SETTINGS_LEVEL_5 =
-			new GameSettings(7, 6, 20, 1000);
+			new GameSettings(7, 6, 20, 1000,5);
 	/** Difficulty settings for level 6. */
 	private static final GameSettings SETTINGS_LEVEL_6 =
-			new GameSettings(7, 7, 10, 1000);
+			new GameSettings(7, 7, 10, 1000,4.8);
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
-			new GameSettings(8, 7, 2, 500);
+			new GameSettings(8, 7, 2, 500,4.8);
+	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -138,8 +139,6 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
 
-
-
 		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 
 		GameState gameState;
@@ -197,6 +196,8 @@ public final class Core {
 					returnCode = frame.setScreen(currentScreen);
 					LOGGER.info("Closing Game screen.");
 
+					if (returnCode == 1) break;
+
 					if (mode == 1) {
 						gameState = ((GameScreen) currentScreen).getGameState1p();
 						gameState = new GameState(gameState.getLevel() + 1,
@@ -215,10 +216,24 @@ public final class Core {
 								gameState.getShipsDestroyed(),
 								gameState.getShipsDestroyed2());
 					}
-          AchievementManager.getInstance().checkAchievements(gameState);
+					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
+							&& gameState.getLevel() <= NUM_LEVELS) {
+						currentScreen = new ClearScreen(width, height, FPS, gameState);
+						LOGGER.info("Starting 	" + WIDTH + "x" + HEIGHT
+								+ " clear screen at " + FPS + " fps.");
+						returnCode = frame.setScreen(currentScreen);
+						LOGGER.info("Closing clear screen.");
+						if (returnCode == 1) break;
+					}
+
+					AchievementManager.getInstance().checkAchievements(gameState);
+
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
+
+				if (returnCode == 1) break;
 
 				if (gameState.getMode() == 1) {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
