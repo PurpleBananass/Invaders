@@ -223,7 +223,7 @@ public class Ship extends Entity {
 					Invincible = false;
 					changeColor(Color.GREEN);
 				}
-				else {
+				else if(c == Color.magenta) {
 					Invincible = false;
 					changeColor(Color.RED);
 				}
