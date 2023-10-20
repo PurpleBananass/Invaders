@@ -39,8 +39,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int DESCENT_DISTANCE = 20;
 	/** Minimum speed allowed. */
 	private static final int MINIMUM_SPEED = 10;
-	/** 적의 타입에 따라 총 쿨타임이 줄어듬 */
-	private static final double[] BULLETCOOLDOWN = {0.05,0.1,0.2};
 	/** DrawManager instance. */
 	private DrawManager drawManager;
 	/** Application logger. */
@@ -463,25 +461,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				if (shot.get(index))continue;
 				shot.set(index, true);
 				EnemyShip shooter = this.shooters.get(index);
-				shooter.shoot(bullets);
+				shooter.shoot(bullets, shootingCooldown);
 				SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
-				switch (shooter.spriteType)
-				{
-					case EnemyShipA1:
-					case EnemyShipA2:
-						this.shootingCooldown.timedown(BULLETCOOLDOWN[0]);
-						break;
-					case EnemyShipB1:
-					case EnemyShipB2:
-						this.shootingCooldown.timedown(BULLETCOOLDOWN[1]);
-						break;
-					case EnemyShipC1:
-					case EnemyShipC2:
-						this.shootingCooldown.timedown(BULLETCOOLDOWN[2]);
-						break;
-					default:
-						break;
-				}
 			}
 		}
 	}
