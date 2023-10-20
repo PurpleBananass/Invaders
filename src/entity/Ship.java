@@ -236,13 +236,8 @@ public class Ship extends Entity {
 
 	/** Set item_speed for 10sec when ship get speed item **/
 	public void setItemSpeed() {
-		if (!this.speedupCooldown.checkFinished()) {
-			resetSpeed();
-		}
-		else {
-			this.speedupCooldown.reset();
-			this.SPEED = item_SPEED;
-		}
+		this.speedupCooldown.reset();
+		this.SPEED = item_SPEED;
 	}
 
 	/** Set item_speed when ship buy speed item in store**/
@@ -258,11 +253,12 @@ public class Ship extends Entity {
 	public final void runInvincible() {
 		Color c = this.getColor();
 
-		if (c == Color.GREEN) {
+		if (c == Color.GREEN || c == Color.BLUE) {
 			this.invincibleCooldown.reset();
 			this.Invincible = true;
 			this.changeColor(Color.BLUE);
-		} else {
+		}
+		else if (c == Color.RED || c == Color.magenta) {
 			this.invincibleCooldown.reset();
 			this.Invincible = true;
 			this.changeColor(Color.magenta);
