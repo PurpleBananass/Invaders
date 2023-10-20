@@ -365,7 +365,7 @@ public final class DrawManager {
 	public void drawItems(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 150, screen.getHeight() + 25);
+		backBufferGraphics.drawString(Integer.toString(inventory), 150, screen.getHeight() + 20);
 
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
@@ -391,7 +391,7 @@ public final class DrawManager {
 	public void drawItems2(final Screen screen, Item[] ItemQ, final int inventory) {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 355, screen.getHeight() + 25);
+		backBufferGraphics.drawString(Integer.toString(inventory), 355, screen.getHeight() + 20);
 
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
