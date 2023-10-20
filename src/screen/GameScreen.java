@@ -853,6 +853,7 @@ public class GameScreen extends Screen {
 
                             if (enemyShip.hasItem()) {
                                 items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+								SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
                             }
 
                             if (this.isBomb) {
@@ -1127,21 +1128,30 @@ public class GameScreen extends Screen {
 					item.getItemType() == Item.ItemType.SubPlaneItem) {
 				ship.setAuxiliaryShipsMode();
 				this.logger.info("SubPlane Item 사용");
+				SoundManager.playSound("SFX/S_Item_SubShip", "SubPlaneItem", false, true); // 보조비행기 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
 				ship.setItemSpeed();
-				this.logger.info("SpeedUp Item 사용");
+				SoundManager.playSound("SFX/S_Item_SpeedUp", "SpeedUpItem", false, true); // 속도 증가 아이템 bgm
+
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.InvincibleItem) {
 				ship.runInvincible();
 				this.logger.info("Invincible Item 사용");
+				SoundManager.playSound("SFX/S_Item_Invicible", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.BombItem) {
 				setBomb(true);
 				this.logger.info("Bomb Item 사용");
+				SoundManager.playSound("SFX/S_Item_Bomb_Equipped", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
+
 			}
 			item.setIsGet();
 			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");

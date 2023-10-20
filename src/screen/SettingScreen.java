@@ -116,6 +116,7 @@ public class SettingScreen extends Screen {
                         break;
                 }
             }
+
             /** Move up and down when selecting key */
             if((inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) && itemCode>1 && selected && !keyChangeMode){
