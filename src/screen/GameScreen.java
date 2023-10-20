@@ -299,13 +299,12 @@ public class GameScreen extends Screen {
 					this.ship.moveLeft();
 				}
 
-
-				if((moveRight || moveLeft)) {
+				if(moveRight || moveLeft) {
 					if (!SoundManager.isPlaying("ship_moving")) {
 						SoundManager.playSound("BGM/B_Ship", "ship_moving", true, true);
 					}
 				} else {
-					SoundManager.stopSound("ship_moving");
+						SoundManager.stopSound("ship_moving");
 				}
 
 				if ( replayability.getReplay()==0 && inputManager.isKeyDown(Core.getKeySettingCode(2))){
@@ -659,12 +658,12 @@ public class GameScreen extends Screen {
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
-
+			SoundManager.stopSound("ship_moving");
 			int countdown = (int) ((INPUT_DELAY
 					- (System.currentTimeMillis()
 					- this.gameStartTime)) / 1000);
 			long beep = ((INPUT_DELAY - (System.currentTimeMillis() - this.gameStartTime)));
-			SoundManager.stopSound("ship_moving");
+
 			if ((beep<3995 && beep>3975) || (beep<2995 && beep>2975) || (beep<1995 && beep>1975))
 				SoundManager.playSound("SFX/S_LevelStart_b", "level_start_beep", false, false);
 			if ((beep<995 && beep>975))
