@@ -159,6 +159,7 @@ public final class Core {
                     break;
 			case 1:
 				// Main menu.
+				SoundManager.resetBGM();
 				SoundManager.playSound("BGM/B_Main_a", "menu", true, true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
