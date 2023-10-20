@@ -724,10 +724,6 @@ public class GameScreen extends Screen {
                     for (EnemyShip enemyShip : this.enemyShipFormation) {
                         if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
 
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-                            }
-
                             if (this.isBomb) {
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
                                 for (EnemyShip enemy : enemyShips) {
@@ -739,6 +735,10 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
+							}
 
                             setBomb(false);
 
@@ -792,9 +792,6 @@ public class GameScreen extends Screen {
 				} else {
 					for (EnemyShip enemyShip : this.enemyShipFormation) {
 						if (bullet.getShooter() == 1 && !enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
@@ -808,12 +805,14 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
+							}
+
                             setBomb(false);
 							recyclable.add(bullet);
 						} else if(!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
@@ -827,6 +826,10 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed2++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
+							}
 
                             setBomb(false);
 							recyclable.add(bullet);
