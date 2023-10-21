@@ -217,6 +217,7 @@ public final class Core {
 								gameState.getShipsDestroyed(),
 								gameState.getShipsDestroyed2());
 					}
+					AchievementManager.getInstance().checkAchievements(gameState);
 					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 							&& gameState.getLevel() <= NUM_LEVELS) {
@@ -227,9 +228,6 @@ public final class Core {
 						LOGGER.info("Closing clear screen.");
 						if (returnCode == 1) break;
 					}
-
-					AchievementManager.getInstance().checkAchievements(gameState);
-
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
