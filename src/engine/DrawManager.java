@@ -725,9 +725,18 @@ public final class DrawManager {
 		int startX = screen.getWidth() / 10; // Starting X position for the first item
 		int itemWidth = 100; // Width of each item box
 		int spacing = 20; // Horizontal spacing
+		int itemX1 = startX;
+		int itemX2 = startX + itemWidth + spacing;
+		int itemX3 = startX + 2 * (itemWidth + spacing);
+		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
+		Ship BulletItem = new Ship(0, 0, Color.orange, SpriteType.Bullet, false);
+
+		drawEntity(new Ship(0, 0, Color.RED, SpriteType.Life, false),itemX2+45, screen.getHeight() / 2-5);
+		drawEntity(SpeedUpItem, itemX1+45, screen.getHeight() / 2-5);
+		drawEntity(BulletItem, itemX3+48, screen.getHeight() / 2-5);
 
 		// Draw the first item
-		int itemX1 = startX;
+
 		if (selectedItem == 70) {
 			backBufferGraphics.setColor(Color.GREEN);
 		} else {
@@ -746,7 +755,7 @@ public final class DrawManager {
 		backBufferGraphics.drawString(priceText1, priceX1, screen.getHeight() / 2 + 90);
 
 		// Draw the second item
-		int itemX2 = startX + itemWidth + spacing;
+
 		if (selectedItem == 71) {
 			backBufferGraphics.setColor(Color.GREEN);
 		} else {
@@ -765,7 +774,7 @@ public final class DrawManager {
 		backBufferGraphics.drawString(priceText2, priceX2, screen.getHeight() / 2 + 90);
 
 		// Draw the third item
-		int itemX3 = startX + 2 * (itemWidth + spacing);
+
 		if (selectedItem == 72) {
 			backBufferGraphics.setColor(Color.GREEN);
 		} else {
