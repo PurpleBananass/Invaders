@@ -200,11 +200,7 @@ public class Ship extends Entity {
      * @return Speed of the ship.
      */
     public final void setSpeed(int sp) {
-        if(hasPurchasedSpeedItem){
-            this.speed = sp + 2;
-        }else{
-            this.speed = sp;
-        }
+        this.speed = sp;
     }
 
     /**
@@ -332,8 +328,14 @@ public class Ship extends Entity {
     public void setOriginalSpeed(int originalSpeed) {
         if(hasPurchasedSpeedItem){
             this.originalSpeed = originalSpeed;
+            this.speed = this.originalSpeed;
         }else {
             this.originalSpeed = originalSpeed + 2;
+            this.speed = this.originalSpeed;
         }
+    }
+
+    public int getOriginalSpeed() {
+        return originalSpeed;
     }
 }
