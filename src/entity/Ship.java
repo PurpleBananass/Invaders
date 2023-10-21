@@ -43,7 +43,7 @@ public class Ship extends Entity {
      * private static int SPEED = 2;
      * /** Movement of the ship when ship get speed item for each unit of time.
      **/
-    private static final int item_SPEED = 6;
+    private final int ITEM_SPEED_UP_VALUE = 4;
 
     /**
      * Minimum time between shots.
@@ -236,11 +236,11 @@ public class Ship extends Entity {
     }
 
     public final boolean getItemImpact() {
-        return (this.speed == item_SPEED || this.Invincible || this.existAuxiliaryShips);
+        return (this.speed == this.originalSpeed + this.ITEM_SPEED_UP_VALUE || this.Invincible || this.existAuxiliaryShips);
     }
 
     public final void itemImpactUpdate() {
-        if (this.speed == item_SPEED) {
+        if (this.speed == this.originalSpeed + this.ITEM_SPEED_UP_VALUE) {
             if (this.speedupCooldown.checkFinished()) resetSpeed();
         } else if (this.Invincible) {
             if (this.invincibleCooldown.checkFinished()) {
@@ -263,7 +263,7 @@ public class Ship extends Entity {
      **/
     public void setItemSpeed() {
         this.speedupCooldown.reset();
-        this.speed = item_SPEED;
+        this.speed = this.originalSpeed + this.ITEM_SPEED_UP_VALUE;
     }
 
     /**
