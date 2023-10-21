@@ -256,52 +256,52 @@ public class GameScreen extends Screen {
 		// Adjust bullet shooting interval and speed by level.
 		// Adjust bullet shooting interval and speed by level.
 		if (this.level==1) {
-			this.ship.setSpeed(4);
+			this.ship.setOriginalSpeed(4);
 			this.ship.resetShootingInterval();
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(4);
+				this.ship2.setOriginalSpeed(4);
 				this.ship2.resetShootingInterval();
 			}
 		} else if (this.level==2) {
-			this.ship.setSpeed(4);
+			this.ship.setOriginalSpeed(4);
 			this.ship.setShootingInterval(800);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(4);
+				this.ship2.setOriginalSpeed(4);
 				this.ship2.setShootingInterval(800);
 			}
 		} else if (this.level==3) {
-			this.ship.setSpeed(3);
+			this.ship.setOriginalSpeed(3);
 			this.ship.setShootingInterval(850);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(3);
+				this.ship2.setOriginalSpeed(3);
 				this.ship2.setShootingInterval(850);
 			}
 		} else if (this.level==4) {
-			this.ship.setSpeed(3);
+			this.ship.setOriginalSpeed(3);
 			this.ship.setShootingInterval(900);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(3);
+				this.ship2.setOriginalSpeed(3);
 				this.ship2.setShootingInterval(900);
 			}
 		} else if (this.level==5) {
-			this.ship.setSpeed(3);
+			this.ship.setOriginalSpeed(3);
 			this.ship.setShootingInterval(950);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(3);
+				this.ship2.setOriginalSpeed(3);
 				this.ship2.setShootingInterval(950);
 			}
 		} else if (this.level==6) {
-			this.ship.resetSpeed();
+			this.ship.setOriginalSpeed(2);
 			this.ship.setShootingInterval(1000);
 			if (gameState.getMode()==2) {
-				this.ship2.resetSpeed();
+				this.ship2.setOriginalSpeed(2);
 				this.ship2.setShootingInterval(1000);
 			}
 		} else {
-			this.ship.resetSpeed();
+			this.ship.setOriginalSpeed(2);
 			this.ship.setShootingInterval(1100);
 			if (gameState.getMode()==2) {
-				this.ship2.resetSpeed();
+				this.ship2.setOriginalSpeed(2);
 				this.ship2.setShootingInterval(1100);
 			}
 		}
@@ -364,17 +364,23 @@ public class GameScreen extends Screen {
                     if (moveLeft && !isLeftBorder) {
                         this.ship.moveLeft();
                     }
+					if (this.ship.getItemImpact()) {
+						this.ship.itemImpactUpdate();
+					}
 
                     if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
                         if (this.ship.shoot(this.bullets, 1))
                             this.bulletsShot1++;
                         if (this.ship.isExistAuxiliaryShips()) {
                             for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
-                                if (auxiliaryShip.shoot(this.bullets, 1))
-                                    this.bulletsShot1++;
+								if (auxiliaryShip.shoot(this.bullets, 1))
+									this.bulletsShot1++;
+							}
+						}
+						if (this.ship.getItemImpact()) {
+							this.ship.itemImpactUpdate();
+						}
 
-                            }
-                        }
                     }
                     if (replayability.getReplay() == 1) {
                         if (this.bullet_count <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
@@ -392,6 +398,9 @@ public class GameScreen extends Screen {
                                 }
                             }
                         }
+						if (this.ship.getItemImpact()) {
+							this.ship.itemImpactUpdate();
+						}
                         if (inputManager.speed == 3) {
                             per = 1;
                         } else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7 && bullet_count <= 7) {
@@ -412,6 +421,9 @@ public class GameScreen extends Screen {
 
                     if (!this.ship.isDestroyed()) {
                         List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
+						if (this.ship.getItemImpact()) {
+							this.ship.itemImpactUpdate();
+						}
                         if (this.ship.isExistAuxiliaryShips()) {
                             auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 25);
                             auxiliaryShips.get(0).setPositionY(ship.getPositionY());
@@ -456,6 +468,10 @@ public class GameScreen extends Screen {
                     if (moveLeft2p && !isLeftBorder2p && (this.lives2 > 0)) {
                         this.ship2.moveLeft();
                     }
+					if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+						this.ship.itemImpactUpdate();
+						this.ship2.itemImpactUpdate();
+					}
 
                     if (replayability.getReplay() == 0) {
                         if (inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
@@ -469,6 +485,10 @@ public class GameScreen extends Screen {
                                         this.bulletsShot1++;
                                     }
                             }
+							if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+								this.ship2.itemImpactUpdate();
+							}
                         }
                         if (inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
                             if (this.ship2.shoot(this.bullets, 2)) {
@@ -481,6 +501,10 @@ public class GameScreen extends Screen {
                                         this.bulletsShot2++;
                                     }
                             }
+							if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+								this.ship2.itemImpactUpdate();
+							}
                         }
                     } else if (replayability.getReplay() == 1) {
                         //player1
@@ -497,6 +521,10 @@ public class GameScreen extends Screen {
                                         SoundManager.playSound("SFX/S_Ally_Shoot_b", "AllyShootb", false, false);
                                     }
                             }
+							if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+								this.ship2.itemImpactUpdate();
+							}
 
                         }
                         if (inputManager.speed1 == 3)
@@ -517,6 +545,9 @@ public class GameScreen extends Screen {
 
                         if (!this.ship.isDestroyed()) {
                             List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
+							if (this.ship.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+							}
                             if (this.ship.isExistAuxiliaryShips()) {
                                 auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
                                 auxiliaryShips.get(0).setPositionY(ship.getPositionY());
@@ -537,6 +568,9 @@ public class GameScreen extends Screen {
 								this.bulletsShot2++;
 								this.bullet_count2++;
 								SoundManager.playSound("SFX/S_Ally_Shoot_c", "AllyShootc", false, false);
+							}
+							if (this.ship2.getItemImpact()) {
+								this.ship2.itemImpactUpdate();
 							}
 							if (this.ship2.isExistAuxiliaryShips()) {
 								for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips())
@@ -565,6 +599,9 @@ public class GameScreen extends Screen {
 						// item
 						if (!this.ship2.isDestroyed()) {
 							List<Ship> auxiliaryShips = this.ship2.getAuxiliaryShips();
+							if (this.ship2.getItemImpact()) {
+								this.ship2.itemImpactUpdate();
+							}
 							if (this.ship2.isExistAuxiliaryShips()) {
 								auxiliaryShips.get(0).setPositionX(ship2.getPositionX() - 30);
 								auxiliaryShips.get(0).setPositionY(ship2.getPositionY());
@@ -1015,13 +1052,13 @@ public class GameScreen extends Screen {
 	private void useSkill(){
 		if (per>0 && !this.levelFinished) {
 			if (per == 1 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
-				originalSpeed = (int) ship.getSpeed();
+				originalSpeed = ship.getOriginalSpeed();
 				ship.setSpeed(originalSpeed + 2);
 				this.logger.info("SpeedUp");
 
 				ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 				executor.schedule(() -> {
-					ship.setSpeed(originalSpeed);
+					ship.resetSpeed();
 					speedBoosted = false;
 					executor.shutdown();
 				}, 1, TimeUnit.SECONDS);
@@ -1038,13 +1075,13 @@ public class GameScreen extends Screen {
 				this.bulletsShot1+=3;
 				this.bullet_count+=3;
 			}else if (per == 3 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
-				originalSpeed = (int) ship2.getSpeed();
+				originalSpeed =  ship2.getOriginalSpeed();
 				ship2.setSpeed(originalSpeed + 2);
 				this.logger.info("SpeedUp");
 
 				ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 				executor.schedule(() -> {
-					ship2.setSpeed(originalSpeed);
+					ship2.resetSpeed();
 					speedBoosted = false;
 					executor.shutdown();
 				}, 1, TimeUnit.SECONDS);
