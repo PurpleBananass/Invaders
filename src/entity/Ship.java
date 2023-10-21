@@ -56,6 +56,14 @@ public class Ship extends Entity {
 	private boolean existAuxiliaryShips = false;
 	private int FASTER_SHOOTING_INTERVAL = 300;
 
+	private int impactInterval = 10000;
+
+	private Cooldown speedupCooldown;
+
+	private Cooldown invincibleCooldown;
+
+	private Cooldown auxiliaryCooldown;
+
 	/**
 	 * Constructor, establishes the ship's properties.
 	 *
@@ -76,6 +84,11 @@ public class Ship extends Entity {
 		this.itemCooldown = Core.getCooldown(ITEM_USE_INTERVAL);
 		this.destructionCooldown = Core.getCooldown(1000);
 		this.skillCooldown = Core.getCooldown(1000);
+
+		this.speedupCooldown = Core.getCooldown(impactInterval);
+		this.invincibleCooldown = Core.getCooldown(impactInterval);
+		this.auxiliaryCooldown = Core.getCooldown(impactInterval);
+
 		this.SPEED = ORIGINAL_SPEED;
 		this.BULLET_SPEED = ORIGINAL_BULLET_SPEED;
 		this.itemQueue = new ItemQueue();
@@ -195,17 +208,36 @@ public class Ship extends Entity {
 	 */
 	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(shootingInterval);}
 
+	public final boolean getItemImpact() {
+		return (this.SPEED == item_SPEED || this.Invincible || this.existAuxiliaryShips);
+	}
+
+	public final void itemImpactUpdate() {
+		if (this.SPEED == item_SPEED) {
+			if (this.speedupCooldown.checkFinished()) resetSpeed();
+		}
+		else if (this.Invincible) {
+			if (this.invincibleCooldown.checkFinished()) {
+				Color c = this.getColor();
+				if (c == Color.BLUE) {
+					Invincible = false;
+					changeColor(Color.GREEN);
+				}
+				else if(c == Color.magenta) {
+					Invincible = false;
+					changeColor(Color.RED);
+				}
+			}
+		}
+		else if (this.existAuxiliaryShips) {
+			if (this.auxiliaryCooldown.checkFinished()) setExistAuxiliaryShips(false);
+		}
+	}
+
 	/** Set item_speed for 10sec when ship get speed item **/
 	public void setItemSpeed() {
+		this.speedupCooldown.reset();
 		this.SPEED = item_SPEED;
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			public void run() {
-				resetSpeed();
-				timer.cancel();
-			}
-		};
-		timer.schedule(task, 10000);
 	}
 
 	/** Set item_speed when ship buy speed item in store**/
@@ -221,36 +253,15 @@ public class Ship extends Entity {
 	public final void runInvincible() {
 		Color c = this.getColor();
 
-		if (c == Color.GREEN) {
-			Timer timer = new Timer();
-			TimerTask task = new TimerTask() {
-				public void run() {
-					Invincible = false;
-					changeColor(Color.GREEN);
-					timer.cancel();
-				}
-			};
-
-			if (!this.isInvincible()) {
-				this.Invincible = true;
-				this.changeColor(Color.BLUE);
-				timer.schedule(task, 10000);
-			}
-		} else {
-			Timer timer = new Timer();
-			TimerTask task = new TimerTask() {
-				public void run() {
-					Invincible = false;
-					changeColor(Color.RED);
-					timer.cancel();
-				}
-			};
-
-			if (!this.isInvincible()) {
-				this.Invincible = true;
-				this.changeColor(Color.magenta);
-				timer.schedule(task, 10000);
-			}
+		if (c == Color.GREEN || c == Color.BLUE) {
+			this.invincibleCooldown.reset();
+			this.Invincible = true;
+			this.changeColor(Color.BLUE);
+		}
+		else if (c == Color.RED || c == Color.magenta) {
+			this.invincibleCooldown.reset();
+			this.Invincible = true;
+			this.changeColor(Color.magenta);
 		}
 	}
 
@@ -265,15 +276,8 @@ public class Ship extends Entity {
 	}
 
 	public void setAuxiliaryShipsMode() {
+		this.auxiliaryCooldown.reset();
 		setExistAuxiliaryShips(true);
-		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-			public void run() {
-				setExistAuxiliaryShips(false);
-				timer.cancel();
-			}
-		};
-		timer.schedule(task, 10000);
 	}
 
 	public void setExistAuxiliaryShips(boolean existAuxiliaryShips) {
