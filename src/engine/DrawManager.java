@@ -551,6 +551,7 @@ public final class DrawManager {
 							final int livesRemaining1, final int shipsDestroyed,
 							final float accuracy, final boolean isNewRecord) {
 		String scoreString = String.format("score %04d", score);
+		String acquiredCoins = "bonus-coins " + score/10;
 		String lives1RemainingString = "lives remaining " + livesRemaining1;
 		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
 		String accuracyString = String
@@ -561,12 +562,15 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, scoreString, screen.getHeight()
 				/ height);
+		drawCenteredRegularString(screen, acquiredCoins,
+				screen.getHeight() / height + fontRegularMetrics.getHeight()
+						* 3);
 		drawCenteredRegularString(screen, lives1RemainingString,
 				screen.getHeight() / height + fontRegularMetrics.getHeight()
-						* 2);
+						* 4);
 		drawCenteredRegularString(screen, shipsDestroyedString,
 				screen.getHeight() / height + fontRegularMetrics.getHeight()
-						* 4);
+						* 5);
 		drawCenteredRegularString(screen, accuracyString, screen.getHeight()
 				/ height + fontRegularMetrics.getHeight() * 6);
 	}
@@ -595,6 +599,7 @@ public final class DrawManager {
 							final int livesRemaining1, final int livesRemaining2, final int shipsDestroyed,
 							final float accuracy, final float accuracy2, final boolean isNewRecord) {
 		String scoreString = String.format("score %04d", score);
+		String acquiredCoins = String.format("bonus-coins %04d", score%10);
 		String lives1RemainingString = "1p's lives remaining " + livesRemaining1;
 		String lives2RemainingString = "2p's lives remaining " + livesRemaining2;
 		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
@@ -608,6 +613,8 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, scoreString, screen.getHeight()
 				/ height);
+		drawCenteredRegularString(screen, acquiredCoins, screen.getHeight()
+						);
 		drawCenteredRegularString(screen, lives1RemainingString,
 				screen.getHeight() / height + fontRegularMetrics.getHeight()
 						* 2);
