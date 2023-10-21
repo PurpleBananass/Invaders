@@ -812,4 +812,62 @@ public final class FileManager {
 
 		return player;
 	}
+	public void updatePlayerItem(int itemNumber) throws IOException {
+		// Get the path to the JAR file
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.toString());
+
+		// Construct the path to the player data file
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		// Check if the player data file exists
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			throw new FileNotFoundException("Player file not found at: " + playerPath);
+		}
+
+		// Read the lines from the player data file
+		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+		String itemsString = lines.get(3);
+		List<Boolean> items = convertStringToBooleanList(itemsString);
+
+		if (!items.get(itemNumber)){
+			items.set(itemNumber, true);
+		}
+
+		StringBuilder itemResultBuilder = new StringBuilder();
+		for (int i = 0; i < items.size(); i++) {
+			itemResultBuilder.append(items.get(i).toString());
+			if (i < items.size() - 1) {  // If it's not the last item, append ", "
+				itemResultBuilder.append(", ");
+			}
+		}
+		String itemResult = itemResultBuilder.toString();
+
+		lines.set(3, itemResult);
+		Files.write(playerPath, lines, StandardCharsets.UTF_8);
+	}
+	public void resetPlayerItem() throws IOException {
+		// Get the path to the JAR file
+		String jarPath = FileManager.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.toString());
+
+		// Construct the path to the player data file
+		Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+		// Check if the player data file exists
+		if (!Files.exists(playerPath)) {
+			logger.warning("Player file not found at: " + playerPath);
+			throw new FileNotFoundException("Player file not found at: " + playerPath);
+		}
+
+		// Read the lines from the player data file
+		List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+
+
+		lines.set(3, "false, false, false");
+		Files.write(playerPath, lines, StandardCharsets.UTF_8);
+	}
 }

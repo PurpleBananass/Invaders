@@ -274,8 +274,11 @@ public final class Core {
 				break;
 			case 4:
 				// Shop
-				LOGGER.info("There's no shop yet");
+				currentScreen = new ItemShopScreen(width,height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " item shop screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing item shop screen");
 				break;
 			case 5:
 				// Setting.
