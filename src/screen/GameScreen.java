@@ -254,55 +254,40 @@ public class GameScreen extends Screen {
 		this.bullet_count2=0;
 
 		// Adjust bullet shooting interval and speed by level.
-		// Adjust bullet shooting interval and speed by level.
 		if (this.level==1) {
 			this.ship.setOriginalSpeed(4);
-			this.ship.resetShootingInterval();
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(4);
-				this.ship2.resetShootingInterval();
 			}
 		} else if (this.level==2) {
 			this.ship.setOriginalSpeed(4);
-			this.ship.setShootingInterval(800);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(4);
-				this.ship2.setShootingInterval(800);
 			}
 		} else if (this.level==3) {
 			this.ship.setOriginalSpeed(3);
-			this.ship.setShootingInterval(850);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(3);
-				this.ship2.setShootingInterval(850);
 			}
 		} else if (this.level==4) {
 			this.ship.setOriginalSpeed(3);
-			this.ship.setShootingInterval(900);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(3);
-				this.ship2.setShootingInterval(900);
 			}
 		} else if (this.level==5) {
 			this.ship.setOriginalSpeed(3);
-			this.ship.setShootingInterval(950);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(3);
-				this.ship2.setShootingInterval(950);
 			}
 		} else if (this.level==6) {
 			this.ship.setOriginalSpeed(2);
-			this.ship.setShootingInterval(1000);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(2);
-				this.ship2.setShootingInterval(1000);
 			}
 		} else {
 			this.ship.setOriginalSpeed(2);
-			this.ship.setShootingInterval(1100);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(2);
-				this.ship2.setShootingInterval(1100);
 			}
 		}
 	}
