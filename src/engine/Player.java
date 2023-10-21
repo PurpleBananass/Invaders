@@ -75,14 +75,6 @@ public class Player implements Comparable<Player> {
 		this.item = item;
 	}
 
-	/**
-	 * Orders the currencys descending by currency.
-	 * 
-	 * @param currency
-	 *            currency to compare the current one with.
-	 * @return Comparison between the two currencys. Positive if the current one is
-	 *         smaller, positive if its bigger, zero if its the same.
-	 */
 	@Override
 	public int compareTo(Player o) {
 		return 0;
