@@ -256,52 +256,52 @@ public class GameScreen extends Screen {
 		// Adjust bullet shooting interval and speed by level.
 		// Adjust bullet shooting interval and speed by level.
 		if (this.level==1) {
-			this.ship.setSpeed(4);
+			this.ship.setOriginalSpeed(4);
 			this.ship.resetShootingInterval();
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(4);
+				this.ship2.setOriginalSpeed(4);
 				this.ship2.resetShootingInterval();
 			}
 		} else if (this.level==2) {
-			this.ship.setSpeed(4);
+			this.ship.setOriginalSpeed(4);
 			this.ship.setShootingInterval(800);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(4);
+				this.ship2.setOriginalSpeed(4);
 				this.ship2.setShootingInterval(800);
 			}
 		} else if (this.level==3) {
-			this.ship.setSpeed(3);
+			this.ship.setOriginalSpeed(3);
 			this.ship.setShootingInterval(850);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(3);
+				this.ship2.setOriginalSpeed(3);
 				this.ship2.setShootingInterval(850);
 			}
 		} else if (this.level==4) {
-			this.ship.setSpeed(3);
+			this.ship.setOriginalSpeed(3);
 			this.ship.setShootingInterval(900);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(3);
+				this.ship2.setOriginalSpeed(3);
 				this.ship2.setShootingInterval(900);
 			}
 		} else if (this.level==5) {
-			this.ship.setSpeed(3);
+			this.ship.setOriginalSpeed(3);
 			this.ship.setShootingInterval(950);
 			if (gameState.getMode()==2) {
-				this.ship2.setSpeed(3);
+				this.ship2.setOriginalSpeed(3);
 				this.ship2.setShootingInterval(950);
 			}
 		} else if (this.level==6) {
-			this.ship.resetSpeed();
+			this.ship.setOriginalSpeed(2);
 			this.ship.setShootingInterval(1000);
 			if (gameState.getMode()==2) {
-				this.ship2.resetSpeed();
+				this.ship2.setOriginalSpeed(2);
 				this.ship2.setShootingInterval(1000);
 			}
 		} else {
-			this.ship.resetSpeed();
+			this.ship.setOriginalSpeed(2);
 			this.ship.setShootingInterval(1100);
 			if (gameState.getMode()==2) {
-				this.ship2.resetSpeed();
+				this.ship2.setOriginalSpeed(2);
 				this.ship2.setShootingInterval(1100);
 			}
 		}
@@ -1046,13 +1046,13 @@ public class GameScreen extends Screen {
 	private void useSkill(){
 		if (per>0 && !this.levelFinished) {
 			if (per == 1 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
-				originalSpeed = (int) ship.getSpeed();
+				originalSpeed = ship.getOriginalSpeed();
 				ship.setSpeed(originalSpeed + 2);
 				this.logger.info("SpeedUp");
 
 				ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 				executor.schedule(() -> {
-					ship.setSpeed(originalSpeed);
+					ship.resetSpeed();
 					speedBoosted = false;
 					executor.shutdown();
 				}, 1, TimeUnit.SECONDS);
@@ -1069,13 +1069,13 @@ public class GameScreen extends Screen {
 				this.bulletsShot1+=3;
 				this.bullet_count+=3;
 			}else if (per == 3 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
-				originalSpeed = (int) ship2.getSpeed();
+				originalSpeed =  ship2.getOriginalSpeed();
 				ship2.setSpeed(originalSpeed + 2);
 				this.logger.info("SpeedUp");
 
 				ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 				executor.schedule(() -> {
-					ship2.setSpeed(originalSpeed);
+					ship2.resetSpeed();
 					speedBoosted = false;
 					executor.shutdown();
 				}, 1, TimeUnit.SECONDS);
