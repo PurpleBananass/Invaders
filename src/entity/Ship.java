@@ -23,7 +23,7 @@ public class Ship extends Entity {
 	/** Original speed of the bullets shot by the ship. */
 	private static final int ORIGINAL_BULLET_SPEED = -6;
 	/** Original movement of the ship for each unit of time. */
-	private static int ORIGINAL_SPEED = 2;
+	private int originalSpeed = 2;
 
 	/** Life item purchase status **/
 	private boolean hasLifeIncreaseItem = false;
@@ -45,7 +45,7 @@ public class Ship extends Entity {
 	/** Speed of the bullet. */
 	private int BULLET_SPEED;
 	/** Speed of the ship. */
-	private int SPEED;
+	private int speed;
 
 	public boolean Invincible;
 
@@ -89,7 +89,7 @@ public class Ship extends Entity {
 		this.invincibleCooldown = Core.getCooldown(impactInterval);
 		this.auxiliaryCooldown = Core.getCooldown(impactInterval);
 
-		this.SPEED = ORIGINAL_SPEED;
+		this.speed = originalSpeed;
 		this.BULLET_SPEED = ORIGINAL_BULLET_SPEED;
 		this.itemQueue = new ItemQueue();
 		this.Invincible = false;
@@ -105,7 +105,7 @@ public class Ship extends Entity {
 	 * reached.
 	 */
 	public final void moveRight() {
-		this.positionX += SPEED;
+		this.positionX += speed;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class Ship extends Entity {
 	 * reached.
 	 */
 	public final void moveLeft() {
-		this.positionX -= SPEED;
+		this.positionX -= speed;
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class Ship extends Entity {
 	 * @return Speed of the ship.
 	 */
 	public final int getSpeed() {
-		return SPEED;
+		return speed;
 	}
 
 	/**
@@ -182,12 +182,12 @@ public class Ship extends Entity {
 	 *
 	 * @return Speed of the ship.
 	 */
-	public final void setSpeed(int sp) {this.SPEED = sp;}
+	public final void setSpeed(int sp) {this.speed = sp;}
 
 	/**
 	 * Re-Setter for the ship's speed.
 	 */
-	public final void resetSpeed() {this.SPEED = ORIGINAL_SPEED;}
+	public final void resetSpeed() {this.speed = originalSpeed;}
 
 	/**
 	 * Getter for the ship's shooting frequency speed.
@@ -209,11 +209,11 @@ public class Ship extends Entity {
 	public final void resetShootingInterval() {this.shootingCooldown = Core.getCooldown(shootingInterval);}
 
 	public final boolean getItemImpact() {
-		return (this.SPEED == item_SPEED || this.Invincible || this.existAuxiliaryShips);
+		return (this.speed == item_SPEED || this.Invincible || this.existAuxiliaryShips);
 	}
 
 	public final void itemImpactUpdate() {
-		if (this.SPEED == item_SPEED) {
+		if (this.speed == item_SPEED) {
 			if (this.speedupCooldown.checkFinished()) resetSpeed();
 		}
 		else if (this.Invincible) {
@@ -237,12 +237,12 @@ public class Ship extends Entity {
 	/** Set item_speed for 10sec when ship get speed item **/
 	public void setItemSpeed() {
 		this.speedupCooldown.reset();
-		this.SPEED = item_SPEED;
+		this.speed = item_SPEED;
 	}
 
 	/** Set item_speed when ship buy speed item in store**/
 	public void buyItemSpeed() {
-		this.SPEED = item_SPEED - 2;
+		this.speed = item_SPEED - 2;
 	}
 
 
@@ -296,4 +296,7 @@ public class Ship extends Entity {
 		return this.hasLifeIncreaseItem;
 	}
 
+	public void setOriginalSpeed(int originalSpeed) {
+		this.originalSpeed = originalSpeed;
+	}
 }
