@@ -503,7 +503,7 @@ public class GameScreen extends Screen {
                             per = 1;
                         if (inputManager.one >= 7 && inputManager.two >= 7 && bullet_count <= 7)
                             per = 2;
-                        if (inputManager.magazine1) {
+                        if (inputManager.magazine) {
                             if (this.bullet_count == 10) {
                                 inputManager.one = 0;
                                 inputManager.two = 0;
@@ -512,7 +512,7 @@ public class GameScreen extends Screen {
                                 this.bullet_count = 0;
                                 this.logger.info("player1_magazine" + this.magazine);
                             }
-                            inputManager.magazine1 = false;
+                            inputManager.magazine = false;
                         }
 
                         if (!this.ship.isDestroyed()) {

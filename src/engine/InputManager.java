@@ -83,7 +83,6 @@ public final class InputManager implements KeyListener {
 	public int speed = 0;
 	public int speed1=0, speed2=0;
 	public boolean magazine = false;
-	public boolean magazine1 = false;
 	public boolean magazine2 = false;
 	/**
 	 * Changes the state of the key to not pressed.
