@@ -81,7 +81,11 @@ public class ScoreScreen extends Screen {
 
 		this.shipsDestroyed1 = gameState.getShipsDestroyed();
 		this.isNewRecord = false;
-		this.name = "AAA".toCharArray();
+		try {
+			this.name = Core.getFileManager().getCurrentPlayer().getName().toCharArray();
+		} catch (IOException e) {
+			logger.warning("An error occurred while accessing player data: " + e.getMessage());
+		}
 		this.nameCharSelected = 0;
 		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
