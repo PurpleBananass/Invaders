@@ -316,6 +316,11 @@ public class Ship extends Entity {
     public void applyFasterShootingItem() {
         this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
         this.shootingCooldown = Core.getCooldown(this.shootingInterval);
+
+        for (Ship auxiliaryShip : auxiliaryShips) {
+            auxiliaryShip.applyFasterShootingItem();
+        }
+
     }
 
     public void applyLifeIncreaseItem(boolean isUsed) {
