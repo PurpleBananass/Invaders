@@ -1009,19 +1009,38 @@ public class GameScreen extends Screen {
 
 		Set<Item> recyclableItem = new HashSet<Item>();
 
-		for (Item item : this.items) {
-			if (checkCollision(item, this.ship) && !this.levelFinished && this.lives != 0) {
-				recyclableItem.add(item);
-				SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
-				this.ship.getItemQueue().enque(item);
+		if (gameState.getMode() == 1) {
+			for (Item item : this.items) {
+				if (checkCollision(item, this.ship) && !this.levelFinished && this.lives != 0) {
+					recyclableItem.add(item);
+					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
+					this.ship.getItemQueue().enque(item);
+				}
 			}
 		}
 		if (gameState.getMode() == 2) {
 			for (Item item : this.items) {
-				if (checkCollision(item, this.ship2) && !this.levelFinished && this.lives2 != 0) {
+				if (checkCollision(this.ship, this.ship2) && checkCollision(this.ship, item) && checkCollision(this.ship2, item) && !this.levelFinished && this.lives != 0 && this.lives2 != 0) {
 					recyclableItem.add(item);
 					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
-					this.ship2.getItemQueue().enque(item);
+					if(this.ship.getItemQueue().getSize() == this.ship2.getItemQueue().getSize()){
+						if(new Random().nextInt(100) > 50) this.ship.getItemQueue().enque(item);
+						else this.ship2.getItemQueue().enque(item);
+					}
+					else if(this.ship.getItemQueue().getSize() > this.ship2.getItemQueue().getSize()) this.ship2.getItemQueue().enque(item);
+					else this.ship.getItemQueue().enque(item);
+				}
+				else {
+					if (checkCollision(item, this.ship) && !this.levelFinished && this.lives != 0) {
+						recyclableItem.add(item);
+						SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
+						this.ship.getItemQueue().enque(item);
+					}
+					else if (checkCollision(item, this.ship2) && !this.levelFinished && this.lives2 != 0) {
+						recyclableItem.add(item);
+						SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
+						this.ship2.getItemQueue().enque(item);
+					}
 				}
 			}
 		}

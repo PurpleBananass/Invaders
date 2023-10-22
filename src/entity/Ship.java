@@ -315,6 +315,12 @@ public class Ship extends Entity {
 
     public void applyFasterShootingItem() {
         this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
+        this.shootingCooldown = Core.getCooldown(this.shootingInterval);
+
+        for (Ship auxiliaryShip : auxiliaryShips) {
+            auxiliaryShip.applyFasterShootingItem();
+        }
+
     }
 
     public void applyLifeIncreaseItem(boolean isUsed) {
@@ -328,9 +334,9 @@ public class Ship extends Entity {
     public void setOriginalSpeed(int originalSpeed) {
         if(hasPurchasedSpeedItem){
             this.originalSpeed = originalSpeed;
-            this.speed = this.originalSpeed;
+            this.speed = this.originalSpeed + 2;
         }else {
-            this.originalSpeed = originalSpeed + 2;
+            this.originalSpeed = originalSpeed;
             this.speed = this.originalSpeed;
         }
     }
