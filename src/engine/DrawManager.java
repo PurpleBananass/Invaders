@@ -551,6 +551,7 @@ public final class DrawManager {
 							final int livesRemaining1, final int shipsDestroyed,
 							final float accuracy, final boolean isNewRecord) {
 		String scoreString = String.format("score %04d", score);
+		String acquiredCoins = "bonus-coins " + score/10;
 		String lives1RemainingString = "lives remaining " + livesRemaining1;
 		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
 		String accuracyString = String
@@ -561,12 +562,15 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, scoreString, screen.getHeight()
 				/ height);
+		drawCenteredRegularString(screen, acquiredCoins,
+				screen.getHeight() / height + fontRegularMetrics.getHeight()
+						* 3);
 		drawCenteredRegularString(screen, lives1RemainingString,
 				screen.getHeight() / height + fontRegularMetrics.getHeight()
-						* 2);
+						* 4);
 		drawCenteredRegularString(screen, shipsDestroyedString,
 				screen.getHeight() / height + fontRegularMetrics.getHeight()
-						* 4);
+						* 5);
 		drawCenteredRegularString(screen, accuracyString, screen.getHeight()
 				/ height + fontRegularMetrics.getHeight() * 6);
 	}
@@ -595,6 +599,7 @@ public final class DrawManager {
 							final int livesRemaining1, final int livesRemaining2, final int shipsDestroyed,
 							final float accuracy, final float accuracy2, final boolean isNewRecord) {
 		String scoreString = String.format("score %04d", score);
+		String acquiredCoins = String.format("bonus-coins %04d", score%10);
 		String lives1RemainingString = "1p's lives remaining " + livesRemaining1;
 		String lives2RemainingString = "2p's lives remaining " + livesRemaining2;
 		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
@@ -608,6 +613,8 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, scoreString, screen.getHeight()
 				/ height);
+		drawCenteredRegularString(screen, acquiredCoins, screen.getHeight()
+						);
 		drawCenteredRegularString(screen, lives1RemainingString,
 				screen.getHeight() / height + fontRegularMetrics.getHeight()
 						* 2);
@@ -706,6 +713,111 @@ public final class DrawManager {
 							* 6);
 		}
 	}
+
+	// Item Shop's Item holder
+	public void drawItemShopMenu(final Screen screen,final int selectedItem) {
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredItemInfo(screen, "", screen.getHeight() / 8);
+
+		String[] itemNames = {"Speed", "Additional Health", "Shooting Faster"};
+		int[] itemPrices = {10, 15, 20};
+
+		int startX = screen.getWidth() / 10; // Starting X position for the first item
+		int itemWidth = 100; // Width of each item box
+		int spacing = 20; // Horizontal spacing
+		int itemX1 = startX;
+		int itemX2 = startX + itemWidth + spacing;
+		int itemX3 = startX + 2 * (itemWidth + spacing);
+		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
+		Ship BulletItem = new Ship(0, 0, Color.orange, SpriteType.Bullet, false);
+
+		drawEntity(new Ship(0, 0, Color.RED, SpriteType.Life, false),itemX2+45, screen.getHeight() / 2-5);
+		drawEntity(SpeedUpItem, itemX1+45, screen.getHeight() / 2-5);
+		drawEntity(BulletItem, itemX3+48, screen.getHeight() / 2-5);
+
+		// Draw the first item
+
+		if (selectedItem == 70) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
+		backBufferGraphics.drawRect(itemX1, screen.getHeight() / 2 - 50, itemWidth, itemWidth);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		String itemName1 = itemNames[0];
+		int itemNameX1 = itemX1 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(itemName1)) / 2;
+		backBufferGraphics.drawString(itemName1, itemNameX1, screen.getHeight() / 2 + 70);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		String priceText1 = "Price: $" + itemPrices[0];
+		int priceX1 = itemX1 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(priceText1)) / 2;
+		backBufferGraphics.drawString(priceText1, priceX1, screen.getHeight() / 2 + 90);
+
+		// Draw the second item
+
+		if (selectedItem == 71) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
+		backBufferGraphics.drawRect(itemX2, screen.getHeight() / 2 - 50, itemWidth, itemWidth);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		String itemName2 = itemNames[1];
+		int itemNameX2 = itemX2 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(itemName2)) / 2;
+		backBufferGraphics.drawString(itemName2, itemNameX2, screen.getHeight() / 2 + 70);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		String priceText2 = "Price: $" + itemPrices[1];
+		int priceX2 = itemX2 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(priceText2)) / 2;
+		backBufferGraphics.drawString(priceText2, priceX2, screen.getHeight() / 2 + 90);
+
+		// Draw the third item
+
+		if (selectedItem == 72) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
+		backBufferGraphics.drawRect(itemX3, screen.getHeight() / 2 - 50, itemWidth, itemWidth);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		String itemName3 = itemNames[2];
+		int itemNameX3 = itemX3 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(itemName3)) / 2;
+		backBufferGraphics.drawString(itemName3, itemNameX3, screen.getHeight() / 2 + 70);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		String priceText3 = "Price: $" + itemPrices[2];
+		int priceX3 = itemX3 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(priceText3)) / 2;
+		backBufferGraphics.drawString(priceText3, priceX3, screen.getHeight() / 2 + 90);
+
+		// The title/guide for the item shop:
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, "Item Shop", screen.getHeight() / 10);
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, "Buy Your Upgrades Here!", screen.getHeight() / 6);
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, "Press Space to Buy", screen.getHeight() / 4);
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, "*If Player has the item already, Can't buy.*", screen.getHeight() / 5);
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, "Press Esc to Go to Menu", screen.getHeight() / 1);
+		backBufferGraphics.setColor(Color.GRAY);
+
+		try{
+			drawCenteredRegularString(screen, "Current credits : " + Core.getFileManager().getCurrentPlayer().getCurrency(), screen.getHeight() / 3);
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
+	}
+
+	// Helper method to draw centered text
+	private void drawCenteredItemInfo(Screen screen, String text, int yPosition) {
+		int xPosition = (screen.getWidth() - backBufferGraphics.getFontMetrics().stringWidth(text)) / 2;
+		backBufferGraphics.drawString(text, xPosition, yPosition);
+	}
+
 	/**
 	 * Draws basic content of game over screen.
 	 *
@@ -742,7 +854,8 @@ public final class DrawManager {
 	 * @param screen
 	 *            Screen to draw on.
 	 */
-	public void drawSkinSelectionMenu(final Screen screen, final int skincode1p,final int skincode2p){
+	public void
+	drawSkinSelectionMenu(final Screen screen, final int skincode1p,final int skincode2p){
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
