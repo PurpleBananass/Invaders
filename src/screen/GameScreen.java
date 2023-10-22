@@ -1020,7 +1020,7 @@ public class GameScreen extends Screen {
 		}
 		if (gameState.getMode() == 2) {
 			for (Item item : this.items) {
-				if (checkCollision(this.ship, this.ship2) && checkCollision(this.ship, item) && checkCollision(this.ship2, item) && !this.levelFinished && this.lives != 0 && this.lives2 != 00) {
+				if (checkCollision(this.ship, this.ship2) && checkCollision(this.ship, item) && checkCollision(this.ship2, item) && !this.levelFinished && this.lives != 0 && this.lives2 != 0) {
 					recyclableItem.add(item);
 					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
 					if(this.ship.getItemQueue().getSize() == this.ship2.getItemQueue().getSize()){
