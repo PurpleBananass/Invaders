@@ -159,6 +159,7 @@ public final class Core {
                     break;
 			case 1:
 				// Main menu.
+				SoundManager.resetBGM();
 				SoundManager.playSound("BGM/B_Main_a", "menu", true, true, 2f);
 				currentScreen = new TitleScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
@@ -216,6 +217,7 @@ public final class Core {
 								gameState.getShipsDestroyed(),
 								gameState.getShipsDestroyed2());
 					}
+					AchievementManager.getInstance().checkAchievements(gameState);
 					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
 							&& gameState.getLevel() <= NUM_LEVELS) {
@@ -226,9 +228,6 @@ public final class Core {
 						LOGGER.info("Closing clear screen.");
 						if (returnCode == 1) break;
 					}
-
-					AchievementManager.getInstance().checkAchievements(gameState);
-
 				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
 						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0))
 						&& gameState.getLevel() <= NUM_LEVELS);
@@ -254,11 +253,11 @@ public final class Core {
 				}
 				currentScreen = new ScoreScreen(width, height, FPS, gameState);
 				SoundManager.resetBGM();
+				SoundManager.stopSound("ship_moving");
 				SoundManager.playSound("BGM/B_Gameover", "B_gameover", true, true, 2f);
 				SoundManager.playSound("SFX/S_Gameover","S_gameover",false,false);
 				returnCode = frame.setScreen(currentScreen);
 				SoundManager.stopSound("B_gameover",2f);
-				SoundManager.stopSound("S_gameover",2f);
 				LOGGER.info("Closing score screen.");
 				break;
 			case 3:
@@ -275,8 +274,11 @@ public final class Core {
 				break;
 			case 4:
 				// Shop
-				LOGGER.info("There's no shop yet");
+				currentScreen = new ItemShopScreen(width,height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " item shop screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing item shop screen");
 				break;
 			case 5:
 				// Setting.
