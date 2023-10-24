@@ -35,10 +35,11 @@ Main Menu
   - Displaying Achievement Details
   - Updating Progress
 
-  f.Shop Screen_(Ahn Junyoung)
+  f.Setting Screen_(Ahn Junyoung)
 
-  - Displaying Product List
-  - Purchase and Payment System
+  - load the default setting
+  - save the setting's change
+  - load the setting which is saved
 
   4.Team Request
     Not yet.
