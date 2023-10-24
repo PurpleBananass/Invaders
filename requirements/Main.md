@@ -25,10 +25,10 @@ Main Menu
   - Save changes
   - To set initial setting
     
-  c. Pre-game Preparation Screen_(Ahn Junyoung)
+  c. Pre-game Preparation Screen_(Hong Seojun)
 
   - Character customization options (e.g., skins, color selection)
-  - Multi-playing setting
+  - Multi-playing setting Screen
 
   d. Achivements Screen_(Yuna Park)
 
