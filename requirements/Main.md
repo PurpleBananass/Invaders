@@ -30,10 +30,10 @@ Main Menu
   - Character customization options (e.g., skins, color selection)
   - Multi-playing setting Screen
 
-  d. Achivements Screen_(Yuna Park)
+  d. Pre-game Preparation Screen_(Yuna Park)
 
-  - Displaying Achievement Details
-  - Updating Progress
+  - Character skin options - 1p, 2p
+  - link the selected skin to ship in the playing screen
 
   f.Setting Screen_(Ahn Junyoung)
 
