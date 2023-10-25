@@ -25,20 +25,21 @@ Main Menu
   - Save changes
   - To set initial setting
     
-  c. Pre-game Preparation Screen_(Ahn Junyoung)
+  c. Pre-game Preparation Screen_(Hong Seojun)
 
   - Character customization options (e.g., skins, color selection)
-  - Multi-playing setting
+  - Multi-playing setting Screen
 
-  d. Achivements Screen_(Yuna Park)
+  d. Pre-game Preparation Screen_(Yuna Park)
 
-  - Displaying Achievement Details
-  - Updating Progress
+  - Character skin options - 1p, 2p
+  - link the selected skin to ship in the playing screen
 
-  f.Shop Screen_(Ahn Junyoung)
+  f.Setting Screen_(Ahn Junyoung)
 
-  - Displaying Product List
-  - Purchase and Payment System
+  - load the default setting
+  - save the setting's change
+  - load the setting which is saved
 
   4.Team Request
     Not yet.
