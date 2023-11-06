@@ -29,7 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Logger;
 
-import engine.DrawManager.SpriteType;
+import engine.aDrawManager.SpriteType;
 
 /**
  * Manages files used in the application.
@@ -55,7 +55,7 @@ public final class FileManager {
      * private constructor.
      */
     private FileManager() {
-        logger = Core.getLogger();
+        logger = fCore.getLogger();
     }
 
     /**
@@ -81,7 +81,7 @@ public final class FileManager {
         InputStream inputStream = null;
 
         try {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("graphics");
             char c;
             // Sprite loading.
@@ -159,37 +159,37 @@ public final class FileManager {
     public InputStream checkSpriteType(SpriteType spriteType) {
         InputStream inputStream = null;
         if (spriteType == SpriteType.Bullet) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("bulletGraphics");
         } else if (spriteType == SpriteType.Ship) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("shipGraphics");
         } else if (spriteType == SpriteType.Ship2) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("shipGraphics");
         } else if (spriteType == SpriteType.EnemyBullet) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("bulletGraphics");
         } else if (spriteType == SpriteType.EnemyShipA1) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("enemyshipGraphics");
         } else if (spriteType == SpriteType.EnemyShipA2) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("enemyshipGraphics");
         } else if (spriteType == SpriteType.EnemyShipB1) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("enemyshipGraphics");
         } else if (spriteType == SpriteType.EnemyShipB2) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("enemyshipGraphics");
         } else if (spriteType == SpriteType.EnemyShipC1) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("enemyshipGraphics");
         } else if (spriteType == SpriteType.EnemyShipC2) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("enemyshipGraphics");
         } else if (spriteType == SpriteType.EnemyShipSpecial) {
-            inputStream = DrawManager.class.getClassLoader()
+            inputStream = aDrawManager.class.getClassLoader()
                     .getResourceAsStream("specialenemyGraphics");
         }
         return inputStream;

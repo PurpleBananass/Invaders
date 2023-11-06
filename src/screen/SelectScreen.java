@@ -1,7 +1,7 @@
 package screen;
 
 import engine.Cooldown;
-import engine.Core;
+import engine.fCore;
 import engine.SoundManager;
 
 import java.awt.event.KeyEvent;
@@ -30,7 +30,7 @@ public class SelectScreen extends Screen{
     public SelectScreen(int width, int height, int fps){
         super(width, height, fps);
         this.returnCode = 8;
-        this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+        this.selectionCooldown = fCore.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
 

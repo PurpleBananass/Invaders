@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import engine.*;
 import screen.Screen;
-import engine.DrawManager.SpriteType;
+import engine.aDrawManager.SpriteType;
 
 /**
  * Groups enemy ships into a formation that moves together.
@@ -40,7 +40,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	/** Minimum speed allowed. */
 	private static final int MINIMUM_SPEED = 10;
 	/** DrawManager instance. */
-	private DrawManager drawManager;
+	private aDrawManager drawManager;
 	/** Application logger. */
 	private Logger logger;
 	/** Screen to draw ships on. */
@@ -120,8 +120,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 */
 	public EnemyShipFormation(final GameSettings gameSettings, final GameState gameState) {
 		this.gameState = gameState;
-		this.drawManager = Core.getDrawManager();
-		this.logger = Core.getLogger();
+		this.drawManager = fCore.getDrawManager();
+		this.logger = fCore.getLogger();
 		this.enemyShips = new ArrayList<List<EnemyShip>>();
 		this.currentDirection = Direction.RIGHT;
 		this.movementInterval = 0;
@@ -247,7 +247,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 */
 	public final void update() {
 		if(this.shootingCooldown == null) {
-			this.shootingCooldown = Core.getVariableCooldown(shootingInterval,
+			this.shootingCooldown = fCore.getVariableCooldown(shootingInterval,
 					shootingVariance);
 			this.shootingCooldown.reset();
 		}

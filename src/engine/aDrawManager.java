@@ -30,12 +30,12 @@ import screen.SettingScreen;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  *
  */
-public final class DrawManager {
+public final class aDrawManager {
 
 	/** Singleton instance of the class. */
-	private static DrawManager instance;
+	private static aDrawManager instance;
 	/** Current frame. */
-	private static Frame frame;
+	private static aFrame frame;
 	/** FileManager instance. */
 	private static FileManager fileManager;
 	/** Application logger. */
@@ -110,9 +110,9 @@ public final class DrawManager {
 	/**
 	 * Private constructor.
 	 */
-	private DrawManager() {
-		fileManager = Core.getFileManager();
-		logger = Core.getLogger();
+	private aDrawManager() {
+		fileManager = fCore.getFileManager();
+		logger = fCore.getLogger();
 		logger.info("Started loading resources.");
 
 		try {
@@ -163,9 +163,9 @@ public final class DrawManager {
 	 *
 	 * @return Shared instance of DrawManager.
 	 */
-	protected static DrawManager getInstance() {
+	protected static aDrawManager getInstance() {
 		if (instance == null)
-			instance = new DrawManager();
+			instance = new aDrawManager();
 		return instance;
 	}
 
@@ -175,7 +175,7 @@ public final class DrawManager {
 	 * @param currentFrame
 	 *            Frame to draw on.
 	 */
-	public void setFrame(final Frame currentFrame) {
+	public void setFrame(final aFrame currentFrame) {
 		frame = currentFrame;
 	}
 
@@ -806,7 +806,7 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.GRAY);
 
 		try{
-			drawCenteredRegularString(screen, "Current credits : " + Core.getFileManager().getCurrentPlayer().getCurrency(), screen.getHeight() / 3);
+			drawCenteredRegularString(screen, "Current credits : " + fCore.getFileManager().getCurrentPlayer().getCurrency(), screen.getHeight() / 3);
 		}catch(IOException e){
 			throw new RuntimeException(e);
 		}
@@ -1300,7 +1300,7 @@ public final class DrawManager {
 	public void drawManualMenu(final Screen screen) {
 
 		String[] keyInfo = {"left", "right", "attack", "burst1", "burst2", "reload", "booster", "item"};
-		String[] keyValue = Core.getKeySettingStringArray();
+		String[] keyValue = fCore.getKeySettingStringArray();
 
 		backBufferGraphics.setColor(Color.CYAN);
 		drawCenteredRegularString(screen, "Play manual", screen.getHeight() / 2 - 105);
@@ -1417,7 +1417,7 @@ public final class DrawManager {
 
 	public void drawSettingDetail(final Screen screen, final int option, final boolean selected,
 								  int volume, boolean bgmOn, int keyNum) {
-		String[] keyString = Core.getKeySettingStringArray();
+		String[] keyString = fCore.getKeySettingStringArray();
 		if(option == 0 || option == 1){
 			if (option == 0 && selected)
 				backBufferGraphics.setColor(Color.GREEN);

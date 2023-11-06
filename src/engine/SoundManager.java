@@ -17,9 +17,9 @@ public class SoundManager {
 
     static {
         try {
-            masterVolume = Core.getFileManager().loadSettings().get(0).getValue();
+            masterVolume = fCore.getFileManager().loadSettings().get(0).getValue();
         } catch (IOException e) {
-            Core.getLogger().warning("Couldn't load Settings!");
+            fCore.getLogger().warning("Couldn't load Settings!");
         }
     }
 

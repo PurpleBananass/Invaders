@@ -1,7 +1,7 @@
 package screen;
 
 import engine.Cooldown;
-import engine.Core;
+import engine.fCore;
 import engine.GameState;
 import engine.Score;
 
@@ -49,10 +49,10 @@ public class ClearScreen extends Screen {
 
         try {
             if (this.gameState.getMode() == 1) {
-                List<Score> highScores = Core.getFileManager().loadHighScores(1);
+                List<Score> highScores = fCore.getFileManager().loadHighScores(1);
                 this.highScore = highScores.stream().mapToInt(Score::getScore).max().orElseThrow(NoSuchElementException::new);
             } else {
-                List<Score> highScores = Core.getFileManager().loadHighScores(2);
+                List<Score> highScores = fCore.getFileManager().loadHighScores(2);
                 this.highScore = highScores.stream().mapToInt(Score::getScore).max().orElseThrow(NoSuchElementException::new);
             }
         } catch (NumberFormatException | NoSuchElementException | IOException e) {

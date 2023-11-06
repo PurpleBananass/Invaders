@@ -2,7 +2,7 @@ package entity;
 
 import java.awt.Color;
 
-import engine.DrawManager.SpriteType;
+import engine.aDrawManager.SpriteType;
 
 /**
  * Implements an item that moves vertically only down.

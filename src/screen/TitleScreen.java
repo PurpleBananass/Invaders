@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
 import engine.Cooldown;
-import engine.Core;
-import engine.InputManager;
+import engine.fCore;
+import engine.aInputManager;
 import engine.SoundManager;
 
 /**
@@ -37,7 +37,7 @@ public class TitleScreen extends Screen {
 
 		// Defaults to play.
 		this.returnCode = 2;
-		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+		this.selectionCooldown = fCore.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
 	}
 

@@ -21,7 +21,7 @@ public class ItemShopScreen extends Screen {
         super(width, height, fps);
         //defaults to center
         this.returnCode = 71;
-        this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+        this.selectionCooldown = fCore.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
 
@@ -63,13 +63,13 @@ public class ItemShopScreen extends Screen {
                 if (selectedItem == 70) {
                     itemPrice = 10;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(0) == true) {
+                        if (fCore.getFileManager().getCurrentPlayer().getItem().get(0) == true) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
-                        } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
+                        } else if (fCore.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
                             try {
-                                Core.getFileManager().updatePlayerItem(0);
-                                Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
+                                fCore.getFileManager().updatePlayerItem(0);
+                                fCore.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
                                 SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
@@ -85,13 +85,13 @@ public class ItemShopScreen extends Screen {
                 } else if (selectedItem == 71) {
                     itemPrice = 15;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(1) == true) {
+                        if (fCore.getFileManager().getCurrentPlayer().getItem().get(1) == true) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
-                        } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
+                        } else if (fCore.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
                             try {
-                                Core.getFileManager().updatePlayerItem(1);
-                                Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
+                                fCore.getFileManager().updatePlayerItem(1);
+                                fCore.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
                                 SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
@@ -108,13 +108,13 @@ public class ItemShopScreen extends Screen {
                 } else if (selectedItem == 72) {
                     itemPrice = 20;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(2) == true) {
+                        if (fCore.getFileManager().getCurrentPlayer().getItem().get(2) == true) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
-                        } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
+                        } else if (fCore.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
                             try {
-                                Core.getFileManager().updatePlayerItem(2);
-                                Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
+                                fCore.getFileManager().updatePlayerItem(2);
+                                fCore.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
                                 SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);

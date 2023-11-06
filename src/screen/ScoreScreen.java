@@ -103,18 +103,18 @@ public class ScoreScreen extends Screen {
         this.shipsDestroyed1 = gameState.getShipsDestroyed();
         this.isNewRecord = false;
         try {
-            this.name = Core.getFileManager().getCurrentPlayer().getName().toCharArray();
+            this.name = fCore.getFileManager().getCurrentPlayer().getName().toCharArray();
         } catch (IOException e) {
             logger.warning("An error occurred while accessing player data: " + e.getMessage());
         }
         this.nameCharSelected = 0;
-        this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+        this.selectionCooldown = fCore.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
 
         AchievementManager.getInstance().checkScore(this.score);
 
         try {
-            this.highScores = Core.getFileManager().loadHighScores(this.gameMode);
+            this.highScores = fCore.getFileManager().loadHighScores(this.gameMode);
             if (highScores.size() < MAX_HIGH_SCORE_NUM
                     || highScores.get(highScores.size() - 1).getScore()
                     < this.score)
@@ -124,7 +124,7 @@ public class ScoreScreen extends Screen {
             logger.warning("Couldn't load high scores!");
         }
         try {
-            Core.getFileManager().resetPlayerItem();
+            fCore.getFileManager().resetPlayerItem();
         } catch (IOException e) {
             logger.warning("Couldn't reset item!");
         }
@@ -204,7 +204,7 @@ public class ScoreScreen extends Screen {
     private void saveScore(final int gameMode) {
         highScores.add(new Score(new String(this.name), score));
         try {
-            Core.getFileManager().updateCurrencyOfCurrentPlayer(score / 10);
+            fCore.getFileManager().updateCurrencyOfCurrentPlayer(score / 10);
         } catch (IOException e) {
             throw new RuntimeException();
         }
@@ -213,7 +213,7 @@ public class ScoreScreen extends Screen {
             highScores.remove(highScores.size() - 1);
 
         try {
-            Core.getFileManager().saveHighScores(highScores, gameMode);
+            fCore.getFileManager().saveHighScores(highScores, gameMode);
         } catch (IOException e) {
             logger.warning("Couldn't load high scores!");
         }

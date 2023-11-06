@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 
-import engine.Core;
+import engine.fCore;
 import engine.Score;
 import engine.SoundManager;
 
@@ -37,8 +37,8 @@ public class HighScoreScreen extends Screen {
 		this.returnCode = 1;
 
 		try {
-			this.highScores_1p = Core.getFileManager().loadHighScores(1);
-			this.highScores_2p = Core.getFileManager().loadHighScores(2);
+			this.highScores_1p = fCore.getFileManager().loadHighScores(1);
+			this.highScores_2p = fCore.getFileManager().loadHighScores(2);
 		} catch (NumberFormatException | IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}

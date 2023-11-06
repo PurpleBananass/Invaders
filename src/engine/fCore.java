@@ -18,9 +18,8 @@ import screen.*;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  *
  */
-public final class Core {
+public final class fCore {
 
-	/** Width of current screen. */
 	private static final int WIDTH = 448;
 	/** Height of current screen. */
 	private static final int HEIGHT = 520;
@@ -58,13 +57,13 @@ public final class Core {
 	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
-	private static Frame frame;
+	private static aFrame frame;
 	/** Screen currently shown. */
 	private static Screen currentScreen;
 	/** Difficulty settings list. */
 	private static List<GameSettings> gameSettings;
 	/** Application logger. */
-	private static final Logger LOGGER = Logger.getLogger(Core.class
+	private static final Logger LOGGER = Logger.getLogger(fCore.class
 			.getSimpleName());
 	/** Logger handler for printing to disk. */
 	private static Handler fileHandler;
@@ -88,9 +87,9 @@ public final class Core {
 	 * @param args
 	 *            Program args, ignored.
 	 */
-	public static void main(final String[] args) {
+	public static void maid(final String[] args) {
 		try {
-			setting = Core.getFileManager().loadSettings();
+			setting = fCore.getFileManager().loadSettings();
 			soundVolume = setting.get(0).getValue();
 			if(setting.get(1).getValue()==1){
 				bgmOn = true;
@@ -125,8 +124,8 @@ public final class Core {
 			e.printStackTrace();
 		}
 
-		frame = new Frame(WIDTH, HEIGHT, bottomHudHeight);
-		DrawManager.getInstance().setFrame(frame);
+		frame = new aFrame(WIDTH, HEIGHT, bottomHudHeight);
+		aDrawManager.getInstance().setFrame(frame);
 		int width = frame.getWidth();
 		int height = frame.getHeight();
 
@@ -334,7 +333,7 @@ public final class Core {
 	/**
 	 * Constructor, not called.
 	 */
-	private Core() {
+	private fCore() {
 
 	}
 
@@ -352,8 +351,8 @@ public final class Core {
 	 *
 	 * @return Application draw manager.
 	 */
-	public static DrawManager getDrawManager() {
-		return DrawManager.getInstance();
+	public static aDrawManager getDrawManager() {
+		return aDrawManager.getInstance();
 	}
 
 	/**
@@ -361,8 +360,8 @@ public final class Core {
 	 *
 	 * @return Application input manager.
 	 */
-	public static InputManager getInputManager() {
-		return InputManager.getInstance();
+	public static aInputManager getInputManager() {
+		return aInputManager.getInstance();
 	}
 
 	/**

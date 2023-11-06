@@ -12,7 +12,7 @@ public class AchievementManager {
 	private int UnluckyScore = 440; // '4' means the unlucky number
 	private int AceScore = 1110; // '1' means the ace in one card
 
-	private static final Logger LOGGER = Logger.getLogger(Core.class
+	private static final Logger LOGGER = Logger.getLogger(fCore.class
 			.getSimpleName());
 
 	public enum Achievement {

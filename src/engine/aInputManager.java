@@ -1,6 +1,6 @@
 package engine;
 
-import engine.Core;
+import engine.fCore;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -10,26 +10,26 @@ import java.awt.event.KeyListener;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  * 
  */
-public final class InputManager implements KeyListener {
+public final class aInputManager implements KeyListener {
 
 	/** Number of recognised keys. */
 	private static final int NUM_KEYS = 256;
 	/** Array with the keys marked as pressed or not. */
 	private static boolean[] keys;
 	/** Singleton instance of the class. */
-	private static InputManager instance;
+	private static aInputManager instance;
 
 	private static int keyUp = 0;
 
 	private static Integer keyCode;
 	private static String keyString;
 	private boolean checkKeyPressed=false;
-	private int[] keySetting = Core.getKeySettingCodeArray();
+	private int[] keySetting = fCore.getKeySettingCodeArray();
 
 	/**
 	 * Private constructor.
 	 */
-	private InputManager() {
+	private aInputManager() {
 		keys = new boolean[NUM_KEYS];
 	}
 
@@ -38,9 +38,9 @@ public final class InputManager implements KeyListener {
 	 * 
 	 * @return Shared instance of InputManager.
 	 */
-	protected static InputManager getInstance() {
+	protected static aInputManager getInstance() {
 		if (instance == null)
-			instance = new InputManager();
+			instance = new aInputManager();
 		return instance;
 	}
 

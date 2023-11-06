@@ -1,7 +1,7 @@
 package entity;
 
 import engine.Cooldown;
-import engine.DrawManager;
+import engine.aDrawManager;
 import engine.GameState;
 
 import java.util.Set;
@@ -16,7 +16,7 @@ public class EnemyShipC extends EnemyShip {
     /** 제거시 올라가는 점수 */
     private final int POINT = 20;
     public EnemyShipC(final int positionX, final int positionY,
-                      final DrawManager.SpriteType spriteType, final GameState gameState) {
+                      final aDrawManager.SpriteType spriteType, final GameState gameState) {
         super(positionX, positionY, spriteType, gameState);
         super.HP = (int)(super.HP * HPPOWER);
         super.pointValue = POINT;
@@ -25,10 +25,10 @@ public class EnemyShipC extends EnemyShip {
     public final void update() {
         if (this.animationCooldown.checkFinished()) {
             this.animationCooldown.reset();
-            if (spriteType == DrawManager.SpriteType.EnemyShipC1)
-                spriteType = DrawManager.SpriteType.EnemyShipC2;
+            if (spriteType == aDrawManager.SpriteType.EnemyShipC1)
+                spriteType = aDrawManager.SpriteType.EnemyShipC2;
             else
-                spriteType = DrawManager.SpriteType.EnemyShipC1;
+                spriteType = aDrawManager.SpriteType.EnemyShipC1;
         }
     }
     public final void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown) {

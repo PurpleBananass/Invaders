@@ -1,10 +1,10 @@
 package screen;
 
 import engine.Cooldown;
-import engine.Core;
+import engine.fCore;
 import engine.SoundManager;
 
-import engine.DrawManager;
+import engine.aDrawManager;
 import engine.FileManager;
 
 import java.awt.event.KeyEvent;
@@ -17,14 +17,14 @@ public class SkinSelectionScreen extends Screen{
     private int skincode_2p=0;
     private FileManager fileManager;
 
-    private static Map<DrawManager.SpriteType, boolean[][]> spriteMap;
+    private static Map<aDrawManager.SpriteType, boolean[][]> spriteMap;
 
     public SkinSelectionScreen(final int width, final int height, final int fps) {
 
         super(width, height, fps);
 
         this.returnCode = 7;
-        this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+        this.selectionCooldown = fCore.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
 
     }

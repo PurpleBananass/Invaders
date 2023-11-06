@@ -1,7 +1,7 @@
 package screen;
 
 import engine.Cooldown;
-import engine.Core;
+import engine.fCore;
 import engine.Player;
 
 import java.awt.event.KeyEvent;
@@ -47,7 +47,7 @@ public class LoginScreen extends Screen {
 
 		// Defaults to play.
 		this.returnCode = 2;
-		this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+		this.selectionCooldown = fCore.getCooldown(SELECTION_TIME);
 		this.selectionCooldown.reset();
 		this.name = "AAA".toCharArray();
 		this.nameCharSelected = 0;
@@ -99,12 +99,12 @@ public class LoginScreen extends Screen {
 				}
 				if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
 					try {
-						Player loadedPlayer = Core.getFileManager().loadPlayer(name);
+						Player loadedPlayer = fCore.getFileManager().loadPlayer(name);
 						if(loadedPlayer == null){
-							Core.getFileManager().saveNewPlayer(name);
+							fCore.getFileManager().saveNewPlayer(name);
 							logger.info("New player saved successfully");
 						} else {
-							Core.getFileManager().updateLoginTimeOfCurrentPlayer();
+							fCore.getFileManager().updateLoginTimeOfCurrentPlayer();
 							logger.info("Player loaded successfully");
 						}
 					} catch (IOException e) {

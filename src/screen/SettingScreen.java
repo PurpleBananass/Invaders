@@ -34,7 +34,7 @@ public class SettingScreen extends Screen {
     public SettingScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
         this.returnCode = 1;
-        this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+        this.selectionCooldown = fCore.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
 
@@ -76,15 +76,15 @@ public class SettingScreen extends Screen {
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(Core.soundVolume < 100){
-                            Core.soundVolume ++;
-                            SoundManager.setMasterVolume(Core.soundVolume);
+                        if(fCore.soundVolume < 100){
+                            fCore.soundVolume ++;
+                            SoundManager.setMasterVolume(fCore.soundVolume);
                         }
                         break;
                     /** BGM On/Off */
                     case 1:
-                        Core.bgmOn = !Core.bgmOn;
-                        SoundManager.bgmSetting(Core.bgmOn);
+                        fCore.bgmOn = !fCore.bgmOn;
+                        SoundManager.bgmSetting(fCore.bgmOn);
                         this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */
@@ -101,15 +101,15 @@ public class SettingScreen extends Screen {
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(Core.soundVolume >0){
-                            Core.soundVolume --;
-                            SoundManager.setMasterVolume(Core.soundVolume);
+                        if(fCore.soundVolume >0){
+                            fCore.soundVolume --;
+                            SoundManager.setMasterVolume(fCore.soundVolume);
                         }
                         break;
                     /** BGM On/Off */
                     case 1:
-                        Core.bgmOn = !Core.bgmOn;
-                        SoundManager.bgmSetting(Core.bgmOn);
+                        fCore.bgmOn = !fCore.bgmOn;
+                        SoundManager.bgmSetting(fCore.bgmOn);
                         this.selectionCooldown.reset();
                         break;
                     default:
@@ -144,29 +144,29 @@ public class SettingScreen extends Screen {
              * */
             if (itemCode == 2 && selected && !keyChangeMode && inputManager.isKeyDown(KeyEvent.VK_SPACE)){
                 keyChangeMode =true;
-                tempKeyCode = Core.getKeySettingCode(keyNum);
-                tempKeyString = Core.getKeySettingString(keyNum);
-                Core.setKeySettingString(keyNum, "");
+                tempKeyCode = fCore.getKeySettingCode(keyNum);
+                tempKeyString = fCore.getKeySettingString(keyNum);
+                fCore.setKeySettingString(keyNum, "");
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 3 && selected && !keyChangeMode && inputManager.isKeyDown(KeyEvent.VK_SPACE)){
                 keyChangeMode =true;
-                tempKeyCode = Core.getKeySettingCode(keyNum +8);
-                tempKeyString = Core.getKeySettingString(keyNum +8);
-                Core.setKeySettingString(keyNum +8, "");
+                tempKeyCode = fCore.getKeySettingCode(keyNum +8);
+                tempKeyString = fCore.getKeySettingString(keyNum +8);
+                fCore.setKeySettingString(keyNum +8, "");
                 this.selectionCooldown.reset();
             }
             else if(itemCode == 2 && selected && keyChangeMode && inputManager.getcheck()){
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
                 for(int i=0;i<16;i++){
-                    if(Core.getKeySettingCode(i) == temp){
-                        Core.setKeySettingCode(i,tempKeyCode);
-                        Core.setKeySettingString(i,tempKeyString);
+                    if(fCore.getKeySettingCode(i) == temp){
+                        fCore.setKeySettingCode(i,tempKeyCode);
+                        fCore.setKeySettingString(i,tempKeyString);
                     }
                 }
-                Core.setKeySettingString(keyNum, tempS);
-                Core.setKeySettingCode(keyNum, temp);
+                fCore.setKeySettingString(keyNum, tempS);
+                fCore.setKeySettingCode(keyNum, temp);
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
@@ -174,13 +174,13 @@ public class SettingScreen extends Screen {
                 int temp = inputManager.getKeyCode();
                 String tempS = inputManager.getKeyString();
                 for(int i=0;i<16;i++){
-                    if(Core.getKeySettingCode(i) == temp){
-                        Core.setKeySettingCode(i, tempKeyCode);
-                        Core.setKeySettingString(i, tempKeyString);
+                    if(fCore.getKeySettingCode(i) == temp){
+                        fCore.setKeySettingCode(i, tempKeyCode);
+                        fCore.setKeySettingString(i, tempKeyString);
                     }
                 }
-                Core.setKeySettingString(keyNum +8, tempS);
-                Core.setKeySettingCode(keyNum +8, temp);
+                fCore.setKeySettingString(keyNum +8, tempS);
+                fCore.setKeySettingCode(keyNum +8, temp);
                 keyChangeMode = false;
                 this.selectionCooldown.reset();
             }
@@ -230,20 +230,20 @@ public class SettingScreen extends Screen {
     private void draw() {
         drawManager.initDrawing(this);
         drawManager.drawSetting(this, itemCode, selected);
-        drawManager.drawSettingDetail(this, itemCode, selected, Core.soundVolume, Core.bgmOn, keyNum);
+        drawManager.drawSettingDetail(this, itemCode, selected, fCore.soundVolume, fCore.bgmOn, keyNum);
 
         drawManager.completeDrawing(this);
     }
 
     private void saveSetting(){
-        Core.setting.get(0).value = Core.soundVolume;
-        Core.setting.get(1).value = Core.bgmOn ? 1:0;
+        fCore.setting.get(0).value = fCore.soundVolume;
+        fCore.setting.get(1).value = fCore.bgmOn ? 1:0;
         for (int i =0; i < 16; i++) {
-            Core.setting.get(i+2).value = Core.getKeySettingCode(i);
-            Core.setting.get(i+2).name = Core.getKeySettingString(i);
+            fCore.setting.get(i+2).value = fCore.getKeySettingCode(i);
+            fCore.setting.get(i+2).name = fCore.getKeySettingString(i);
         }
         try {
-            FileManager.saveSettings(Core.setting);
+            FileManager.saveSettings(fCore.setting);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

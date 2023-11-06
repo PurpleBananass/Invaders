@@ -163,9 +163,9 @@ public class GameScreen extends Screen {
 			if (gameState.getMode() == 1) {
 				this.lives++;
 			} else {
-				if (this.lives == Core.getMaxLives()) {
+				if (this.lives == fCore.getMaxLives()) {
 					this.lives2++;
-				} else if (this.lives2 == Core.getMaxLives()) {
+				} else if (this.lives2 == fCore.getMaxLives()) {
 					this.lives++;
 				} else {
 					this.lives++;
@@ -176,10 +176,10 @@ public class GameScreen extends Screen {
 
 		try {
 			if (this.gameState.getMode() == 1) {
-				List<Score> highScores = Core.getFileManager().loadHighScores(1);
+				List<Score> highScores = fCore.getFileManager().loadHighScores(1);
 				this.highScore = highScores.stream().mapToInt(Score::getScore).max().orElseThrow(NoSuchElementException::new);
 			} else {
-				List<Score> highScores = Core.getFileManager().loadHighScores(2);
+				List<Score> highScores = fCore.getFileManager().loadHighScores(2);
 				this.highScore = highScores.stream().mapToInt(Score::getScore).max().orElseThrow(NoSuchElementException::new);
 			}
 		} catch (NumberFormatException | NoSuchElementException | IOException e) {
@@ -198,14 +198,14 @@ public class GameScreen extends Screen {
 		Player player;
 		List<Boolean> existShopItems;
 		try {
-			player = Core.getFileManager().getCurrentPlayer();
+			player = fCore.getFileManager().getCurrentPlayer();
 			existShopItems= player.getItem();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		// 게임 모드 별 함선 생성 제어
 		if (gameState.getMode() == 1){
-			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
+			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, aDrawManager.SpriteType.Ship, false);
 			if(existShopItems.get(0)){
 				this.ship.buyItemSpeed();
 			}
@@ -217,8 +217,8 @@ public class GameScreen extends Screen {
 			}
 		}
 		if (gameState.getMode() == 2) {
-			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
-			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, DrawManager.SpriteType.Ship2, false);
+			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN, aDrawManager.SpriteType.Ship, false);
+			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, aDrawManager.SpriteType.Ship2, false);
 			if(existShopItems.get(0)){
 				this.ship.buyItemSpeed();
 				this.ship2.buyItemSpeed();
@@ -234,18 +234,18 @@ public class GameScreen extends Screen {
 		}
 
 		// Appears each 10-30 seconds.
-		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
+		this.enemyShipSpecialCooldown = fCore.getVariableCooldown(
 				BONUS_SHIP_INTERVAL, BONUS_SHIP_VARIANCE);
 		this.enemyShipSpecialCooldown.reset();
-		this.enemyShipSpecialExplosionCooldown = Core
+		this.enemyShipSpecialExplosionCooldown = fCore
 				.getCooldown(BONUS_SHIP_EXPLOSION);
-		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
+		this.screenFinishedCooldown = fCore.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
-		this.inputDelay = Core.getCooldown(INPUT_DELAY);
+		this.inputDelay = fCore.getCooldown(INPUT_DELAY);
 		this.inputDelay.reset();
 
 		this.magazine=5;
@@ -335,8 +335,8 @@ public class GameScreen extends Screen {
             if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
                 if (gameState.getMode() == 1 && !this.ship.isDestroyed()) {
-                    boolean moveRight = inputManager.isKeyDown(Core.getKeySettingCode(1));
-                    boolean moveLeft = inputManager.isKeyDown(Core.getKeySettingCode(0));
+                    boolean moveRight = inputManager.isKeyDown(fCore.getKeySettingCode(1));
+                    boolean moveLeft = inputManager.isKeyDown(fCore.getKeySettingCode(0));
 
                     boolean isRightBorder = this.ship.getPositionX()
                             + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
@@ -353,7 +353,7 @@ public class GameScreen extends Screen {
 						this.ship.itemImpactUpdate();
 					}
 
-                    if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
+                    if (replayability.getReplay() == 0 && inputManager.isKeyDown(fCore.getKeySettingCode(2))) {
                         if (this.ship.shoot(this.bullets, 1))
                             this.bulletsShot1++;
                         if (this.ship.isExistAuxiliaryShips()) {
@@ -368,7 +368,7 @@ public class GameScreen extends Screen {
 
                     }
                     if (replayability.getReplay() == 1) {
-                        if (this.bullet_count <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
+                        if (this.bullet_count <= 9 && inputManager.isKeyDown(fCore.getKeySettingCode(2))) {
                             if (this.ship.shoot(this.bullets, 1)) {
                                 this.bulletsShot1++;
                                 this.bullet_count++;
@@ -418,18 +418,18 @@ public class GameScreen extends Screen {
                             auxiliaryShips.get(0).destroy();
                             auxiliaryShips.get(1).destroy();
                         }
-                        if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
+                        if (inputManager.isKeyDown(fCore.getKeySettingCode(7)))
                             if (this.ship.itemCoolTime())
                                 useItem(this.ship.getItemQueue().deque(), this.ship);
                     }
 
 
                 } else if (gameState.getMode() == 2 && !(this.ship.isDestroyed() && this.ship2.isDestroyed())) {
-                    boolean moveRight1p = inputManager.isKeyDown(Core.getKeySettingCode(1));
-                    boolean moveLeft1p = inputManager.isKeyDown(Core.getKeySettingCode(0));
+                    boolean moveRight1p = inputManager.isKeyDown(fCore.getKeySettingCode(1));
+                    boolean moveLeft1p = inputManager.isKeyDown(fCore.getKeySettingCode(0));
 
-                    boolean moveRight2p = inputManager.isKeyDown(Core.getKeySettingCode(9));
-                    boolean moveLeft2p = inputManager.isKeyDown(Core.getKeySettingCode(8));
+                    boolean moveRight2p = inputManager.isKeyDown(fCore.getKeySettingCode(9));
+                    boolean moveLeft2p = inputManager.isKeyDown(fCore.getKeySettingCode(8));
 
                     boolean isRightBorder1p = this.ship.getPositionX()
                             + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
@@ -459,7 +459,7 @@ public class GameScreen extends Screen {
 					}
 
                     if (replayability.getReplay() == 0) {
-                        if (inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
+                        if (inputManager.isKeyDown(fCore.getKeySettingCode(2)) && (this.lives > 0)) {
                             if (this.ship.shoot(this.bullets, 1)) {
                                 this.bulletsShot1++;
                                 this.bullet_count++;
@@ -475,7 +475,7 @@ public class GameScreen extends Screen {
 								this.ship2.itemImpactUpdate();
 							}
                         }
-                        if (inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
+                        if (inputManager.isKeyDown(fCore.getKeySettingCode(10)) && (this.lives2 > 0)) {
                             if (this.ship2.shoot(this.bullets, 2)) {
                                 this.bulletsShot2++;
                                 this.bullet_count2++;
@@ -493,7 +493,7 @@ public class GameScreen extends Screen {
                         }
                     } else if (replayability.getReplay() == 1) {
                         //player1
-                        if (this.bullet_count <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
+                        if (this.bullet_count <= 9 && inputManager.isKeyDown(fCore.getKeySettingCode(2)) && (this.lives > 0)) {
                             if (this.ship.shoot(this.bullets, 1)) {
                                 SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShoota", false, false);
                                 this.bulletsShot1++;
@@ -542,13 +542,13 @@ public class GameScreen extends Screen {
                                 auxiliaryShips.get(0).destroy();
                                 auxiliaryShips.get(1).destroy();
                             }
-                            if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
+                            if (inputManager.isKeyDown(fCore.getKeySettingCode(7)))
                                 if (this.ship.itemCoolTime())
                                     useItem(this.ship.getItemQueue().deque(), this.ship);
                         }
 
                         //player2
-                        if (this.bullet_count2 <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
+                        if (this.bullet_count2 <= 9 && inputManager.isKeyDown(fCore.getKeySettingCode(10)) && (this.lives2 > 0)) {
 							if (this.ship2.shoot(this.bullets, 2)) {
 								this.bulletsShot2++;
 								this.bullet_count2++;
@@ -596,7 +596,7 @@ public class GameScreen extends Screen {
 								auxiliaryShips.get(0).destroy();
 								auxiliaryShips.get(1).destroy();
 							}
-							if (inputManager.isKeyDown(Core.getKeySettingCode(15)))
+							if (inputManager.isKeyDown(fCore.getKeySettingCode(15)))
 								if (this.ship2.itemCoolTime())
 									useItem(this.ship2.getItemQueue().deque(), this.ship2);
 						}

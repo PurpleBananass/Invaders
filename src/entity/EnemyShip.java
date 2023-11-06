@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.Set;
 
 import engine.Cooldown;
-import engine.Core;
-import engine.DrawManager.SpriteType;
+import engine.fCore;
+import engine.aDrawManager.SpriteType;
 import engine.GameState;
 import engine.SoundManager;
 
@@ -58,7 +58,7 @@ public class EnemyShip extends Entity {
 		super(positionX, positionY, 12 * 2, 8 * 2, Color.WHITE);
 		this.gameState = gameState;
 		this.spriteType = spriteType;
-		this.animationCooldown = Core.getCooldown(500);
+		this.animationCooldown = fCore.getCooldown(500);
 		this.isDestroyed = false;
 		this.itemRange =  new Random().nextInt(RANDOM_BOUND);
 		this.hasItem = itemGenerator(itemRange);

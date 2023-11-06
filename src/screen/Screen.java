@@ -5,9 +5,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import engine.Cooldown;
-import engine.Core;
-import engine.DrawManager;
-import engine.InputManager;
+import engine.fCore;
+import engine.aDrawManager;
+import engine.aInputManager;
 
 /**
  * Implements a generic screen.
@@ -21,9 +21,9 @@ public class Screen {
 	private static final int INPUT_DELAY = 1000;
 
 	/** Draw Manager instance. */
-	protected DrawManager drawManager;
+	protected aDrawManager drawManager;
 	/** Input Manager instance. */
-	protected InputManager inputManager;
+	protected aInputManager inputManager;
 	/** Application logger. */
 	protected Logger logger;
 
@@ -61,10 +61,10 @@ public class Screen {
 		this.height = height;
 		this.fps = fps;
 
-		this.drawManager = Core.getDrawManager();
-		this.inputManager = Core.getInputManager();
-		this.logger = Core.getLogger();
-		this.inputDelay = Core.getCooldown(INPUT_DELAY);
+		this.drawManager = fCore.getDrawManager();
+		this.inputManager = fCore.getInputManager();
+		this.logger = fCore.getLogger();
+		this.inputDelay = fCore.getCooldown(INPUT_DELAY);
 		this.inputDelay.reset();
 		this.returnCode = 0;
 		this.soundSelect = true;

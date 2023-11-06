@@ -5,9 +5,9 @@ import java.util.Set;
 import java.util.*;
 
 import engine.Cooldown;
-import engine.Core;
-import engine.DrawManager;
-import engine.DrawManager.SpriteType;
+import engine.fCore;
+import engine.aDrawManager;
+import engine.aDrawManager.SpriteType;
 
 /**
  * Implements a ship, to be controlled by the player.
@@ -94,14 +94,14 @@ public class Ship extends Entity {
         super(positionX, positionY, 13 * 2, 8 * 2, color);
 
         this.spriteType = spriteType;
-        this.shootingCooldown = Core.getCooldown(shootingInterval);
-        this.itemCooldown = Core.getCooldown(ITEM_USE_INTERVAL);
-        this.destructionCooldown = Core.getCooldown(1000);
-        this.skillCooldown = Core.getCooldown(1000);
+        this.shootingCooldown = fCore.getCooldown(shootingInterval);
+        this.itemCooldown = fCore.getCooldown(ITEM_USE_INTERVAL);
+        this.destructionCooldown = fCore.getCooldown(1000);
+        this.skillCooldown = fCore.getCooldown(1000);
 
-        this.speedupCooldown = Core.getCooldown(impactInterval);
-        this.invincibleCooldown = Core.getCooldown(impactInterval);
-        this.auxiliaryCooldown = Core.getCooldown(impactInterval);
+        this.speedupCooldown = fCore.getCooldown(impactInterval);
+        this.invincibleCooldown = fCore.getCooldown(impactInterval);
+        this.auxiliaryCooldown = fCore.getCooldown(impactInterval);
 
         this.speed = originalSpeed;
         this.BULLET_SPEED = ORIGINAL_BULLET_SPEED;
@@ -110,7 +110,7 @@ public class Ship extends Entity {
 
         if (!isAuxiliaryShip) {
             this.auxiliaryShips.add(new Ship(positionX - 25, positionY, this.getColor(), SpriteType.AuxiliaryShips, true));
-            this.auxiliaryShips.add(new Ship(positionX + 25, positionY, this.getColor(), DrawManager.SpriteType.AuxiliaryShips, true));
+            this.auxiliaryShips.add(new Ship(positionX + 25, positionY, this.getColor(), aDrawManager.SpriteType.AuxiliaryShips, true));
         }
     }
 
@@ -225,14 +225,14 @@ public class Ship extends Entity {
      * @return Speed of the ship's shooting frequency.
      */
     public final void setShootingInterval(int cldwn) {
-        this.shootingCooldown = Core.getCooldown(cldwn);
+        this.shootingCooldown = fCore.getCooldown(cldwn);
     }
 
     /**
      * Re-Setter for the ship's shooting frequency speed.
      */
     public final void resetShootingInterval() {
-        this.shootingCooldown = Core.getCooldown(shootingInterval);
+        this.shootingCooldown = fCore.getCooldown(shootingInterval);
     }
 
     public final boolean getItemImpact() {
@@ -315,7 +315,7 @@ public class Ship extends Entity {
 
     public void applyFasterShootingItem() {
         this.shootingInterval = this.FASTER_SHOOTING_INTERVAL;
-        this.shootingCooldown = Core.getCooldown(this.shootingInterval);
+        this.shootingCooldown = fCore.getCooldown(this.shootingInterval);
 
         for (Ship auxiliaryShip : auxiliaryShips) {
             auxiliaryShip.applyFasterShootingItem();

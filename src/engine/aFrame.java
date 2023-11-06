@@ -12,8 +12,7 @@ import screen.Screen;
  * @author <a href="mailto:RobertoIA1987@gmail.com">Roberto Izquierdo Amo</a>
  * 
  */
-@SuppressWarnings("serial")
-public class Frame extends JFrame {
+public class aFrame extends JFrame {
 
 	/** Frame width. */
 	private int width;
@@ -32,21 +31,18 @@ public class Frame extends JFrame {
 	 * @param height
 	 *            Frame height.
 	 */
-	public Frame(final int width, final int height, final int bottomHudHeight) {
+	public aFrame(final int width, final int height, final int bottomHudHeight) {
 		setSize(width, height+bottomHudHeight);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 		setLocationRelativeTo(null);
 		setVisible(true);
-
 		Insets insets = getInsets();
 		this.width = width - insets.left - insets.right;
 		this.height = height + bottomHudHeight - insets.top + insets.bottom;
 		this.bottomHudHeight = bottomHudHeight;
 		setTitle("Invaders");
-
-		addKeyListener(Core.getInputManager());
+		addKeyListener(fCore.getInputManager());
 	}
 
 	/**
