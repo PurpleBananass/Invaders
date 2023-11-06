@@ -502,6 +502,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				this.shooters.remove(destroyedShipIndex);
 				this.logger.info("Shooters list reduced to "
 						+ this.shooters.size() + " members.");
+				if (this.shooters.isEmpty())
+					SoundManager.playSound("SFX/S_LevelClear", "level_start_count", false, false);
 			}
 		}
 		if (destroyedShip.isDestroyed()) this.shipCount--;
@@ -572,6 +574,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					this.shooters.remove(destroyedShipIndex);
 					this.logger.info("Shooters list reduced to "
 							+ this.shooters.size() + " members.");
+					if (this.shooters.isEmpty())
+						SoundManager.playSound("SFX/S_LevelClear", "level_start_count", false, false);
 				}
 			}
 

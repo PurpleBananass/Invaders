@@ -88,7 +88,7 @@ public class SettingScreen extends Screen {
                         this.selectionCooldown.reset();
                         break;
                     /** Keys Setting */
-                    case 2, 3:
+                    case 2: case 3:
                         if(keyNum>0) keyNum--;
                         this.selectionCooldown.reset();
                         break;
@@ -116,6 +116,7 @@ public class SettingScreen extends Screen {
                         break;
                 }
             }
+
             /** Move up and down when selecting key */
             if((inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) && itemCode>1 && selected && !keyChangeMode){
