@@ -4,7 +4,7 @@ public final class Core {
     public static void main(final String[] args) {
         GameManager gm = GameManager.getInstance();
         gm.frame = new Frame();
-        gm.frame.SetSize(300, 300);
+        gm.frame.SetSize(448, 520);
         InputManager im = InputManager.getInstance();
         gm.frame.addKeyListener(im);
         gm.Initialize();
@@ -17,6 +17,7 @@ public final class Core {
             EventSystem.getInstance().RenderEntity();
             gm.frame.Render();
         }
+        
         System.exit(0);
     }
     

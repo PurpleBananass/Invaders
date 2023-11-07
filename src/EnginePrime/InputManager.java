@@ -17,6 +17,7 @@ public final class InputManager implements KeyListener {
         newstate = new KeyState[NUM_KEYS];
         Arrays.fill(state, KeyState.Released);
         Arrays.fill(newstate, KeyState.Released);
+
 	}
 
     private static final int NUM_KEYS = 256;

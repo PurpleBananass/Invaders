@@ -14,8 +14,9 @@ public final class RenderManager {
 
     static boolean FrontBuffer;
     static BufferedImage backBuffer[];
+    static Graphics graphics[];
     private static RenderManager instance = null;
-    private static Map<String, Font> fontList = new HashMap<>();
+    public static Map<String, Font> fontList = new HashMap<>();
     private RenderManager(){};
 
     public static RenderManager getInstance() {
@@ -38,8 +39,9 @@ public final class RenderManager {
 
     public static FontMetrics SetFont(String name) {
         Font font = fontList.get(name);
-        GetCurrentGraphic().setFont(font);
-        return GetCurrentGraphic().getFontMetrics(font);
+        Graphics g = GetCurrentGraphic();
+        g.setFont(font);
+        return g.getFontMetrics(font);
     }
 
     public static Font CreateFont(Font font , String name, float size) {
@@ -57,7 +59,7 @@ public final class RenderManager {
     };
 
     public static Graphics GetCurrentGraphic(){
-        return GetCurrentBuffer().getGraphics();
+        return graphics[((FrontBuffer) ? 1 : 0)];
     };
 
     public void Render(Frame f){
@@ -78,5 +80,6 @@ public final class RenderManager {
 
     public void Resize(final int width, final int height){
         backBuffer = new BufferedImage[]{new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)};
+        graphics = new Graphics[]{backBuffer[0].getGraphics(),backBuffer[1].getGraphics()};
     }
 }

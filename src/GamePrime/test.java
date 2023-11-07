@@ -1,7 +1,6 @@
 package GamePrime;
 
 import EnginePrime.Component;
-import EnginePrime.GameManager;
 import EnginePrime.InputManager;
 import EnginePrime.RenderManager;
 

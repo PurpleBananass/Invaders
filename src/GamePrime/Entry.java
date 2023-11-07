@@ -20,9 +20,9 @@ public class Entry implements GManager{
 
     public void Initialize(){
         gm.Et.SetMaxFps(60);
-        Font font = gm.Rm.LoadFont("res" + File.separator + "font.ttf");
-        gm.Rm.CreateFont(font, "Regular", 14);
-        gm.Rm.CreateFont(font, "Big", 24);
+        Font font = gm.Rm.LoadFont("res" + File.separator +"font.ttf");
+        gm.Rm.CreateFont(font, "Regular", 14.0f);
+        gm.Rm.CreateFont(font, "Big", 24.0f);
         GameManager.getInstance().SetInstance(new LoginPage());
     }
 
@@ -30,7 +30,10 @@ public class Entry implements GManager{
 
     public void LateUpdate(){};
 
-   
+    public void Exit(){
+
+
+    }
 
 }
 

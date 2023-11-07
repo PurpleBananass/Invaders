@@ -1,4 +1,5 @@
 package EnginePrime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.simple.JSONObject;
@@ -13,10 +14,12 @@ public final class GameManager implements GManager{
     public static EngineTimer Et = EngineTimer.getInstance();
     public static RenderManager Rm = RenderManager.getInstance();
     public static InputManager Im = InputManager.getInstance();
+    public static SoundManager Sm = SoundManager.getInstance();
     public static GameManager instance = null;
     private static GManager CustomInstance = null; 
     
     public Map<String, JSONObject> GlobalData = new HashMap<>();
+    public ArrayList<Runnable> ExitCode = new ArrayList<>();
 
     private GameManager(){};
 
@@ -30,6 +33,11 @@ public final class GameManager implements GManager{
 
     public void Initialize(){
         EngineTimer.getInstance().Reset();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            for (Runnable code : ExitCode){
+                code.run();
+            }
+        }));
         SetInstance(new Entry());
     } 
 
