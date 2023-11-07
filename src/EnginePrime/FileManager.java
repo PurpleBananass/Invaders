@@ -28,9 +28,10 @@ public class FileManager {
             while ((line = bufferedReader.readLine()) != null) {
                 output.append(line); // StringBuilder에 누적
             }
+            return output.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return output.toString(); // 읽은 문자열을 반환
+        return null; // 읽은 문자열을 반환
     }    
 }

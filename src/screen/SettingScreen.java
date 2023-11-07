@@ -4,7 +4,6 @@ import engine.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-
 public class SettingScreen extends Screen {
     /** Milliseconds between changes in user selection. */
     private static final int SELECTION_TIME = 200;

@@ -1,0 +1,157 @@
+package GamePrime.Page;
+import EnginePrime.FileManager;
+import EnginePrime.GManager;
+import EnginePrime.GameManager;
+import EnginePrime.SoundManager;
+import engine.Settings;
+
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+public class MenuPage implements GManager {
+
+    GameManager gm = GameManager.getInstance();
+
+    private final int MaxPage = 5;
+    private final int MinPage = 0;
+
+    int PageIndex;
+
+    private SoundManager.PlayProp menuSoundProp;
+
+
+    private void LoadSetting() {
+        try {
+            FileManager fm = new FileManager();
+            JSONObject Setting = new JSONObject();
+            JSONParser parser = new JSONParser();
+            Setting = (JSONObject) parser.parse(fm.LoadString("settings"));
+            gm.GlobalData.put("Setting", Setting);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void Initialize(){
+        LoadSetting();
+        PageIndex = MinPage;
+        menuSoundProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
+    };
+
+    public void PreUpdate(){
+
+        if (gm.Im.isKeyDown(KeyEvent.VK_DOWN)){
+            PageIndex++;
+            if(PageIndex > MaxPage){
+                PageIndex = MinPage;
+            }
+
+
+        }
+        if (gm.Im.isKeyDown(KeyEvent.VK_UP)){
+            PageIndex--;
+            if(PageIndex < MinPage){
+                PageIndex = MaxPage;
+            }
+        }
+
+        Draw();
+    };
+
+    public void LateUpdate(){
+        if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
+            gm.Sm.playSound(menuSoundProp);
+            
+            switch (PageIndex) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    gm.SetInstance(new SettingPage());
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+    private void Draw() {
+
+        DrawTitleString();
+
+        String playString = "Play";
+		String highScoresString = "High scores";
+		String shopString = "Shop";
+		String settingString = "Setting";
+		String achievementString = "Achievements";
+		String exitString = "exit";
+
+        Graphics graphic = gm.Rm.GetCurrentGraphic();
+        graphic.setColor(Color.WHITE);
+        FontMetrics matrix = gm.Rm.SetFont("Regular");
+
+        List<Runnable> lambdaFunctions = new ArrayList<>();
+        lambdaFunctions.add(() -> graphic.drawString(playString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(playString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight() * 5));
+        lambdaFunctions.add(() -> graphic.drawString(highScoresString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(highScoresString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight() * 3));
+        lambdaFunctions.add(() -> graphic.drawString(shopString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(shopString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight()));
+        lambdaFunctions.add(() -> graphic.drawString(settingString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(settingString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()));
+        lambdaFunctions.add(() ->graphic.drawString(achievementString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(achievementString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*3));
+        lambdaFunctions.add(() ->graphic.drawString(exitString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(exitString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*5));
+
+        for (int i =0; i<lambdaFunctions.size();i++){
+
+            if(i == PageIndex){
+                graphic.setColor(Color.WHITE);
+            }
+            else{
+                graphic.setColor(Color.GREEN);
+            }
+            lambdaFunctions.get(i).run();
+        }
+    }
+    private void DrawTitleString(){
+        String titleString = "Invaders";
+        String instructionsString = "select with w+s / arrows, confirm with space";
+
+        Graphics graphic = gm.Rm.GetCurrentGraphic();
+
+        graphic.setColor(Color.GREEN);
+        FontMetrics matrix = gm.Rm.SetFont("Big");
+        graphic.drawString(titleString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(titleString) / 2, gm.frame.getHeight() / 3 - matrix.getHeight() * 2);
+
+        graphic.setColor(Color.GRAY);
+        matrix = gm.Rm.SetFont("Regular");
+        graphic.drawString(instructionsString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(instructionsString) / 2, gm.frame.getHeight() / 2 - matrix.getHeight() * 7/2);
+    }
+}

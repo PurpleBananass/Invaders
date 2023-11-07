@@ -16,6 +16,9 @@ import java.util.UUID;
 
 public class SoundManager {
 
+
+    private static boolean IsMute = false;
+
     public class PlayProp {
         /* 
             단순히 재생만 하고자 할 경우 ClipName은 NULL로 지정.
@@ -23,7 +26,6 @@ public class SoundManager {
         public String FilePath = null;
         public String Clipname = null;
         public long MicroSecPos = 0;
-        public float volume = master;
         public int count = 0;
         public float fadeIn = 0;
 
@@ -38,8 +40,8 @@ public class SoundManager {
     }
 
     private static float master = 0;
-    private static final float minimum = -80;
-    private static final float maximum = 6;
+    public static final float minimum = -80;
+    public static final float maximum = 6;
 
     private static SoundManager instance;
 
@@ -56,6 +58,23 @@ public class SoundManager {
         });
     };
 
+
+    public static boolean IsMute(){
+        return IsMute;
+    }
+
+    public static float CurVolume(){
+        return IsMute ? minimum : master;
+    }
+
+
+    public static void SetMute(boolean b){
+        float volume = CurVolume();
+        for (Clip clip : clips.values()) {
+            FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
+            floatControl.setValue(volume);
+        }
+    }
     public static SoundManager getInstance() {
         if (instance == null)
             instance = new SoundManager();
@@ -71,7 +90,7 @@ public class SoundManager {
                 clip = NewClip(prop);
             }
             FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-            floatControl.setValue(prop.volume);
+            floatControl.setValue(CurVolume());
             clip.setMicrosecondPosition(prop.MicroSecPos);
             clip.loop(prop.count);
             fadeIn(prop.Clipname, prop.fadeIn);
@@ -131,7 +150,7 @@ public class SoundManager {
                     while (elapsed < t) {
                         elapsed += GameManager.getInstance().Et.GetElapsedSeconds();
                         elapsed = elapsed > t ? t : elapsed;
-                        floatControl.setValue((float) (minimum + master * elapsed / t));
+                        floatControl.setValue((float) (minimum + CurVolume() * elapsed / t));
                     }
                 }
             }).start();
@@ -147,13 +166,17 @@ public class SoundManager {
                 while (elapsed < t) {
                     elapsed += GameManager.getInstance().Et.GetElapsedSeconds();
                     elapsed = elapsed > t ? t : elapsed;
-                    floatControl.setValue((float)(master +(minimum - master )*elapsed/t));
+                    floatControl.setValue((float)(CurVolume() +(minimum - CurVolume() )*elapsed/t));
                 }
                 if (callback != null) {
                     callback.run();
                 }
             }
         }).start();
+    }
+
+    public static float GetMasterVolume() {
+        return master;
     }
 
     public static void setMasterVolume(float volume) {
