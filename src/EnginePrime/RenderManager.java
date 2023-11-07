@@ -1,16 +1,21 @@
 package EnginePrime;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.Color;
 import java.awt.Graphics;
-
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 
 public final class RenderManager {
 
     static boolean FrontBuffer;
     static BufferedImage backBuffer[];
     private static RenderManager instance = null;
-
-
+    private static Map<String, Font> fontList = new HashMap<>();
     private RenderManager(){};
 
     public static RenderManager getInstance() {
@@ -18,6 +23,29 @@ public final class RenderManager {
             instance = new RenderManager();
         }
         return instance;
+    }
+
+    public static Font LoadFont(String path){
+        try {
+            FileInputStream inputStream = new FileInputStream(path);
+            Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+            return font;
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static FontMetrics SetFont(String name) {
+        Font font = fontList.get(name);
+        GetCurrentGraphic().setFont(font);
+        return GetCurrentGraphic().getFontMetrics(font);
+    }
+
+    public static Font CreateFont(Font font , String name, float size) {
+        Font newfont = font.deriveFont(size);
+        fontList.put(name,newfont);
+        return newfont;
     }
 
     public static void Fill(){
@@ -36,6 +64,7 @@ public final class RenderManager {
 
         f.getGraphics().drawImage(GetCurrentBuffer(),0,0, f);
         FrontBuffer = !FrontBuffer;
+        RenderManager.Fill();
     }
 
     public static void Fill(Color col){

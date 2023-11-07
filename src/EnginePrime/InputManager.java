@@ -3,8 +3,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
 
-import engine.fCore;
-
 public final class InputManager implements KeyListener {
 
     private static InputManager instance;

@@ -1,15 +1,23 @@
 package EnginePrime;
+import java.util.HashMap;
+import java.util.Map;
+import org.json.simple.JSONObject;
+
 import GamePrime.Entry;
 
 public final class GameManager implements GManager{
     
+
+    public static Frame frame = null;
     public static boolean running = true;
-    
-    
-    public static Timer EngineTime = new Timer();
+    public static EngineTimer Et = EngineTimer.getInstance();
+    public static RenderManager Rm = RenderManager.getInstance();
+    public static InputManager Im = InputManager.getInstance();
     public static GameManager instance = null;
-    public static GManager CustomInstance = null; 
+    private static GManager CustomInstance = null; 
     
+    public Map<String, JSONObject> GlobalData = new HashMap<>();
+
     private GameManager(){};
 
     public static GameManager getInstance() {
@@ -21,12 +29,16 @@ public final class GameManager implements GManager{
     }
 
     public void Initialize(){
-        EngineTime.Reset();
+        EngineTimer.getInstance().Reset();
+        SetInstance(new Entry());
+    } 
+
+    public void SetInstance(GManager inst){
+        CustomInstance = inst;
         if(CustomInstance!=null){
             CustomInstance.Initialize();
-
         }
-    } 
+    }
 
     public void PreUpdate(){
         if(CustomInstance!=null){

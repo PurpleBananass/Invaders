@@ -2,22 +2,20 @@ package EnginePrime;
 
 public final class Core {
     public static void main(final String[] args) {
-        
-        Frame frame = new Frame();
-        frame.SetSize(1000, 800);
-        InputManager im = InputManager.getInstance();
-        frame.addKeyListener(im);
         GameManager gm = GameManager.getInstance();
+        gm.frame = new Frame();
+        gm.frame.SetSize(300, 300);
+        InputManager im = InputManager.getInstance();
+        gm.frame.addKeyListener(im);
         gm.Initialize();
         while (gm.running) {
-            gm.EngineTime.Update();
+            EngineTimer.getInstance().Update();
             im.UpdateKeyState();
             gm.PreUpdate();
             EventSystem.getInstance().Update();
             gm.LateUpdate();
-            RenderManager.Fill();
             EventSystem.getInstance().RenderEntity();
-            frame.Render();
+            gm.frame.Render();
         }
         System.exit(0);
     }

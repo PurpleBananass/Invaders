@@ -7,6 +7,8 @@ import EnginePrime.RenderManager;
 
 import java.awt.event.KeyEvent;
 import java.awt.Color;
+import EnginePrime.EngineTimer;
+
 public class test extends Component{
 
 
@@ -16,18 +18,18 @@ public class test extends Component{
     public void Update(){
 
         if(InputManager.getInstance().isKeyPressed(KeyEvent.VK_A)){
-            x -=100 *GameManager.EngineTime.GetElapsedSeconds();
+            x -=100 *EngineTimer.getInstance().GetElapsedSeconds();
 
         }
         if(InputManager.getInstance().isKeyPressed(KeyEvent.VK_D)){
-            x +=100*GameManager.EngineTime.GetElapsedSeconds();
+            x +=100*EngineTimer.getInstance().GetElapsedSeconds();
         }
 
         if(InputManager.getInstance().isKeyPressed(KeyEvent.VK_W)){
-            y -=100*GameManager.EngineTime.GetElapsedSeconds();
+            y -=100*EngineTimer.getInstance().GetElapsedSeconds();
         }
         if(InputManager.getInstance().isKeyPressed(KeyEvent.VK_S)){
-            y +=100*GameManager.EngineTime.GetElapsedSeconds();
+            y +=100*EngineTimer.getInstance().GetElapsedSeconds();
         }
 
 
