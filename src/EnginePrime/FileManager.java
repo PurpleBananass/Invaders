@@ -1,18 +1,29 @@
 package EnginePrime;
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class FileManager {
+
+    public BufferedImage GetImage(String name) {
+        try {
+            File inputFile = new File(name); // 읽을 PNG 파일 경로
+            return ImageIO.read(inputFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public void SaveString(String name, String s , boolean overwrite) {
         String path = "res" + File.separator + name;
@@ -22,7 +33,6 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-    
 
     public JSONObject LoadJsonObject(String name){
         String jsonString = LoadString(name);

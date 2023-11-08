@@ -1,5 +1,4 @@
 package GamePrime.Page;
-import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
@@ -12,8 +11,6 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 public class MenuPage implements GManager {
 
     GameManager gm = GameManager.getInstance();
@@ -71,10 +68,12 @@ public class MenuPage implements GManager {
             
             switch (PageIndex) {
                 case 0:
+                    gm.SetInstance(new SelectPage());
                     break;
                 case 1:
                     break;
                 case 2:
+                    gm.SetInstance(new StorePage());
                     break;
                 case 3:
                     gm.SetInstance(new SettingPage());
@@ -82,7 +81,6 @@ public class MenuPage implements GManager {
                 case 4:
                     break;
                 case 5:
-
                     gm.running = false;
 
                     break;

@@ -84,7 +84,7 @@ public final class RenderManager implements GManager{
     }
 
     public void Resize(final int width, final int height){
-        backBuffer = new BufferedImage[]{new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)};
+        backBuffer = new BufferedImage[]{new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB), new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)};
         graphics = new Graphics[]{backBuffer[0].getGraphics(),backBuffer[1].getGraphics()};
     }
 }
