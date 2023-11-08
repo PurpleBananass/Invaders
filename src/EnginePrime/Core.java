@@ -9,8 +9,6 @@ public final class Core {
         gm.frame.addKeyListener(im);
         gm.Initialize();
         while (gm.running) {
-            EngineTimer.getInstance().Update();
-            im.UpdateKeyState();
             gm.PreUpdate();
             EventSystem.getInstance().Update();
             gm.LateUpdate();

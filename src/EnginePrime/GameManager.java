@@ -1,4 +1,5 @@
 package EnginePrime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +7,7 @@ import org.json.simple.JSONObject;
 
 import GamePrime.Entry;
 
-public final class GameManager implements GManager{
-    
+public final class GameManager implements GManager {
 
     public static Frame frame = null;
     public static boolean running = true;
@@ -16,12 +16,13 @@ public final class GameManager implements GManager{
     public static InputManager Im = InputManager.getInstance();
     public static SoundManager Sm = SoundManager.getInstance();
     public static GameManager instance = null;
-    private static GManager CustomInstance = null; 
-    
-    public Map<String, JSONObject> GlobalData = new HashMap<>();
-    public ArrayList<Runnable> ExitCode = new ArrayList<>();
+    private static GManager CustomInstance = null;
 
-    private GameManager(){};
+    public static Map<String, JSONObject> GlobalData = new HashMap<>();
+    public static ArrayList<Runnable> ExitCode = new ArrayList<>();
+
+    private GameManager() {
+    };
 
     public static GameManager getInstance() {
         if (instance == null) {
@@ -31,34 +32,45 @@ public final class GameManager implements GManager{
         return instance;
     }
 
-    public void Initialize(){
-        EngineTimer.getInstance().Reset();
+    public void Initialize() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            for (Runnable code : ExitCode){
+            for (Runnable code : ExitCode) {
                 code.run();
             }
         }));
+        Et.Initialize();
+        Rm.Initialize();
+        Im.Initialize();
+        Sm.Initialize();
+        GlobalData.put("LocalData",  new JSONObject());
         SetInstance(new Entry());
-    } 
+    }
 
-    public void SetInstance(GManager inst){
+    public void SetInstance(GManager inst) {
         CustomInstance = inst;
-        if(CustomInstance!=null){
+        if (CustomInstance != null) {
             CustomInstance.Initialize();
         }
     }
 
-    public void PreUpdate(){
-        if(CustomInstance!=null){
+    public void PreUpdate() {
+        Et.PreUpdate();
+        Rm.PreUpdate();
+        Im.PreUpdate();
+        Sm.PreUpdate();
+        if (CustomInstance != null) {
             CustomInstance.PreUpdate();
-
         }
-    } 
-    public void LateUpdate(){
-        if(CustomInstance!=null){
+    }
+
+    public void LateUpdate() {
+        Et.LateUpdate();
+        Rm.LateUpdate();
+        Im.LateUpdate();
+        Sm.LateUpdate();
+        if (CustomInstance != null) {
+
             CustomInstance.LateUpdate();
-
         }
-    } 
-
+    }
 }

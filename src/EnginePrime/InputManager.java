@@ -3,7 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
 
-public final class InputManager implements KeyListener {
+public final class InputManager implements GManager,KeyListener {
 
     private static InputManager instance;
 
@@ -12,13 +12,7 @@ public final class InputManager implements KeyListener {
 			instance = new InputManager();
 		return instance;
 	}
-	private InputManager() {
-		state = new KeyState[NUM_KEYS];
-        newstate = new KeyState[NUM_KEYS];
-        Arrays.fill(state, KeyState.Released);
-        Arrays.fill(newstate, KeyState.Released);
-
-	}
+	private InputManager() {}
 
     private static final int NUM_KEYS = 256;
 	/** Array with the keys marked as pressed or not. */
@@ -26,7 +20,30 @@ public final class InputManager implements KeyListener {
     private static KeyState[] newstate;
 
 
-    public void UpdateKeyState(){
+    public int GetAnyKeyDown(){
+        for (int i = 0; i < NUM_KEYS; i++) {
+            if(state[i] == KeyState.Down){
+                return i;
+            }
+
+        }
+        return -1;
+    } 
+
+
+
+    public void Initialize(){
+		state = new KeyState[NUM_KEYS];
+        newstate = new KeyState[NUM_KEYS];
+        Arrays.fill(state, KeyState.Released);
+        Arrays.fill(newstate, KeyState.Released);
+    };
+    public void PreUpdate(){
+        UpdateKeyState();
+    };
+    public void LateUpdate(){};
+
+    private void UpdateKeyState(){
         for (int i = 0; i < NUM_KEYS; i++) {
             if(newstate[i] == KeyState.Released){
                 if(state[i] == KeyState.Up){

@@ -3,17 +3,9 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import engine.Settings;
 
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Graphics;
@@ -28,29 +20,29 @@ public class MenuPage implements GManager {
 
     private final int MaxPage = 5;
     private final int MinPage = 0;
-
+    
     int PageIndex;
-
+    
     private SoundManager.PlayProp menuSoundProp;
+    private SoundManager.PlayProp MainBgmProp;
 
-
-    private void LoadSetting() {
-        try {
-            FileManager fm = new FileManager();
-            JSONObject Setting = new JSONObject();
-            JSONParser parser = new JSONParser();
-            Setting = (JSONObject) parser.parse(fm.LoadString("settings"));
-            gm.GlobalData.put("Setting", Setting);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void Initialize(){
-        LoadSetting();
         PageIndex = MinPage;
         menuSoundProp = gm.Sm.new PlayProp(
                 "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
+        MainBgmProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Main_a.wav", null);
+        MainBgmProp.count = -1;
+        
+
+        JSONObject setting = gm.GlobalData.get("Setting");
+
+        float volume = ((Number)setting.get("Volume")).floatValue();
+        boolean ismute = (boolean)setting.get("IsMute");
+        gm.Sm.setMasterVolume((float)volume);
+        gm.Sm.SetMute(ismute);
+        gm.Sm.playSound(MainBgmProp);
     };
 
     public void PreUpdate(){
@@ -90,6 +82,9 @@ public class MenuPage implements GManager {
                 case 4:
                     break;
                 case 5:
+
+                    gm.running = false;
+
                     break;
                 default:
                     break;

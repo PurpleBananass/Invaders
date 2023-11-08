@@ -10,7 +10,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 
-public final class RenderManager {
+public final class RenderManager implements GManager{
 
     static boolean FrontBuffer;
     static BufferedImage backBuffer[];
@@ -25,6 +25,11 @@ public final class RenderManager {
         }
         return instance;
     }
+
+    public void Initialize(){};
+    public void PreUpdate(){};
+    public void LateUpdate(){};
+
 
     public static Font LoadFont(String path){
         try {

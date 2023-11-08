@@ -14,8 +14,7 @@ import javax.sound.sampled.FloatControl.Type;
 
 import java.util.UUID;
 
-public class SoundManager {
-
+public class SoundManager  implements GManager{
 
     private static boolean IsMute = false;
 
@@ -45,7 +44,10 @@ public class SoundManager {
 
     private static SoundManager instance;
 
-    private SoundManager() {
+    private SoundManager() {};
+
+
+    public void Initialize(){
         //메모리 누수 방지
         GameManager gm = GameManager.getInstance();
         gm.ExitCode.add(new Runnable() {
@@ -58,21 +60,38 @@ public class SoundManager {
         });
     };
 
+    public void PreUpdate(){};
+
+    public void LateUpdate(){};
+
+
 
     public static boolean IsMute(){
         return IsMute;
     }
 
-    public static float CurVolume(){
-        return IsMute ? minimum : master;
+    public static float GetVolumePercent(){
+
+        return (master - minimum) /(maximum -minimum) * 100;
+
     }
 
 
+
+    private static void SetVolume(Clip clip , float value){
+        FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
+        if(IsMute){
+            floatControl.setValue(minimum);
+        }
+        else{
+            floatControl.setValue(value);
+        }
+    }
+
     public static void SetMute(boolean b){
-        float volume = CurVolume();
+        IsMute = b;
         for (Clip clip : clips.values()) {
-            FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-            floatControl.setValue(volume);
+            SetVolume(clip , 0);
         }
     }
     public static SoundManager getInstance() {
@@ -89,8 +108,7 @@ public class SoundManager {
             if (clip == null) {
                 clip = NewClip(prop);
             }
-            FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-            floatControl.setValue(CurVolume());
+            SetVolume(clip,master);
             clip.setMicrosecondPosition(prop.MicroSecPos);
             clip.loop(prop.count);
             fadeIn(prop.Clipname, prop.fadeIn);
@@ -144,13 +162,12 @@ public class SoundManager {
             Clip clip = clips.get(name);
             new Thread(new Runnable() {
                 public void run() {
-                    FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-                    floatControl.setValue(minimum);
+                    SetVolume(clip,minimum);
                     double elapsed = 0;
                     while (elapsed < t) {
                         elapsed += GameManager.getInstance().Et.GetElapsedSeconds();
                         elapsed = elapsed > t ? t : elapsed;
-                        floatControl.setValue((float) (minimum + CurVolume() * elapsed / t));
+                        SetVolume(clip,(float) (minimum + master * elapsed / t));
                     }
                 }
             }).start();
@@ -161,12 +178,11 @@ public class SoundManager {
         Clip clip = clips.get(name);
         new Thread(new Runnable(){
             public void run() {
-                FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
                 double elapsed = 0;
                 while (elapsed < t) {
                     elapsed += GameManager.getInstance().Et.GetElapsedSeconds();
                     elapsed = elapsed > t ? t : elapsed;
-                    floatControl.setValue((float)(CurVolume() +(minimum - CurVolume() )*elapsed/t));
+                    SetVolume(clip,(float)(master +(minimum - master )*elapsed/t));
                 }
                 if (callback != null) {
                     callback.run();
@@ -187,8 +203,7 @@ public class SoundManager {
             master = minimum;
 
         for (Clip clip : clips.values()) {
-            FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
-            floatControl.setValue(master);
+            SetVolume(clip, master);
         }
     }
 }
