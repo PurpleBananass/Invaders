@@ -365,7 +365,7 @@ public final class aDrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
     
-		backBufferGraphics.drawString(Integer.toString(inventory), 205, screen.getHeight() + 20);
+		backBufferGraphics.drawString(Integer.toString(inventory), 205, screen.getHeight() + 25);
 
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
@@ -374,16 +374,16 @@ public final class aDrawManager {
 
 		for (int i = 0; i < inventory; i++) {
 			if (ItemQ[i].getItemType() == Item.ItemType.BombItem) {
-				drawEntity(bombItem, 100 + 35 * i, screen.getHeight() + 10);
+				drawEntity(bombItem, 100 + 35 * i, screen.getHeight() + 15);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem) {
-				drawEntity(invincibleItem, 100 + 35 * i, screen.getHeight() + 10);
+				drawEntity(invincibleItem, 100 + 35 * i, screen.getHeight() + 15);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem) {
-				drawEntity(SpeedUpItem, 100 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SpeedUpItem, 100 + 35 * i, screen.getHeight() + 15);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem) {
-				drawEntity(SubPlaneItem, 100 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SubPlaneItem, 100 + 35 * i, screen.getHeight() + 15);
 			}
 		}
 	}
@@ -393,7 +393,7 @@ public final class aDrawManager {
 
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
-		backBufferGraphics.drawString(Integer.toString(inventory), 415, screen.getHeight() + 20);
+		backBufferGraphics.drawString(Integer.toString(inventory), 415, screen.getHeight() + 25);
 
 
 		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
@@ -403,16 +403,16 @@ public final class aDrawManager {
 		for (int i = 0; i < inventory; i++) {
 			if (ItemQ[i].getItemType() == Item.ItemType.BombItem) {
 
-				drawEntity(bombItem, 310 + 35 * i, screen.getHeight() + 10);
+				drawEntity(bombItem, 310 + 35 * i, screen.getHeight() + 15);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.InvincibleItem) {
-				drawEntity(invincibleItem, 310 + 35 * i, screen.getHeight() + 10);
+				drawEntity(invincibleItem, 310 + 35 * i, screen.getHeight() + 15);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SpeedUpItem) {
-				drawEntity(SpeedUpItem, 310 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SpeedUpItem, 310 + 35 * i, screen.getHeight() + 15);
 			}
 			else if (ItemQ[i].getItemType() == Item.ItemType.SubPlaneItem) {
-				drawEntity(SubPlaneItem, 310 + 35 * i, screen.getHeight() + 10);
+				drawEntity(SubPlaneItem, 310 + 35 * i, screen.getHeight() + 15);
 
 			}
 		}
