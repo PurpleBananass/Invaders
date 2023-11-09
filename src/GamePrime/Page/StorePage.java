@@ -61,8 +61,15 @@ public class StorePage implements GManager {
     public void LateUpdate() {
 
         Draw();
-
         if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
+            FileManager fm = new FileManager();
+            JSONObject database = fm.LoadJsonObject("DataBase");
+            JSONObject UserData = (JSONObject)database.get(gm.GlobalData.get("LocalData").get("Player"));
+            int money = ((Number)gm.GlobalData.get("LocalData").get("Money")).intValue();
+            JSONObject item = (JSONObject)gm.GlobalData.get("LocalData").get("Item");
+            UserData.put("Money",money);
+            UserData.put("Item",item);
+            fm.SaveString("DataBase", database.toJSONString(), true);
             gm.SetInstance(new MenuPage());
         }
     }
@@ -79,7 +86,7 @@ public class StorePage implements GManager {
             } else {
                 grpahics.setColor(Color.LIGHT_GRAY);
             }
-            BufferedImage curimg = img.get(imgString[ Math.min(1, i)]);
+            BufferedImage curimg = img.get(imgString[Math.min(1, i)]);
             float width = height*curimg.getWidth()/(float)curimg.getHeight();
             int x = Math.round( width+ i*gm.frame.getWidth() / ItemDefine.StoreItem.length-width/2);
             grpahics.drawRect( x , gm.frame.getHeight() / 2, Math.round(width), height);
@@ -87,9 +94,13 @@ public class StorePage implements GManager {
 
             String name = ItemDefine.StoreItem[i].name;
             grpahics.setColor(Color.GRAY);
+            if((boolean)((JSONObject)(gm.GlobalData.get("LocalData").get("Item"))).get(name)){
+                grpahics.setColor(Color.GREEN);
+            }
+
             grpahics.drawString(name, x
                 - fontmatrix.stringWidth(name) / 2 + Math.round(width)/2,gm.frame.getHeight()/2 + height+20);
-            
+             grpahics.setColor(Color.white);
             String price = "Price: $" + ItemDefine.StoreItem[i].value;
             grpahics.drawString(price, x
                 - fontmatrix.stringWidth(price) / 2 + Math.round(width)/2,gm.frame.getHeight()/2 + height + 40);
@@ -110,6 +121,7 @@ public class StorePage implements GManager {
                 - fontmatrix.stringWidth("Press Esc to Go to Menu") / 2 ,gm.frame.getHeight()-fontmatrix.getHeight());
             JSONObject local = (JSONObject)gm.GlobalData.get("LocalData");
             int money = ((Number)local.get("Money")).intValue();
+            grpahics.setColor(Color.white);
             grpahics.drawString("Current credits : "+money,gm.frame.getWidth()/2
                 - fontmatrix.stringWidth("Current credits : "+money) / 2 ,gm.frame.getHeight()/3);
         }

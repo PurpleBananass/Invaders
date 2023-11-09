@@ -15,7 +15,7 @@ public class SelectPage implements GManager {
     GameManager gm = GameManager.getInstance();
 
     int PlayMode;
-    boolean SkillMode;
+    boolean HardMode;
 
     private int SelectIndex;
 
@@ -23,10 +23,10 @@ public class SelectPage implements GManager {
 
     public void Initialize() {
         PlayMode = 0;
-        SkillMode = false;
-        if(gm.GlobalData.get("LocalData").get("SkillMode") !=null ){
+        HardMode = false;
+        if(gm.GlobalData.get("LocalData").get("HardMode") !=null ){
            PlayMode =((Number)gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
-           SkillMode =(boolean) gm.GlobalData.get("LocalData").get("SkillMode");
+           HardMode =(boolean) gm.GlobalData.get("LocalData").get("   ");
         }
 
         SelectIndex = 0;
@@ -50,12 +50,12 @@ public class SelectPage implements GManager {
                 break;
             case 1:
                 if (gm.Im.isKeyDown(KeyEvent.VK_RIGHT) || gm.Im.isKeyDown(KeyEvent.VK_LEFT)) {
-                    SkillMode = !SkillMode;
+                    HardMode = !HardMode;
                 }
                 if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                     gm.Sm.playSound(menuSoundProp);
                     gm.GlobalData.get("LocalData").put("PlayMode", PlayMode);
-                    gm.GlobalData.get("LocalData").put("SkillMode", SkillMode);
+                    gm.GlobalData.get("LocalData").put("HardMode", HardMode);
                     gm.SetInstance(new SkinSelectPage());
                 }
                 break;
@@ -100,7 +100,7 @@ public class SelectPage implements GManager {
             grpahics.setColor(Color.GREEN);
         else
             grpahics.setColor(Color.WHITE);
-        grpahics.drawString("Skill Mode", gm.frame.getWidth() / 5
+        grpahics.drawString("Hard Mode", gm.frame.getWidth() / 5
                 - fontmatrix.stringWidth("Player") / 2, gm.frame.getHeight() / 8 * 5);
 
         if (PlayMode == 0)
@@ -134,7 +134,7 @@ public class SelectPage implements GManager {
                         / 8 * 5 + fontmatrix.getHeight() * 2);
 
         grpahics.setColor(Color.GREEN);
-        if (SkillMode)
+        if (HardMode)
             grpahics.drawString("ON", gm.frame.getWidth() / 10 * 6
                     - fontmatrix.stringWidth("ON") / 2,
                     gm.frame.getHeight()

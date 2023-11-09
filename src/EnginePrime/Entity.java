@@ -4,12 +4,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Entity{
-    UUID uuid = UUID.randomUUID();
+    public String name;
+
     public Map<String, Component> ComponentPool = new HashMap<>();
 
     public <T extends Component> T AddComponent(Class<T> type){
-    
-
         try {
             T c= type.getDeclaredConstructor().newInstance();
             c.Obj = this;

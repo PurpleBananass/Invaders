@@ -8,7 +8,7 @@ public class EventSystem {
 
     private static EventSystem instance = null;
 
-    private static Map<UUID, Entity> EntityPool = new HashMap<>();
+    private static Map<String, Entity> EntityPool = new HashMap<>();
 
     private EventSystem(){};
 
@@ -19,9 +19,18 @@ public class EventSystem {
         return instance;
     }
 
+
+    public static Entity Initiate(String name){
+        Entity e = new Entity();
+        e.name = name;
+        EntityPool.put(name,e);
+        return e;
+    }
+
     public static Entity Initiate(){
         Entity e = new Entity();
-        EntityPool.put(e.uuid,e);
+        e.name = UUID.randomUUID().toString();
+        EntityPool.put(e.name.toString(),e);
         return e;
     }
 
@@ -31,13 +40,13 @@ public class EventSystem {
 
 
     public static Entity Destroy(Entity e){
-        EntityPool.remove(e.uuid);
+        EntityPool.remove(e.name.toString());
         return e;
     }
 
     public static Entity FindEntity(UUID uuid)
     {
-        return EntityPool.get(uuid);
+        return EntityPool.get(uuid.toString());
     }
     public static void Update() {
         for (Entity entity : EntityPool.values()) {

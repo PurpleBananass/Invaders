@@ -8,7 +8,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import entity.Ship;
+import GamePrime.ShipDefine;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -29,14 +29,14 @@ public class SkinSelectPage implements GManager {
     public void Initialize() {
         SelectIndex1 = 0;
         SelectIndex2 = 0;
-        if (gm.GlobalData.get("LocalData").get("P1_Img") != null) {
-            String prevImg1 = (String) gm.GlobalData.get("LocalData").get("P1_Img");
-            String prevImg2 = (String) gm.GlobalData.get("LocalData").get("P2_Img");
-            for (int i = 0; i < imgString.length; i++) {
-                if (prevImg1 == imgString[i]) {
+        if (gm.GlobalData.get("LocalData").get("P1_Ship") != null) {
+            String prevShip1 = (String) gm.GlobalData.get("LocalData").get("P1_Ship");
+            String prevShip2 = (String) gm.GlobalData.get("LocalData").get("P2_Ship");
+            for (int i = 0; i < ShipDefine.Ship.length; i++) {
+                if (prevShip1 == ShipDefine.Ship[i]) {
                     SelectIndex1 = i;
                 }
-                if (prevImg2 == imgString[i]) {
+                if (prevShip2 == ShipDefine.Ship[i]) {
                     SelectIndex2 = i;
                 }
             }
@@ -53,21 +53,21 @@ public class SkinSelectPage implements GManager {
     public void PreUpdate() {
 
         if (gm.Im.isKeyDown(KeyEvent.VK_UP)) {
-            SelectIndex1 = SelectIndex1 == 0 ? imgString.length-1 : SelectIndex1 - 1;
+            SelectIndex1 = SelectIndex1 == 0 ? ShipDefine.Ship.length-1 : SelectIndex1 - 1;
         }
         if (gm.Im.isKeyDown(KeyEvent.VK_DOWN)) {
-            SelectIndex1 = SelectIndex1 == imgString.length-1 ? 0 : SelectIndex1 + 1;
+            SelectIndex1 = SelectIndex1 == ShipDefine.Ship.length-1 ? 0 : SelectIndex1 + 1;
         }
         if (gm.Im.isKeyDown(KeyEvent.VK_W)) {
-            SelectIndex2 = SelectIndex2 == 0 ? imgString.length-1 : SelectIndex2 - 1;
+            SelectIndex2 = SelectIndex2 == 0 ? ShipDefine.Ship.length-1 : SelectIndex2 - 1;
         }
         if (gm.Im.isKeyDown(KeyEvent.VK_S)) {
-            SelectIndex2 = SelectIndex2 == imgString.length-1 ? 0 : SelectIndex2 + 1;
+            SelectIndex2 = SelectIndex2 == ShipDefine.Ship.length-1 ? 0 : SelectIndex2 + 1;
         }
         if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
             gm.Sm.playSound(menuSoundProp);
-            gm.GlobalData.get("LocalData").put("P1_Img", imgString[SelectIndex1]);
-            gm.GlobalData.get("LocalData").put("P2_Img", imgString[SelectIndex2]);
+            gm.GlobalData.get("LocalData").put("P1_Ship", ShipDefine.Ship[SelectIndex1]);
+            gm.GlobalData.get("LocalData").put("P2_Ship", ShipDefine.Ship[SelectIndex2]);
             gm.SetInstance(new GamePage());
         }
     };
@@ -101,10 +101,6 @@ public class SkinSelectPage implements GManager {
         graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
         graphics2D.drawImage(bg, gm.frame.getWidth()/2-bgwidth/2, gm.frame.getHeight()/2-bgheight/2,bgwidth,bgheight,null);
         graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-        //grpahics.drawImage(bg, gm.frame.getWidth()/2-bgwidth/2, gm.frame.getHeight()/2-bgheight/2,bgwidth,bgheight,null);
-
-
-
 
         int PlayMode =((Number)gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
 		if (PlayMode == 1) {

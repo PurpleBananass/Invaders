@@ -9,6 +9,6 @@ public class ItemDefine {
             this.value = value;
         }
     }
-    public static IntPair[] StoreItem = { new IntPair("BonusLife",15), new IntPair("Move Speed",10), new IntPair("Shot Speed Up",20)};
+    public static IntPair[] StoreItem = { new IntPair("BonusLife",15), new IntPair("MoveSpeed",10), new IntPair("ShotSpeed",20)};
     public static String[] ActiveItem = { "Ghost", "Auxiliary", "Bomb"};
 }
