@@ -71,6 +71,7 @@ public class MenuPage implements GManager {
                     gm.SetInstance(new SelectPage());
                     break;
                 case 1:
+                    gm.SetInstance(new HightScorePage());
                     break;
                 case 2:
                     gm.SetInstance(new StorePage());
