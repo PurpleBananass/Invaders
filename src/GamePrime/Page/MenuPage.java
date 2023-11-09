@@ -80,10 +80,10 @@ public class MenuPage implements GManager {
                     gm.SetInstance(new SettingPage());
                     break;
                 case 4:
+                    gm.SetInstance(new AchievementPage());
                     break;
                 case 5:
                     gm.running = false;
-
                     break;
                 default:
                     break;
