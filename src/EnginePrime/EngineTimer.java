@@ -1,7 +1,4 @@
 package EnginePrime;
-
-
-
 public class EngineTimer implements GManager{
     
     long previousTime;

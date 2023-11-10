@@ -37,11 +37,19 @@ public class Image {
         int width = Math.round(GetWidthFixHeight(height));
 
         graphics2D.drawImage(img,x-width/2,y-height/2,width,height, null);
-
         // graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
         // 1.0f));
         // graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
         // 0.2f));
 
+    }
+
+    public void RenderFixedHeight(int x, int y, int height,float alpha) {
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        Graphics2D graphics2D = (Graphics2D) grpahics;
+        int width = Math.round(GetWidthFixHeight(height));
+        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        graphics2D.drawImage(img, x - width / 2, y - height / 2, width, height, null);
+        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1.0f));
     }
 }

@@ -24,6 +24,7 @@ import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
 import GamePrime.Image;
+import GamePrime.ItemDefine;
 import GamePrime.KeyDefine;
 import GamePrime.ShipDefine;
 import GamePrime.Page.GamePage;
@@ -60,17 +61,14 @@ public class EnemyController extends Component {
         row = 0;
         int level = ((Number) gp.PlayData.get("Level")).intValue();
         switch (level) {
-            case 1:
-                Level1(4, 4);
+            case 1:     
+                Level1(3, 4);
                 break;
             case 2:
-                Level2(3, 2);
+                Level2(1, 2);
                 break;
             case 3:
-                break;
-            case 4:
-                break;
-            case 5:
+                Level2(2, 2);
                 break;
             default:
                 break;
@@ -116,19 +114,14 @@ public class EnemyController extends Component {
             Iterator<Enemy> iterator = eList.iterator();
             while (iterator.hasNext()) {
                 Enemy e = iterator.next();
-                double MinX = e.pos.getX() - e.img.GetWidthFixHeight(height) / 2;
-                double MaxX = e.pos.getX() + e.img.GetWidthFixHeight(height) / 2;
+                double MinX = e.pos.getX() - e.IdleImg.GetWidthFixHeight(height) / 2;
+                double MaxX = e.pos.getX() + e.IdleImg.GetWidthFixHeight(height) / 2;
                 double MinY = e.pos.getY() - height / 2;
                 double MaxY = e.pos.getY() + height / 2;
                 if ((MaxX >= bulletMinX && MinX <= bulletMaxX) &&
                         (MaxY >= bulletMinY && MinY <= bulletMaxY)) {
-                    EventSystem.Destroy(bullet.Obj);
-                    e.life -= 1;
-                    if (e.life == 0) {
-                        EventSystem.Destroy(e.Obj);
-                        enemynum-=1;
-                        int point = ((Number) gp.PlayData.get("Point")).intValue() + e.Point;
-                        gp.PlayData.put("Point", point);
+                    Collsion(e,bullet);
+                    if(e.life == 0){
                         iterator.remove();
                     }
                     break;
@@ -142,10 +135,30 @@ public class EnemyController extends Component {
             if (array.size() == 0) {
                 iterator.remove();
             }
-
         }
-
     }
+
+    private void Collsion(Enemy e, Bullet bullet) {
+        e.Attacked();
+        if (e.life == 0) {
+            if(e.item != -1){
+                Entity itemEntity = EventSystem.Initiate();
+                Item item =  itemEntity.AddComponent(Item.class);
+                itemEntity.tag = "Item";
+                JSONObject Custommessage = new JSONObject();
+                Custommessage.put("Func", "SetVector");
+                Custommessage.put("pos", e.pos);
+                Custommessage.put("Item", e.item);
+                Message m = new Message(this.Obj, MessageType.Custom, Custommessage);
+                item.SetVector(m);
+            }
+            enemynum -= 1;
+            int point = ((Number) gp.PlayData.get("Point")).intValue() + e.Point;
+            gp.PlayData.put("Point", point);
+        }
+        EventSystem.Destroy(bullet.Obj);
+    }
+
 
     private Enemy CreateEnemy(EnemyType type) {
         Enemy enemy = EventSystem.Initiate().AddComponent(Enemy.class, 2);
@@ -164,14 +177,18 @@ public class EnemyController extends Component {
             Custommessage.put("ShotDelay", 2.0f);
             Custommessage.put("Life", 1);
             Custommessage.put("Type", type);
-            Custommessage.put("Img", "Cirno");
+            Custommessage.put("IdleImg", "Cirno");
+            Custommessage.put("DieImg", "Cirno");
+            Custommessage.put("Item",new Random().nextInt(ItemDefine.ActiveItem.length+1)-1);
         } else if (type == EnemyType.Hard) {
             Custommessage.put("Life", 3);
             Custommessage.put("Point", 50);
             Custommessage.put("ShotSpeed", 500);
             Custommessage.put("ShotDelay", 1.0f);
             Custommessage.put("Type", type);
-            Custommessage.put("Img", "Flandre");
+            Custommessage.put("IdleImg", "Flandre");
+            Custommessage.put("DieImg", "Flan_Fuck");
+            Custommessage.put("Item",new Random().nextInt(ItemDefine.ActiveItem.length+1)-1);
         }
         Message m = new Message(this.Obj, MessageType.Custom, Custommessage);
         e.SetInfo(m);
@@ -235,7 +252,6 @@ public class EnemyController extends Component {
     }
 
     void Move() {
-
         ArrayList<Enemy> EnemyList = EnemyPool.get(0);
         Enemy first = EnemyList.get(0);
         EnemyList = EnemyPool.get(EnemyPool.size() - 1);

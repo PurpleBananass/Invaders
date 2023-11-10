@@ -47,6 +47,33 @@ public class Player extends Component {
     float Shotdelay;
     float Delay;
 
+    public void CheckCollsion(Item item){
+        int height = ((Number)gp.PlayData.get("ImgHeight")).intValue();
+        double itemMinX = item.pos.getX() - item.size/2; 
+        double itemMaxX = item.pos.getX() + item.size/2; 
+        double itemMinY = item.pos.getY() - item.size/2; 
+        double itemMaxY = item.pos.getY() + item.size/2; 
+        
+        Image curimg = img.get(State[StateIndex]);
+
+        double PlayerMinX = PosX - curimg.GetWidthFixHeight(height) /2; 
+        double PlayerMaxX = PosX + curimg.GetWidthFixHeight(height)/2; 
+        double PlayerMinY = PosY - height/2; 
+        double PlayerMaxY = PosY + height/2; 
+        if ((PlayerMaxX >= itemMinX && PlayerMinX <= itemMaxX) && 
+            (PlayerMaxY >= itemMinY && PlayerMinY <= itemMaxY)) {
+                EventSystem.Destroy(item.Obj);                
+                AquiredItem(item.itemIndex);
+        } 
+    }
+
+
+    void AquiredItem(int item){
+         //특수 효과...
+
+
+    }
+
 
     public void CheckCollsion(Bullet bullet){
         int height = ((Number)gp.PlayData.get("ImgHeight")).intValue();
@@ -145,7 +172,6 @@ public class Player extends Component {
             PosX -= movespeed * gm.Et.GetElapsedSeconds();
             Image curimg = img.get(State[StateIndex]);
             float min = PosX -curimg.GetHeightFixWidth(((Number)gp.PlayData.get("ImgHeight")).intValue()/2);
-
             if(min<0){
                 PosX = curimg.GetHeightFixWidth(((Number)gp.PlayData.get("ImgHeight")).intValue()/2);
             }

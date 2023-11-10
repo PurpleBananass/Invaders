@@ -37,14 +37,14 @@ public class Bullet extends Component{
     GamePage gp;
     Image img;
     float ShotSpeed;
+
     public int size = 30;
 
     public void SetVector(Message m){
         dir = (Point2D)m.obj.get("dir");
         pos = (Point2D)m.obj.get("pos");
-        ShotSpeed = ((Number)m.obj.get("ShotSpeed")).floatValue();
+        ShotSpeed = ((Number)m.obj.get("ShotSpeed")).intValue();
     }
-
 
     public void Awake(){
         this.CustomEvent.put("SetVector", this::SetVector);
@@ -54,9 +54,7 @@ public class Bullet extends Component{
 
     public void Start(){
 
-
     }
-
 
     public void Update(){
         if (((Number) gp.PlayData.get("ScreenIndex")).intValue() != 0) {

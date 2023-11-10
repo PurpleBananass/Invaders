@@ -47,7 +47,7 @@ public class EndPage implements GManager{
         }
         if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)){
             int level = ((Number) PlayData.get("Level")).intValue();
-            if(level < 3 && SelectIndex == 0){
+            if(level < 3 && SelectIndex == 0 &&(boolean)PlayData.get("LevelClear")){
                 PlayData.put("Level",level+1);
                 gm.SetInstance(new GamePage());
                 return;
@@ -61,15 +61,6 @@ public class EndPage implements GManager{
     };
 
     public void PreRender(){
-        DrawScore();
-        drawLives(((Number) PlayData.get("Life")).intValue());
-        int PlayMode = ((Number) gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
-        if (PlayMode == 1){
-            drawLives(((Number) PlayData.get("Life")).intValue());
-        }
-        drawHorizontalLine( 40 - 1, Color.GREEN);
-        drawClear();  
-
     };
 
 
@@ -91,7 +82,13 @@ public class EndPage implements GManager{
 	}
 
 	public void drawClear() {
-		String titleString = "LEVEL  " + ((Number) PlayData.get("Level")).intValue() + "  Clear";
+		String titleString ;
+        if((boolean)PlayData.get("LevelClear")){
+            titleString = "LEVEL  " + ((Number) PlayData.get("Level")).intValue() + "  Clear";
+        }else{
+            titleString = "Game Over..";
+        }
+        
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         FontMetrics fontmatrix = gm.Rm.SetFont("Big");
 		grpahics.setColor(Color.GREEN);
@@ -137,6 +134,13 @@ public class EndPage implements GManager{
     }
 
     public void LateRender(){
-
+        DrawScore();
+        drawLives(((Number) PlayData.get("Life")).intValue());
+        int PlayMode = ((Number) gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
+        if (PlayMode == 1){
+            drawLives(((Number) PlayData.get("Life")).intValue());
+        }
+        drawHorizontalLine( 40 - 1, Color.GREEN);
+        drawClear();  
     };
 }

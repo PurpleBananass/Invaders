@@ -16,6 +16,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
+import GamePrime.Image;
 import GamePrime.KeyDefine;
 import GamePrime.ShipDefine;
 import GamePrime.Page.GamePage;
@@ -28,43 +29,42 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
-
 public class Item extends Component{
 
-    Point2D pos;
-    Point2D dir;
+    public Point2D pos;
+    public final int DropSpeed = 400;
     GameManager gm = GameManager.getInstance();
     GamePage gp;
-    BufferedImage img;
-    int height = 30;
-    
+    public int size = 30;
+    public int itemIndex;
     public void SetVector(Message m){
-        dir = (Point2D)m.obj.get("dir");
         pos = (Point2D)m.obj.get("pos");
-    }
+        itemIndex = ((Number)m.obj.get("Item")).intValue();
 
+    }
+    
     public void Awake(){
         this.CustomEvent.put("SetVector", this::SetVector);
         gp = (GamePage)gm.CustomInstance;
-        img = gp.ImgRes.get("Magic2");
     }
 
     public void Start(){
 
 
-
     }
 
     public void Update(){
-
-        double ShotSpeed = ((Number) gp.PlayData.get("ShotSpeed")).doubleValue() * gm.Et.GetElapsedSeconds();
-        pos = new Point2D.Double(pos.getX() + dir.getX()*ShotSpeed, pos.getY() + dir.getY()*ShotSpeed);
+        if (((Number) gp.PlayData.get("ScreenIndex")).intValue() != 0) {
+            return;
+        }
+        pos = new Point2D.Double(pos.getX(),pos.getY() + DropSpeed*gm.Et.GetElapsedSeconds());
     }
 
     public void Render(){
+        
+        Image img = gp.ImgRes.get("Magic2");
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
-        Graphics2D graphics2D = (Graphics2D)grpahics;
-        float width = height*img.getWidth()/(float)img.getHeight();
-        graphics2D.drawImage(img, (int)Math.round(pos.getX()- width/2), (int)Math.round(pos.getY() - height/2.0f), Math.round(width),height,null);
+        img.RenderFixedHeight((int)Math.round(pos.getX()), (int)Math.round(pos.getY()), size);
+    
     }
 }

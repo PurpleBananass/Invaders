@@ -42,13 +42,15 @@ public class Enemy extends Component{
         float curdelay;
         Point2D pos;
         EnemyController.EnemyType type;
-        Image img;
+        Image IdleImg;
+        Image DieImg;
         GameManager gm = GameManager.getInstance();
         GamePage gp = (GamePage)gm.CustomInstance;
-
+        int item = -1;
+        double elapsed;
         public float ImgGetWidth(){
 
-            return img.GetWidthFixHeight(((Number)gp.PlayData.get("ImgHeight")).intValue());
+            return IdleImg.GetWidthFixHeight(((Number)gp.PlayData.get("ImgHeight")).intValue());
         }
 
         public void SetVector(Message m){
@@ -60,14 +62,15 @@ public class Enemy extends Component{
             ShotSpeed = ((Number)m.obj.get("ShotSpeed")).intValue();
             Shotdelay = ((Number)m.obj.get("ShotDelay")).floatValue();
             type = (EnemyType)m.obj.get("Type");
-            img = gp.ImgRes.get(m.obj.get("Img"));
+            IdleImg = gp.ImgRes.get(m.obj.get("IdleImg"));
+            DieImg = gp.ImgRes.get(m.obj.get("DieImg"));
+            item = ((Number)m.obj.get("Item")).intValue();
         }
     
         public void Awake(){
             this.CustomEvent.put("SetVector", this::SetVector);
             this.CustomEvent.put("SetInfo", this::SetInfo); 
         }
-
 
         public void Start(){
             curdelay = 0;
@@ -90,6 +93,26 @@ public class Enemy extends Component{
                 curdelay = Shotdelay;
             }
         }
+
+        public void Attacked(){
+            life -= 1;
+            if(life == 0){
+                new Thread(new Runnable() {
+                    public void run() {
+                        long prev = System.nanoTime();
+                        elapsed = 0;
+                        while (elapsed < 2) {
+                            long cur = System.nanoTime() -prev;
+                            elapsed = cur / 1_000_000_000.0;
+                            if (elapsed > 2) {
+                                elapsed = 2;
+                            }
+                        }
+                    }
+                }).start();
+            }
+        }
+
         public void Update(){
             curdelay -= gm.Et.GetElapsedSeconds();
             if (curdelay <= 0) {
@@ -100,7 +123,15 @@ public class Enemy extends Component{
         public void Render(){
             Graphics grpahics = gm.Rm.GetCurrentGraphic();
             Graphics2D graphics2D = (Graphics2D) grpahics;            
-            Image curimg = img;
-            curimg.RenderFixedHeight((int)Math.round(pos.getX()),(int)Math.round(pos.getY()), ((Number)gp.PlayData.get("ImgHeight")).intValue());
+            Image curimg = IdleImg;
+            if(life == 0){
+                if(elapsed == 2){
+                    EventSystem.Destroy(Obj);
+                }
+                curimg = DieImg;
+                curimg.RenderFixedHeight((int)Math.round(pos.getX()),(int)Math.round(pos.getY()), ((Number)gp.PlayData.get("ImgHeight")).intValue(),(float)(1 - elapsed/3));
+            }else{
+                curimg.RenderFixedHeight((int)Math.round(pos.getX()),(int)Math.round(pos.getY()), ((Number)gp.PlayData.get("ImgHeight")).intValue());
+            }
         };
     }

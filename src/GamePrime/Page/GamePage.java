@@ -8,10 +8,12 @@ import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
 import GamePrime.Image;
+import GamePrime.ItemDefine;
 import GamePrime.KeyDefine;
 import GamePrime.PrepareUI;
 import GamePrime.Ship.Bullet;
 import GamePrime.Ship.EnemyController;
+import GamePrime.Ship.Item;
 import GamePrime.Ship.Player;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +33,6 @@ public class GamePage implements GManager {
     GameManager gm = GameManager.getInstance();
     int PlayMode;
     boolean HardMode;
-    public void PreRender(){};
-    public void LateRender(){
-        Draw();
-    };
     public Map<String, Image> ImgRes = new HashMap<>();
 
     public JSONObject PlayData;
@@ -86,6 +84,10 @@ public class GamePage implements GManager {
             PlayData.put("ShotDelay", ((Number) PlayData.get("ShotDelay")).floatValue() - 0.5f);
             PlayData.put("ShotSpeed", ((Number) PlayData.get("ShotSpeed")).floatValue() + 200.f);
         }
+        for (String item : ItemDefine.ActiveItem){
+            PlayData.put(item,false);
+        }
+        PlayData.put("Item",  new JSONArray());
         EntityInitialize();
     };
 
@@ -102,6 +104,19 @@ public class GamePage implements GManager {
     }
 
     private void ProcCollision() {
+
+        for (Entity ItemEntity : EventSystem.FindTagEntities("Item")) {
+            Item item = ItemEntity.GetComponent(Item.class);
+            if (item.pos.getY() > gm.frame.getHeight()) {
+                EventSystem.Destroy(item.Obj);
+            }
+            player1.CheckCollsion(item);
+            if (PlayMode == 1) {
+                player2.CheckCollsion(item);
+            }
+        }
+
+
         for (Entity bulletEntity : EventSystem.FindTagEntities("PBullet")) {
             Bullet bullet = bulletEntity.GetComponent(Bullet.class);
             if (bullet.pos.getY() > gm.frame.getHeight() || bullet.pos.getY() < 0) {
@@ -229,5 +244,36 @@ public class GamePage implements GManager {
             drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12);
             drawHorizontalLine(gm.frame.getHeight() / 2 + gm.frame.getHeight() / 12);
         }
+    }
+    public void PreRender(){};
+    public void LateRender(){
+        Draw();
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+		DrawScore();
+		drawLives(((Number) PlayData.get("Life")).intValue());
+		drawHorizontalLine( 40 - 1, Color.GREEN);
+		drawHorizontalLine(gm.frame.getHeight() - 1, Color.GREEN); //separation line for bottom hud
+    };
+    
+	public void drawHorizontalLine(final int positionY, Color color) {
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+		grpahics.setColor(color);
+		grpahics.drawLine(0, positionY, gm.frame.getWidth(), positionY);
+		grpahics.drawLine(0, positionY + 1, gm.frame.getWidth(),positionY + 1);
+	}
+
+    void drawLives(int life){
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        grpahics.setColor(Color.WHITE);
+        FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
+		grpahics.drawString(Integer.toString(life), 20, 25);
+    }
+
+    void DrawScore(){
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        grpahics.setColor(Color.WHITE);
+        FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
+        String scoreString = String.format("%04d",((Number) PlayData.get("Point")).intValue());
+		grpahics.drawString(scoreString, gm.frame.getWidth() - 60, 25);
     }
 }
