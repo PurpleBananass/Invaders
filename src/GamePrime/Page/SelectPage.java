@@ -13,7 +13,9 @@ import java.awt.FontMetrics;
 public class SelectPage implements GManager {
 
     GameManager gm = GameManager.getInstance();
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     int PlayMode;
     boolean HardMode;
 
@@ -26,7 +28,7 @@ public class SelectPage implements GManager {
         HardMode = false;
         if(gm.GlobalData.get("LocalData").get("HardMode") !=null ){
            PlayMode =((Number)gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
-           HardMode =(boolean) gm.GlobalData.get("LocalData").get("   ");
+           HardMode =(boolean) gm.GlobalData.get("LocalData").get("HardMode");
         }
 
         SelectIndex = 0;

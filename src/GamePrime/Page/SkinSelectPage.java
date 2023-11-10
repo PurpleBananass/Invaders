@@ -4,6 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.simple.JSONObject;
+
 import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
@@ -18,7 +21,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 public class SkinSelectPage implements GManager {
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     SoundManager.PlayProp menuSoundProp;
     GameManager gm = GameManager.getInstance();
     String imgString[] = { "Reimu", "Marisa" };
@@ -68,6 +73,14 @@ public class SkinSelectPage implements GManager {
             gm.Sm.playSound(menuSoundProp);
             gm.GlobalData.get("LocalData").put("P1_Ship", ShipDefine.Ship[SelectIndex1]);
             gm.GlobalData.get("LocalData").put("P2_Ship", ShipDefine.Ship[SelectIndex2]);
+
+
+            JSONObject PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
+            if(PlayData == null){
+                PlayData = new JSONObject();
+                gm.GlobalData.get("LocalData").put("PlayData", PlayData);
+            }
+            PlayData.put("Level", 1);
             gm.SetInstance(new GamePage());
         }
     };

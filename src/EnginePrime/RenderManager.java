@@ -11,7 +11,9 @@ import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 
 public final class RenderManager implements GManager{
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     static boolean FrontBuffer;
     static BufferedImage backBuffer[];
     static Graphics graphics[];

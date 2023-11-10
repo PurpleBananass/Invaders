@@ -14,7 +14,9 @@ import org.json.simple.JSONObject;
 public class MenuPage implements GManager {
 
     GameManager gm = GameManager.getInstance();
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     private final int MaxPage = 5;
     private final int MinPage = 0;
     

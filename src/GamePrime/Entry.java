@@ -25,7 +25,9 @@ public class Entry implements GManager{
     public void PreUpdate(){};
 
     public void LateUpdate(){};
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     public void Exit(){
 
 

@@ -15,7 +15,9 @@ import javax.sound.sampled.FloatControl.Type;
 import java.util.UUID;
 
 public class SoundManager  implements GManager{
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     private static boolean IsMute = false;
 
     public class PlayProp {

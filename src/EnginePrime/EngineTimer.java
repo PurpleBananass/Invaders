@@ -10,6 +10,9 @@ public class EngineTimer implements GManager{
     double maxfps;
 
 
+    public void PreRender(){};
+    
+    public void LateRender(){};
     private EngineTimer(){
         maxfps = 0;
     };

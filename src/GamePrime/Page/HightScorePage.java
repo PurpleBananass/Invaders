@@ -20,7 +20,9 @@ import java.awt.FontMetrics;
 public class HightScorePage implements GManager {
 
     public static final int MaxNum = 10;
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     GameManager gm = GameManager.getInstance();
 
     List<Score> scoreList[] = new List[] { new ArrayList<>(), new ArrayList<>() };

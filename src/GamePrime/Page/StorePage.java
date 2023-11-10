@@ -17,6 +17,9 @@ import java.awt.FontMetrics;
 import org.json.simple.JSONObject;
 
 public class StorePage implements GManager {
+    public void PreRender(){};
+    
+    public void LateRender(){};
     private SoundManager.PlayProp menuSoundProp;
     GameManager gm = GameManager.getInstance();
     private Map<String, BufferedImage> img = new HashMap<>();

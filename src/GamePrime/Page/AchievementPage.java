@@ -15,7 +15,9 @@ public class AchievementPage implements GManager {
 
     GameManager gm = GameManager.getInstance();
     JSONObject Achievement;
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     public void Initialize() {
         Achievement = (JSONObject)gm.GlobalData.get("LocalData").get("Achievement");
     };

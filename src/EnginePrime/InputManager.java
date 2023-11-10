@@ -6,7 +6,9 @@ import java.util.Arrays;
 public final class InputManager implements GManager,KeyListener {
 
     private static InputManager instance;
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
 	public static InputManager getInstance() {
 		if (instance == null)
 			instance = new InputManager();

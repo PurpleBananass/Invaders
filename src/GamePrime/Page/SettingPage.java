@@ -12,14 +12,15 @@ import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
 import EnginePrime.InputManager;
 import GamePrime.KeyDefine;
-import engine.fCore;
 
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
 
 public class SettingPage implements GManager {
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     GameManager gm = GameManager.getInstance();
     private SoundManager.PlayProp menuSoundProp;
     private int itemCode;

@@ -7,4 +7,9 @@ public interface GManager {
     public void PreUpdate();
 
     public void LateUpdate();
+
+
+    public void PreRender();
+    
+    public void LateRender();
 } 

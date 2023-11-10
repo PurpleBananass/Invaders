@@ -16,7 +16,7 @@ public final class GameManager implements GManager {
     public static InputManager Im = InputManager.getInstance();
     public static SoundManager Sm = SoundManager.getInstance();
     public static GameManager instance = null;
-    private static GManager CustomInstance = null;
+    public static GManager CustomInstance = null;
 
     public static Map<String, JSONObject> GlobalData = new HashMap<>();
     public static ArrayList<Runnable> ExitCode = new ArrayList<>();
@@ -73,4 +73,28 @@ public final class GameManager implements GManager {
             CustomInstance.LateUpdate();
         }
     }
+
+    public void PreRender(){
+        Et.PreRender();
+        Rm.PreRender();
+        Im.PreRender();
+        Sm.PreRender();
+        if (CustomInstance != null) {
+
+            CustomInstance.PreRender();
+        }
+    }
+
+    public void LateRender(){
+        Et.LateRender();
+        Rm.LateRender();
+        Im.LateRender();
+        Sm.LateRender();
+        if (CustomInstance != null) {
+
+            CustomInstance.LateRender();
+        }
+    }
+
+
 }
