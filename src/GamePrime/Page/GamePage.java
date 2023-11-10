@@ -48,31 +48,31 @@ public class GamePage implements GManager {
         JSONObject ItemData = (JSONObject) gm.GlobalData.get("LocalData").get("Item");
         PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
         if (((Number) PlayData.get("Level")).intValue() == 1) {
-            FileManager fm = new FileManager();
-            ImgRes.put("Magic", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Magic.png")));
-            ImgRes.put("Magic2",
-                    new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Magic2.png")));
-            ImgRes.put("Reimu", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Reimu.png")));
-            ImgRes.put("Marisa",
-                    new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Marisa.png")));
-            ImgRes.put("VioletCloud",
-                    new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "VioletCloud.png")));
-            ImgRes.put("Flan_Fuck",
-                    new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flan_Fuck.png")));
-            ImgRes.put("Flandre",
-                    new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flandre.png")));
-            ImgRes.put("Cirno", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Cirno.png")));
             PlayData.put("Life", 3);
             PlayData.put("Level", 1);
             PlayData.put("ImgHeight", 70);
-            PlayData.put("LevelClear",false);
-
+            PlayData.put("Point", 0);
 
         }
-        PlayData.put("MoveSpeed", 100);
+        FileManager fm = new FileManager();
+        ImgRes.put("Magic", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Magic.png")));
+        ImgRes.put("Magic2",
+                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Magic2.png")));
+        ImgRes.put("Reimu", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Reimu.png")));
+        ImgRes.put("Marisa",
+                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Marisa.png")));
+        ImgRes.put("VioletCloud",
+                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "VioletCloud.png")));
+        ImgRes.put("Flan_Fuck",
+                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flan_Fuck.png")));
+        ImgRes.put("Flandre",
+                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flandre.png")));
+        ImgRes.put("Cirno", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Cirno.png")));
+        PlayData.put("MoveSpeed", 200);
         PlayData.put("ShotDelay", 1.5f);
         PlayData.put("ShotSpeed", 400.0f);
         PlayData.put("ScreenIndex", -1);
+        PlayData.put("LevelClear",false);
         if ((boolean) ItemData.get("BonusLife")) {
             ItemData.put("BonusLife", false);
             PlayData.put("Life", ((Number) PlayData.get("Life")).intValue() + 1);
@@ -124,12 +124,10 @@ public class GamePage implements GManager {
     public void PreUpdate() {
         if (((Number) PlayData.get("ScreenIndex")).intValue() == 3) {
             EventSystem.DestroyAll();
-            
-
-        } else {
+            gm.SetInstance(new EndPage());
+        } else if(((Number) PlayData.get("ScreenIndex")).intValue() != -1 ){
             if (((Number) PlayData.get("ScreenIndex")).intValue() == 0) {
                 ProcCollision();
-
             }
             if (gm.Im.isKeyDown(KeyEvent.VK_CONTROL)) {
                 if (((Number) PlayData.get("ScreenIndex")).intValue() == 1) {
@@ -145,24 +143,15 @@ public class GamePage implements GManager {
                 }
             } else if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                 if (((Number) PlayData.get("ScreenIndex")).intValue() == 2) {
-                    PlayData.put("ScreenIndex", 3);
+                    EventSystem.DestroyAll();
+                    gm.SetInstance(new MenuPage());
                 }
             }
         }
     }
-
-    private void Quit() {
-        EventSystem.DestroyAll();
-        // save Data
-        gm.SetInstance(new MenuPage());
-    }
-
     public void LateUpdate() {
         
     };
-
-    
-
 
     private void drawHorizontalLine(int y) {
         Graphics grpahics = gm.Rm.GetCurrentGraphic();

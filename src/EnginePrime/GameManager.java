@@ -18,6 +18,7 @@ public final class GameManager implements GManager {
     public static GameManager instance = null;
     public static GManager CustomInstance = null;
 
+    public static boolean InstanceChanged = false;
     public static Map<String, JSONObject> GlobalData = new HashMap<>();
     public static ArrayList<Runnable> ExitCode = new ArrayList<>();
 
@@ -49,6 +50,7 @@ public final class GameManager implements GManager {
     public void SetInstance(GManager inst) {
         CustomInstance = inst;
         if (CustomInstance != null) {
+            InstanceChanged = true;
             CustomInstance.Initialize();
         }
     }
@@ -58,7 +60,7 @@ public final class GameManager implements GManager {
         Rm.PreUpdate();
         Im.PreUpdate();
         Sm.PreUpdate();
-        if (CustomInstance != null) {
+        if (CustomInstance != null && !InstanceChanged) {
             CustomInstance.PreUpdate();
         }
     }
@@ -68,7 +70,7 @@ public final class GameManager implements GManager {
         Rm.LateUpdate();
         Im.LateUpdate();
         Sm.LateUpdate();
-        if (CustomInstance != null) {
+        if (CustomInstance != null && !InstanceChanged) {
 
             CustomInstance.LateUpdate();
         }
@@ -79,7 +81,7 @@ public final class GameManager implements GManager {
         Rm.PreRender();
         Im.PreRender();
         Sm.PreRender();
-        if (CustomInstance != null) {
+        if (CustomInstance != null && !InstanceChanged) {
 
             CustomInstance.PreRender();
         }
@@ -90,7 +92,7 @@ public final class GameManager implements GManager {
         Rm.LateRender();
         Im.LateRender();
         Sm.LateRender();
-        if (CustomInstance != null) {
+        if (CustomInstance != null && !InstanceChanged) {
 
             CustomInstance.LateRender();
         }

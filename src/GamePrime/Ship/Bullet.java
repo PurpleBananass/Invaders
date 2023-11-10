@@ -36,11 +36,13 @@ public class Bullet extends Component{
     GameManager gm = GameManager.getInstance();
     GamePage gp;
     Image img;
+    float ShotSpeed;
     public int size = 30;
 
     public void SetVector(Message m){
         dir = (Point2D)m.obj.get("dir");
         pos = (Point2D)m.obj.get("pos");
+        ShotSpeed = ((Number)m.obj.get("ShotSpeed")).floatValue();
     }
 
 
@@ -60,8 +62,7 @@ public class Bullet extends Component{
         if (((Number) gp.PlayData.get("ScreenIndex")).intValue() != 0) {
             return;
         }
-        double ShotSpeed = ((Number) gp.PlayData.get("ShotSpeed")).doubleValue() * gm.Et.GetElapsedSeconds();
-        pos = new Point2D.Double(pos.getX() + dir.getX()*ShotSpeed, pos.getY() + dir.getY()*ShotSpeed);
+        pos = new Point2D.Double(pos.getX() + dir.getX()*ShotSpeed* gm.Et.GetElapsedSeconds(), pos.getY() + dir.getY()*ShotSpeed* gm.Et.GetElapsedSeconds());
     }
 
     public void Render(){

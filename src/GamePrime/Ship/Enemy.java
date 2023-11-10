@@ -84,6 +84,7 @@ public class Enemy extends Component{
                 Custommessage.put("Func", "SetVector");
                 Custommessage.put("dir", new Point2D.Float(0, 1.0f));
                 Custommessage.put("pos", pos);
+                Custommessage.put("ShotSpeed", ShotSpeed);
                 Message m = new Message(this.Obj, MessageType.Custom, Custommessage);
                 b.SetVector(m);
                 curdelay = Shotdelay;

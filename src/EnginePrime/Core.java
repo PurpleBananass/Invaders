@@ -9,6 +9,7 @@ public final class Core {
         gm.frame.addKeyListener(im);
         gm.Initialize();
         while (gm.running) {
+            gm.InstanceChanged = false;
             em.ProcMessage();
             gm.PreUpdate();
             em.ProcMessage();

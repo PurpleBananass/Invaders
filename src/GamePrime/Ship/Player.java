@@ -73,6 +73,9 @@ public class Player extends Component {
             StateIndex = 1;
             int life = ((Number) PlayData.get("Life")).intValue()-1;
             Delay = 2;
+            int point = ((Number) PlayData.get("Point")).intValue()-30;
+            PlayData.put("Point", point);
+
             PlayData.put("Life", life);
             if(life == 0){
                 PlayData.put("ScreenIndex",3);
@@ -157,6 +160,7 @@ public class Player extends Component {
                 Custommessage.put("Func", "SetVector");
                 Custommessage.put("dir", new Point2D.Float(0, -1.0f));
                 Custommessage.put("pos", new Point2D.Float(PosX, PosY));
+                Custommessage.put("ShotSpeed",PlayData.get("ShotSpeed"));
                 Message m = new Message(this.Obj, MessageType.Custom, Custommessage);
                 b.SetVector(m);
                 Shotdelay = ((Number) PlayData.get("ShotDelay")).floatValue();

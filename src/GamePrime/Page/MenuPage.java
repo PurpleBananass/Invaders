@@ -67,7 +67,6 @@ public class MenuPage implements GManager {
     public void LateUpdate(){
         if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
             gm.Sm.playSound(menuSoundProp);
-            
             switch (PageIndex) {
                 case 0:
                     gm.SetInstance(new SelectPage());
