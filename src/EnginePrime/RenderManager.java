@@ -1,5 +1,6 @@
 package EnginePrime;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public final class RenderManager implements GManager{
 
     public static Font LoadFont(String path){
         try {
-            FileInputStream inputStream = new FileInputStream(path);
+            FileInputStream inputStream = new FileInputStream( "res"+File.separator+path);
             Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             return font;
         } catch (IOException | FontFormatException e) {

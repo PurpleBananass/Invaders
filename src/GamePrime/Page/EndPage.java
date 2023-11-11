@@ -1,11 +1,9 @@
 package GamePrime.Page;
-
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.FileManager;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import EnginePrime.SoundManager;
 import GamePrime.ETC.Score;
@@ -15,31 +13,28 @@ import java.io.File;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 public class EndPage implements GManager{
     int SelectIndex;
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
     JSONObject PlayData;
     SoundManager.PlayProp menuSoundProp;
     public void Initialize(){
         SelectIndex = 0;
         PlayData =  (JSONObject)gm.GlobalData.get("LocalData").get("PlayData");
-        menuSoundProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
-
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        JSONObject BGM = (JSONObject)res.get("BGM");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
         if(!(boolean)PlayData.get("LevelClear")){
-           SoundManager.PlayProp GameOverSoundProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_gameover.wav", "BGM");
+            SoundManager.PlayProp GameOverSoundProp =  gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator + (String)BGM.get("GameOver"), "BGM");
             GameOverSoundProp.count = -1;
             gm.Sm.stopClip("BGM",1);
             gm.Sm.playSound(GameOverSoundProp);
-            gm.Sm.playSound( gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_gameover.wav",null));
+            gm.Sm.playSound(gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("GameOver"), null));
         }else{
-             gm.Sm.playSound(gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_LevelClear.wav", null));
+            gm.Sm.playSound(gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("LevelClear"), null));
         }
 
 

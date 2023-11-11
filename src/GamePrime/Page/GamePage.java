@@ -14,7 +14,6 @@ import GamePrime.Ship.EnemyController;
 import GamePrime.Ship.Item;
 import GamePrime.Ship.Player;
 import GamePrime.UI.PrepareUI;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.KeyEvent;
@@ -27,14 +26,41 @@ import org.json.simple.JSONArray;
 
 public class GamePage implements GManager {
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
+    public JSONObject PlayData;
     public int PlayMode;
     public boolean HardMode;
     public Map<String, Image> ImgRes = new HashMap<>();
-
-    public JSONObject PlayData;
     EnemyController enemycontrol;
     public Player player1;
     Player player2;
+
+    public void Initialize() {
+        gm.Sm.StopAll();
+        PlayMode = ((Number) gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
+        HardMode = (boolean) gm.GlobalData.get("LocalData").get("HardMode");
+        PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
+        FileManager fm = new FileManager();
+        JSONObject Entity =  (JSONObject)res.get("Entity");
+        JSONObject ShipType1 = (JSONObject)Entity.get("ShipType1");
+        JSONObject ShipType2 = (JSONObject)Entity.get("ShipType2");
+        JSONObject EnemyType1 = (JSONObject)Entity.get("EnemyType1");
+        JSONObject EnemyType2 = (JSONObject)Entity.get("EnemyType2");
+        ImgRes.put("Bullet", new Image(fm.GetImage("Img" + File.separator + Entity.get("Bullet"))));
+        ImgRes.put("Item", new Image(fm.GetImage("Img" + File.separator + Entity.get("Item"))));
+        ImgRes.put("ShipType1.Idle", new Image(fm.GetImage("Img" + File.separator + ShipType1.get("Idle"))));
+        ImgRes.put("ShipType1.Destroyed", new Image(fm.GetImage("Img" + File.separator + ShipType1.get("Destroyed"))));
+        ImgRes.put("ShipType2.Idle", new Image(fm.GetImage("Img" + File.separator + ShipType2.get("Idle"))));
+        ImgRes.put("ShipType2.Destroyed", new Image(fm.GetImage("Img" + File.separator + ShipType2.get("Destroyed"))));
+        ImgRes.put("EnemyType1.Idle", new Image(fm.GetImage("Img" + File.separator + EnemyType1.get("Idle"))));
+        ImgRes.put("EnemyType1.Destroyed", new Image(fm.GetImage("Img" + File.separator + EnemyType1.get("Destroyed"))));
+        ImgRes.put("EnemyType2.Idle", new Image(fm.GetImage("Img" + File.separator + EnemyType2.get("Idle"))));
+        ImgRes.put("EnemyType2.Destroyed", new Image(fm.GetImage("Img" + File.separator + EnemyType2.get("Destroyed"))));
+        PlayData.put("ScreenIndex", -1);
+        PlayData.put("LevelClear", false);
+        PlaySetting();
+        EntityInitialize();
+    };
 
     public void PlaySetting() {
         if (((Number) PlayData.get("Level")).intValue() == 1) {
@@ -47,9 +73,9 @@ public class GamePage implements GManager {
             PlayData.put("ShotDelay", 1.5f);
             PlayData.put("ShotSpeed", 400.0f);
             PlayData.put("ShotCount", 0);
-            PlayData.put("ShotCount2", 0 );
+            PlayData.put("ShotCount2", 0);
             PlayData.put("KillCount", 0);
-            PlayData.put("KillCount2", 0 );
+            PlayData.put("KillCount2", 0);
 
             JSONObject ItemData = (JSONObject) gm.GlobalData.get("LocalData").get("StoreItem");
             if (ItemData != null) {
@@ -80,31 +106,6 @@ public class GamePage implements GManager {
         Item = new JSONArray();
         PlayData.put("ActiveItem2", Item);
     }
-
-    public void Initialize() {
-        gm.Sm.StopAll();
-        PlayMode = ((Number) gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
-        HardMode = (boolean) gm.GlobalData.get("LocalData").get("HardMode");
-        PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
-        FileManager fm = new FileManager();
-        ImgRes.put("Magic", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Magic.png")));
-        ImgRes.put("Magic2",
-                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Magic2.png")));
-        ImgRes.put("Reimu", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Reimu.png")));
-        ImgRes.put("Marisa",
-                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Marisa.png")));
-        ImgRes.put("VioletCloud",
-                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "VioletCloud.png")));
-        ImgRes.put("Flan_Fuck",
-                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flan_Fuck.png")));
-        ImgRes.put("Flandre",
-                new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flandre.png")));
-        ImgRes.put("Cirno", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Cirno.png")));
-        PlayData.put("ScreenIndex", -1);
-        PlayData.put("LevelClear", false);
-        PlaySetting();
-        EntityInitialize();
-    };
 
     private void EntityInitialize() {
         EventSystem.DestroyAll();
@@ -186,13 +187,13 @@ public class GamePage implements GManager {
     public void LateUpdate() {
         int life = ((Number) PlayData.get("Life")).intValue();
         int life2 = ((Number) PlayData.get("Life2")).intValue();
-        if(PlayMode == 1){
-            if(life==0 && life2 ==0){
-                PlayData.put("ScreenIndex",3);
+        if (PlayMode == 1) {
+            if (life == 0 && life2 == 0) {
+                PlayData.put("ScreenIndex", 3);
             }
-        }else{
-            if(life==0){
-                PlayData.put("ScreenIndex",3);
+        } else {
+            if (life == 0) {
+                PlayData.put("ScreenIndex", 3);
             }
         }
     };
@@ -301,8 +302,9 @@ public class GamePage implements GManager {
             if (PlayMode == 1) {
                 bullet = ((Number) PlayData.get("Bullet2")).intValue();
                 magazine = ((Number) PlayData.get("Magazine2")).intValue();
-                grpahics.drawString("Ammo : ", gm.frame.getWidth()/4-fontmatrix.stringWidth(bullet + "/" + magazine+"Ammo : "), 0);
-                grpahics.drawString(bullet + "/" + magazine, gm.frame.getWidth()/4, fontmatrix.getHeight());
+                grpahics.drawString("Ammo : ",
+                        gm.frame.getWidth() / 4 - fontmatrix.stringWidth(bullet + "/" + magazine + "Ammo : "), 0);
+                grpahics.drawString(bullet + "/" + magazine, gm.frame.getWidth() / 4, fontmatrix.getHeight());
             }
 
         }
@@ -340,7 +342,7 @@ public class GamePage implements GManager {
             } else if (ItemDefine.ActiveItem[index] == "SpeedUp") {
                 grpahics.setColor(Color.YELLOW);
             }
-            grpahics.drawRect(gm.frame.getWidth()/2 +100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
+            grpahics.drawRect(gm.frame.getWidth() / 2 + 100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
         }
     }
 
@@ -356,11 +358,14 @@ public class GamePage implements GManager {
         grpahics.setColor(Color.WHITE);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         grpahics.drawString(Integer.toString(((Number) PlayData.get("Life")).intValue()), 20, 25);
-        if(PlayMode==1){
+        if (PlayMode == 1) {
             grpahics.drawString(Integer.toString(((Number) PlayData.get("Life2")).intValue()), 50, 25);
         }
     }
-    public void Exit(){};
+
+    public void Exit() {
+    };
+
     void DrawScore() {
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         grpahics.setColor(Color.WHITE);

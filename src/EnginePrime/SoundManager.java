@@ -77,9 +77,6 @@ public class SoundManager  implements GManager{
         return (master - minimum) /(maximum -minimum) * 100;
 
     }
-
-
-
     private static void SetVolume(Clip clip , float value){
         FloatControl floatControl = (FloatControl) clip.getControl(Type.MASTER_GAIN);
         if(IsMute){
@@ -109,7 +106,7 @@ public class SoundManager  implements GManager{
             Clip clip = clips.get(prop.Clipname);
             if (clip == null) {
                 clip = NewClip(prop);
-                AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(prop.FilePath));
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("res" + File.separator+prop.FilePath));
                 clip.open(audioIn);
             }
             SetVolume(clip,master);

@@ -1,11 +1,7 @@
 package GamePrime.Ship;
 
-import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.ArrayList;
 import EnginePrime.Component;
@@ -15,53 +11,44 @@ import EnginePrime.GameManager;
 import EnginePrime.Message;
 import EnginePrime.Message.MessageType;
 import java.util.Random;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import EnginePrime.FileManager;
-import EnginePrime.GManager;
-import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
 import GamePrime.Define.ItemDefine;
-import GamePrime.Define.KeyDefine;
-import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-
 public class EnemyController extends Component {
+    public final static int MaxStageCount = 3;
+    final int MoveDownPixel = 100;
     public static enum EnemyType {
-        Easy,
-        Hard,
+        EnemyType1,
+        EnemyType2,
     }
     
-    public static final int MaxStageCount = 3;
-    
-    int downPixel = 100;
     GamePage gp;
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
+
     float dir;
     ArrayList<ArrayList<Enemy>> EnemyPool = new ArrayList<ArrayList<Enemy>>();
     int col;
     int row;
     int enemynum;
     float Shotdelay;
+
+
+
     SoundManager.PlayProp DestroySoundProp;
     SoundManager.PlayProp DestroySoundProp2;
     SoundManager.PlayProp ItemSoundProp;
+    
+    
+    
     public void Start() {
-        DestroySoundProp = gm.Sm.new PlayProp(
-                    "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Enemy_Destroy_a.wav", null);
-        DestroySoundProp2 = gm.Sm.new PlayProp(
-                    "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Bomb.wav", null);
-        ItemSoundProp = gm.Sm.new PlayProp(
-                    "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Create.wav", null);
+        JSONObject BGM = (JSONObject)res.get("BGM");
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        ItemSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("ItemCreate"), null);
+        DestroySoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("Destroyed"), null);
+        DestroySoundProp2 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("Bomb"), null);
         Shotdelay = 2;
         enemynum = 0;
         gp = (GamePage) gm.CustomInstance;
@@ -69,22 +56,28 @@ public class EnemyController extends Component {
         col = 0;
         row = 0;
         int level = ((Number) gp.PlayData.get("Level")).intValue();
+        SoundManager.PlayProp BgmProp;
         switch (level) {
             case 1:     
                 Level1(3, 4);
-                gm.Sm.playSound(gm.Sm.new PlayProp(
-                    "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Level1.wav", "BGM"));
+                BgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator +(String)BGM.get("Level1"), "BGM");
+                BgmProp.count = -1;
+                gm.Sm.stopClip("BGM", 1);
+                gm.Sm.playSound(BgmProp);
                 break;
             case 2:
                 Level2(1, 2);
-                gm.Sm.playSound(gm.Sm.new PlayProp(
-                    "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Level2.wav", "BGM"));
+                BgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator +(String)BGM.get("Level2"), "BGM");
+                BgmProp.count = -1;
+                gm.Sm.stopClip("BGM", 1);
+                gm.Sm.playSound(BgmProp);
                 break;
             case 3:
                 Level2(4, 4);
-                gm.Sm.playSound(gm.Sm.new PlayProp(
-                    "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Level3.wav", "BGM"));
-
+                BgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator +(String)BGM.get("Level3"), "BGM");
+                BgmProp.count = -1;
+                gm.Sm.stopClip("BGM", 1);
+                gm.Sm.playSound(BgmProp);
                 break;
             default:
                 break;
@@ -204,24 +197,24 @@ public class EnemyController extends Component {
         JSONObject Custommessage = new JSONObject();
         Custommessage.put("Entity", e.Obj);
         Custommessage.put("Func", "SetInfo");
-        if (type == EnemyType.Easy) {
+        if (type == EnemyType.EnemyType1) {
             Custommessage.put("Life", 1);
             Custommessage.put("Point", 10);
             Custommessage.put("ShotSpeed", 300);
             Custommessage.put("ShotDelay", 2.0f);
             Custommessage.put("Life", 1);
             Custommessage.put("Type", type);
-            Custommessage.put("IdleImg", "Cirno");
-            Custommessage.put("DieImg", "Cirno");
+            Custommessage.put("IdleImg", "EnemyType1.Idle");
+            Custommessage.put("DieImg", "EnemyType1.Destroyed");
             Custommessage.put("Item",new Random().nextInt(ItemDefine.ActiveItem.length+1)-1);
-        } else if (type == EnemyType.Hard) {
+        } else if (type == EnemyType.EnemyType2) {
             Custommessage.put("Life", 3);
             Custommessage.put("Point", 50);
             Custommessage.put("ShotSpeed", 500);
             Custommessage.put("ShotDelay", 1.0f);
             Custommessage.put("Type", type);
-            Custommessage.put("IdleImg", "Flandre");
-            Custommessage.put("DieImg", "Flan_Fuck");
+            Custommessage.put("IdleImg", "EnemyType2.Idle");
+            Custommessage.put("DieImg", "EnemyType2.Destroyed");
             Custommessage.put("Item",new Random().nextInt(ItemDefine.ActiveItem.length+1)-1);
         }
         Message m = new Message(this.Obj, MessageType.Custom, Custommessage);
@@ -247,7 +240,7 @@ public class EnemyController extends Component {
             ArrayList<Enemy> EnemyList = new ArrayList();
             EnemyPool.add(EnemyList);
             for (int j = 0; j < x; j++) {
-                Enemy e = CreateEnemy(EnemyType.Easy);
+                Enemy e = CreateEnemy(EnemyType.EnemyType1);
                 Point2D pos = new Point2D.Double(posx, posy);
                 SetEnemyPos(e, pos);
                 posx += e.ImgGetWidth();
@@ -269,9 +262,9 @@ public class EnemyController extends Component {
             EnemyPool.add(EnemyList);
             for (int j = 0; j < x; j++) {
 
-                EnemyType type = EnemyType.Easy;
+                EnemyType type = EnemyType.EnemyType1;
                 if (i % 2 == 1) {
-                    type = EnemyType.Hard;
+                    type = EnemyType.EnemyType2;
                 }
                 Enemy e = CreateEnemy(type);
                 Point2D pos = new Point2D.Double(posx, posy);
@@ -286,6 +279,9 @@ public class EnemyController extends Component {
     }
 
     void Move() {
+        if(enemynum==0){
+            return;
+        }
         ArrayList<Enemy> EnemyList = EnemyPool.get(0);
         Enemy first = EnemyList.get(0);
         EnemyList = EnemyPool.get(EnemyPool.size() - 1);
@@ -313,11 +309,11 @@ public class EnemyController extends Component {
         if (x + moveX + w > gm.frame.getWidth()) {
             dir = -1;
             moveX = gm.frame.getWidth() - w - x;
-            moveY += downPixel;
+            moveY += MoveDownPixel;
         } else if (x + moveX < 0) {
             dir = 1;
             moveX = -x;
-            moveY += downPixel;
+            moveY += MoveDownPixel;
         }
 
         if (y + h + moveY > gm.frame.getHeight() - ((Number) gp.PlayData.get("ImgHeight")).intValue() * 3) {

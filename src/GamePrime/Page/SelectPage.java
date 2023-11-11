@@ -8,14 +8,15 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.File;
+
+import org.json.simple.JSONObject;
+
 import java.awt.FontMetrics;
 
 public class SelectPage implements GManager {
-
-    GameManager gm = GameManager.getInstance();
-    public void PreRender(){};
     
-    public void LateRender(){};
+    GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
     int PlayMode;
     boolean HardMode;
 
@@ -24,13 +25,13 @@ public class SelectPage implements GManager {
     SoundManager.PlayProp menuSoundProp;
 
     public void Initialize() {
-
-        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Main_c.wav", "BGM");
+        JSONObject BGM = (JSONObject)res.get("BGM");
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
+        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator +(String)BGM.get("MenuPage"), "BGM");
         BgmProp.count = -1;
         gm.Sm.stopClip("BGM", 1);
         gm.Sm.playSound(BgmProp);
-
 
         PlayMode = 0;
         HardMode = false;
@@ -40,10 +41,11 @@ public class SelectPage implements GManager {
         }
 
         SelectIndex = 0;
-        menuSoundProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
     }
     public void Exit(){};
+    public void PreRender(){};
+    
+    public void LateRender(){};
     public void PreUpdate() {
         if (gm.Im.isKeyDown(KeyEvent.VK_UP) || gm.Im.isKeyDown(KeyEvent.VK_DOWN)) {
             SelectIndex = SelectIndex == 1 ? 0 : 1;

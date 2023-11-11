@@ -1,38 +1,22 @@
 package GamePrime.Ship;
-
-import java.awt.event.KeyEvent;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.awt.Graphics;
 import EnginePrime.Component;
 import EnginePrime.EngineTimer;
-import EnginePrime.Entity;
 import EnginePrime.EventSystem;
 import EnginePrime.GameManager;
-import EnginePrime.Message;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import EnginePrime.FileManager;
-import EnginePrime.GManager;
-import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import EnginePrime.Message.MessageType;
 import GamePrime.Define.ItemDefine;
 import GamePrime.Define.KeyDefine;
+import GamePrime.Define.ShipDefine;
 import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
-
 import java.awt.Graphics2D;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 
 public class Player extends Component {
 
@@ -40,6 +24,7 @@ public class Player extends Component {
     public float PosX;
     public float PosY;
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
     GamePage gp;
     JSONObject PlayData;
     private Map<String, Image> img = new HashMap<>();
@@ -62,31 +47,21 @@ public class Player extends Component {
     SoundManager.PlayProp BombEquipProp;
         public void Awake() {
         gp = (GamePage) gm.CustomInstance;
-        SubshipProp = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_SubShip.wav", null);
-        SpeedUpProp = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_SpeedUp.wav", null);
-        InvicibleProp = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Invicible.wav", null);
-        BombEquipProp = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Bomb_Equipped.wav", null);
 
-        ShootSoundProp = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_a.wav", null);
-        ShootSoundProp2 = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_b.wav", null);
-        ShootSoundProp3 = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_c.wav", null);
-        ShootSoundProp4 = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_d.wav", null);
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        SubshipProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("Auxiliary"), null);
+        SpeedUpProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("SpeedUp"), null);
+        InvicibleProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("Ghost"), null);
+        BombEquipProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("BombAquip"), null);
 
-        DestroyedProp = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Destroy_a.wav", null);
-        DestroyedProp2 = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Destroy_b.wav", null);
-        ItemGetProp = gm.Sm.new PlayProp(
-            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Get.wav", null);
+        ShootSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot1"), null);
+        ShootSoundProp2 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot2"), null);
+        ShootSoundProp3 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot3"), null);
+        ShootSoundProp4 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot4"), null);
 
+        DestroyedProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerDestroyed"), null);
+        DestroyedProp2 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerDestroyed2"), null);
+        ItemGetProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("GetItem"), null);
         String ship = null;
         JSONObject data = gm.GlobalData.get("Setting");
         PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
@@ -104,11 +79,11 @@ public class Player extends Component {
             }
         }
         if (ship == ShipDefine.Ship[0]) {
-            img.put(State[0], gp.ImgRes.get("Reimu"));
-            img.put(State[1], gp.ImgRes.get("Marisa"));
+            img.put(State[0], gp.ImgRes.get("ShipType1.Idle"));
+            img.put(State[1], gp.ImgRes.get("ShipType1.Destroyed"));
         } else if (ship == ShipDefine.Ship[1]) {
-            img.put(State[0], gp.ImgRes.get("Marisa"));
-            img.put(State[1], gp.ImgRes.get("Reimu"));
+            img.put(State[0], gp.ImgRes.get("ShipType2.Idle"));
+            img.put(State[1], gp.ImgRes.get("ShipType2.Destroyed"));
         }
     }
 

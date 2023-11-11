@@ -19,28 +19,25 @@ import org.json.simple.JSONObject;
 
 public class StorePage implements GManager {
 
-
-    public void PreRender() {
-    };
-
-    public void LateRender() {
-    };
-
+    GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
+    
+    private Map<String, BufferedImage> img = new HashMap<>();
+    String imgString[] = { "BonusLife", "MoveSpeed", "ShotSpeed"};
+    int SelectIndex;
     private SoundManager.PlayProp menuSoundProp;
 
-    GameManager gm = GameManager.getInstance();
-    private Map<String, BufferedImage> img = new HashMap<>();
-    String imgString[] = { "Flan's Shadow", "Sakuya" };
 
-    int SelectIndex;
     public void Initialize() {
         SelectIndex = 0;
         FileManager fm = new FileManager();
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
+        JSONObject StoreItem =  (JSONObject)res.get("StoreItem");
 
-        img.put("Flan's Shadow", fm.GetImage("res" + File.separator + "Img" + File.separator + "Flan's Shadow.png"));
-        img.put("Sakuya", fm.GetImage("res" + File.separator + "Img" + File.separator + "Sakuya.png"));
-        menuSoundProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
+        img.put("BonusLife", fm.GetImage("Img" + File.separator + StoreItem.get("BonusLife")));
+        img.put("MoveSpeed", fm.GetImage("Img"+ File.separator + StoreItem.get("MoveSpeed")));
+        img.put("ShotSpeed", fm.GetImage("Img"+ File.separator + StoreItem.get("ShotSpeed")));
     };
 
     public void PreUpdate() {
@@ -64,6 +61,12 @@ public class StorePage implements GManager {
                 gm.Sm.playSound(menuSoundProp);
             }
         }
+    };
+
+    public void PreRender() {
+    };
+
+    public void LateRender() {
     };
 
     public void LateUpdate() {
@@ -94,7 +97,7 @@ public class StorePage implements GManager {
             } else {
                 grpahics.setColor(Color.LIGHT_GRAY);
             }
-            BufferedImage curimg = img.get(imgString[Math.min(1, i)]);
+            BufferedImage curimg = img.get(imgString[i]);
             float width = height * curimg.getWidth() / (float) curimg.getHeight();
             int x = Math.round(width + i * gm.frame.getWidth() / ItemDefine.StoreItem.length - width / 2);
             grpahics.drawRect(x, gm.frame.getHeight() / 2, Math.round(width), height);

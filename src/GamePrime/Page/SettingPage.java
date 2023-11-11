@@ -21,6 +21,7 @@ public class SettingPage implements GManager {
     
     public void LateRender(){};
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
     private SoundManager.PlayProp menuSoundProp;
     private int itemCode;
     private int keyNum;
@@ -37,8 +38,8 @@ public class SettingPage implements GManager {
 
         JSONObject data = gm.GlobalData.get("Setting");
         keySettings = new JSONArray[] { (JSONArray) data.get("KeySetting_1p"), (JSONArray) data.get("KeySetting_2p") };
-        menuSoundProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
     };
 
     public void PreUpdate() {

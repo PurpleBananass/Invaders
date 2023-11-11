@@ -2,9 +2,7 @@ package GamePrime.Page;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import EnginePrime.FileManager;
@@ -19,24 +17,24 @@ import java.awt.FontMetrics;
 public class HightScorePage implements GManager {
 
     public static final int MaxNum = 10;
-    public void PreRender(){};
-    
-    public void LateRender(){};
+
+
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
 
     List<Score> scoreList[] = new List[] { new ArrayList<>(), new ArrayList<>() };
-    SoundManager.PlayProp MenuProp;
+
+    private SoundManager.PlayProp menuSoundProp;
 
     public void Initialize() {
-        MenuProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
-
-        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_HighScore.wav", "BGM");
+        
+        JSONObject BGM = (JSONObject)res.get("BGM");
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
+        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator + (String)BGM.get("HighScorePage"), "BGM");
         BgmProp.count = -1;
         gm.Sm.stopClip("BGM",1);
         gm.Sm.playSound(BgmProp);
-
         FileManager fm = new FileManager();
         JSONObject database = fm.LoadJsonObject("DataBase");
         JSONArray scores1 = (JSONArray)((JSONObject) database.get("Scores")).get("Scores_1p");
@@ -59,10 +57,12 @@ public class HightScorePage implements GManager {
         Draw();
 
     };
-
+    public void PreRender(){};
+    
+    public void LateRender(){};
     public void LateUpdate() {
         if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
-            gm.Sm.playSound(MenuProp);
+            gm.Sm.playSound(menuSoundProp);
             gm.SetInstance(new MenuPage());
         }
 

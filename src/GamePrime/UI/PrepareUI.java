@@ -10,19 +10,20 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 public class PrepareUI  extends Component{
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
     double elapsedSeconds;
     int Seconds;
     JSONObject PlayData; 
     SoundManager.PlayProp levelProp;
     SoundManager.PlayProp levelProp2;
     public void Start(){
-        levelProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_LevelStart_b.wav", null);
-        levelProp2 = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_LevelStart_a.wav", null);
+
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        levelProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("LevelStart"), null);
+        levelProp2 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("LevelStart2"), null);
 
         elapsedSeconds = 6;
-        Seconds = 4;
+        Seconds = 4;     
         PlayData = (JSONObject)gm.GlobalData.get("LocalData").get("PlayData");
         SetRenderPrior(2);
     }

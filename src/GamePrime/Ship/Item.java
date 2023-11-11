@@ -21,19 +21,13 @@ import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
 
 import java.awt.geom.Point2D;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.util.function.Consumer;
 public class Item extends Component{
 
-    public Point2D pos;
     public final int DropSpeed = 400;
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
     GamePage gp;
+    public Point2D pos;
     public int size = 30;
     public int itemIndex;
     public void SetVector(Message m){
@@ -60,8 +54,7 @@ public class Item extends Component{
     }
 
     public void Render(){
-        Image img = gp.ImgRes.get("Magic2");
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        Image img = gp.ImgRes.get("Item");
         img.RenderFixedHeight((int)Math.round(pos.getX()), (int)Math.round(pos.getY()), size);
     
     }

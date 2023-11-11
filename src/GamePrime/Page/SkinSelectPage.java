@@ -11,7 +11,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.Ship.ShipDefine;
+import GamePrime.Define.ShipDefine;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -21,16 +21,15 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 public class SkinSelectPage implements GManager {
-    public void PreRender(){};
-    
-    public void LateRender(){};
-    SoundManager.PlayProp menuSoundProp;
+
     GameManager gm = GameManager.getInstance();
-    String imgString[] = { "Reimu", "Marisa" };
+    JSONObject res = gm.GlobalData.get("Resource");
     int SelectIndex1;
     int SelectIndex2;
     private Map<String, BufferedImage> img = new HashMap<>();
-
+    SoundManager.PlayProp menuSoundProp;
+    String imgString[] = { "ShipType1", "ShipType2" };
+    
     public void Initialize() {
         SelectIndex1 = 0;
         SelectIndex2 = 0;
@@ -47,12 +46,14 @@ public class SkinSelectPage implements GManager {
             }
         }
         FileManager fm = new FileManager();
-
-        img.put("Reimu&Marisa", fm.GetImage("res" + File.separator + "Img" + File.separator + "Reimu&Marisa.png"));
-        img.put("Reimu", fm.GetImage("res" + File.separator + "Img" + File.separator + "Reimu.png"));
-        img.put("Marisa", fm.GetImage("res" + File.separator + "Img" + File.separator + "Marisa.png"));
-        menuSoundProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
+        img.put("Reimu&Marisa", fm.GetImage(File.separator + "Img" + File.separator + "Reimu&Marisa.png"));
+        JSONObject Entity =  (JSONObject)res.get("Entity");
+        JSONObject ShipType1 = (JSONObject)Entity.get("ShipType1");
+        JSONObject ShipType2 = (JSONObject)Entity.get("ShipType2");
+        img.put("ShipType1", fm.GetImage("Img" + File.separator + (String)ShipType1.get("Idle")));
+        img.put("ShipType2", fm.GetImage("Img" + File.separator + (String)ShipType2.get("Idle"))); 
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
     };
 
     public void PreUpdate() {
@@ -85,6 +86,9 @@ public class SkinSelectPage implements GManager {
         }
     };
     public void Exit(){};
+    public void PreRender(){};
+    
+    public void LateRender(){};
     public void LateUpdate() {
 
         Draw();

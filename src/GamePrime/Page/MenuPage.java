@@ -2,7 +2,6 @@ package GamePrime.Page;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -14,9 +13,8 @@ import org.json.simple.JSONObject;
 public class MenuPage implements GManager {
 
     GameManager gm = GameManager.getInstance();
-    public void PreRender(){};
-    
-    public void LateRender(){};
+    JSONObject res = gm.GlobalData.get("Resource");
+
     private final int MaxPage = 5;
     private final int MinPage = 0;
     
@@ -24,7 +22,6 @@ public class MenuPage implements GManager {
     
     private SoundManager.PlayProp menuSoundProp;
     private SoundManager.PlayProp MainBgmProp;
-
     public void Exit(){
 
     };
@@ -32,10 +29,10 @@ public class MenuPage implements GManager {
 
     public void Initialize(){
         PageIndex = MinPage;
-        menuSoundProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
-        MainBgmProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Main_a.wav", "BGM");
+        JSONObject BGM = (JSONObject)res.get("BGM");
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
+        MainBgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator + (String)BGM.get("MenuPage"), "BGM");
         MainBgmProp.count = -1;
         JSONObject setting = gm.GlobalData.get("Setting");
         float volume = ((Number)setting.get("Volume")).floatValue();
@@ -106,11 +103,9 @@ public class MenuPage implements GManager {
 		String settingString = "Setting";
 		String achievementString = "Achievements";
 		String exitString = "exit";
-
         Graphics graphic = gm.Rm.GetCurrentGraphic();
         graphic.setColor(Color.WHITE);
         FontMetrics matrix = gm.Rm.SetFont("Regular");
-
         List<Runnable> lambdaFunctions = new ArrayList<>();
         lambdaFunctions.add(() -> graphic.drawString(playString, gm.frame.getWidth() / 2
                 - matrix.stringWidth(playString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight() * 5));
@@ -139,17 +134,17 @@ public class MenuPage implements GManager {
     private void DrawTitleString(){
         String titleString = "Invaders";
         String instructionsString = "select with w+s / arrows, confirm with space";
-
         Graphics graphic = gm.Rm.GetCurrentGraphic();
-
         graphic.setColor(Color.GREEN);
         FontMetrics matrix = gm.Rm.SetFont("Big");
         graphic.drawString(titleString, gm.frame.getWidth() / 2
                 - matrix.stringWidth(titleString) / 2, gm.frame.getHeight() / 3 - matrix.getHeight() * 2);
-
         graphic.setColor(Color.GRAY);
         matrix = gm.Rm.SetFont("Regular");
         graphic.drawString(instructionsString, gm.frame.getWidth() / 2
                 - matrix.stringWidth(instructionsString) / 2, gm.frame.getHeight() / 2 - matrix.getHeight() * 7/2);
     }
+    public void PreRender(){};
+    
+    public void LateRender(){};
 }

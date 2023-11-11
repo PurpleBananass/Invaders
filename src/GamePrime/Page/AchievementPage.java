@@ -14,18 +14,19 @@ import GamePrime.Define.AchievDefine;
 public class AchievementPage implements GManager {
 
     GameManager gm = GameManager.getInstance();
+    JSONObject res = gm.GlobalData.get("Resource");
     JSONObject PlayData;
     JSONObject Achievement;
 
-    SoundManager.PlayProp MenuProp;
+    SoundManager.PlayProp menuSoundProp;
+
     public void PreRender(){};
     public void LateRender(){};
     public void Initialize() {
-        MenuProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
-
-        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Achieve.wav", "BGM");
+        JSONObject BGM = (JSONObject)res.get("BGM");
+        JSONObject SFX = (JSONObject)res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
+        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator + (String)BGM.get("AchievePage"), "BGM");
         BgmProp.count = -1;
         gm.Sm.stopClip("BGM", 1);
         gm.Sm.playSound(BgmProp);
@@ -41,7 +42,7 @@ public class AchievementPage implements GManager {
     public void LateUpdate() {
         Draw();
         if ((gm.Im.isKeyDown(KeyEvent.VK_ESCAPE) || gm.Im.isKeyDown(KeyEvent.VK_SPACE))) {
-            gm.Sm.playSound(MenuProp);
+            gm.Sm.playSound(menuSoundProp);
             gm.SetInstance(new MenuPage());
         }
     };
