@@ -71,7 +71,7 @@ public class Ship extends Entity {
     private Cooldown skillCooldown;
     private List<Ship> auxiliaryShips = new ArrayList<>();
     private boolean existAuxiliaryShips = false;
-    private int FASTER_SHOOTING_INTERVAL = 50;
+    private int FASTER_SHOOTING_INTERVAL = 300;
 
     private int impactInterval = 10000;
 
