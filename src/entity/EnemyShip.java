@@ -8,6 +8,7 @@ import engine.Cooldown;
 import engine.Core;
 import engine.DrawManager.SpriteType;
 import engine.GameState;
+import engine.SoundManager;
 
 /**
  * Implements a enemy ship, to be destroyed by the player.
@@ -118,6 +119,7 @@ public class EnemyShip extends Entity {
 	public final void destroy() {
 		this.HP--;
 		if (this.HP <= 0) {
+			SoundManager.playSound("SFX/S_Enemy_Destroy_a", "Enemy_destroyed", false, false);
 			this.isDestroyed = true;
 			this.spriteType = SpriteType.Explosion;
 		}
@@ -133,9 +135,7 @@ public class EnemyShip extends Entity {
 	 * 
 	 * @return True if the ship has been destroyed.
 	 */
-	public final boolean isDestroyed() {
-		return this.isDestroyed;
-	}
+	public final boolean isDestroyed() {return this.isDestroyed;}
 	public final int getpositionY() { return this.positionY; }
 
 

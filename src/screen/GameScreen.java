@@ -3,7 +3,7 @@ package screen;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
+import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,6 +73,8 @@ public class GameScreen extends Screen {
 	private int score;
 	/** First Player's lives left. */
 	private int lives;
+	/** Total bullets shot by the player. */
+	private int bulletsShot;
 	/** Second Player's lives left. */
 	private int lives2;
 	/** Player 1's remaining magazines */
@@ -104,11 +106,19 @@ public class GameScreen extends Screen {
 	/** list of past high scores */
 	private int highScore;
 
+	private boolean isPause = false;
+
+	private List<Ship> auxiliaryShips = new ArrayList<>();
+	private boolean existAuxiliaryShips = false;
+	private int pauseCnt = 0;
+	private boolean manual = false;
+
 	/**  Checks item is bomb **/
 	private boolean isBomb = false;
 
 	/** Checks life increase item is used. **/
 	private boolean haslifeItemUsed = false;
+
 
 
 	/**
@@ -137,7 +147,7 @@ public class GameScreen extends Screen {
 		this.bonusLife = bonusLife;
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
-		this.lives = gameState.getLivesRemaining1p() ;
+		this.lives = gameState.getLivesRemaining1p();
 		this.bulletsShot1 = gameState.getBulletsShot1();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
 		if(gameState.getMode() == 2){
@@ -242,6 +252,44 @@ public class GameScreen extends Screen {
 		this.magazine2=5;
 		this.bullet_count=0;
 		this.bullet_count2=0;
+
+		// Adjust bullet shooting interval and speed by level.
+		if (this.level==1) {
+			this.ship.setOriginalSpeed(4);
+			if (gameState.getMode()==2) {
+				this.ship2.setOriginalSpeed(4);
+			}
+		} else if (this.level==2) {
+			this.ship.setOriginalSpeed(4);
+			if (gameState.getMode()==2) {
+				this.ship2.setOriginalSpeed(4);
+			}
+		} else if (this.level==3) {
+			this.ship.setOriginalSpeed(3);
+			if (gameState.getMode()==2) {
+				this.ship2.setOriginalSpeed(3);
+			}
+		} else if (this.level==4) {
+			this.ship.setOriginalSpeed(3);
+			if (gameState.getMode()==2) {
+				this.ship2.setOriginalSpeed(3);
+			}
+		} else if (this.level==5) {
+			this.ship.setOriginalSpeed(3);
+			if (gameState.getMode()==2) {
+				this.ship2.setOriginalSpeed(3);
+			}
+		} else if (this.level==6) {
+			this.ship.setOriginalSpeed(2);
+			if (gameState.getMode()==2) {
+				this.ship2.setOriginalSpeed(2);
+			}
+		} else {
+			this.ship.setOriginalSpeed(2);
+			if (gameState.getMode()==2) {
+				this.ship2.setOriginalSpeed(2);
+			}
+		}
 	}
 
 	/**
@@ -268,300 +316,389 @@ public class GameScreen extends Screen {
 	protected final void update() {
 		super.update();
 
-		if (ship.getHasLifeIncreaseItem() && this.gameState.getLevel() == 1 && !this.haslifeItemUsed){
-			this.lives++;
-			if (this.gameState.getMode() == 2){
-				this.lives2++;
-			}
-			this.haslifeItemUsed = true;
+		if (this.inputDelay.checkFinished() && inputManager.isKeyDown(KeyEvent.VK_CONTROL)){
+			isPause = true;
 		}
+		if (this.inputDelay.checkFinished() && inputManager.isKeyDown(KeyEvent.VK_SHIFT)){
+			manual = true;
+		}
+        if (ship.getHasLifeIncreaseItem() && this.gameState.getLevel() == 1 && !this.haslifeItemUsed){
+            this.lives++;
+            if (this.gameState.getMode() == 2){
+                this.lives2++;
+            }
+            this.haslifeItemUsed = true;
+        }
 
-		if (this.inputDelay.checkFinished() && !this.levelFinished) {
+		if (!isPause && !manual) {
 
-			if (gameState.getMode() == 1 && !this.ship.isDestroyed()) {
-				boolean moveRight = inputManager.isKeyDown(Core.getKeySettingCode(1));
-				boolean moveLeft = inputManager.isKeyDown(Core.getKeySettingCode(0));
+            if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
-				boolean isRightBorder = this.ship.getPositionX()
-						+ this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
-				boolean isLeftBorder = this.ship.getPositionX()
-						- this.ship.getSpeed() < 1;
+                if (gameState.getMode() == 1 && !this.ship.isDestroyed()) {
+                    boolean moveRight = inputManager.isKeyDown(Core.getKeySettingCode(1));
+                    boolean moveLeft = inputManager.isKeyDown(Core.getKeySettingCode(0));
 
-				if (moveRight && !isRightBorder) {
-					this.ship.moveRight();
-				}
-				if (moveLeft && !isLeftBorder) {
-					this.ship.moveLeft();
-				}
-				if ( replayability.getReplay()==0 && inputManager.isKeyDown(Core.getKeySettingCode(2))){
-					if (this.ship.shoot(this.bullets, 1))
-						this.bulletsShot1++;
-					if(this.ship.isExistAuxiliaryShips()){
-						for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
-							if(auxiliaryShip.shoot(this.bullets, 1))
-								this.bulletsShot1++;
-						}
+                    boolean isRightBorder = this.ship.getPositionX()
+                            + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
+                    boolean isLeftBorder = this.ship.getPositionX()
+                            - this.ship.getSpeed() < 1;
+
+                    if (moveRight && !isRightBorder) {
+                        this.ship.moveRight();
+                    }
+                    if (moveLeft && !isLeftBorder) {
+                        this.ship.moveLeft();
+                    }
+					if (this.ship.getItemImpact()) {
+						this.ship.itemImpactUpdate();
 					}
-				}
-				if (replayability.getReplay()==1) {
-					if (this.bullet_count<=9 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
-						if(this.ship.shoot(this.bullets, 1)){
-							this.bulletsShot1++;
-							this.bullet_count++;
-						}
-						if(this.ship.isExistAuxiliaryShips()){
-							for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
-								if(auxiliaryShip.shoot(this.bullets, 1))
+
+                    if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
+                        if (this.ship.shoot(this.bullets, 1))
+                            this.bulletsShot1++;
+                        if (this.ship.isExistAuxiliaryShips()) {
+                            for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
+								if (auxiliaryShip.shoot(this.bullets, 1))
 									this.bulletsShot1++;
 							}
 						}
-					}
-					if (inputManager.speed == 3) {
-						per = 1;
-					} else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7 && bullet_count <=7) {
-						per = 2;
-					}
-					if (inputManager.magazine){
-						inputManager.magazine = false;
-						inputManager.countH_d = 0;
-						inputManager.countH_u = 0;
-						inputManager.speed = 0;
-						this.magazine--;
-						this.bullet_count=0;
-					}
-				}
-
-				if(!this.ship.isDestroyed()){
-					List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
-					if (this.ship.isExistAuxiliaryShips()) {
-						auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 25);
-						auxiliaryShips.get(0).setPositionY(ship.getPositionY());
-						auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 25);
-						auxiliaryShips.get(1).setPositionY(ship.getPositionY());
-					} else {
-						auxiliaryShips.get(0).destroy();
-						auxiliaryShips.get(1).destroy();
-					}
-					if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
-						if(this.ship.itemCoolTime())
-							useItem(this.ship.getItemQueue().deque(), this.ship);
-				}
-
-
-
-			} else if (gameState.getMode() == 2 && !(this.ship.isDestroyed() && this.ship2.isDestroyed())) {
-				boolean moveRight1p = inputManager.isKeyDown(Core.getKeySettingCode(1));
-				boolean moveLeft1p = inputManager.isKeyDown(Core.getKeySettingCode(0));
-
-				boolean moveRight2p = inputManager.isKeyDown(Core.getKeySettingCode(9));
-				boolean moveLeft2p = inputManager.isKeyDown(Core.getKeySettingCode(8));
-
-				boolean isRightBorder1p = this.ship.getPositionX()
-						+ this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
-				boolean isLeftBorder1p = this.ship.getPositionX()
-						- this.ship.getSpeed() < 1;
-
-				boolean isRightBorder2p = this.ship2.getPositionX()
-						+ this.ship2.getWidth() + this.ship2.getSpeed() > this.width - 1;
-				boolean isLeftBorder2p = this.ship2.getPositionX()
-						- this.ship2.getSpeed() < 1;
-
-				if (moveRight1p && !isRightBorder1p && (this.lives > 0)) {
-					this.ship.moveRight();
-				}
-				if (moveRight2p && !isRightBorder2p && (this.lives2 > 0)) {
-					this.ship2.moveRight();
-				}
-				if (moveLeft1p && !isLeftBorder1p && (this.lives > 0)) {
-					this.ship.moveLeft();
-				}
-				if (moveLeft2p && !isLeftBorder2p && (this.lives2 > 0)) {
-					this.ship2.moveLeft();
-				}
-
-				if (replayability.getReplay()==0){
-					if (inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
-						if (this.ship.shoot(this.bullets, 1)) {
-							this.bulletsShot1++;
-							this.bullet_count++;
-						}
-						if(this.ship.isExistAuxiliaryShips()){
-							for (Ship auxiliaryShip : this.ship.getAuxiliaryShips())
-								if(auxiliaryShip.shoot(this.bullets, 1)){
-									this.bulletsShot1++;
-								}
-						}
-					}
-					if (inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
-						if (this.ship2.shoot(this.bullets, 2)) {
-							this.bulletsShot2++;
-							this.bullet_count2++;
-						}
-						if(this.ship2.isExistAuxiliaryShips()){
-							for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips())
-								if(auxiliaryShip.shoot(this.bullets, 2)){
-									this.bulletsShot2++;
-								}
-						}
-					}
-				}else if (replayability.getReplay()==1){
-					//player1
-					if (this.bullet_count<=9 && inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
-						if(this.ship.shoot(this.bullets, 1)){
-							this.bulletsShot1++;
-							this.bullet_count++;
-						}
-						if(this.ship.isExistAuxiliaryShips()){
-							for (Ship auxiliaryShip : this.ship.getAuxiliaryShips())
-								if(auxiliaryShip.shoot(this.bullets, 1)){
-									this.bulletsShot1++;
-								}
+						if (this.ship.getItemImpact()) {
+							this.ship.itemImpactUpdate();
 						}
 
-					}
-					if (inputManager.speed1 == 3)
-						per = 1;
-					if (inputManager.one >= 7 && inputManager.two>= 7 && bullet_count <=7)
-						per = 2;
-					if (inputManager.magazine){
-						inputManager.magazine = false;
-						inputManager.one = 0;
-						inputManager.two = 0;
-						inputManager.speed1 = 0;
-						this.magazine--;
-						this.bullet_count=0;
-					}
-
-					if(!this.ship.isDestroyed()){
-						List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
-						if (this.ship.isExistAuxiliaryShips()) {
-							auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
-							auxiliaryShips.get(0).setPositionY(ship.getPositionY());
-							auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
-							auxiliaryShips.get(1).setPositionY(ship.getPositionY());
-						} else {
-							auxiliaryShips.get(0).destroy();
-							auxiliaryShips.get(1).destroy();
+                    }
+                    if (replayability.getReplay() == 1) {
+                        if (this.bullet_count <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
+                            if (this.ship.shoot(this.bullets, 1)) {
+                                this.bulletsShot1++;
+                                this.bullet_count++;
+                                SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShootA", false, false);
+                            }
+                            if (this.ship.isExistAuxiliaryShips()) {
+                                for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
+                                    if (auxiliaryShip.shoot(this.bullets, 1)) {
+                                        this.bulletsShot1++;
+                                        SoundManager.playSound("SFX/S_Ally_Shoot_b", "AllyShootB", false, false);
+                                    }
+                                }
+                            }
+                        }
+						if (this.ship.getItemImpact()) {
+							this.ship.itemImpactUpdate();
 						}
-						if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
-							if(this.ship.itemCoolTime())
-								useItem(this.ship.getItemQueue().deque(), this.ship);
+                        if (inputManager.speed == 3) {
+                            per = 1;
+                        } else if (inputManager.countH_u >= 7 && inputManager.countH_d >= 7 && bullet_count <= 7) {
+                            per = 2;
+                        }
+                        if (inputManager.magazine) {
+                            if (this.bullet_count == 10) {
+                                inputManager.countH_d = 0;
+                                inputManager.countH_u = 0;
+                                inputManager.speed = 0;
+                                this.magazine--;
+                                this.bullet_count = 0;
+                                this.logger.info("player1_magazine" + this.magazine);
+                            }
+                            inputManager.magazine = false;
+                        }
+                    }
+
+                    if (!this.ship.isDestroyed()) {
+                        List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
+						if (this.ship.getItemImpact()) {
+							this.ship.itemImpactUpdate();
+						}
+                        if (this.ship.isExistAuxiliaryShips()) {
+                            auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 25);
+                            auxiliaryShips.get(0).setPositionY(ship.getPositionY());
+                            auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 25);
+                            auxiliaryShips.get(1).setPositionY(ship.getPositionY());
+                        } else {
+                            auxiliaryShips.get(0).destroy();
+                            auxiliaryShips.get(1).destroy();
+                        }
+                        if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
+                            if (this.ship.itemCoolTime())
+                                useItem(this.ship.getItemQueue().deque(), this.ship);
+                    }
+
+
+                } else if (gameState.getMode() == 2 && !(this.ship.isDestroyed() && this.ship2.isDestroyed())) {
+                    boolean moveRight1p = inputManager.isKeyDown(Core.getKeySettingCode(1));
+                    boolean moveLeft1p = inputManager.isKeyDown(Core.getKeySettingCode(0));
+
+                    boolean moveRight2p = inputManager.isKeyDown(Core.getKeySettingCode(9));
+                    boolean moveLeft2p = inputManager.isKeyDown(Core.getKeySettingCode(8));
+
+                    boolean isRightBorder1p = this.ship.getPositionX()
+                            + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
+                    boolean isLeftBorder1p = this.ship.getPositionX()
+                            - this.ship.getSpeed() < 1;
+
+                    boolean isRightBorder2p = this.ship2.getPositionX()
+                            + this.ship2.getWidth() + this.ship2.getSpeed() > this.width - 1;
+                    boolean isLeftBorder2p = this.ship2.getPositionX()
+                            - this.ship2.getSpeed() < 1;
+
+                    if (moveRight1p && !isRightBorder1p && (this.lives > 0)) {
+                        this.ship.moveRight();
+                    }
+                    if (moveRight2p && !isRightBorder2p && (this.lives2 > 0)) {
+                        this.ship2.moveRight();
+                    }
+                    if (moveLeft1p && !isLeftBorder1p && (this.lives > 0)) {
+                        this.ship.moveLeft();
+                    }
+                    if (moveLeft2p && !isLeftBorder2p && (this.lives2 > 0)) {
+                        this.ship2.moveLeft();
+                    }
+					if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+						this.ship.itemImpactUpdate();
+						this.ship2.itemImpactUpdate();
 					}
 
-					//player2
-					if (this.bullet_count2<=9 && inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
-						if(this.ship2.shoot(this.bullets, 2)){
-							this.bulletsShot2++;
-							this.bullet_count2++;
-							if(this.ship2.isExistAuxiliaryShips()){
+                    if (replayability.getReplay() == 0) {
+                        if (inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
+                            if (this.ship.shoot(this.bullets, 1)) {
+                                this.bulletsShot1++;
+                                this.bullet_count++;
+                            }
+                            if (this.ship.isExistAuxiliaryShips()) {
+                                for (Ship auxiliaryShip : this.ship.getAuxiliaryShips())
+                                    if (auxiliaryShip.shoot(this.bullets, 1)) {
+                                        this.bulletsShot1++;
+                                    }
+                            }
+							if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+								this.ship2.itemImpactUpdate();
+							}
+                        }
+                        if (inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
+                            if (this.ship2.shoot(this.bullets, 2)) {
+                                this.bulletsShot2++;
+                                this.bullet_count2++;
+                            }
+                            if (this.ship2.isExistAuxiliaryShips()) {
+                                for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips())
+                                    if (auxiliaryShip.shoot(this.bullets, 2)) {
+                                        this.bulletsShot2++;
+                                    }
+                            }
+							if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+								this.ship2.itemImpactUpdate();
+							}
+                        }
+                    } else if (replayability.getReplay() == 1) {
+                        //player1
+                        if (this.bullet_count <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
+                            if (this.ship.shoot(this.bullets, 1)) {
+                                SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShoota", false, false);
+                                this.bulletsShot1++;
+                                this.bullet_count++;
+                            }
+                            if (this.ship.isExistAuxiliaryShips()) {
+                                for (Ship auxiliaryShip : this.ship.getAuxiliaryShips())
+                                    if (auxiliaryShip.shoot(this.bullets, 1)) {
+                                        this.bulletsShot1++;
+                                        SoundManager.playSound("SFX/S_Ally_Shoot_b", "AllyShootb", false, false);
+                                    }
+                            }
+							if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+								this.ship2.itemImpactUpdate();
+							}
+
+                        }
+                        if (inputManager.speed1 == 3)
+                            per = 1;
+                        if (inputManager.one >= 7 && inputManager.two >= 7 && bullet_count <= 7)
+                            per = 2;
+                        if (inputManager.magazine) {
+                            if (this.bullet_count == 10) {
+                                inputManager.one = 0;
+                                inputManager.two = 0;
+                                inputManager.speed = 0;
+                                this.magazine--;
+                                this.bullet_count = 0;
+                                this.logger.info("player1_magazine" + this.magazine);
+                            }
+                            inputManager.magazine = false;
+                        }
+
+                        if (!this.ship.isDestroyed()) {
+                            List<Ship> auxiliaryShips = this.ship.getAuxiliaryShips();
+							if (this.ship.getItemImpact()) {
+								this.ship.itemImpactUpdate();
+							}
+                            if (this.ship.isExistAuxiliaryShips()) {
+                                auxiliaryShips.get(0).setPositionX(ship.getPositionX() - 30);
+                                auxiliaryShips.get(0).setPositionY(ship.getPositionY());
+                                auxiliaryShips.get(1).setPositionX(ship.getPositionX() + 30);
+                                auxiliaryShips.get(1).setPositionY(ship.getPositionY());
+                            } else {
+                                auxiliaryShips.get(0).destroy();
+                                auxiliaryShips.get(1).destroy();
+                            }
+                            if (inputManager.isKeyDown(Core.getKeySettingCode(7)))
+                                if (this.ship.itemCoolTime())
+                                    useItem(this.ship.getItemQueue().deque(), this.ship);
+                        }
+
+                        //player2
+                        if (this.bullet_count2 <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
+							if (this.ship2.shoot(this.bullets, 2)) {
+								this.bulletsShot2++;
+								this.bullet_count2++;
+								SoundManager.playSound("SFX/S_Ally_Shoot_c", "AllyShootc", false, false);
+							}
+							if (this.ship2.getItemImpact()) {
+								this.ship2.itemImpactUpdate();
+							}
+							if (this.ship2.isExistAuxiliaryShips()) {
 								for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips())
-									if(auxiliaryShip.shoot(this.bullets, 2)){
+									if (auxiliaryShip.shoot(this.bullets, 2)) {
+										SoundManager.playSound("SFX/S_Ally_Shoot_d", "AllyShootd", false, false);
 										this.bulletsShot2++;
 									}
 							}
 						}
-
-					}
-					if (inputManager.speed2 == 3)
-						per = 3;
-					if (inputManager.seven >= 7 && inputManager.eight >= 7 && bullet_count2 <=7)
-						per = 4;
-					if (inputManager.magazine2){
-						inputManager.magazine2 = false;
-						inputManager.seven = 0;
-						inputManager.eight = 0;
-						inputManager.speed2 = 0;
-						this.magazine2--;
-						this.bullet_count2=0;
-					}
-
-					// item
-					if(!this.ship2.isDestroyed()){
-						List<Ship> auxiliaryShips = this.ship2.getAuxiliaryShips();
-						if (this.ship2.isExistAuxiliaryShips()) {
-							auxiliaryShips.get(0).setPositionX(ship2.getPositionX() - 30);
-							auxiliaryShips.get(0).setPositionY(ship2.getPositionY());
-							auxiliaryShips.get(1).setPositionX(ship2.getPositionX() + 30);
-							auxiliaryShips.get(1).setPositionY(ship2.getPositionY());
-						} else {
-							auxiliaryShips.get(0).destroy();
-							auxiliaryShips.get(1).destroy();
+						if (inputManager.speed2 == 3)
+							per = 3;
+						if (inputManager.seven >= 7 && inputManager.eight >= 7 && bullet_count2 <= 7)
+							per = 4;
+						if (inputManager.magazine2) {
+							if (this.bullet_count2 == 10) {
+								inputManager.seven = 0;
+								inputManager.eight = 0;
+								inputManager.speed2 = 0;
+								this.magazine2--;
+								this.bullet_count2 = 0;
+								this.logger.info("player2_magazine" + this.magazine2);
+							}
+							inputManager.magazine2 = false;
 						}
-						if (inputManager.isKeyDown(Core.getKeySettingCode(15)))
-							if(this.ship2.itemCoolTime())
-								useItem(this.ship2.getItemQueue().deque(), this.ship2);
+
+						// item
+						if (!this.ship2.isDestroyed()) {
+							List<Ship> auxiliaryShips = this.ship2.getAuxiliaryShips();
+							if (this.ship2.getItemImpact()) {
+								this.ship2.itemImpactUpdate();
+							}
+							if (this.ship2.isExistAuxiliaryShips()) {
+								auxiliaryShips.get(0).setPositionX(ship2.getPositionX() - 30);
+								auxiliaryShips.get(0).setPositionY(ship2.getPositionY());
+								auxiliaryShips.get(1).setPositionX(ship2.getPositionX() + 30);
+								auxiliaryShips.get(1).setPositionY(ship2.getPositionY());
+							} else {
+								auxiliaryShips.get(0).destroy();
+								auxiliaryShips.get(1).destroy();
+							}
+							if (inputManager.isKeyDown(Core.getKeySettingCode(15)))
+								if (this.ship2.itemCoolTime())
+									useItem(this.ship2.getItemQueue().deque(), this.ship2);
+						}
 					}
 				}
-			}
 
 
-			if (this.enemyShipSpecial != null) {
-				if (!this.enemyShipSpecial.isDestroyed())
-					this.enemyShipSpecial.move(2, 0);
-				else if (this.enemyShipSpecialExplosionCooldown.checkFinished())
-					this.enemyShipSpecial = null;
-			}
-
-			if (this.enemyShipSpecial == null
-					&& this.enemyShipSpecialCooldown.checkFinished()) {
-				this.enemyShipSpecial = new EnemyShip();
-				this.enemyShipSpecialCooldown.reset();
-				this.logger.info("A special ship appears");
-			}
-
-			if (this.enemyShipSpecial != null
-					&& this.enemyShipSpecial.getPositionX() > this.width) {
-				this.escapeCnt++;
-				if (this.level == 7) {
-					this.lives--;
-					this.logger.info("This level is 7 and escaped ship is 1, so you lost on life.");
-				} else if (this.level == 6 && this.escapeCnt == 2) {
-					this.lives--;
-					this.logger.info("Escaped 2.");
-					this.escapeCnt = 0;
-					this.logger.info("This level is 6 and escaped ship is 2, so you lost on life.");
-				} else if (this.level == 5 && this.escapeCnt == 3) {
-					this.lives--;
-					this.logger.info("Escaped 3.");
-					this.escapeCnt = 0;
-					this.logger.info("This level is 5 and escaped ship is 3, so you lost on life.");
-				} else {
-					this.logger.info("The special ship has escaped");
+				if (this.enemyShipSpecial != null) {
+					if (!this.enemyShipSpecial.isDestroyed())
+						this.enemyShipSpecial.move(2, 0);
+					else if (this.enemyShipSpecialExplosionCooldown.checkFinished()) {
+						SoundManager.playSound("SFX/S_Enemy_Destroy_b", "SpecialEnemyShipDestroyed", false, false);
+						this.enemyShipSpecial = null;
+					}
 				}
-				this.enemyShipSpecial = null;
+
+				if (this.enemyShipSpecial == null
+						&& this.enemyShipSpecialCooldown.checkFinished()) {
+					SoundManager.playSound("SFX/S_Enemy_Special", "specialEnemyAppear", false, false);
+					this.enemyShipSpecial = new EnemyShip();
+					this.enemyShipSpecialCooldown.reset();
+					this.logger.info("A special ship appears");
+				}
+
+				if (this.enemyShipSpecial != null
+						&& this.enemyShipSpecial.getPositionX() > this.width) {
+					this.escapeCnt++;
+					if (this.level == 7) {
+						this.lives--;
+						this.logger.info("This level is 7 and escaped ship is 1, so you lost on life.");
+					} else if (this.level == 6 && this.escapeCnt == 2) {
+						this.lives--;
+						this.logger.info("Escaped 2.");
+						this.escapeCnt = 0;
+						this.logger.info("This level is 6 and escaped ship is 2, so you lost on life.");
+					} else if (this.level == 5 && this.escapeCnt == 3) {
+						this.lives--;
+						this.logger.info("Escaped 3.");
+						this.escapeCnt = 0;
+						this.logger.info("This level is 5 and escaped ship is 3, so you lost on life.");
+					} else {
+						this.logger.info("The special ship has escaped");
+					}
+					this.enemyShipSpecial = null;
+				}
+
+				/** If you use up all your magazines and bullets and then recharge your magazine,
+				 * you'll have one less live and five new magazines.*/
+				if (this.magazine < 0) {
+					this.lives--;
+					this.magazine = 5;
+				}
+				if (this.magazine2 < 0) {
+					this.lives2--;
+					this.magazine2 = 5;
+				}
+
+				this.ship.update();
+				if (this.gameState.getMode() == 2) {
+					this.ship2.update();
+				}
+
+				this.enemyShipFormation.update();
+				this.enemyShipFormation.shoot(this.bullets);
 			}
 
+			useSkill();
+			manageCollisions();
+			cleanBullets();
+			updateItems();
+			//draw();
 
-			if(this.magazine==0)
-				this.lives =0;
-
-			if(this.magazine2==0)
-				this.lives2 =0;
-
-
-			this.ship.update();
-			if (this.gameState.getMode() == 2) {
-				this.ship2.updatep_2();
+			if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
+					&& !this.levelFinished) {
+				this.levelFinished = true;
+				this.screenFinishedCooldown.reset();
 			}
 
-			this.enemyShipFormation.update();
-			this.enemyShipFormation.shoot(this.bullets);
+			if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
+				this.isRunning = false;
+
+		} else {
+			if (inputManager.isKeyDown(KeyEvent.VK_CONTROL)) {
+				pauseCnt++;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {}
+			}
+			if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+				if (pauseCnt % 2 == 1) { //quit
+					this.returnCode = 1;
+					this.isRunning = false;
+				} else { //resume
+					isPause = false;
+				}
+				manual = false;
+			}
 		}
 
-		useSkill();
-		manageCollisions();
-		cleanBullets();
-		updateItems();
+		//AchievementManager.getInstance().checkLuckySeven(this.score);
+
 		draw();
-
-		if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
-				&& !this.levelFinished) {
-			this.levelFinished = true;
-			this.screenFinishedCooldown.reset();
-		}
-
-		if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
-			this.isRunning = false;
 	}
 
 	/**
@@ -569,6 +706,15 @@ public class GameScreen extends Screen {
 	 */
 	private void draw() {
 		drawManager.initDrawing(this);
+
+		if (SelectScreen.skillModeOn) {
+			drawManager.drawAmmo(this, this.magazine, this.bullet_count);
+
+			if (this.gameState.getMode() == 2) {
+				drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
+			}
+		}
+
 
 		if (this.gameState.getMode() == 1) {
 			if (this.lives > 0) {
@@ -622,22 +768,48 @@ public class GameScreen extends Screen {
 
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
-		if (this.gameState.getMode() == 2) drawManager.drawLives2(this, this.lives2);
+		drawManager.drawItems(this, this.ship.getItemQueue().getItemQue(), this.ship.getItemQueue().getSize());
+		if (this.gameState.getMode() == 2) {
+			drawManager.drawLives2(this, this.lives2);
+			drawManager.drawItems2(this, this.ship2.getItemQueue().getItemQue(), this.ship2.getItemQueue().getSize());
+		}
 		drawManager.drawHighScore(this, this.highScore);
-		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
+		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1, Color.GREEN);
+		drawManager.drawHorizontalLine(this, this.height - 1, Color.GREEN); //separation line for bottom hud
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
-
 			int countdown = (int) ((INPUT_DELAY
 					- (System.currentTimeMillis()
 					- this.gameStartTime)) / 1000);
+			long beep = ((INPUT_DELAY - (System.currentTimeMillis() - this.gameStartTime)));
+
+			if ((beep<3995 && beep>3975) || (beep<2995 && beep>2975) || (beep<1995 && beep>1975))
+				SoundManager.playSound("SFX/S_LevelStart_b", "level_start_beep", false, false);
+			if ((beep<995 && beep>975))
+				SoundManager.playSound("SFX/S_LevelStart_a", "level_start_count", false, false);
 			drawManager.drawCountDown(this, this.level, countdown,
 					this.bonusLife);
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height
-					/ 12);
+					/ 12, Color.GREEN);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height
-					/ 12);
+					/ 12, Color.GREEN);
+		}
+
+		if(manual){
+			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 90, 180);
+			drawManager.drawManualMenu(this);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 90, Color.CYAN);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 50, Color.CYAN);
+			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12 + 90, Color.CYAN);
+		}
+
+		if (isPause){
+			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 40, 40);
+			drawManager.drawPauseMenu(this, pauseCnt%2);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12 - 40, Color.YELLOW);
+			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
+			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}
 
 		drawManager.completeDrawing(this);
@@ -688,19 +860,19 @@ public class GameScreen extends Screen {
                             if (this.lives > 0) {
                                 this.lives--;
                             }
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
                             this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
                         }
                     }
                 } else {
                     for (EnemyShip enemyShip : this.enemyShipFormation) {
                         if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-                            }
-
                             if (this.isBomb) {
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for (EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -710,6 +882,11 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+								SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
+							}
 
                             setBomb(false);
 
@@ -739,6 +916,10 @@ public class GameScreen extends Screen {
 							if (this.lives > 0) {
 								this.lives--;
 							}
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
 						}
 					}
@@ -749,18 +930,20 @@ public class GameScreen extends Screen {
 							if (this.lives2 > 0) {
 								this.lives2--;
 							}
+							if (this.lives2 <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
 							this.logger.info("Hit on player2 ship, " + this.lives2 + " lives remaining.");
 						}
 					}
 				} else {
 					for (EnemyShip enemyShip : this.enemyShipFormation) {
 						if (bullet.getShooter() == 1 && !enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for(EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -771,15 +954,18 @@ public class GameScreen extends Screen {
                                 this.shipsDestroyed++;
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
+
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+							}
+
                             setBomb(false);
 							recyclable.add(bullet);
 						} else if(!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (enemyShip.hasItem()) {
-                                items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange()));
-                            }
 
                             if (this.isBomb){
                                 List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
                                 for(EnemyShip enemy : enemyShips) {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
@@ -791,45 +977,70 @@ public class GameScreen extends Screen {
                                 this.enemyShipFormation.destroy(enemyShip);
                             }
 
+							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+							}
+
                             setBomb(false);
 							recyclable.add(bullet);
 						}
 					}
 
-					if (this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
-							&& checkCollision(bullet, this.enemyShipSpecial)) {
-						shipsDestroyed++;
-						this.score += this.enemyShipSpecial.getPointValue();
-						this.enemyShipSpecial.destroy();
-						this.enemyShipSpecialExplosionCooldown.reset();
-						recyclable.add(bullet);
-					}
+                    if (this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
+                            && checkCollision(bullet, this.enemyShipSpecial)) {
+                        shipsDestroyed++;
+                        this.score += this.enemyShipSpecial.getPointValue();
+                        this.enemyShipSpecial.destroy();
+                        this.enemyShipSpecialExplosionCooldown.reset();
+                        recyclable.add(bullet);
+                    }
 
-					if (this.enemyShipSpecial != null && bullet.getShooter() == 2 && !this.enemyShipSpecial.isDestroyed()
-							&& checkCollision(bullet, this.enemyShipSpecial)) {
-						shipsDestroyed2++;
-						this.score += this.enemyShipSpecial.getPointValue();
-						this.enemyShipSpecial.destroy();
-						this.enemyShipSpecialExplosionCooldown.reset();
-						recyclable.add(bullet);
-					}
-				}
-			}
-		}
+                    if (this.enemyShipSpecial != null && bullet.getShooter() == 2 && !this.enemyShipSpecial.isDestroyed()
+                            && checkCollision(bullet, this.enemyShipSpecial)) {
+                        shipsDestroyed2++;
+                        this.score += this.enemyShipSpecial.getPointValue();
+                        this.enemyShipSpecial.destroy();
+                        this.enemyShipSpecialExplosionCooldown.reset();
+                        recyclable.add(bullet);
+                    }
+                }
+            }
+        }
 
 		Set<Item> recyclableItem = new HashSet<Item>();
 
-		for (Item item : this.items) {
-			if (checkCollision(item, this.ship) && !this.levelFinished) {
-				recyclableItem.add(item);
-				this.ship.getItemQueue().enque(item);
+		if (gameState.getMode() == 1) {
+			for (Item item : this.items) {
+				if (checkCollision(item, this.ship) && !this.levelFinished && this.lives != 0) {
+					recyclableItem.add(item);
+					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
+					this.ship.getItemQueue().enque(item);
+				}
 			}
 		}
 		if (gameState.getMode() == 2) {
 			for (Item item : this.items) {
-				if (checkCollision(item, this.ship2) && !this.levelFinished) {
+				if (checkCollision(this.ship, this.ship2) && checkCollision(this.ship, item) && checkCollision(this.ship2, item) && !this.levelFinished && this.lives != 0 && this.lives2 != 0) {
 					recyclableItem.add(item);
-					this.ship2.getItemQueue().enque(item);
+					SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
+					if(this.ship.getItemQueue().getSize() == this.ship2.getItemQueue().getSize()){
+						if(new Random().nextInt(100) > 50) this.ship.getItemQueue().enque(item);
+						else this.ship2.getItemQueue().enque(item);
+					}
+					else if(this.ship.getItemQueue().getSize() > this.ship2.getItemQueue().getSize()) this.ship2.getItemQueue().enque(item);
+					else this.ship.getItemQueue().enque(item);
+				}
+				else {
+					if (checkCollision(item, this.ship) && !this.levelFinished && this.lives != 0) {
+						recyclableItem.add(item);
+						SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
+						this.ship.getItemQueue().enque(item);
+					}
+					else if (checkCollision(item, this.ship2) && !this.levelFinished && this.lives2 != 0) {
+						recyclableItem.add(item);
+						SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
+						this.ship2.getItemQueue().enque(item);
+					}
 				}
 			}
 		}
@@ -840,17 +1051,18 @@ public class GameScreen extends Screen {
 		ItemPool.recycle(recyclableItem);
 	}
 
+
 	/** Use skill*/
 	private void useSkill(){
 		if (per>0 && !this.levelFinished) {
 			if (per == 1 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
-				originalSpeed = (int) ship.getSpeed();
+				originalSpeed = ship.getOriginalSpeed();
 				ship.setSpeed(originalSpeed + 2);
 				this.logger.info("SpeedUp");
 
 				ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 				executor.schedule(() -> {
-					ship.setSpeed(originalSpeed);
+					ship.resetSpeed();
 					speedBoosted = false;
 					executor.shutdown();
 				}, 1, TimeUnit.SECONDS);
@@ -867,13 +1079,13 @@ public class GameScreen extends Screen {
 				this.bulletsShot1+=3;
 				this.bullet_count+=3;
 			}else if (per == 3 && !speedBoosted) { // s 연타 -> 1초간 속도 빨라지기
-				originalSpeed = (int) ship2.getSpeed();
+				originalSpeed =  ship2.getOriginalSpeed();
 				ship2.setSpeed(originalSpeed + 2);
 				this.logger.info("SpeedUp");
 
 				ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 				executor.schedule(() -> {
-					ship2.setSpeed(originalSpeed);
+					ship2.resetSpeed();
 					speedBoosted = false;
 					executor.shutdown();
 				}, 1, TimeUnit.SECONDS);
@@ -957,21 +1169,30 @@ public class GameScreen extends Screen {
 					item.getItemType() == Item.ItemType.SubPlaneItem) {
 				ship.setAuxiliaryShipsMode();
 				this.logger.info("SubPlane Item 사용");
+				SoundManager.playSound("SFX/S_Item_SubShip", "SubPlaneItem", false, true); // 보조비행기 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.SpeedUpItem) {
 				ship.setItemSpeed();
-				this.logger.info("SpeedUp Item 사용");
+				SoundManager.playSound("SFX/S_Item_SpeedUp", "SpeedUpItem", false, true); // 속도 증가 아이템 bgm
+
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.InvincibleItem) {
 				ship.runInvincible();
 				this.logger.info("Invincible Item 사용");
+				SoundManager.playSound("SFX/S_Item_Invicible", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
 			}
 			else if (!item.getIsGet() &&
 					item.getItemType() == Item.ItemType.BombItem) {
 				setBomb(true);
 				this.logger.info("Bomb Item 사용");
+				SoundManager.playSound("SFX/S_Item_Bomb_Equipped", "InvincibleItem", false, true);  // 무적 상태 아이템 bgm
+
+
 			}
 			item.setIsGet();
 			this.logger.info("You have " + this.ship.getItemQueue().getSize() + " items");

@@ -4,40 +4,47 @@ package entity;
 /** 현재 사용자가 보유한 아이템을 저장하는 Queue */
 public class ItemQueue {
 
-    private final Item[] itemQue;
-    private final int capacity;
+    public final Item[] itemQue;
+    private final int CAPACITY = 3;
     private int front;
     private int rear;
     private int size;
 
     public ItemQueue(){
-        this.capacity = 3;
-        itemQue = new Item[capacity];
-        this.front = this.rear = this.size = 0;
+        itemQue = new Item[CAPACITY];
+        this.front = this.rear = size = 0;
     }
 
     public void enque(Item item){
-        if(size >= capacity){
-            deque();
-            for(int i=1; i<3; i++)
-                itemQue[i-1] = itemQue[i];
-            itemQue[2] = null;
+        if(size < CAPACITY){
+            itemQue[rear++] = item;
+            size++;
         }
-        itemQue[rear++] = item;
-        size++;
-        if(rear == capacity)
-            rear = 0;
     }
 
     public Item deque(){
-        Item x = itemQue[front++];
-        if(size != 0)
+        Item x = itemQue[front];
+        if(size == CAPACITY) {
+            Item temp = itemQue[CAPACITY-1];
+            itemQue[CAPACITY-1] = null;
+            itemQue[CAPACITY-3] = itemQue[CAPACITY-2];
+            itemQue[CAPACITY-2] = temp;
+            rear--;
             size--;
-        if(front == capacity)
-            front = 0;
+        }
+        else if(size > 0) {
+            for(int i = 0; i < this.size; i++){
+                itemQue[i] = itemQue[i+1];
+            }
+            rear--;
+            size--;
+        }
         return x;
     }
 
-    public int getSize(){return this.size;}
+    public int getSize() { return this.size; }
+
+    public Item[] getItemQue() { return this.itemQue; }
 
 }
+

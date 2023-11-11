@@ -76,11 +76,20 @@ public class SettingScreen extends Screen {
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(Core.soundVolume < 100) Core.soundVolume ++;
+                        if(Core.soundVolume < 100){
+                            Core.soundVolume ++;
+                            SoundManager.setMasterVolume(Core.soundVolume);
+                        }
                         break;
                     /** BGM On/Off */
                     case 1:
                         Core.bgmOn = !Core.bgmOn;
+                        SoundManager.bgmSetting(Core.bgmOn);
+                        this.selectionCooldown.reset();
+                        break;
+                    /** Keys Setting */
+                    case 2: case 3:
+                        if(keyNum>0) keyNum--;
                         this.selectionCooldown.reset();
                         break;
                     default:
@@ -92,17 +101,22 @@ public class SettingScreen extends Screen {
                 switch (itemCode){
                     /** Entire Sound Setting */
                     case 0:
-                        if(Core.soundVolume >0) Core.soundVolume --;
+                        if(Core.soundVolume >0){
+                            Core.soundVolume --;
+                            SoundManager.setMasterVolume(Core.soundVolume);
+                        }
                         break;
                     /** BGM On/Off */
                     case 1:
                         Core.bgmOn = !Core.bgmOn;
+                        SoundManager.bgmSetting(Core.bgmOn);
                         this.selectionCooldown.reset();
                         break;
                     default:
                         break;
                 }
             }
+
             /** Move up and down when selecting key */
             if((inputManager.isKeyDown(KeyEvent.VK_UP)
                     || inputManager.isKeyDown(KeyEvent.VK_W)) && itemCode>1 && selected && !keyChangeMode){
@@ -117,6 +131,7 @@ public class SettingScreen extends Screen {
                 this.selectionCooldown.reset();
             }
             if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE) && !selected){
+                SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                 saveSetting();
                 this.isRunning = false;
             }
@@ -177,6 +192,7 @@ public class SettingScreen extends Screen {
             }
             else if ((inputManager.isKeyDown(KeyEvent.VK_LEFT) || inputManager.isKeyDown(KeyEvent.VK_A)
                     || inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) && selected && !keyChangeMode && itemCode>1) {
+                SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                 keyNum = 0;
                 selected = false;
                 this.selectionCooldown.reset();
