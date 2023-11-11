@@ -16,7 +16,7 @@ public class EngineTimer implements GManager{
 
     public static EngineTimer instance = null;
 
-
+    public void Exit(){};
 
     public static void ExecuteTimer(Runnable code, double time){
         new Thread(new Runnable() {

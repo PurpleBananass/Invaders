@@ -1,37 +1,31 @@
 package GamePrime.Page;
 
-import EnginePrime.Core;
 import EnginePrime.Entity;
 import EnginePrime.EventSystem;
 import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
-import EnginePrime.SoundManager;
-import GamePrime.AchievDefine;
-import GamePrime.Image;
-import GamePrime.ItemDefine;
-import GamePrime.KeyDefine;
-import GamePrime.PrepareUI;
+import GamePrime.Define.ItemDefine;
+import GamePrime.Define.KeyDefine;
+import GamePrime.ETC.Image;
 import GamePrime.Ship.Bomb;
 import GamePrime.Ship.Bullet;
 import GamePrime.Ship.EnemyController;
 import GamePrime.Ship.Item;
 import GamePrime.Ship.Player;
+import GamePrime.UI.PrepareUI;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
-import java.awt.image.BufferedImage;
 
 public class GamePage implements GManager {
-
     GameManager gm = GameManager.getInstance();
     public int PlayMode;
     public boolean HardMode;
@@ -52,6 +46,11 @@ public class GamePage implements GManager {
             PlayData.put("MoveSpeed", 200);
             PlayData.put("ShotDelay", 1.5f);
             PlayData.put("ShotSpeed", 400.0f);
+            PlayData.put("ShotCount", 0);
+            PlayData.put("ShotCount2", 0 );
+            PlayData.put("KillCount", 0);
+            PlayData.put("KillCount2", 0 );
+
             JSONObject ItemData = (JSONObject) gm.GlobalData.get("LocalData").get("StoreItem");
             if (ItemData != null) {
                 if ((boolean) ItemData.get("BonusLife")) {
@@ -83,6 +82,7 @@ public class GamePage implements GManager {
     }
 
     public void Initialize() {
+        gm.Sm.StopAll();
         PlayMode = ((Number) gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
         HardMode = (boolean) gm.GlobalData.get("LocalData").get("HardMode");
         PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
@@ -204,7 +204,6 @@ public class GamePage implements GManager {
     }
 
     private void DrawMenual() {
-
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         int rectWidth = gm.frame.getWidth();
         int rectHeight = gm.frame.getHeight() / 6;
@@ -353,14 +352,15 @@ public class GamePage implements GManager {
     }
 
     void drawLives() {
-
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         grpahics.setColor(Color.WHITE);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         grpahics.drawString(Integer.toString(((Number) PlayData.get("Life")).intValue()), 20, 25);
-        grpahics.drawString(Integer.toString(((Number) PlayData.get("Life2")).intValue()), 50, 25);
+        if(PlayMode==1){
+            grpahics.drawString(Integer.toString(((Number) PlayData.get("Life2")).intValue()), 50, 25);
+        }
     }
-
+    public void Exit(){};
     void DrawScore() {
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         grpahics.setColor(Color.WHITE);

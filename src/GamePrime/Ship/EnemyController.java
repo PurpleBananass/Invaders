@@ -23,10 +23,9 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.Image;
-import GamePrime.ItemDefine;
-import GamePrime.KeyDefine;
-import GamePrime.ShipDefine;
+import GamePrime.Define.ItemDefine;
+import GamePrime.Define.KeyDefine;
+import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
 
 import java.awt.AlphaComposite;
@@ -41,7 +40,9 @@ public class EnemyController extends Component {
         Easy,
         Hard,
     }
-
+    
+    public static final int MaxStageCount = 3;
+    
     int downPixel = 100;
     GamePage gp;
     GameManager gm = GameManager.getInstance();
@@ -51,8 +52,16 @@ public class EnemyController extends Component {
     int row;
     int enemynum;
     float Shotdelay;
-
+    SoundManager.PlayProp DestroySoundProp;
+    SoundManager.PlayProp DestroySoundProp2;
+    SoundManager.PlayProp ItemSoundProp;
     public void Start() {
+        DestroySoundProp = gm.Sm.new PlayProp(
+                    "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Enemy_Destroy_a.wav", null);
+        DestroySoundProp2 = gm.Sm.new PlayProp(
+                    "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Bomb.wav", null);
+        ItemSoundProp = gm.Sm.new PlayProp(
+                    "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Create.wav", null);
         Shotdelay = 2;
         enemynum = 0;
         gp = (GamePage) gm.CustomInstance;
@@ -63,12 +72,19 @@ public class EnemyController extends Component {
         switch (level) {
             case 1:     
                 Level1(3, 4);
+                gm.Sm.playSound(gm.Sm.new PlayProp(
+                    "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Level1.wav", "BGM"));
                 break;
             case 2:
                 Level2(1, 2);
+                gm.Sm.playSound(gm.Sm.new PlayProp(
+                    "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Level2.wav", "BGM"));
                 break;
             case 3:
-                Level2(2, 2);
+                Level2(4, 4);
+                gm.Sm.playSound(gm.Sm.new PlayProp(
+                    "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Level3.wav", "BGM"));
+
                 break;
             default:
                 break;
@@ -151,15 +167,28 @@ public class EnemyController extends Component {
                 Custommessage.put("Item", e.item);
                 Message m = new Message(this.Obj, MessageType.Custom, Custommessage);
                 item.SetVector(m);
+                gm.Sm.playSound(ItemSoundProp);
             }
             enemynum -= 1;
+            if (bullet instanceof Bomb) {
+                gm.Sm.playSound(DestroySoundProp2);
+            }else{
+                gm.Sm.playSound(DestroySoundProp);
+            }
             int point = ((Number) gp.PlayData.get("Point")).intValue() + e.Point;
             gp.PlayData.put("Point", point);
+            if(bullet.MadeBY == "Player1"){
+                gp.PlayData.put("KillCount",((Number) gp.PlayData.get("KillCount")).intValue()+1);
+            }else{
+                
+                gp.PlayData.put("KillCount2",((Number) gp.PlayData.get("KillCount2")).intValue()+1);
+            }
+
         } 
         if (bullet instanceof Bomb) {
             Bomb bomb = (Bomb)bullet;
             for(Point2D p : bomb.dirList){
-                Bullet.MakeBullet(bullet.pos, p, bullet.ShotSpeed, "PBullet");
+                Bullet.MakeBullet(bullet.pos, p, bullet.ShotSpeed, "PBullet",bullet.MadeBY);
             }
         }
         EventSystem.Destroy(bullet.Obj);

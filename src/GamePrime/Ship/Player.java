@@ -21,10 +21,9 @@ import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
 import EnginePrime.Message.MessageType;
-import GamePrime.Image;
-import GamePrime.ItemDefine;
-import GamePrime.KeyDefine;
-import GamePrime.ShipDefine;
+import GamePrime.Define.ItemDefine;
+import GamePrime.Define.KeyDefine;
+import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
 
 import java.awt.Graphics2D;
@@ -49,6 +48,69 @@ public class Player extends Component {
     float Shotdelay;
     float Delay;
     boolean ActiveItem[];
+    SoundManager.PlayProp ShootSoundProp;
+    SoundManager.PlayProp ShootSoundProp2;
+    SoundManager.PlayProp ShootSoundProp3;
+    SoundManager.PlayProp ShootSoundProp4;
+
+    SoundManager.PlayProp DestroyedProp;
+    SoundManager.PlayProp DestroyedProp2;
+    SoundManager.PlayProp ItemGetProp;
+    SoundManager.PlayProp SubshipProp;
+    SoundManager.PlayProp SpeedUpProp;
+    SoundManager.PlayProp InvicibleProp;
+    SoundManager.PlayProp BombEquipProp;
+        public void Awake() {
+        gp = (GamePage) gm.CustomInstance;
+        SubshipProp = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_SubShip.wav", null);
+        SpeedUpProp = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_SpeedUp.wav", null);
+        InvicibleProp = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Invicible.wav", null);
+        BombEquipProp = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Bomb_Equipped.wav", null);
+
+        ShootSoundProp = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_a.wav", null);
+        ShootSoundProp2 = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_b.wav", null);
+        ShootSoundProp3 = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_c.wav", null);
+        ShootSoundProp4 = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Shoot_d.wav", null);
+
+        DestroyedProp = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Destroy_a.wav", null);
+        DestroyedProp2 = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Ally_Destroy_b.wav", null);
+        ItemGetProp = gm.Sm.new PlayProp(
+            "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Item_Get.wav", null);
+
+        String ship = null;
+        JSONObject data = gm.GlobalData.get("Setting");
+        PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
+        if (this.Obj.name == "Player1") {
+            ship = (String) gm.GlobalData.get("LocalData").get("P1_Ship");
+            JSONArray keySettings = (JSONArray) data.get("KeySetting_1p");
+            for (int i = 0; i < KeyDefine.KeyFunc.length; i++) {
+                KeyFunc.put(KeyDefine.KeyFunc[i], ((Number) keySettings.get(i)).intValue());
+            }
+        } else if (this.Obj.name == "Player2") {
+            ship = (String) gm.GlobalData.get("LocalData").get("P2_Ship");
+            JSONArray keySettings = (JSONArray) data.get("KeySetting_2p");
+            for (int i = 0; i < KeyDefine.KeyFunc.length; i++) {
+                KeyFunc.put(KeyDefine.KeyFunc[i], ((Number) keySettings.get(i)).intValue());
+            }
+        }
+        if (ship == ShipDefine.Ship[0]) {
+            img.put(State[0], gp.ImgRes.get("Reimu"));
+            img.put(State[1], gp.ImgRes.get("Marisa"));
+        } else if (ship == ShipDefine.Ship[1]) {
+            img.put(State[0], gp.ImgRes.get("Marisa"));
+            img.put(State[1], gp.ImgRes.get("Reimu"));
+        }
+    }
 
     public void CheckCollsion(Item item) {
         int height = ((Number) gp.PlayData.get("ImgHeight")).intValue();
@@ -75,10 +137,9 @@ public class Player extends Component {
         if(this.Obj.name == "Player2"){
             itemList = (JSONArray) PlayData.get("ActiveItem2");
         }
-
-
         if (itemList.size() < 3) {
             itemList.add(item);
+            gm.Sm.playSound(ItemGetProp);
         }
     }
 
@@ -109,18 +170,19 @@ public class Player extends Component {
     public void Attacked() {
         if (StateIndex == 0) {
             StateIndex = 1;
+            int life;
             if (Obj.name == "Player1") {
-                int life = ((Number) PlayData.get("Life")).intValue() - 1;
+                life = ((Number) PlayData.get("Life")).intValue() - 1;
                 PlayData.put("Life", life);
-                if (life == 0) {
-                    EventSystem.Destroy(this.Obj);
-                }
             } else {
-                int life = ((Number) PlayData.get("Life2")).intValue() - 1;
+                life = ((Number) PlayData.get("Life2")).intValue() - 1;
                 PlayData.put("Life2", life);
-                if (life == 0) {
-                    EventSystem.Destroy(this.Obj);
-                }
+            }
+            if (life == 0) {
+                gm.Sm.playSound(DestroyedProp2);
+                EventSystem.Destroy(this.Obj);
+            }else{
+                gm.Sm.playSound(DestroyedProp);
             }
         }
         Delay = 2;
@@ -136,32 +198,7 @@ public class Player extends Component {
         return basicspeed;
     }
 
-    public void Awake() {
-        gp = (GamePage) gm.CustomInstance;
-        String ship = null;
-        JSONObject data = gm.GlobalData.get("Setting");
-        PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
-        if (this.Obj.name == "Player1") {
-            ship = (String) gm.GlobalData.get("LocalData").get("P1_Ship");
-            JSONArray keySettings = (JSONArray) data.get("KeySetting_1p");
-            for (int i = 0; i < KeyDefine.KeyFunc.length; i++) {
-                KeyFunc.put(KeyDefine.KeyFunc[i], ((Number) keySettings.get(i)).intValue());
-            }
-        } else if (this.Obj.name == "Player2") {
-            ship = (String) gm.GlobalData.get("LocalData").get("P2_Ship");
-            JSONArray keySettings = (JSONArray) data.get("KeySetting_2p");
-            for (int i = 0; i < KeyDefine.KeyFunc.length; i++) {
-                KeyFunc.put(KeyDefine.KeyFunc[i], ((Number) keySettings.get(i)).intValue());
-            }
-        }
-        if (ship == ShipDefine.Ship[0]) {
-            img.put(State[0], gp.ImgRes.get("Reimu"));
-            img.put(State[1], gp.ImgRes.get("Marisa"));
-        } else if (ship == ShipDefine.Ship[1]) {
-            img.put(State[0], gp.ImgRes.get("Marisa"));
-            img.put(State[1], gp.ImgRes.get("Reimu"));
-        }
-    }
+    
 
     public void Start() {
         Shotdelay = 0;
@@ -191,19 +228,26 @@ public class Player extends Component {
         int size = itemList.size();
         if (size > 0) {
             int item = ((Number) itemList.get(size - 1)).intValue();
+            if(ActiveItem[item]== true){
+                return;
+            }
             itemList.remove(size - 1);
             switch (ItemDefine.ActiveItem[item]) {
                 case "Ghost":
                     activeItem(0, 7);
+                    gm.Sm.playSound(InvicibleProp);
                     break;
                 case "Auxiliary":
                     activeItem(1, 5);
+                    gm.Sm.playSound(SubshipProp);
                     break;
                 case "Bomb":
                     ActiveItem[2] = true;
+                    gm.Sm.playSound(BombEquipProp);
                     break;
                 case "SpeedUp":
                     activeItem(3, 7);
+                    gm.Sm.playSound(SpeedUpProp);
                     break;
                 default:
                     break;
@@ -255,17 +299,36 @@ public class Player extends Component {
                 } else {
                     MakeBullet(new Point2D.Float(PosX, PosY), new Point2D.Float(0, -1.0f),
                             (float) PlayData.get("ShotSpeed"));
+                    if(this.Obj.name == "Player1"){
+                        gm.Sm.playSound(ShootSoundProp);
+
+                    }else{
+                        gm.Sm.playSound(ShootSoundProp3);
+                    }
+
                     if (ActiveItem[1]) {
                         MakeBullet(new Point2D.Float(PosX + 50, PosY), new Point2D.Float(0, -1.0f),
                                 (float) PlayData.get("ShotSpeed"));
                         MakeBullet(new Point2D.Float(PosX - 50, PosY), new Point2D.Float(0, -1.0f),
                                 (float) PlayData.get("ShotSpeed"));
+                        if(this.Obj.name == "Player1"){
+                            gm.Sm.playSound(ShootSoundProp2);
+
+                        }else{
+                            gm.Sm.playSound(ShootSoundProp4);
+                        }
                     }
                     if (ActiveItem[2]) {
                         ActiveItem[2] = false;
                     }
                     if (gp.HardMode) {
                         SetBullet(GetBullet() - 1);
+                    }
+
+                    if (Obj.name == "Player1") {
+                        PlayData.put("ShotCount",((Number) gp.PlayData.get("ShotCount")).intValue()+1);
+                    }else{
+                        PlayData.put("ShotCount",((Number) gp.PlayData.get("ShotCount2")).intValue()+1);
                     }
                     Shotdelay = ((Number) PlayData.get("ShotDelay")).floatValue();
 
@@ -331,9 +394,9 @@ public class Player extends Component {
 
     public void MakeBullet(Point2D pos, Point2D dir, float ShotSpeed) {
         if (ActiveItem[2]) {
-            Bomb.MakeBomb(pos, dir, ShotSpeed, "PBullet");
+            Bomb.MakeBomb(pos, dir, ShotSpeed, "PBullet",Obj.name);
         } else {
-            Bullet.MakeBullet(pos, dir, ShotSpeed, "PBullet");
+            Bullet.MakeBullet(pos, dir, ShotSpeed, "PBullet",Obj.name);
         }
     }
 

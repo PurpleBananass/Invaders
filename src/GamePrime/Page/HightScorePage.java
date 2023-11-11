@@ -1,22 +1,21 @@
 package GamePrime.Page;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
-import GamePrime.Score;
+import EnginePrime.SoundManager;
+import GamePrime.ETC.Score;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
-
 import java.awt.FontMetrics;
-
 public class HightScorePage implements GManager {
 
     public static final int MaxNum = 10;
@@ -26,27 +25,36 @@ public class HightScorePage implements GManager {
     GameManager gm = GameManager.getInstance();
 
     List<Score> scoreList[] = new List[] { new ArrayList<>(), new ArrayList<>() };
+    SoundManager.PlayProp MenuProp;
 
     public void Initialize() {
+        MenuProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
+
+        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_HighScore.wav", "BGM");
+        BgmProp.count = -1;
+        gm.Sm.stopClip("BGM",1);
+        gm.Sm.playSound(BgmProp);
 
         FileManager fm = new FileManager();
         JSONObject database = fm.LoadJsonObject("DataBase");
-        JSONObject scores1 = (JSONObject) ((JSONObject) database.get("Scores")).get("Scores_1p");
-        JSONObject scores2 = (JSONObject) ((JSONObject) database.get("Scores")).get("Scores_2p");
+        JSONArray scores1 = (JSONArray)((JSONObject) database.get("Scores")).get("Scores_1p");
+        JSONArray scores2 = (JSONArray)((JSONObject) database.get("Scores")).get("Scores_2p");
 
-        for (Iterator iterator = scores1.keySet().iterator(); iterator.hasNext();) {
-            String key = (String) iterator.next();
-            scoreList[0].add(new Score(key, ((Number) scores1.get(key)).intValue()));
+        for (int i = 0; i < scores1.size(); i++) {
+            scoreList[0].add(Score.toScore((JSONObject)scores1.get(i)));
         }
         Collections.sort(scoreList[0], Collections.reverseOrder());
 
-        for (Iterator iterator = scores2.keySet().iterator(); iterator.hasNext();) {
-            String key = (String) iterator.next();
-            scoreList[1].add(new Score(key, ((Number) scores2.get(key)).intValue()));
+        for (int i = 0; i < scores2.size(); i++) {
+            scoreList[1].add(Score.toScore((JSONObject)scores2.get(i)));
         }
         Collections.sort(scoreList[1], Collections.reverseOrder());
     };
-
+    public void Exit(){
+        gm.Sm.StopClip("BGM");
+    };
     public void PreUpdate() {
         Draw();
 
@@ -54,6 +62,7 @@ public class HightScorePage implements GManager {
 
     public void LateUpdate() {
         if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
+            gm.Sm.playSound(MenuProp);
             gm.SetInstance(new MenuPage());
         }
 

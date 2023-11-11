@@ -16,9 +16,8 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.Image;
-import GamePrime.KeyDefine;
-import GamePrime.ShipDefine;
+import GamePrime.Define.KeyDefine;
+import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
 
 import java.awt.geom.Point2D;

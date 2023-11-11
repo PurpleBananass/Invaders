@@ -1,4 +1,4 @@
-package GamePrime;
+package GamePrime.UI;
 import java.awt.event.KeyEvent;
 
 import org.json.simple.JSONArray;
@@ -19,8 +19,8 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.KeyDefine;
-import GamePrime.ShipDefine;
+import GamePrime.Define.KeyDefine;
+import GamePrime.Ship.ShipDefine;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -31,16 +31,32 @@ import java.awt.event.KeyEvent;
 public class PrepareUI  extends Component{
     GameManager gm = GameManager.getInstance();
     double elapsedSeconds;
-
+    int Seconds;
     JSONObject PlayData; 
-
+    SoundManager.PlayProp levelProp;
+    SoundManager.PlayProp levelProp2;
     public void Start(){
-        elapsedSeconds = 6;
+        levelProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_LevelStart_b.wav", null);
+        levelProp2 = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_LevelStart_a.wav", null);
+
+        elapsedSeconds = 4;
+        Seconds = 6;
         PlayData = (JSONObject)gm.GlobalData.get("LocalData").get("PlayData");
         SetRenderPrior(2);
     }
     public void Update(){
         elapsedSeconds -= gm.Et.GetElapsedSeconds();
+        if((int)elapsedSeconds != Seconds && (int)elapsedSeconds<=4){
+            if((int)elapsedSeconds>=1){
+                gm.Sm.playSound(levelProp);
+            }else{
+                gm.Sm.playSound(levelProp2);
+            }
+            Seconds = (int)elapsedSeconds;
+        }
+
         if(elapsedSeconds<0){
             elapsedSeconds = 0;
             PlayData.put("ScreenIndex", 0);

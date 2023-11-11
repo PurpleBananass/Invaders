@@ -19,9 +19,8 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.Image;
-import GamePrime.KeyDefine;
-import GamePrime.ShipDefine;
+import GamePrime.Define.KeyDefine;
+import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
 
 import java.awt.geom.Point2D;
@@ -40,6 +39,8 @@ public class Bullet extends Component{
     GamePage gp;
     Image img;
     float ShotSpeed;
+    String MadeBY;
+
 
     public int size = 30;
 
@@ -47,6 +48,7 @@ public class Bullet extends Component{
         dir = (Point2D)m.obj.get("dir");
         pos = (Point2D)m.obj.get("pos");
         ShotSpeed = ((Number)m.obj.get("ShotSpeed")).intValue();
+        MadeBY = (String)m.obj.get("Madeby");
     }
 
     public void Awake(){
@@ -69,7 +71,7 @@ public class Bullet extends Component{
         img.RenderFixedHeight((int)Math.round(pos.getX()), (int)Math.round(pos.getY()), size);
     
     }
-    public static void MakeBullet(Point2D pos,Point2D dir,float ShotSpeed,String tag){
+    public static void MakeBullet(Point2D pos,Point2D dir,float ShotSpeed,String tag,String madeby){
         Entity bullet = EventSystem.Initiate();
         bullet.tag = tag;
         JSONObject Custommessage = new JSONObject();
@@ -77,6 +79,7 @@ public class Bullet extends Component{
         Custommessage.put("dir", dir);
         Custommessage.put("pos", pos);
         Custommessage.put("ShotSpeed",ShotSpeed);
+        Custommessage.put("Madeby",madeby);
         Message m = new Message(bullet, MessageType.Custom, Custommessage);
         Bullet b =  bullet.AddComponent(Bullet.class);
         b.SetVector(m);

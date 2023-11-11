@@ -12,4 +12,7 @@ public interface GManager {
     public void PreRender();
     
     public void LateRender();
+
+    public void Exit();
+
 } 

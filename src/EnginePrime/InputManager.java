@@ -21,7 +21,7 @@ public final class InputManager implements GManager,KeyListener {
 	private static KeyState[] state;
     private static KeyState[] newstate;
 
-
+    public void Exit(){};
     public int GetAnyKeyDown(){
         for (int i = 0; i < NUM_KEYS; i++) {
             if(state[i] == KeyState.Down){

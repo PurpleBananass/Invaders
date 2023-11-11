@@ -51,7 +51,6 @@ public class FileManager {
     public String LoadString(String name) {
         String path = "res" + File.separator + name;
         StringBuilder output = new StringBuilder(); 
-
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path, Charset.forName("UTF-8")))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {

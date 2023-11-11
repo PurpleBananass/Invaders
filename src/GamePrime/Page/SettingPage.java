@@ -10,8 +10,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import EnginePrime.InputManager;
-import GamePrime.KeyDefine;
+import GamePrime.Define.KeyDefine;
 
 import java.awt.Graphics;
 import java.awt.Color;
@@ -77,6 +76,7 @@ public class SettingPage implements GManager {
                     }
                     if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                         Itemselected = false;
+                        gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 case 1:
@@ -88,6 +88,7 @@ public class SettingPage implements GManager {
                     }
                     if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                         Itemselected = false;
+                        gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 case 2:
@@ -102,6 +103,7 @@ public class SettingPage implements GManager {
                     }
                     if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                         Keyselected = true;
+                        gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 case 3:
@@ -116,6 +118,7 @@ public class SettingPage implements GManager {
                     }
                     if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                         Keyselected = true;
+                        gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 default:
@@ -130,6 +133,7 @@ public class SettingPage implements GManager {
             }
             if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                 Itemselected = true;
+                gm.Sm.playSound(menuSoundProp);
             }
         }
         Draw();
@@ -164,7 +168,7 @@ public class SettingPage implements GManager {
         drawSetting();
         drawSettingDetail();
     }
-
+    public void Exit(){};
     private void drawSettingDetail() {
         Graphics graphic = gm.Rm.GetCurrentGraphic();
         FontMetrics matrix = gm.Rm.SetFont("Regular");

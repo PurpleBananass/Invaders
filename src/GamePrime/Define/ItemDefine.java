@@ -1,4 +1,4 @@
-package GamePrime;
+package GamePrime.Define;
 
 public class ItemDefine {
     public static class IntPair{

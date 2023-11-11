@@ -25,18 +25,19 @@ public class MenuPage implements GManager {
     private SoundManager.PlayProp menuSoundProp;
     private SoundManager.PlayProp MainBgmProp;
 
+    public void Exit(){
+
+    };
+
 
     public void Initialize(){
         PageIndex = MinPage;
         menuSoundProp = gm.Sm.new PlayProp(
                 "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
         MainBgmProp = gm.Sm.new PlayProp(
-                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Main_a.wav", null);
+                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Main_a.wav", "BGM");
         MainBgmProp.count = -1;
-        
-
         JSONObject setting = gm.GlobalData.get("Setting");
-
         float volume = ((Number)setting.get("Volume")).floatValue();
         boolean ismute = (boolean)setting.get("IsMute");
         gm.Sm.setMasterVolume((float)volume);
@@ -51,6 +52,8 @@ public class MenuPage implements GManager {
             if(PageIndex > MaxPage){
                 PageIndex = MinPage;
             }
+            
+            gm.Sm.playSound(menuSoundProp);
 
 
         }
@@ -59,14 +62,14 @@ public class MenuPage implements GManager {
             if(PageIndex < MinPage){
                 PageIndex = MaxPage;
             }
+            
+            gm.Sm.playSound(menuSoundProp);
         }
-
         Draw();
     };
 
     public void LateUpdate(){
         if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
-            gm.Sm.playSound(menuSoundProp);
             switch (PageIndex) {
                 case 0:
                     gm.SetInstance(new SelectPage());

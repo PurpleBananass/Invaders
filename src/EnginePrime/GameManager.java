@@ -24,7 +24,7 @@ public final class GameManager implements GManager {
 
     private GameManager() {
     };
-
+    public void Exit(){};
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
@@ -48,6 +48,10 @@ public final class GameManager implements GManager {
     }
 
     public void SetInstance(GManager inst) {
+        if(CustomInstance!= null){
+            CustomInstance.Exit();
+        }
+
         CustomInstance = inst;
         if (CustomInstance != null) {
             InstanceChanged = true;

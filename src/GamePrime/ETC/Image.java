@@ -1,4 +1,4 @@
-package GamePrime;
+package GamePrime.ETC;
 import java.awt.image.BufferedImage;
 import EnginePrime.GameManager;
 import java.awt.Graphics2D;

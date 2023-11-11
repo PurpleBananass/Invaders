@@ -68,7 +68,7 @@ public final class RenderManager implements GManager{
     public static Graphics GetCurrentGraphic(){
         return graphics[((FrontBuffer) ? 1 : 0)];
     };
-
+    public void Exit(){};
     public void Render(Frame f){
 
         f.getGraphics().drawImage(GetCurrentBuffer(),0,0, f);

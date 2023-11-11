@@ -2,43 +2,47 @@ package GamePrime.Page;
 
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
-import EnginePrime.Core;
-import EnginePrime.Entity;
-import EnginePrime.EventSystem;
 import EnginePrime.FileManager;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import EnginePrime.SoundManager;
-import GamePrime.Image;
-import GamePrime.KeyDefine;
-import GamePrime.PrepareUI;
-import GamePrime.Score;
-import GamePrime.Ship.Bullet;
+import GamePrime.ETC.Score;
 import GamePrime.Ship.EnemyController;
-import GamePrime.Ship.Player;
-import java.util.HashMap;
-import java.util.Map;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
-import org.json.simple.JSONObject;
+
 import org.json.simple.JSONArray;
-import java.awt.image.BufferedImage;
+import org.json.simple.JSONObject;
 public class EndPage implements GManager{
     int SelectIndex;
     GameManager gm = GameManager.getInstance();
     JSONObject PlayData;
-
+    SoundManager.PlayProp menuSoundProp;
     public void Initialize(){
         SelectIndex = 0;
         PlayData =  (JSONObject)gm.GlobalData.get("LocalData").get("PlayData");
+        menuSoundProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
+
+        if(!(boolean)PlayData.get("LevelClear")){
+           SoundManager.PlayProp GameOverSoundProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_gameover.wav", "BGM");
+            GameOverSoundProp.count = -1;
+            gm.Sm.stopClip("BGM",1);
+            gm.Sm.playSound(GameOverSoundProp);
+            gm.Sm.playSound( gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_gameover.wav",null));
+        }else{
+             gm.Sm.playSound(gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_LevelClear.wav", null));
+        }
+
+
     };
 
     public void PreUpdate(){
@@ -51,7 +55,7 @@ public class EndPage implements GManager{
         }
         if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)){
             int level = ((Number) PlayData.get("Level")).intValue();
-            if(level < 3 && SelectIndex == 0 &&(boolean)PlayData.get("LevelClear")){
+            if(level < EnemyController.MaxStageCount && SelectIndex == 0 &&(boolean)PlayData.get("LevelClear")){
                 PlayData.put("Level",level+1);
                 gm.SetInstance(new GamePage());
                 return;
@@ -71,6 +75,8 @@ public class EndPage implements GManager{
             SaveData.put(name, Userdata);
         }
         Userdata.put("StoreItem",GameManager.getInstance().GlobalData.get("LocalData").get("StoreItem"));
+        AchievementPage.checkAchievements();
+        Userdata.put("Achievement", (JSONObject)GameManager.getInstance().GlobalData.get("LocalData").get("Achievement"));
         fm.SaveString("DataBase", SaveData.toJSONString(), true);
         if (((Number) GameManager.getInstance().GlobalData.get("LocalData").get("PlayMode")).intValue()==1){
             SaveScore("Scores_2p");
@@ -83,11 +89,12 @@ public class EndPage implements GManager{
         FileManager fm = new FileManager();
         JSONObject database = fm.LoadJsonObject("DataBase");
         JSONObject Scoreobj = (JSONObject) database.get("Scores");
-        JSONObject scores = (JSONObject)Scoreobj.get(scoreAttr);
-        for (Iterator iterator = scores.keySet().iterator(); iterator.hasNext();) {
-            String key = (String) iterator.next();
-            scoreList.add(new Score(key, ((Number) scores.get(key)).intValue()));
+        JSONArray scores = (JSONArray)Scoreobj.get(scoreAttr);
+
+        for (int i = 0; i < scores.size(); i++) {
+            scoreList.add(Score.toScore((JSONObject)scores.get(i)));
         }
+
         JSONObject PlayData = (JSONObject) GameManager.getInstance().GlobalData.get("LocalData").get("PlayData");
         int point = ((Number) PlayData.get("Point")).intValue();
         scoreList.add(new Score((String) GameManager.getInstance().GlobalData.get("LocalData").get("Player"), point));
@@ -95,10 +102,10 @@ public class EndPage implements GManager{
         if (scoreList.size() > 10) {
             scoreList.remove(scoreList.size() - 1);
         }
-        scores = new JSONObject();
+        scores = new JSONArray();
         Scoreobj.put(scoreAttr,scores);
         for (Score s : scoreList) {
-            scores.put(s.name, s.value);
+            scores.add(s.toJSON());
         }
         fm.SaveString("DataBase", database.toJSONString(), true);
     };
@@ -151,7 +158,7 @@ public class EndPage implements GManager{
         if(level < 3 && (boolean)PlayData.get("LevelClear")){
             drawCenteredRegularString(continueString, gm.frame.getHeight() / 4 * 3);
         }
-		if (SelectIndex == 1 || !(boolean)PlayData.get("LevelClear")|| level==3 ){
+		if (SelectIndex == 1 || !(boolean)PlayData.get("LevelClear")|| level== EnemyController.MaxStageCount ){
 			grpahics.setColor(Color.GREEN);
         }else{
 			grpahics.setColor(Color.WHITE);
@@ -159,7 +166,7 @@ public class EndPage implements GManager{
         drawCenteredRegularString(exitString,gm.frame.getHeight() / 4 * 3 + fontmatrix.getHeight() * 2);
     }
 
-
+    public void Exit(){};
 	public void drawHorizontalLine(final int positionY, Color color) {
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
 		grpahics.setColor(color);

@@ -11,7 +11,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.ShipDefine;
+import GamePrime.Ship.ShipDefine;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -84,7 +84,7 @@ public class SkinSelectPage implements GManager {
             gm.SetInstance(new GamePage());
         }
     };
-
+    public void Exit(){};
     public void LateUpdate() {
 
         Draw();

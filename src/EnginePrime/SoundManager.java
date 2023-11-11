@@ -66,7 +66,7 @@ public class SoundManager  implements GManager{
 
     public void LateUpdate(){};
 
-
+    public void Exit(){};
 
     public static boolean IsMute(){
         return IsMute;
@@ -109,6 +109,8 @@ public class SoundManager  implements GManager{
             Clip clip = clips.get(prop.Clipname);
             if (clip == null) {
                 clip = NewClip(prop);
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(prop.FilePath));
+                clip.open(audioIn);
             }
             SetVolume(clip,master);
             clip.setMicrosecondPosition(prop.MicroSecPos);
@@ -128,15 +130,13 @@ public class SoundManager  implements GManager{
                 if (event.getType() == LineEvent.Type.STOP) {
                     if (clip.getMicrosecondPosition() == clip.getMicrosecondLength()) {
                         clips.remove(clipname);
-                        clip.close();
+                        CloseClip(clip);
                     }
                 }
             });
             clips.put(clipname, clip);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(prop.FilePath));
-            clip.open(audioIn);
             return clip;
-        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+        } catch (LineUnavailableException e) {
             e.printStackTrace();
         }
         return null;
@@ -144,18 +144,39 @@ public class SoundManager  implements GManager{
 
     public static void PauseClip(String clipName) {
         Clip clip = clips.get(clipName);
+        if(clip== null){
+            return;
+        }
         clip.stop();
     }
+
+    public static void StopAll(){
+        for (String key : clips.keySet()) {
+            Clip clip = clips.get(key);
+            CloseClip(clip);
+        }
+        clips.clear();
+    }
+
+    static void CloseClip(Clip clip){
+        new Thread(new Runnable(){
+            public void run() {
+                clip.close();
+            }
+        }).start();
+    }
+
+
     public static void StopClip(String clipName) {
         Clip clip = clips.get(clipName);
+        if(clip== null){
+            return;
+        }
         clips.remove(clipName);
-        clip.close();
+        CloseClip(clip);
     }
     public static void stopClip(String clipName, float fout) {
-        fadeOut(clipName, fout, new Runnable() {
-            public void run() {
-                StopClip(clipName);
-            }});
+        fadeOut(clipName, fout);
     }
 
 
@@ -176,8 +197,12 @@ public class SoundManager  implements GManager{
         }
     }
 
-    private static void fadeOut(String name, float t, Runnable callback) {
+    private static void fadeOut(String name, float t) {
         Clip clip = clips.get(name);
+        if(clip==null){
+            return;
+        }
+        clips.remove(name);
         new Thread(new Runnable(){
             public void run() {
                 double elapsed = 0;
@@ -186,9 +211,7 @@ public class SoundManager  implements GManager{
                     elapsed = elapsed > t ? t : elapsed;
                     SetVolume(clip,(float)(master +(minimum - master )*elapsed/t));
                 }
-                if (callback != null) {
-                    callback.run();
-                }
+                CloseClip(clip);
             }
         }).start();
     }

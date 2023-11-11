@@ -24,6 +24,14 @@ public class SelectPage implements GManager {
     SoundManager.PlayProp menuSoundProp;
 
     public void Initialize() {
+
+        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp(
+                "res" + File.separator + "Sound" + File.separator + "BGM" + File.separator + "B_Main_c.wav", "BGM");
+        BgmProp.count = -1;
+        gm.Sm.stopClip("BGM", 1);
+        gm.Sm.playSound(BgmProp);
+
+
         PlayMode = 0;
         HardMode = false;
         if(gm.GlobalData.get("LocalData").get("HardMode") !=null ){
@@ -35,7 +43,7 @@ public class SelectPage implements GManager {
         menuSoundProp = gm.Sm.new PlayProp(
                 "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
     }
-
+    public void Exit(){};
     public void PreUpdate() {
         if (gm.Im.isKeyDown(KeyEvent.VK_UP) || gm.Im.isKeyDown(KeyEvent.VK_DOWN)) {
             SelectIndex = SelectIndex == 1 ? 0 : 1;

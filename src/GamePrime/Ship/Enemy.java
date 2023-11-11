@@ -22,9 +22,8 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.Image;
-import GamePrime.KeyDefine;
-import GamePrime.ShipDefine;
+import GamePrime.Define.KeyDefine;
+import GamePrime.ETC.Image;
 import GamePrime.Page.GamePage;
 import GamePrime.Ship.EnemyController.EnemyType;
 import java.awt.AlphaComposite;
@@ -48,6 +47,7 @@ public class Enemy extends Component{
         GamePage gp = (GamePage)gm.CustomInstance;
         int item = -1;
         double elapsed;
+        SoundManager.PlayProp ShootSoundProp;
         public float ImgGetWidth(){
 
             return IdleImg.GetWidthFixHeight(((Number)gp.PlayData.get("ImgHeight")).intValue());
@@ -70,6 +70,8 @@ public class Enemy extends Component{
         public void Awake(){
             this.CustomEvent.put("SetVector", this::SetVector);
             this.CustomEvent.put("SetInfo", this::SetInfo); 
+            ShootSoundProp = gm.Sm.new PlayProp(
+                    "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_Enemy_Shoot.wav", null);
         }
 
         public void Start(){
@@ -91,6 +93,7 @@ public class Enemy extends Component{
                 Message m = new Message(this.Obj, MessageType.Custom, Custommessage);
                 b.SetVector(m);
                 curdelay = Shotdelay;
+                gm.Sm.playSound(ShootSoundProp);
             }
         }
 
