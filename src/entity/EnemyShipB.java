@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class EnemyShipB extends EnemyShip {
     /** HP의 배율 */
-    private final double HPPOWER = .1;
+    private final double HPPOWER = .4;
     /** 총알의 속도 배율 */
     private final double BULLETSPEEDPOWER = 1;
     /** 슈팅 쿨다운 배율 */
