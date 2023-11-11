@@ -74,6 +74,14 @@ public class EndPage implements GManager{
             Userdata = new JSONObject();
             SaveData.put(name, Userdata);
         }
+        JSONObject PlayData = (JSONObject) GameManager.getInstance().GlobalData.get("LocalData").get("PlayData");
+        float point = ((Number) PlayData.get("Point")).floatValue();
+        point = point/100;
+        if(point>0){
+            int money = ((Number)Userdata.get("Money")).intValue()+(int)point;
+            GameManager.getInstance().GlobalData.get("LocalData").put("Money",money);
+            Userdata.put("Money", money);
+        }
         Userdata.put("StoreItem",GameManager.getInstance().GlobalData.get("LocalData").get("StoreItem"));
         AchievementPage.checkAchievements();
         Userdata.put("Achievement", (JSONObject)GameManager.getInstance().GlobalData.get("LocalData").get("Achievement"));

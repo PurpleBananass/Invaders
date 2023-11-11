@@ -1,33 +1,13 @@
 package GamePrime.UI;
-import java.awt.event.KeyEvent;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.awt.Graphics;
 import EnginePrime.Component;
-import EnginePrime.EngineTimer;
 import EnginePrime.EventSystem;
 import EnginePrime.GameManager;
-import EnginePrime.InputManager;
-import EnginePrime.RenderManager;
-
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import EnginePrime.FileManager;
-import EnginePrime.GManager;
-import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.Define.KeyDefine;
-import GamePrime.Ship.ShipDefine;
-
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 public class PrepareUI  extends Component{
     GameManager gm = GameManager.getInstance();
     double elapsedSeconds;
@@ -41,8 +21,8 @@ public class PrepareUI  extends Component{
         levelProp2 = gm.Sm.new PlayProp(
                 "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_LevelStart_a.wav", null);
 
-        elapsedSeconds = 4;
-        Seconds = 6;
+        elapsedSeconds = 6;
+        Seconds = 4;
         PlayData = (JSONObject)gm.GlobalData.get("LocalData").get("PlayData");
         SetRenderPrior(2);
     }
