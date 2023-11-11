@@ -10,5 +10,5 @@ public class ItemDefine {
         }
     }
     public static IntPair[] StoreItem = { new IntPair("BonusLife",15), new IntPair("MoveSpeed",10), new IntPair("ShotSpeed",20)};
-    public static String[] ActiveItem = { "Ghost", "Auxiliary", "Bomb"};
+    public static String[] ActiveItem = { "Ghost", "Auxiliary", "Bomb","SpeedUp"};
 }

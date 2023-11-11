@@ -155,10 +155,15 @@ public class EnemyController extends Component {
             enemynum -= 1;
             int point = ((Number) gp.PlayData.get("Point")).intValue() + e.Point;
             gp.PlayData.put("Point", point);
+        } 
+        if (bullet instanceof Bomb) {
+            Bomb bomb = (Bomb)bullet;
+            for(Point2D p : bomb.dirList){
+                Bullet.MakeBullet(bullet.pos, p, bullet.ShotSpeed, "PBullet");
+            }
         }
         EventSystem.Destroy(bullet.Obj);
     }
-
 
     private Enemy CreateEnemy(EnemyType type) {
         Enemy enemy = EventSystem.Initiate().AddComponent(Enemy.class, 2);

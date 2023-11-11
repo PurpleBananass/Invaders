@@ -61,7 +61,6 @@ public class Item extends Component{
     }
 
     public void Render(){
-        
         Image img = gp.ImgRes.get("Magic2");
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         img.RenderFixedHeight((int)Math.round(pos.getX()), (int)Math.round(pos.getY()), size);

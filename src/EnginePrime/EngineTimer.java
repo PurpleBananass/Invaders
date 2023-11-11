@@ -17,6 +17,22 @@ public class EngineTimer implements GManager{
     public static EngineTimer instance = null;
 
 
+
+    public static void ExecuteTimer(Runnable code, double time){
+        new Thread(new Runnable() {
+            public void run() {
+                long prev = System.nanoTime();
+                double elapsed = 0;
+                while (elapsed < time) {
+                    long cur = System.nanoTime() -prev;
+                    elapsed = cur / 1_000_000_000.0;
+                }
+                code.run();
+            }
+    }).start();
+
+    }
+
     public void Initialize(){
         Reset();
     };

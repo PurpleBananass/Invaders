@@ -11,6 +11,7 @@ import GamePrime.Image;
 import GamePrime.ItemDefine;
 import GamePrime.KeyDefine;
 import GamePrime.PrepareUI;
+import GamePrime.Ship.Bomb;
 import GamePrime.Ship.Bullet;
 import GamePrime.Ship.EnemyController;
 import GamePrime.Ship.Item;
@@ -37,21 +38,44 @@ public class GamePage implements GManager {
 
     public JSONObject PlayData;
     EnemyController enemycontrol;
-    Player player1;
+    public Player player1;
     Player player2;
 
-    public void Initialize() {
-        PlayMode = ((Number) gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
-        HardMode = (boolean) gm.GlobalData.get("LocalData").get("HardMode");
-        JSONObject ItemData = (JSONObject) gm.GlobalData.get("LocalData").get("Item");
-        PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
+
+    public void PlaySetting(){
         if (((Number) PlayData.get("Level")).intValue() == 1) {
             PlayData.put("Life", 3);
             PlayData.put("Level", 1);
             PlayData.put("ImgHeight", 70);
             PlayData.put("Point", 0);
-
+            PlayData.put("MoveSpeed", 200);
+            PlayData.put("ShotDelay", 1.5f);
+            PlayData.put("ShotSpeed", 400.0f);
+            JSONObject ItemData = (JSONObject) gm.GlobalData.get("LocalData").get("StoreItem");
+            if (ItemData != null) {
+                if ((boolean) ItemData.get("BonusLife")) {
+                    ItemData.put("BonusLife", false);
+                    PlayData.put("Life", ((Number) PlayData.get("Life")).intValue() + 1);
+                }
+                if ((boolean) ItemData.get("MoveSpeed")) {
+                    ItemData.put("MoveSpeed", false);
+                    PlayData.put("MoveSpeed", ((Number) PlayData.get("MoveSpeed")).intValue() + 200);
+                }
+                if ((boolean) ItemData.get("ShotSpeed")) {
+                    ItemData.put("ShotSpeed", false);
+                    PlayData.put("ShotDelay", ((Number) PlayData.get("ShotDelay")).floatValue() - 0.5f);
+                    PlayData.put("ShotSpeed", ((Number) PlayData.get("ShotSpeed")).floatValue() + 200.f);
+                }
+            }
         }
+        JSONArray Item =  new JSONArray();
+        PlayData.put("ActiveItem", Item);
+    }
+
+    public void Initialize() {
+        PlayMode = ((Number) gm.GlobalData.get("LocalData").get("PlayMode")).intValue();
+        HardMode = (boolean) gm.GlobalData.get("LocalData").get("HardMode");
+        PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
         FileManager fm = new FileManager();
         ImgRes.put("Magic", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Magic.png")));
         ImgRes.put("Magic2",
@@ -66,28 +90,9 @@ public class GamePage implements GManager {
         ImgRes.put("Flandre",
                 new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flandre.png")));
         ImgRes.put("Cirno", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Cirno.png")));
-        PlayData.put("MoveSpeed", 200);
-        PlayData.put("ShotDelay", 1.5f);
-        PlayData.put("ShotSpeed", 400.0f);
         PlayData.put("ScreenIndex", -1);
         PlayData.put("LevelClear",false);
-        if ((boolean) ItemData.get("BonusLife")) {
-            ItemData.put("BonusLife", false);
-            PlayData.put("Life", ((Number) PlayData.get("Life")).intValue() + 1);
-        }
-        if ((boolean) ItemData.get("MoveSpeed")) {
-            ItemData.put("MoveSpeed", false);
-            PlayData.put("MoveSpeed", ((Number) PlayData.get("MoveSpeed")).intValue() + 200);
-        }
-        if ((boolean) ItemData.get("ShotSpeed")) {
-            ItemData.put("ShotSpeed", false);
-            PlayData.put("ShotDelay", ((Number) PlayData.get("ShotDelay")).floatValue() - 0.5f);
-            PlayData.put("ShotSpeed", ((Number) PlayData.get("ShotSpeed")).floatValue() + 200.f);
-        }
-        for (String item : ItemDefine.ActiveItem){
-            PlayData.put(item,false);
-        }
-        PlayData.put("Item",  new JSONArray());
+        PlaySetting();
         EntityInitialize();
     };
 
@@ -119,6 +124,9 @@ public class GamePage implements GManager {
 
         for (Entity bulletEntity : EventSystem.FindTagEntities("PBullet")) {
             Bullet bullet = bulletEntity.GetComponent(Bullet.class);
+            if(bullet == null){
+                bullet = bulletEntity.GetComponent(Bomb.class);
+            }
             if (bullet.pos.getY() > gm.frame.getHeight() || bullet.pos.getY() < 0) {
                 EventSystem.Destroy(bullet.Obj);
             }
@@ -248,13 +256,36 @@ public class GamePage implements GManager {
     public void PreRender(){};
     public void LateRender(){
         Draw();
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
 		DrawScore();
+        drawItems();
 		drawLives(((Number) PlayData.get("Life")).intValue());
 		drawHorizontalLine( 40 - 1, Color.GREEN);
 		drawHorizontalLine(gm.frame.getHeight() - 1, Color.GREEN); //separation line for bottom hud
     };
     
+	public void drawItems() {
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+		grpahics.setColor(Color.WHITE);
+        JSONArray item = (JSONArray)PlayData.get("ActiveItem");
+		grpahics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
+        for (int i = 0; i < item.size(); i++) {
+            int index=  ((Number) item.get(i)).intValue();
+            if(ItemDefine.ActiveItem[index] == "Ghost"){
+                grpahics.setColor(Color.CYAN);
+            }else if(ItemDefine.ActiveItem[index] == "Auxiliary"){
+                grpahics.setColor(Color.green);
+            }else if(ItemDefine.ActiveItem[index] == "Bomb"){
+                grpahics.setColor(Color.red);
+            }else if(ItemDefine.ActiveItem[index] == "SpeedUp"){
+                grpahics.setColor(Color.YELLOW);
+            }
+            grpahics.drawRect(100 + 35 * i, gm.frame.getHeight()-10, 5, 5);
+        }
+	}
+
+
+
+
 	public void drawHorizontalLine(final int positionY, Color color) {
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
 		grpahics.setColor(color);

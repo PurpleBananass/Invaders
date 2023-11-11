@@ -50,7 +50,7 @@ public class StorePage implements GManager {
             String name = ItemDefine.StoreItem[SelectIndex].name;
             int price = ItemDefine.StoreItem[SelectIndex].value;
             int money = ((Number)gm.GlobalData.get("LocalData").get("Money")).intValue();
-            JSONObject item = (JSONObject)gm.GlobalData.get("LocalData").get("Item");
+            JSONObject item = (JSONObject)gm.GlobalData.get("LocalData").get("StoreItem");
             if(money >= price && !(boolean)item.get(name)){
                 money = money-price;
                 ((JSONObject)(gm.GlobalData.get("LocalData").get("Item"))).put(name,true);
@@ -69,9 +69,9 @@ public class StorePage implements GManager {
             JSONObject database = fm.LoadJsonObject("DataBase");
             JSONObject UserData = (JSONObject)database.get(gm.GlobalData.get("LocalData").get("Player"));
             int money = ((Number)gm.GlobalData.get("LocalData").get("Money")).intValue();
-            JSONObject item = (JSONObject)gm.GlobalData.get("LocalData").get("Item");
+            JSONObject item = (JSONObject)gm.GlobalData.get("LocalData").get("StoreItem");
             UserData.put("Money",money);
-            UserData.put("Item",item);
+            UserData.put("StoreItem",item);
             fm.SaveString("DataBase", database.toJSONString(), true);
             gm.SetInstance(new MenuPage());
         }
@@ -97,7 +97,7 @@ public class StorePage implements GManager {
 
             String name = ItemDefine.StoreItem[i].name;
             grpahics.setColor(Color.GRAY);
-            if((boolean)((JSONObject)(gm.GlobalData.get("LocalData").get("Item"))).get(name)){
+            if((boolean)((JSONObject)(gm.GlobalData.get("LocalData").get("StoreItem"))).get(name)){
                 grpahics.setColor(Color.GREEN);
             }
 

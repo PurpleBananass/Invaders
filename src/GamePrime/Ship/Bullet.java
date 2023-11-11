@@ -5,8 +5,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.awt.Graphics;
 import EnginePrime.Component;
+import EnginePrime.Entity;
+import EnginePrime.EventSystem;
 import EnginePrime.GameManager;
 import EnginePrime.Message;
+import EnginePrime.Message.MessageType;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -55,17 +58,27 @@ public class Bullet extends Component{
     public void Start(){
 
     }
-
     public void Update(){
         if (((Number) gp.PlayData.get("ScreenIndex")).intValue() != 0) {
             return;
         }
         pos = new Point2D.Double(pos.getX() + dir.getX()*ShotSpeed* gm.Et.GetElapsedSeconds(), pos.getY() + dir.getY()*ShotSpeed* gm.Et.GetElapsedSeconds());
     }
-
     public void Render(){
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         img.RenderFixedHeight((int)Math.round(pos.getX()), (int)Math.round(pos.getY()), size);
     
+    }
+    public static void MakeBullet(Point2D pos,Point2D dir,float ShotSpeed,String tag){
+        Entity bullet = EventSystem.Initiate();
+        bullet.tag = tag;
+        JSONObject Custommessage = new JSONObject();
+        Custommessage.put("Func", "SetVector");
+        Custommessage.put("dir", dir);
+        Custommessage.put("pos", pos);
+        Custommessage.put("ShotSpeed",ShotSpeed);
+        Message m = new Message(bullet, MessageType.Custom, Custommessage);
+        Bullet b =  bullet.AddComponent(Bullet.class);
+        b.SetVector(m);
     }
 }
