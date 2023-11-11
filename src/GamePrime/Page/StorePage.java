@@ -34,8 +34,6 @@ public class StorePage implements GManager {
         img.put("Sakuya", fm.GetImage("res" + File.separator + "Img" + File.separator + "Sakuya.png"));
         menuSoundProp = gm.Sm.new PlayProp(
             "res" + File.separator + "Sound" + File.separator + "SFX" + File.separator + "S_MenuClick.wav", null);
-
-
     };
 
     public void PreUpdate(){

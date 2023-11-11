@@ -7,6 +7,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
+import GamePrime.AchievDefine;
 import GamePrime.Image;
 import GamePrime.ItemDefine;
 import GamePrime.KeyDefine;
@@ -32,8 +33,8 @@ import java.awt.image.BufferedImage;
 public class GamePage implements GManager {
 
     GameManager gm = GameManager.getInstance();
-    int PlayMode;
-    boolean HardMode;
+    public int PlayMode;
+    public boolean HardMode;
     public Map<String, Image> ImgRes = new HashMap<>();
 
     public JSONObject PlayData;
@@ -41,10 +42,10 @@ public class GamePage implements GManager {
     public Player player1;
     Player player2;
 
-
-    public void PlaySetting(){
+    public void PlaySetting() {
         if (((Number) PlayData.get("Level")).intValue() == 1) {
             PlayData.put("Life", 3);
+            PlayData.put("Life2", 3);
             PlayData.put("Level", 1);
             PlayData.put("ImgHeight", 70);
             PlayData.put("Point", 0);
@@ -56,6 +57,7 @@ public class GamePage implements GManager {
                 if ((boolean) ItemData.get("BonusLife")) {
                     ItemData.put("BonusLife", false);
                     PlayData.put("Life", ((Number) PlayData.get("Life")).intValue() + 1);
+                    PlayData.put("Life2", ((Number) PlayData.get("Life2")).intValue() + 1);
                 }
                 if ((boolean) ItemData.get("MoveSpeed")) {
                     ItemData.put("MoveSpeed", false);
@@ -68,8 +70,16 @@ public class GamePage implements GManager {
                 }
             }
         }
-        JSONArray Item =  new JSONArray();
+        if (HardMode) {
+            PlayData.put("Magazine1", 5);
+            PlayData.put("Bullet1", 10);
+            PlayData.put("Magazine2", 5);
+            PlayData.put("Bullet2", 10);
+        }
+        JSONArray Item = new JSONArray();
         PlayData.put("ActiveItem", Item);
+        Item = new JSONArray();
+        PlayData.put("ActiveItem2", Item);
     }
 
     public void Initialize() {
@@ -91,7 +101,7 @@ public class GamePage implements GManager {
                 new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Flandre.png")));
         ImgRes.put("Cirno", new Image(fm.GetImage("res" + File.separator + "Img" + File.separator + "Cirno.png")));
         PlayData.put("ScreenIndex", -1);
-        PlayData.put("LevelClear",false);
+        PlayData.put("LevelClear", false);
         PlaySetting();
         EntityInitialize();
     };
@@ -121,10 +131,9 @@ public class GamePage implements GManager {
             }
         }
 
-
         for (Entity bulletEntity : EventSystem.FindTagEntities("PBullet")) {
             Bullet bullet = bulletEntity.GetComponent(Bullet.class);
-            if(bullet == null){
+            if (bullet == null) {
                 bullet = bulletEntity.GetComponent(Bomb.class);
             }
             if (bullet.pos.getY() > gm.frame.getHeight() || bullet.pos.getY() < 0) {
@@ -148,7 +157,7 @@ public class GamePage implements GManager {
         if (((Number) PlayData.get("ScreenIndex")).intValue() == 3) {
             EventSystem.DestroyAll();
             gm.SetInstance(new EndPage());
-        } else if(((Number) PlayData.get("ScreenIndex")).intValue() != -1 ){
+        } else if (((Number) PlayData.get("ScreenIndex")).intValue() != -1) {
             if (((Number) PlayData.get("ScreenIndex")).intValue() == 0) {
                 ProcCollision();
             }
@@ -167,13 +176,25 @@ public class GamePage implements GManager {
             } else if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
                 if (((Number) PlayData.get("ScreenIndex")).intValue() == 2) {
                     EventSystem.DestroyAll();
+                    EndPage.SavePlayData();
                     gm.SetInstance(new MenuPage());
                 }
             }
         }
     }
+
     public void LateUpdate() {
-        
+        int life = ((Number) PlayData.get("Life")).intValue();
+        int life2 = ((Number) PlayData.get("Life2")).intValue();
+        if(PlayMode == 1){
+            if(life==0 && life2 ==0){
+                PlayData.put("ScreenIndex",3);
+            }
+        }else{
+            if(life==0){
+                PlayData.put("ScreenIndex",3);
+            }
+        }
     };
 
     private void drawHorizontalLine(int y) {
@@ -253,58 +274,98 @@ public class GamePage implements GManager {
             drawHorizontalLine(gm.frame.getHeight() / 2 + gm.frame.getHeight() / 12);
         }
     }
-    public void PreRender(){};
-    public void LateRender(){
-        Draw();
-		DrawScore();
-        drawItems();
-		drawLives(((Number) PlayData.get("Life")).intValue());
-		drawHorizontalLine( 40 - 1, Color.GREEN);
-		drawHorizontalLine(gm.frame.getHeight() - 1, Color.GREEN); //separation line for bottom hud
+
+    public void PreRender() {
     };
-    
-	public void drawItems() {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-		grpahics.setColor(Color.WHITE);
-        JSONArray item = (JSONArray)PlayData.get("ActiveItem");
-		grpahics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
-        for (int i = 0; i < item.size(); i++) {
-            int index=  ((Number) item.get(i)).intValue();
-            if(ItemDefine.ActiveItem[index] == "Ghost"){
-                grpahics.setColor(Color.CYAN);
-            }else if(ItemDefine.ActiveItem[index] == "Auxiliary"){
-                grpahics.setColor(Color.green);
-            }else if(ItemDefine.ActiveItem[index] == "Bomb"){
-                grpahics.setColor(Color.red);
-            }else if(ItemDefine.ActiveItem[index] == "SpeedUp"){
-                grpahics.setColor(Color.YELLOW);
-            }
-            grpahics.drawRect(100 + 35 * i, gm.frame.getHeight()-10, 5, 5);
-        }
-	}
 
+    public void LateRender() {
+        Draw();
+        DrawScore();
+        drawItems();
 
+        drawAmmo();
+        drawLives();
+        drawHorizontalLine(40 - 1, Color.GREEN);
+        drawHorizontalLine(gm.frame.getHeight() - 1, Color.GREEN); // separation line for bottom hud
+    };
 
-
-	public void drawHorizontalLine(final int positionY, Color color) {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-		grpahics.setColor(color);
-		grpahics.drawLine(0, positionY, gm.frame.getWidth(), positionY);
-		grpahics.drawLine(0, positionY + 1, gm.frame.getWidth(),positionY + 1);
-	}
-
-    void drawLives(int life){
+    void drawAmmo() {
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         grpahics.setColor(Color.WHITE);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
-		grpahics.drawString(Integer.toString(life), 20, 25);
+        if (HardMode) {
+            int bullet = ((Number) PlayData.get("Bullet1")).intValue();
+            int magazine = ((Number) PlayData.get("Magazine1")).intValue();
+            grpahics.drawString("Ammo : ", 200, 0);
+            grpahics.drawString(bullet + "/" + magazine, 300, fontmatrix.getHeight());
+
+            if (PlayMode == 1) {
+                bullet = ((Number) PlayData.get("Bullet2")).intValue();
+                magazine = ((Number) PlayData.get("Magazine2")).intValue();
+                grpahics.drawString("Ammo : ", gm.frame.getWidth()/4-fontmatrix.stringWidth(bullet + "/" + magazine+"Ammo : "), 0);
+                grpahics.drawString(bullet + "/" + magazine, gm.frame.getWidth()/4, fontmatrix.getHeight());
+            }
+
+        }
     }
 
-    void DrawScore(){
+    void drawItems() {
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        grpahics.setColor(Color.WHITE);
+        JSONArray item = (JSONArray) PlayData.get("ActiveItem");
+        grpahics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
+        for (int i = 0; i < item.size(); i++) {
+            int index = ((Number) item.get(i)).intValue();
+            if (ItemDefine.ActiveItem[index] == "Ghost") {
+                grpahics.setColor(Color.CYAN);
+            } else if (ItemDefine.ActiveItem[index] == "Auxiliary") {
+                grpahics.setColor(Color.green);
+            } else if (ItemDefine.ActiveItem[index] == "Bomb") {
+                grpahics.setColor(Color.red);
+            } else if (ItemDefine.ActiveItem[index] == "SpeedUp") {
+                grpahics.setColor(Color.YELLOW);
+            }
+            grpahics.drawRect(100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
+        }
+
+        item = (JSONArray) PlayData.get("ActiveItem2");
+        grpahics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
+        for (int i = 0; i < item.size(); i++) {
+            int index = ((Number) item.get(i)).intValue();
+            if (ItemDefine.ActiveItem[index] == "Ghost") {
+                grpahics.setColor(Color.CYAN);
+            } else if (ItemDefine.ActiveItem[index] == "Auxiliary") {
+                grpahics.setColor(Color.green);
+            } else if (ItemDefine.ActiveItem[index] == "Bomb") {
+                grpahics.setColor(Color.red);
+            } else if (ItemDefine.ActiveItem[index] == "SpeedUp") {
+                grpahics.setColor(Color.YELLOW);
+            }
+            grpahics.drawRect(gm.frame.getWidth()/2 +100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
+        }
+    }
+
+    public void drawHorizontalLine(final int positionY, Color color) {
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        grpahics.setColor(color);
+        grpahics.drawLine(0, positionY, gm.frame.getWidth(), positionY);
+        grpahics.drawLine(0, positionY + 1, gm.frame.getWidth(), positionY + 1);
+    }
+
+    void drawLives() {
+
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         grpahics.setColor(Color.WHITE);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
-        String scoreString = String.format("%04d",((Number) PlayData.get("Point")).intValue());
-		grpahics.drawString(scoreString, gm.frame.getWidth() - 60, 25);
+        grpahics.drawString(Integer.toString(((Number) PlayData.get("Life")).intValue()), 20, 25);
+        grpahics.drawString(Integer.toString(((Number) PlayData.get("Life2")).intValue()), 50, 25);
+    }
+
+    void DrawScore() {
+        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        grpahics.setColor(Color.WHITE);
+        FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
+        String scoreString = String.format("%04d", ((Number) PlayData.get("Point")).intValue());
+        grpahics.drawString(scoreString, gm.frame.getWidth() - 60, 25);
     }
 }

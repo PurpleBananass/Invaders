@@ -50,78 +50,88 @@ public class Player extends Component {
     float Delay;
     boolean ActiveItem[];
 
-    public void CheckCollsion(Item item){
-        int height = ((Number)gp.PlayData.get("ImgHeight")).intValue();
-        double itemMinX = item.pos.getX() - item.size/2; 
-        double itemMaxX = item.pos.getX() + item.size/2; 
-        double itemMinY = item.pos.getY() - item.size/2; 
-        double itemMaxY = item.pos.getY() + item.size/2; 
-        
+    public void CheckCollsion(Item item) {
+        int height = ((Number) gp.PlayData.get("ImgHeight")).intValue();
+        double itemMinX = item.pos.getX() - item.size / 2;
+        double itemMaxX = item.pos.getX() + item.size / 2;
+        double itemMinY = item.pos.getY() - item.size / 2;
+        double itemMaxY = item.pos.getY() + item.size / 2;
+
         Image curimg = img.get(State[StateIndex]);
 
-        double PlayerMinX = PosX - curimg.GetWidthFixHeight(height) /2; 
-        double PlayerMaxX = PosX + curimg.GetWidthFixHeight(height)/2; 
-        double PlayerMinY = PosY - height/2; 
-        double PlayerMaxY = PosY + height/2; 
-        if ((PlayerMaxX >= itemMinX && PlayerMinX <= itemMaxX) && 
-            (PlayerMaxY >= itemMinY && PlayerMinY <= itemMaxY)) {
-                EventSystem.Destroy(item.Obj);                
-                AquiredItem(item.itemIndex);
-        } 
+        double PlayerMinX = PosX - curimg.GetWidthFixHeight(height) / 2;
+        double PlayerMaxX = PosX + curimg.GetWidthFixHeight(height) / 2;
+        double PlayerMinY = PosY - height / 2;
+        double PlayerMaxY = PosY + height / 2;
+        if ((PlayerMaxX >= itemMinX && PlayerMinX <= itemMaxX) &&
+                (PlayerMaxY >= itemMinY && PlayerMinY <= itemMaxY)) {
+            EventSystem.Destroy(item.Obj);
+            AquiredItem(item.itemIndex);
+        }
     }
 
-    void AquiredItem(int item){
-        JSONArray itemList = (JSONArray)PlayData.get("ActiveItem");
-        if(itemList.size()<3){
+    void AquiredItem(int item) {
+        JSONArray itemList = (JSONArray) PlayData.get("ActiveItem");
+        if(this.Obj.name == "Player2"){
+            itemList = (JSONArray) PlayData.get("ActiveItem2");
+        }
+
+
+        if (itemList.size() < 3) {
             itemList.add(item);
         }
     }
 
-
-    public void CheckCollsion(Bullet bullet){
-        if(ActiveItem[0]){
+    public void CheckCollsion(Bullet bullet) {
+        if (ActiveItem[0]) {
             return;
         }
 
-        int height = ((Number)gp.PlayData.get("ImgHeight")).intValue();
-        double bulletMinX = bullet.pos.getX() - bullet.size/2; 
-        double bulletMaxX = bullet.pos.getX() + bullet.size/2; 
-        double bulletMinY = bullet.pos.getY() - bullet.size/2; 
-        double bulletMaxY = bullet.pos.getY() + bullet.size/2; 
-        
+        int height = ((Number) gp.PlayData.get("ImgHeight")).intValue();
+        double bulletMinX = bullet.pos.getX() - bullet.size / 2;
+        double bulletMaxX = bullet.pos.getX() + bullet.size / 2;
+        double bulletMinY = bullet.pos.getY() - bullet.size / 2;
+        double bulletMaxY = bullet.pos.getY() + bullet.size / 2;
+
         Image curimg = img.get(State[StateIndex]);
 
-        double PlayerMinX = PosX - curimg.GetWidthFixHeight(height) /2; 
-        double PlayerMaxX = PosX + curimg.GetWidthFixHeight(height)/2; 
-        double PlayerMinY = PosY - height/2; 
-        double PlayerMaxY = PosY + height/2; 
-        if ((PlayerMaxX >= bulletMinX && PlayerMinX <= bulletMaxX) && 
-            (PlayerMaxY >= bulletMinY && PlayerMinY <= bulletMaxY)) {
-                EventSystem.Destroy(bullet.Obj);                
-                Attacked();
-        } 
-    }
-
-    public void Attacked(){
-        if(StateIndex == 0){
-            StateIndex = 1;
-            int life = ((Number) PlayData.get("Life")).intValue()-1;
-            Delay = 2;
-            int point = ((Number) PlayData.get("Point")).intValue()-30;
-            PlayData.put("Point", point);
-
-            PlayData.put("Life", life);
-            if(life == 0){
-                PlayData.put("ScreenIndex",3);
-            }
+        double PlayerMinX = PosX - curimg.GetWidthFixHeight(height) / 2;
+        double PlayerMaxX = PosX + curimg.GetWidthFixHeight(height) / 2;
+        double PlayerMinY = PosY - height / 2;
+        double PlayerMaxY = PosY + height / 2;
+        if ((PlayerMaxX >= bulletMinX && PlayerMinX <= bulletMaxX) &&
+                (PlayerMaxY >= bulletMinY && PlayerMinY <= bulletMaxY)) {
+            EventSystem.Destroy(bullet.Obj);
+            Attacked();
         }
     }
 
+    public void Attacked() {
+        if (StateIndex == 0) {
+            StateIndex = 1;
+            if (Obj.name == "Player1") {
+                int life = ((Number) PlayData.get("Life")).intValue() - 1;
+                PlayData.put("Life", life);
+                if (life == 0) {
+                    EventSystem.Destroy(this.Obj);
+                }
+            } else {
+                int life = ((Number) PlayData.get("Life2")).intValue() - 1;
+                PlayData.put("Life2", life);
+                if (life == 0) {
+                    EventSystem.Destroy(this.Obj);
+                }
+            }
+        }
+        Delay = 2;
+        int point = ((Number) PlayData.get("Point")).intValue() - 30;
+        PlayData.put("Point", point);
+    }
 
-    int GetMoveSpeed(){
-        int basicspeed =((Number) PlayData.get("MoveSpeed")).intValue();
-        if(ActiveItem[3]){
-            basicspeed +=100;
+    int GetMoveSpeed() {
+        int basicspeed = ((Number) PlayData.get("MoveSpeed")).intValue();
+        if (ActiveItem[3]) {
+            basicspeed += 100;
         }
         return basicspeed;
     }
@@ -156,17 +166,15 @@ public class Player extends Component {
     public void Start() {
         Shotdelay = 0;
         Delay = 0;
-        PosY =  gm.frame.getHeight() - ((Number)gp.PlayData.get("ImgHeight")).intValue()* 2;
+        PosY = gm.frame.getHeight() - ((Number) gp.PlayData.get("ImgHeight")).intValue() * 2;
         PosX = gm.frame.getWidth() / 2;
         ActiveItem = new boolean[ItemDefine.ActiveItem.length];
-        for(int i = 0 ; i<ItemDefine.ActiveItem.length; i++){
+        for (int i = 0; i < ItemDefine.ActiveItem.length; i++) {
             ActiveItem[i] = false;
         }
     };
 
-
-
-    void activeItem(int index,double time) {
+    void activeItem(int index, double time) {
         ActiveItem[index] = true;
         EngineTimer.ExecuteTimer(new Runnable() {
             public void run() {
@@ -175,25 +183,27 @@ public class Player extends Component {
         }, time);
     }
 
-
-    public void UseItem(){
-        JSONArray itemList = (JSONArray)PlayData.get("ActiveItem");
+    public void UseItem() {
+        JSONArray itemList = (JSONArray) PlayData.get("ActiveItem");
+        if (Obj.name == "Player2") {
+            itemList = (JSONArray) PlayData.get("ActiveItem2");
+        }
         int size = itemList.size();
-        if(size>0){
-            int item = ((Number)itemList.get(size-1)).intValue();
-            itemList.remove(size-1);
+        if (size > 0) {
+            int item = ((Number) itemList.get(size - 1)).intValue();
+            itemList.remove(size - 1);
             switch (ItemDefine.ActiveItem[item]) {
                 case "Ghost":
-                    activeItem(0,7);
+                    activeItem(0, 7);
                     break;
                 case "Auxiliary":
-                    activeItem(1,5);
+                    activeItem(1, 5);
                     break;
                 case "Bomb":
                     ActiveItem[2] = true;
                     break;
                 case "SpeedUp":
-                    activeItem(3,7);
+                    activeItem(3, 7);
                     break;
                 default:
                     break;
@@ -202,15 +212,10 @@ public class Player extends Component {
     }
 
     public void Update() {
-        ActiveItem[2] = true;
-
-
-
         if ((StateIndex == 1) || ((Number) PlayData.get("ScreenIndex")).intValue() != 0) {
-            if (StateIndex == 1 && ((Number) PlayData.get("ScreenIndex")).intValue() == 0){
-                Delay -=  gm.Et.GetElapsedSeconds();
-                if(Delay < 0 )
-                {
+            if (StateIndex == 1 && ((Number) PlayData.get("ScreenIndex")).intValue() == 0) {
+                Delay -= gm.Et.GetElapsedSeconds();
+                if (Delay < 0) {
                     StateIndex = 0;
                     Delay = 0;
                 }
@@ -221,10 +226,11 @@ public class Player extends Component {
             int movespeed = GetMoveSpeed();
             PosX += movespeed * gm.Et.GetElapsedSeconds();
             Image curimg = img.get(State[StateIndex]);
-            float max = PosX +curimg.GetHeightFixWidth(((Number)gp.PlayData.get("ImgHeight")).intValue()/2);
+            float max = PosX + curimg.GetHeightFixWidth(((Number) gp.PlayData.get("ImgHeight")).intValue() / 2);
 
-            if(max>gm.frame.getWidth()){
-                PosX = gm.frame.getWidth() - curimg.GetHeightFixWidth(((Number)gp.PlayData.get("ImgHeight")).intValue()/2);
+            if (max > gm.frame.getWidth()) {
+                PosX = gm.frame.getWidth()
+                        - curimg.GetHeightFixWidth(((Number) gp.PlayData.get("ImgHeight")).intValue() / 2);
             }
         }
 
@@ -232,9 +238,9 @@ public class Player extends Component {
             int movespeed = GetMoveSpeed();
             PosX -= movespeed * gm.Et.GetElapsedSeconds();
             Image curimg = img.get(State[StateIndex]);
-            float min = PosX -curimg.GetHeightFixWidth(((Number)gp.PlayData.get("ImgHeight")).intValue()/2);
-            if(min<0){
-                PosX = curimg.GetHeightFixWidth(((Number)gp.PlayData.get("ImgHeight")).intValue()/2);
+            float min = PosX - curimg.GetHeightFixWidth(((Number) gp.PlayData.get("ImgHeight")).intValue() / 2);
+            if (min < 0) {
+                PosX = curimg.GetHeightFixWidth(((Number) gp.PlayData.get("ImgHeight")).intValue() / 2);
             }
         }
 
@@ -244,15 +250,26 @@ public class Player extends Component {
 
         if (gm.Im.isKeyPressed(KeyFunc.get("ATTACK"))) {
             if (Shotdelay == 0) {
-                MakeBullet(new Point2D.Float(PosX, PosY), new Point2D.Float(0, -1.0f),(float)PlayData.get("ShotSpeed"));
-                if(ActiveItem[1]){
-                    MakeBullet(new Point2D.Float(PosX+50, PosY), new Point2D.Float(0, -1.0f), (float)PlayData.get("ShotSpeed"));
-                    MakeBullet(new Point2D.Float(PosX-50, PosY), new Point2D.Float(0, -1.0f),(float)PlayData.get("ShotSpeed"));
+                if (gp.HardMode && GetBullet() == 0) {
+                    // 못쏴요
+                } else {
+                    MakeBullet(new Point2D.Float(PosX, PosY), new Point2D.Float(0, -1.0f),
+                            (float) PlayData.get("ShotSpeed"));
+                    if (ActiveItem[1]) {
+                        MakeBullet(new Point2D.Float(PosX + 50, PosY), new Point2D.Float(0, -1.0f),
+                                (float) PlayData.get("ShotSpeed"));
+                        MakeBullet(new Point2D.Float(PosX - 50, PosY), new Point2D.Float(0, -1.0f),
+                                (float) PlayData.get("ShotSpeed"));
+                    }
+                    if (ActiveItem[2]) {
+                        ActiveItem[2] = false;
+                    }
+                    if (gp.HardMode) {
+                        SetBullet(GetBullet() - 1);
+                    }
+                    Shotdelay = ((Number) PlayData.get("ShotDelay")).floatValue();
+
                 }
-                if(ActiveItem[2]){
-                    ActiveItem[2] = false;
-                }
-                Shotdelay = ((Number) PlayData.get("ShotDelay")).floatValue();
             }
         }
 
@@ -262,17 +279,60 @@ public class Player extends Component {
         }
 
         if (gm.Im.isKeyPressed(KeyFunc.get("RELOAD"))) {
-
-        }
-        if (gm.Im.isKeyPressed(KeyFunc.get("ITEM"))) {
-
+            if (gp.HardMode) {
+                if (GetBullet() == 0 &&
+                        GetMegazine() != 0) {
+                    SetBullet(10);
+                    SetMegazine(GetMegazine() - 1);
+                }
+            }
         }
     };
 
-    public void MakeBullet(Point2D pos,Point2D dir,float ShotSpeed){
-        if(ActiveItem[2]){
+    void SetMegazine(int m) {
+        if (Obj.name == "Player1") {
+
+            PlayData.put("Magazine1", m);
+
+        } else {
+            PlayData.put("Magazine2", m);
+        }
+    }
+
+    int GetMegazine() {
+        if (Obj.name == "Player1") {
+
+            return ((Number) PlayData.get("Magazine1")).intValue();
+
+        } else {
+            return ((Number) PlayData.get("Magazine2")).intValue();
+        }
+    }
+
+    void SetBullet(int m) {
+        if (Obj.name == "Player1") {
+
+            PlayData.put("Bullet1", m);
+
+        } else {
+            PlayData.put("Bullet2", m);
+        }
+    }
+
+    int GetBullet() {
+        if (Obj.name == "Player1") {
+
+            return ((Number) PlayData.get("Bullet1")).intValue();
+
+        } else {
+            return ((Number) PlayData.get("Bullet2")).intValue();
+        }
+    }
+
+    public void MakeBullet(Point2D pos, Point2D dir, float ShotSpeed) {
+        if (ActiveItem[2]) {
             Bomb.MakeBomb(pos, dir, ShotSpeed, "PBullet");
-        }else{
+        } else {
             Bullet.MakeBullet(pos, dir, ShotSpeed, "PBullet");
         }
     }
@@ -281,6 +341,7 @@ public class Player extends Component {
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         Graphics2D graphics2D = (Graphics2D) grpahics;
         Image curimg = img.get(State[StateIndex]);
-        curimg.RenderFixedHeight(Math.round(PosX), Math.round(PosY), ((Number)gp.PlayData.get("ImgHeight")).intValue());
+        curimg.RenderFixedHeight(Math.round(PosX), Math.round(PosY),
+                ((Number) gp.PlayData.get("ImgHeight")).intValue());
     };
 }

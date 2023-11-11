@@ -38,13 +38,13 @@ public class HightScorePage implements GManager {
             String key = (String) iterator.next();
             scoreList[0].add(new Score(key, ((Number) scores1.get(key)).intValue()));
         }
-        Collections.sort(scoreList[0]);
+        Collections.sort(scoreList[0], Collections.reverseOrder());
 
         for (Iterator iterator = scores2.keySet().iterator(); iterator.hasNext();) {
             String key = (String) iterator.next();
             scoreList[1].add(new Score(key, ((Number) scores2.get(key)).intValue()));
         }
-        Collections.sort(scoreList[1]);
+        Collections.sort(scoreList[1], Collections.reverseOrder());
     };
 
     public void PreUpdate() {

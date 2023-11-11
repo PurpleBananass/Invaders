@@ -291,7 +291,6 @@ public class EnemyController extends Component {
             moveY += downPixel;
         }
 
-        EventSystem.FindEntity("Player1").GetComponent(Player.class);
         if (y + h + moveY > gm.frame.getHeight() - ((Number) gp.PlayData.get("ImgHeight")).intValue() * 3) {
             moveY = gm.frame.getHeight() - ((Number) gp.PlayData.get("ImgHeight")).intValue() * 3 - y - h;
         }
