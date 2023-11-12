@@ -55,7 +55,7 @@ public class StorePage implements GManager {
             JSONObject item = (JSONObject) gm.GlobalData.get("LocalData").get("StoreItem");
             if (money >= price && !(boolean) item.get(name)) {
                 money = money - price;
-                ((JSONObject) (gm.GlobalData.get("LocalData").get("Item"))).put(name, true);
+                ((JSONObject) (gm.GlobalData.get("LocalData").get("StoreItem"))).put(name, true);
                 gm.GlobalData.get("LocalData").put("Money", money);
                 item.put(name, true);
                 gm.Sm.playSound(menuSoundProp);
