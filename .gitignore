@@ -168,7 +168,7 @@ pip-log.txt
 ## Custom
 #############
 
-log*
+*.log
 .checkstyle
 .idea
 *.iml
