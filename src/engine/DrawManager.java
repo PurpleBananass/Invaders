@@ -859,8 +859,7 @@ public final class DrawManager {
 	 * @param screen
 	 *            Screen to draw on.
 	 */
-	public void
-	drawSkinSelectionMenu(final Screen screen, final int skincode1p,final int skincode2p){
+	public void drawSkinSelectionMenu(final Screen screen, final int skincode1p,final int skincode2p){
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
@@ -1073,6 +1072,26 @@ public final class DrawManager {
 			drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
 		}
 
+	/**
+	 * Draws level selection screen.
+	 * @param screen
+	 *
+	 */
+	public void drawLevelSelectionMenu(final Screen screen, final int levelcode) {
+		String titleString = "Level";
+		String instructionsString = "Press Space to start";
+		Ship[] shipskin = new Ship[6];;
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen, titleString, screen.getHeight() / 8);
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, instructionsString, screen.getHeight() / 5);
+
+		backBufferGraphics.setColor(Color.WHITE);
+		for (int i = 1; i < 8; i++) {
+			drawCenteredRegularString(screen, String.format("Level %s", i), screen.getHeight() / 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
+		}
+	}
 
 	public void drawHighScoreMenu(final Screen screen) {
 		String highScoreString = "High Scores";
@@ -1082,7 +1101,6 @@ public final class DrawManager {
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, highScoreString, screen.getHeight() / 8);
-
 
 		backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, instructionsString,
