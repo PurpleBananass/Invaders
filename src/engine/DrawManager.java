@@ -102,7 +102,9 @@ public final class DrawManager {
 
 		SpeedUpShape,
 
-		AuxiliaryShape
+		AuxiliaryShape,
+
+		Boss
 
 
 	};
@@ -138,9 +140,9 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.InvincibleShape, new boolean[5][5]);
 			spriteMap.put(SpriteType.SpeedUpShape, new boolean[5][4]);
 			spriteMap.put(SpriteType.AuxiliaryShape, new boolean[5][4]);
+			spriteMap.put(SpriteType.Boss, new boolean[448][20]);
 
 			fileManager.loadSprite(spriteMap);
-
 			fileManager.changeSprite(spriteMap,SpriteType.Bullet,0);
 			fileManager.changeSprite(spriteMap,SpriteType.Ship,0);
 			fileManager.changeSprite(spriteMap,SpriteType.Ship2,0);
