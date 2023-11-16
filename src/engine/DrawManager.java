@@ -440,6 +440,11 @@ public final class DrawManager {
 		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count2) + "/" + Integer.toString(magazine2), 224, screen.getHeight() + 25);
 	}
 
+	public void drawLevel(final Screen screen, final GameState gameState) {
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("Lv." + Integer.toString(gameState.getLevel()), 15, 450);
+	}
+
 	/**
 	 * Draws a thick line from side to side of the screen.
 	 *
