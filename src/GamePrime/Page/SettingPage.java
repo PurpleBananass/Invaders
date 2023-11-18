@@ -205,7 +205,7 @@ public class SettingPage implements GManager {
             for (int i = 0; i < KeyDefine.KeyFunc.length; i++) {
                 graphic.setColor(Color.WHITE);
                 if (!(Keyselected && keyNum == i)) {
-                    graphic.drawString(keySettings[itemCode - 2].get(i).toString(),
+                    graphic.drawString(KeyEvent.getKeyText(((Number) keySettings[itemCode - 2].get(i)).intValue()),
                             (int) (gm.frame.getWidth() * 8 / 10.0f)
                                     - matrix.stringWidth(keySettings[itemCode - 2].get(i).toString()),
                             gm.frame.getHeight() / 4 + matrix.getHeight() * (2 * i + 1));
