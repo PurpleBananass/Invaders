@@ -1,0 +1,61 @@
+{
+    "Entity":{
+        "ShipType1":{
+            "Idle":"Reimu.png",
+            "Destroyed" : "Marisa.png"
+        },
+        "ShipType2":{
+            "Idle":"Marisa.png",
+            "Destroyed" : "Reimu.png"
+        },
+        "EnemyType1":{
+            "Idle":"Cirno.png",
+            "Destroyed" : "Cirno.png"
+        },
+        "EnemyType2":{
+            "Idle":"Flandre.png",
+            "Destroyed" : "Flan_Fuck.png"
+        },
+        "Bullet": "Magic.png",
+        "Item" : "Magic2.png"
+    },
+    "StoreItem":{
+        "BonusLife" : "Flan's Shadow.png",
+        "MoveSpeed" : "Sakuya.png",
+        "ShotSpeed" : "Sakuya.png"
+    },
+
+    "BGM" : {
+        "MenuPage" : "B_Main_a.wav",
+        "AchievePage" :"B_Achieve.wav",
+        "SelectPage" :"B_Main_c.wav",
+        "HighScorePage":"B_HighScore.wav",
+        "GameOver":"B_gameover.wav",
+        "Level1" : "B_Level1.wav",
+        "Level2" : "B_Level2.wav",
+        "Level3" : "B_Level3.wav"
+    },
+    "SFX" : {
+        "LevelStart":"S_LevelStart_b.wav",
+        "LevelStart2":"S_LevelStart_a.wav",
+        "Auxiliary" : "S_Item_SubShip.wav",
+        "SpeedUp":"S_Item_SpeedUp.wav",
+        "Ghost":"S_Item_Invicible.wav",
+        "BombAquip" : "S_Item_Bomb_Equipped.wav",
+        "PlayerShoot1" : "S_Ally_Shoot_a.wav",
+        "PlayerShoot2" : "S_Ally_Shoot_b.wav",
+        "PlayerShoot3" : "S_Ally_Shoot_c.wav",
+        "PlayerShoot4" : "S_Ally_Shoot_d.wav",
+        "EnemyShoot" : "S_Enemy_Shoot.wav",
+        "Destroyed" : "S_Enemy_Destroy_a.wav",
+        "PlayerDestroyed":"S_Ally_Destroy_a.wav",
+        "PlayerDestroyed2":"S_Ally_Destroy_b.wav",
+        "GetItem":"S_Item_Get.wav",
+        "Bomb" : "S_Item_Bomb.wav",
+        "ItemCreate" : "S_Item_Create.wav",
+        "GameOver" : "S_gameover.wav",
+        "LevelClear" : "S_LevelClear.wav",
+        "MenuSelect" : "S_MenuClick.wav"
+    },
+    "Font": "font.ttf"
+}
