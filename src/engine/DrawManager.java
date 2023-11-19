@@ -1077,10 +1077,9 @@ public final class DrawManager {
 	 * @param screen
 	 *
 	 */
-	public void drawLevelSelectionMenu(final Screen screen, final int levelcode) {
+	public void drawLevelSelectionMenu(final Screen screen, final int levelcode, final int numberLevel) {
 		String titleString = "Level";
 		String instructionsString = "Press Space to start";
-		Ship[] shipskin = new Ship[6];;
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 8);
@@ -1088,7 +1087,12 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, instructionsString, screen.getHeight() / 5);
 
 		backBufferGraphics.setColor(Color.WHITE);
-		for (int i = 1; i < 8; i++) {
+		for (int i = 1; i <= numberLevel; i++) {
+			if (levelcode == i){
+				backBufferGraphics.setColor(Color.GREEN);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+			}
 			drawCenteredRegularString(screen, String.format("Level %s", i), screen.getHeight() / 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
 		}
 	}

@@ -12,15 +12,18 @@ public class LevelSelectionScreen extends Screen{
     private static final int SELECTION_TIME = 200;
     /** Time between changes in user selection. */
     final private Cooldown selectionCooldown;
+    /** number of level. */
+    private int numberLevel;
 
-    private int levelCode = 1;
+    public static int levelCode = 1;
 
-    public LevelSelectionScreen(final int width, final int height, final int fps) {
+    public LevelSelectionScreen(final int width, final int height, final int fps, int numberLevel) {
         super(width, height, fps);
 
         // Defaults to play.
         this.returnCode = 7;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
+        this.numberLevel = numberLevel;
         this.selectionCooldown.reset();
     }
 
@@ -31,7 +34,6 @@ public class LevelSelectionScreen extends Screen{
      */
     public final int run() {
         super.run();
-
         return this.returnCode;
     }
 
@@ -42,11 +44,11 @@ public class LevelSelectionScreen extends Screen{
         super.update();
         draw();
         if (this.selectionCooldown.checkFinished() && this.inputDelay.checkFinished()) {
-            if (inputManager.isKeyDown(KeyEvent.VK_UP) || inputManager.isKeyDown(KeyEvent.VK_W)) {
+            if ((inputManager.isKeyDown(KeyEvent.VK_UP) || inputManager.isKeyDown(KeyEvent.VK_W)) && (levelCode > 1)) {
                 levelCode--;
                 this.selectionCooldown.reset();
             }
-            if (inputManager.isKeyDown(KeyEvent.VK_DOWN) || inputManager.isKeyDown(KeyEvent.VK_S)) {
+            else if ((inputManager.isKeyDown(KeyEvent.VK_DOWN) || inputManager.isKeyDown(KeyEvent.VK_S)) && (levelCode < numberLevel)) {
                 levelCode++;
                 this.selectionCooldown.reset();
             }
@@ -57,13 +59,12 @@ public class LevelSelectionScreen extends Screen{
         }
     }
 
-
     /**
      * Draws the elements associated with the screen.
      */
     private void draw() {
         drawManager.initDrawing(this);
-        drawManager.drawLevelSelectionMenu(this, this.levelCode);
+        drawManager.drawLevelSelectionMenu(this, this.levelCode, this.numberLevel);
         drawManager.completeDrawing(this);
     }
 }

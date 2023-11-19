@@ -144,10 +144,8 @@ public final class Core {
 
 		int returnCode = 0;
 		do {
-			// TODO 1P mode와 2P mode 진입 구현
-			// TODO gameState 생성자에 따라 1P와 2P mode 구분
-			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
+			if(SelectScreen.gameMode == 1) gameState = new GameState(LevelSelectionScreen.levelCode, 0, MAX_LIVES, 0, 0);
+			else gameState = new GameState(LevelSelectionScreen.levelCode, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
                 case 0:
@@ -318,10 +316,11 @@ public final class Core {
 				break;
 			case 9:
 				//Select level.
-				currentScreen = new LevelSelectionScreen(width, height, FPS);
+				currentScreen = new LevelSelectionScreen(width, height, FPS, gameSettings.size());
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " Level Selection screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Selected level " + LevelSelectionScreen.levelCode + ".");
 				LOGGER.info("Closing LevelSelection screen.");
 				break;
 			default:
