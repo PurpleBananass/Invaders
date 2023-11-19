@@ -624,7 +624,7 @@ public class GameScreen extends Screen {
 				}
 
 				if (this.enemyShipSpecial == null
-						&& this.enemyShipSpecialCooldown.checkFinished()) {
+						&& this.enemyShipSpecialCooldown.checkFinished() && !this.bossCheck) {
 					SoundManager.playSound("SFX/S_Enemy_Special", "specialEnemyAppear", false, false);
 					this.enemyShipSpecial = new EnemyShip();
 					this.enemyShipSpecialCooldown.reset();
@@ -671,6 +671,10 @@ public class GameScreen extends Screen {
 				if(!this.bossCheck){
 				this.enemyShipFormation.update();
 				this.enemyShipFormation.shoot(this.bullets);}
+				else{
+					this.boss.update();
+				}
+
 			}
 
 			useSkill();
@@ -678,10 +682,16 @@ public class GameScreen extends Screen {
 			cleanBullets();
 			updateItems();
 			//draw();
+			if(this.bossCheck && boss.isDestroyed()){
+				this.levelFinished = true;
+				this.bossCheck = false;
+				this.screenFinishedCooldown.reset();
+			}
 			if(this.enemyShipFormation.isEmpty() && !this.levelFinished && !this.bossCheck) {
 				this.bossCheck = true;
 				this.bossStartTime = System.currentTimeMillis();
 				this.bossCountCheck = true;
+				this.screenFinishedCooldown.reset();
 			}
 			if (((this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
 					&& !this.levelFinished) {
@@ -689,6 +699,7 @@ public class GameScreen extends Screen {
 				this.levelFinished = true;
 				this.screenFinishedCooldown.reset();
 			}
+
 
 			if (this.levelFinished && this.screenFinishedCooldown.checkFinished() && !this.bossCheck)
 				this.isRunning = false;
@@ -763,6 +774,7 @@ public class GameScreen extends Screen {
 
 		if(this.bossCheck){
 			drawManager.drawEntity(this.boss,this.boss.getPositionX(),this.boss.getPositionY());
+			drawManager.drawBossHp(this,this.boss.getHP(),this.boss.getFirstHP());
 		}
 		else{
 		enemyShipFormation.draw();}
@@ -931,7 +943,28 @@ public class GameScreen extends Screen {
                         recyclable.add(bullet);
                     }
                 }
-            }
+				if(this.bossCheck&&!bossCountCheck){
+					if(checkCollision(bullet,this.boss)&&bullet.getShooter() == 1&&bullet.getSpeed() < 0){
+						this.boss.bossAttacked();
+						recyclable.add(bullet);
+					}
+					if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()&&bullet.getSpeed() > 0) {
+						recyclable.add(bullet);
+						if (!this.ship.isDestroyed()) {
+							this.ship.destroy();
+							if (this.lives > 0) {
+								this.lives--;
+							}
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
+						}
+					}
+                }
+
+			}
         }
 
 		if (gameState.getMode() == 2) {
@@ -1032,6 +1065,41 @@ public class GameScreen extends Screen {
                         recyclable.add(bullet);
                     }
                 }
+				if(this.bossCheck&&!bossCountCheck){
+					if(checkCollision(bullet,this.boss)&&(bullet.getShooter() == 1||bullet.getShooter() == 2)&&bullet.getSpeed() < 0){
+						this.boss.bossAttacked();
+						recyclable.add(bullet);
+					}
+					if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()&& bullet.getSpeed() > 0) {
+						recyclable.add(bullet);
+						if (!this.ship.isDestroyed()) {
+							this.ship.destroy();
+							if (this.lives > 0) {
+								this.lives--;
+							}
+							if (this.lives <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
+						}
+					}
+					if (checkCollision(bullet, this.ship2) && !this.levelFinished && !this.ship2.isInvincible() && bullet.getSpeed() > 0) {
+						recyclable.add(bullet);
+						if (!this.ship2.isDestroyed()) {
+							this.ship2.destroy();
+							if (this.lives2 > 0) {
+								this.lives2--;
+							}
+							if (this.lives2 <= 0)
+								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+							else
+								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+							this.logger.info("Hit on player2 ship, " + this.lives2 + " lives remaining.");
+						}
+					}
+
+				}
             }
         }
 
@@ -1072,7 +1140,6 @@ public class GameScreen extends Screen {
 				}
 			}
 		}
-
 		this.bullets.removeAll(recyclable);
 		this.items.removeAll(recyclableItem);
 		BulletPool.recycle(recyclable);

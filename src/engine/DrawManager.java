@@ -1459,10 +1459,16 @@ public final class DrawManager {
 			}
 
 		}
-
-
-
 	}
+
+	public void drawBossHp(Screen screen, int hp,int firstHp){
+		backBufferGraphics.setColor(Color.RED);
+		backBufferGraphics.drawRect(screen.getWidth() / 4+20, screen.getHeight() / 10 - fontRegularMetrics.getHeight()*13/7,
+				screen.getWidth() / 3 + 30, fontRegularMetrics.getHeight());
+		backBufferGraphics.fillRect(screen.getWidth() / 4+20, screen.getHeight() / 10-fontRegularMetrics.getHeight()*13/7,
+				(screen.getWidth() / 3 + 30 )* hp / firstHp , fontRegularMetrics.getHeight());
+	}
+
 	private void drawKeyString(Screen screen, String s1,String s2,String s3,String s4,String s5,String s6,String s7,String s8,int num){
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);

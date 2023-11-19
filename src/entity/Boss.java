@@ -40,6 +40,8 @@ public class Boss extends Entity {
 	/** 적의 체력 */
 	protected int HP;
 
+	protected int firstHP;
+
 	/** 총알 속도 */
 	protected static final int BULLET_SPEED = 4;
 
@@ -62,7 +64,8 @@ public class Boss extends Entity {
 		this.isDestroyed = false;
 		this.itemRange =  new Random().nextInt(RANDOM_BOUND);
 		this.hasItem = itemGenerator(itemRange);
-		this.HP = this.gameState.getLevel()*50;
+		this.HP = this.gameState.getLevel()*10;
+		this.firstHP = this.HP;
 	}
 
 	/**
@@ -77,6 +80,7 @@ public class Boss extends Entity {
 	 * Updates attributes, mainly used for animation purposes.
 	 */
 	public void update() {
+
 		return;
 	}
 
@@ -90,7 +94,7 @@ public class Boss extends Entity {
 	/**
 	 * Destroys the ship, causing an explosion.
 	 */
-	public final void destroy() {
+	public final void bossAttacked() {
 		this.HP--;
 		if (this.HP <= 0) {
 			SoundManager.playSound("SFX/S_Enemy_Destroy_a", "Enemy_destroyed", false, false);
@@ -121,6 +125,16 @@ public class Boss extends Entity {
 		else
 			return false;
 	}
+
+
+	public int getHP(){
+		return this.HP;
+	}
+
+	public int getFirstHP(){
+		return this.firstHP;
+	}
+
 
 	/** EnemyShip이 아이템을 지닌 객체인지 확인 */
 	public final boolean hasItem(){
