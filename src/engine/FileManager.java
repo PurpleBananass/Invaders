@@ -191,6 +191,15 @@ public final class FileManager {
         } else if (spriteType == SpriteType.EnemyShipSpecial) {
             inputStream = DrawManager.class.getClassLoader()
                     .getResourceAsStream("specialenemyGraphics");
+        } else if (spriteType == SpriteType.BossShip) {
+            inputStream = DrawManager.class.getClassLoader()
+                    .getResourceAsStream("bossshipGraphics");
+        } else if (spriteType == SpriteType.BossShipDestroyed) {
+            inputStream = DrawManager.class.getClassLoader()
+                    .getResourceAsStream("bossshipGraphics");
+        } else if (spriteType == SpriteType.BossShipMoved) {
+            inputStream = DrawManager.class.getClassLoader()
+                    .getResourceAsStream("bossshipGraphics");
         }
         return inputStream;
     }
