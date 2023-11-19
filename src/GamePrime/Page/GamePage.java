@@ -199,19 +199,19 @@ public class GamePage implements GManager {
     };
 
     private void drawHorizontalLine(int y) {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-        grpahics.drawLine(0, y, gm.frame.getWidth(), y);
-        grpahics.drawLine(0, y + 1, gm.frame.getWidth(), y + 1);
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
+        graphics.drawLine(0, y, gm.frame.getWidth(), y);
+        graphics.drawLine(0, y + 1, gm.frame.getWidth(), y + 1);
     }
 
     private void DrawMenual() {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
         int rectWidth = gm.frame.getWidth();
         int rectHeight = gm.frame.getHeight() / 6;
-        grpahics.setColor(Color.BLACK);
-        grpahics.fillRect(0, gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 90,
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 90,
                 rectWidth, rectHeight + 180);
-        grpahics.setColor(Color.CYAN);
+        graphics.setColor(Color.CYAN);
         drawManualMenu();
         drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 90);
         drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 50);
@@ -219,31 +219,31 @@ public class GamePage implements GManager {
     }
 
     private void drawManualMenu() {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         JSONArray key1 = (JSONArray) gm.GlobalData.get("Setting").get("KeySetting_1p");
         JSONArray key2 = (JSONArray) gm.GlobalData.get("Setting").get("KeySetting_2p");
 
-        grpahics.drawString("Play manual", gm.frame.getWidth() / 2
+        graphics.drawString("Play manual", gm.frame.getWidth() / 2
                 - fontmatrix.stringWidth("Play manual") / 2, gm.frame.getHeight() / 2 - 105);
-        grpahics.drawString("Player1", gm.frame.getWidth() / 2 - 140, gm.frame.getHeight() / 2 - 60);
-        grpahics.drawString("Player2", gm.frame.getWidth() / 2 + 65, gm.frame.getHeight() / 2 - 60);
+        graphics.drawString("Player1", gm.frame.getWidth() / 2 - 140, gm.frame.getHeight() / 2 - 60);
+        graphics.drawString("Player2", gm.frame.getWidth() / 2 + 65, gm.frame.getHeight() / 2 - 60);
 
-        grpahics.setColor(Color.WHITE);
+        graphics.setColor(Color.WHITE);
         int y = gm.frame.getHeight() / 2 - 30;
         int x1 = gm.frame.getWidth() / 2 - 150; // player1_manual
         int x2 = gm.frame.getWidth() / 2 - 50; // player1_setting
         int x3 = gm.frame.getWidth() / 2 + 50; // player2
         int x4 = gm.frame.getWidth() / 2 + 150; // player2_setting
         for (int i = 0; i < KeyDefine.KeyFunc.length; i++) {
-            grpahics.drawString(KeyDefine.KeyFunc[i], x1 - fontmatrix.stringWidth(KeyDefine.KeyFunc[i]) / 2,
+            graphics.drawString(KeyDefine.KeyFunc[i], x1 - fontmatrix.stringWidth(KeyDefine.KeyFunc[i]) / 2,
                     y + 20 * i);
             String key = KeyEvent.getKeyText(((Number) key1.get(i)).intValue());
-            grpahics.drawString(key, x2 - fontmatrix.stringWidth(key) / 2, y + 20 * i);
-            grpahics.drawString(KeyDefine.KeyFunc[i], x3 - fontmatrix.stringWidth(KeyDefine.KeyFunc[i]) / 2,
+            graphics.drawString(key, x2 - fontmatrix.stringWidth(key) / 2, y + 20 * i);
+            graphics.drawString(KeyDefine.KeyFunc[i], x3 - fontmatrix.stringWidth(KeyDefine.KeyFunc[i]) / 2,
                     y + 20 * i);
             key = KeyEvent.getKeyText(((Number) key2.get(i)).intValue());
-            grpahics.drawString(key, x4 - fontmatrix.stringWidth(key) / 2, y + 20 * i);
+            graphics.drawString(key, x4 - fontmatrix.stringWidth(key) / 2, y + 20 * i);
         }
     }
 
@@ -257,21 +257,7 @@ public class GamePage implements GManager {
         } else if (((Number) PlayData.get("ScreenIndex")).intValue() == 1) {
             DrawMenual();
         } else if (((Number) PlayData.get("ScreenIndex")).intValue() == 2) {
-
-            Graphics grpahics = gm.Rm.GetCurrentGraphic();
-            int rectWidth = gm.frame.getWidth();
-            int rectHeight = gm.frame.getHeight() / 6;
-            grpahics.setColor(Color.BLACK);
-            grpahics.fillRect(0, gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 40, rectWidth, rectHeight + 40);
-
-            grpahics.setColor(Color.YELLOW);
-            FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
-            grpahics.drawString("Quit", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Quit") / 2,
-                    gm.frame.getHeight() / 2 - 10);
-
-            drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 40);
-            drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12);
-            drawHorizontalLine(gm.frame.getHeight() / 2 + gm.frame.getHeight() / 12);
+            drawPause();
         }
     }
 
@@ -280,7 +266,7 @@ public class GamePage implements GManager {
 
     public void LateRender() {
         Draw();
-        DrawScore();
+        drawScore();
         drawItems();
 
         drawAmmo();
@@ -290,87 +276,108 @@ public class GamePage implements GManager {
     };
 
     void drawAmmo() {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-        grpahics.setColor(Color.WHITE);
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
+        graphics.setColor(Color.WHITE);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         if (HardMode) {
             int bullet = ((Number) PlayData.get("Bullet1")).intValue();
             int magazine = ((Number) PlayData.get("Magazine1")).intValue();
-            grpahics.drawString("Ammo : ", 200, 0);
-            grpahics.drawString(bullet + "/" + magazine, 300, fontmatrix.getHeight());
+            graphics.drawString("Ammo : ", 200, 0);
+            graphics.drawString(bullet + "/" + magazine, 300, fontmatrix.getHeight());
 
             if (PlayMode == 1) {
                 bullet = ((Number) PlayData.get("Bullet2")).intValue();
                 magazine = ((Number) PlayData.get("Magazine2")).intValue();
-                grpahics.drawString("Ammo : ",
+                graphics.drawString("Ammo : ",
                         gm.frame.getWidth() / 4 - fontmatrix.stringWidth(bullet + "/" + magazine + "Ammo : "), 0);
-                grpahics.drawString(bullet + "/" + magazine, gm.frame.getWidth() / 4, fontmatrix.getHeight());
+                graphics.drawString(bullet + "/" + magazine, gm.frame.getWidth() / 4, fontmatrix.getHeight());
             }
 
         }
     }
 
     void drawItems() {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-        grpahics.setColor(Color.WHITE);
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
+        graphics.setColor(Color.WHITE);
         JSONArray item = (JSONArray) PlayData.get("ActiveItem");
-        grpahics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
+        graphics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
         for (int i = 0; i < item.size(); i++) {
             int index = ((Number) item.get(i)).intValue();
             if (ItemDefine.ActiveItem[index] == "Ghost") {
-                grpahics.setColor(Color.CYAN);
+                graphics.setColor(Color.CYAN);
             } else if (ItemDefine.ActiveItem[index] == "Auxiliary") {
-                grpahics.setColor(Color.green);
+                graphics.setColor(Color.green);
             } else if (ItemDefine.ActiveItem[index] == "Bomb") {
-                grpahics.setColor(Color.red);
+                graphics.setColor(Color.red);
             } else if (ItemDefine.ActiveItem[index] == "SpeedUp") {
-                grpahics.setColor(Color.YELLOW);
+                graphics.setColor(Color.YELLOW);
             }
-            grpahics.drawRect(100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
+            graphics.drawRect(100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
         }
 
         item = (JSONArray) PlayData.get("ActiveItem2");
-        grpahics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
+        graphics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
         for (int i = 0; i < item.size(); i++) {
             int index = ((Number) item.get(i)).intValue();
             if (ItemDefine.ActiveItem[index] == "Ghost") {
-                grpahics.setColor(Color.CYAN);
+                graphics.setColor(Color.CYAN);
             } else if (ItemDefine.ActiveItem[index] == "Auxiliary") {
-                grpahics.setColor(Color.green);
+                graphics.setColor(Color.green);
             } else if (ItemDefine.ActiveItem[index] == "Bomb") {
-                grpahics.setColor(Color.red);
+                graphics.setColor(Color.red);
             } else if (ItemDefine.ActiveItem[index] == "SpeedUp") {
-                grpahics.setColor(Color.YELLOW);
+                graphics.setColor(Color.YELLOW);
             }
-            grpahics.drawRect(gm.frame.getWidth() / 2 + 100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
+            graphics.drawRect(gm.frame.getWidth() / 2 + 100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
         }
     }
 
+    void drawPause() {
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
+        int rectWidth = gm.frame.getWidth();
+        int rectHeight = gm.frame.getHeight() / 6;
+        String informationString = "Press Esc resume or space quit";
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 40, rectWidth, rectHeight + 40);
+        graphics.setColor(Color.YELLOW);
+        FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
+        graphics.drawString("Pause", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Pause") / 2, 
+            gm.frame.getHeight() / 2 - 80);
+        graphics.drawString("Quit", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Quit") / 2,
+            gm.frame.getHeight() / 2 - 10);
+        graphics.setColor(Color.GRAY);
+        graphics.drawString(informationString, gm.frame.getWidth() / 2
+            - fontmatrix.stringWidth(informationString) / 2, gm.frame.getHeight() / 2 + fontmatrix.getHeight() / 10 + 20);
+        drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 40);
+        drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12);
+        drawHorizontalLine(gm.frame.getHeight() / 2 + gm.frame.getHeight() / 12);
+    }
+
     public void drawHorizontalLine(final int positionY, Color color) {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-        grpahics.setColor(color);
-        grpahics.drawLine(0, positionY, gm.frame.getWidth(), positionY);
-        grpahics.drawLine(0, positionY + 1, gm.frame.getWidth(), positionY + 1);
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
+        graphics.setColor(color);
+        graphics.drawLine(0, positionY, gm.frame.getWidth(), positionY);
+        graphics.drawLine(0, positionY + 1, gm.frame.getWidth(), positionY + 1);
     }
 
     void drawLives() {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-        grpahics.setColor(Color.WHITE);
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
+        graphics.setColor(Color.WHITE);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
-        grpahics.drawString(Integer.toString(((Number) PlayData.get("Life")).intValue()), 20, 25);
+        graphics.drawString(Integer.toString(((Number) PlayData.get("Life")).intValue()), 20, 25);
         if (PlayMode == 1) {
-            grpahics.drawString(Integer.toString(((Number) PlayData.get("Life2")).intValue()), 50, 25);
+            graphics.drawString(Integer.toString(((Number) PlayData.get("Life2")).intValue()), 50, 25);
         }
     }
 
     public void Exit() {
     };
 
-    void DrawScore() {
-        Graphics grpahics = gm.Rm.GetCurrentGraphic();
-        grpahics.setColor(Color.WHITE);
+    void drawScore() {
+        Graphics graphics = gm.Rm.GetCurrentGraphic();
+        graphics.setColor(Color.WHITE);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         String scoreString = String.format("%04d", ((Number) PlayData.get("Point")).intValue());
-        grpahics.drawString(scoreString, gm.frame.getWidth() - 60, 25);
+        graphics.drawString(scoreString, gm.frame.getWidth() - 60, 25);
     }
 }

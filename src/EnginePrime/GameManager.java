@@ -11,16 +11,16 @@ public final class GameManager implements GManager {
 
     public static Frame frame = null;
     public static boolean running = true;
-    public static EngineTimer Et = EngineTimer.getInstance();
-    public static RenderManager Rm = RenderManager.getInstance();
-    public static InputManager Im = InputManager.getInstance();
-    public static SoundManager Sm = SoundManager.getInstance();
+    public final static EngineTimer Et = EngineTimer.getInstance();
+    public final static RenderManager Rm = RenderManager.getInstance();
+    public final static InputManager Im = InputManager.getInstance();
+    public final static SoundManager Sm = SoundManager.getInstance();
     public static GameManager instance = null;
     public static GManager CustomInstance = null;
 
     public static boolean InstanceChanged = false;
-    public static Map<String, JSONObject> GlobalData = new HashMap<>();
-    public static ArrayList<Runnable> ExitCode = new ArrayList<>();
+    public final static Map<String, JSONObject> GlobalData = new HashMap<>();
+    public final static ArrayList<Runnable> ExitCode = new ArrayList<>();
 
     private GameManager() {
     };
