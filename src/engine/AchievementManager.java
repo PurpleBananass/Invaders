@@ -67,6 +67,8 @@ public class AchievementManager {
 		}
 
 		LOGGER.info(achievementName + " achievement achieved!");
+		SoundManager.playSound("SFX/S_Achievement","S_achievement",false,false);
+		SoundManager.stopSound("S_achievement",2f);
 	}
 
 	/**
@@ -91,11 +93,12 @@ public class AchievementManager {
 		int life_1 = gameState.getLivesRemaining1p();
 		int life_2 = gameState.getLivesRemaining2p();
 		int gamemode = gameState.getMode();
-		double accuracy = ((double) gameState.getShipsDestroyed() / (double) shot) * 100;
+		int shipsDestroyed = gameState.getShipsDestroyed() + gameState.getShipsDestroyed2();
+		double accuracy = ((double) shipsDestroyed / (double) shot) * 100;
 
 		// if the player play with good accuracy
 		if (shot > 0 && accuracy >= 90.0 && level >= 3) {
-			markAchievementAsAchieved(Achievement.ADVENTURE_START);
+			markAchievementAsAchieved(Achievement.SHARP_SHOOTER);
 		}
 
 		// Check if the players recorded perfect accuracy, if the player want to clear

@@ -8,6 +8,7 @@ import engine.Cooldown;
 import engine.Core;
 import engine.DrawManager.SpriteType;
 import engine.GameState;
+import engine.SoundManager;
 
 /**
  * Implements a enemy ship, to be destroyed by the player.
@@ -20,8 +21,7 @@ public class EnemyShip extends Entity {
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
-	private static final double ITEM_PROPORTIOIN = 0.1;
-
+	public static final double ITEM_PROPORTION = 0.1;
 	public static final int RANDOM_BOUND = 10000;
 
 	/** Cooldown between sprite changes. */
@@ -41,7 +41,7 @@ public class EnemyShip extends Entity {
 	protected int HP;
 
 	/** 총알 속도 */
-	private static final int BULLET_SPEED = 4;
+	protected static final int BULLET_SPEED = 4;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -106,9 +106,11 @@ public class EnemyShip extends Entity {
 		return;
 	}
 
-	public void shoot(final Set<Bullet> bullets) {
+	public void shoot(final Set<Bullet> bullets,Cooldown shootingCooldown) {
 		bullets.add(BulletPool.getBullet(positionX
-				+ width / 2, positionY, BULLET_SPEED));
+				+ width / 2, positionY, BULLET_SPEED, 0));
+		shootingCooldown.timedown(0);
+
 	}
 
 	/**
@@ -117,26 +119,30 @@ public class EnemyShip extends Entity {
 	public final void destroy() {
 		this.HP--;
 		if (this.HP <= 0) {
+			SoundManager.playSound("SFX/S_Enemy_Destroy_a", "Enemy_destroyed", false, false);
 			this.isDestroyed = true;
 			this.spriteType = SpriteType.Explosion;
 		}
 	}
 
+	public final void destroyByBomb(){
+		this.HP = 0;
+		this.isDestroyed = true;
+		this.spriteType = SpriteType.Explosion;
+	}
 	/**
 	 * Checks if the ship has been destroyed.
 	 * 
 	 * @return True if the ship has been destroyed.
 	 */
-	public final boolean isDestroyed() {
-		return this.isDestroyed;
-	}
+	public final boolean isDestroyed() {return this.isDestroyed;}
 	public final int getpositionY() { return this.positionY; }
 
 
 	/**
 	 * 랜덤으로 Item을 가진 EnemyShip 생성*/
 	private boolean itemGenerator(int rand_int){
-		if(rand_int < (int)(RANDOM_BOUND * ITEM_PROPORTIOIN))
+		if(rand_int < (int)(RANDOM_BOUND * ITEM_PROPORTION))
 			return true;
 		else
 			return false;
