@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es2017",
+    "sourceMap": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": false,
+    "noUnusedLocals": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "listFiles": false,
+    "baseUrl": "src",
+    "esModuleInterop": true,
+    "noStrictGenericChecks": false,
+    "paths": {
+      "src/*": ["src/*"]
+    }
+  }
+}
