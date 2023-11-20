@@ -157,7 +157,7 @@ public class EndPage implements GManager{
         drawCenteredRegularString("Your score: " + score, gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 1);
         drawCenteredRegularString("Your total shots: " + shot, gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 2);
         drawCenteredRegularString("Your destruction: " + shipsDestroyed, gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 3);
-        drawCenteredRegularString("Your Accuracy " + accuracy +"%", gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 4);
+        drawCenteredRegularString("Your Accuracy " + (Math.round(accuracy*10) / 10.0) +"%", gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 4);
 
 		String continueString = "Continue";
 		String exitString = "Exit";

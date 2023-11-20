@@ -114,7 +114,7 @@ public class HelpPage implements GManager {
         drawHelp();
     }
 
-    public void drawHelp() {
+    public final void drawHelp() {
 
         String helpString = "Help";
         String instructionsString1 = "Move with UP, DOWN / Select with SPACE";
@@ -136,21 +136,21 @@ public class HelpPage implements GManager {
         graphic.drawString(instructionsString2, gm.frame.getWidth() / 2
                 - matrix.stringWidth(instructionsString2) / 2, gm.frame.getHeight() / 5 + matrix.getHeight() / 2);
 
-        String[] string = { "Space Invaders", "How to play", "Item", "Mode" };
+        String[] guideList = { "Space Invaders", "How to play", "Item", "Mode" };
 
         for (int i = 0; i < 4; i++) {
             if (itemCode == i) {
                 graphic.setColor(Color.GREEN);
                 if (itemSelected) {
                     graphic.drawString("*", gm.frame.getWidth() / 5
-                            - matrix.stringWidth(string[i]) / 2 - 16,
+                            - matrix.stringWidth(guideList[i]) / 2 - 16,
                             gm.frame.getHeight() / 4 + matrix.getHeight() * 2 * (i + 1));
                 }
             } else {
                 graphic.setColor(Color.WHITE);
             }
-            graphic.drawString(string[i], gm.frame.getWidth() / 5
-                    - matrix.stringWidth(string[i]) / 2, gm.frame.getHeight() / 4 + matrix.getHeight() * 2 * (i + 1));
+            graphic.drawString(guideList[i], gm.frame.getWidth() / 5
+                    - matrix.stringWidth(guideList[i]) / 2, gm.frame.getHeight() / 4 + matrix.getHeight() * 2 * (i + 1));
         }
         graphic.setColor(Color.GREEN);
         graphic.drawLine(gm.frame.getWidth() / 5 * 2 - 60, gm.frame.getHeight() / 4,
@@ -159,27 +159,27 @@ public class HelpPage implements GManager {
                 gm.frame.getWidth() / 5 * 2 - 59, gm.frame.getHeight() / 10 * 9);
     }
 
-    void drawGameGuide() {
+    public final void drawGameGuide() {
         Graphics graphic = gm.Rm.GetCurrentGraphic();
         BufferedImage curimg = img.get(imgString[0]);
-        String guide = "Space Invaders is a vertical scroll shooting game.";
-        String story1 = "Currently, terrifying enemies from another demention ";
-        String story2 = "have invaded space. Defeat them and make a name for yourself.";
+        final String[] story = {"Space Invaders is a vertical scroll shooting game.", 
+                "Currently, terrifying enemies from another demention", 
+                "have invaded space. Defeat them and make a name for yourself."};
         graphic.drawImage(curimg, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() / 2 - 200,
                 curimg.getWidth() / 2 + 80, curimg.getHeight() / 2 + 80, null);
         FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.WHITE);
-        graphic.drawString(guide, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 200);
-        graphic.drawString(story1, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 230);
-        graphic.drawString(story2, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 260);
+        for (int i = 0; i < story.length; i++) {
+            graphic.drawString(story[i], gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 200 + 30 * (i+1));
+        }
     }
 
-    void drawHowToPlay () {
+    public final void drawHowToPlay () {
         Graphics graphic = gm.Rm.GetCurrentGraphic();
-        String manualInfo1 = "The above manual shows how to control your character.";
-        String manualInfo2 = "You can view the  manual again by pressing Ctrl in the game.";
-        String manualInfo3 = "You can also change key setting on the 'setting' menu.";
-        String reloadInfo = "Reload can use in the hard mode only!";
+        final String[] manualInfo = {"The above manual shows how to control your character.", 
+                "You can view the  manual again by pressing Ctrl in the game.",
+                "You can also change key setting on the 'setting' menu."};
+        final String reloadInfo = "Reload can use in the hard mode only!";
         Graphics graphics = gm.Rm.GetCurrentGraphic();
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         JSONArray key1 = (JSONArray) gm.GlobalData.get("Setting").get("KeySetting_1p");
@@ -205,27 +205,27 @@ public class HelpPage implements GManager {
                     y + 20 * i);
             key = KeyEvent.getKeyText(((Number) key2.get(i)).intValue());
             graphics.drawString(key, x4 - fontmatrix.stringWidth(key) / 2, y + 20 * i);
+        }
         
         FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.GRAY);
         graphic.drawString(reloadInfo, gm.frame.getWidth() / 2 - 35, gm.frame.getHeight() / 2 + 100);
         graphic.setColor(Color.WHITE);
-        graphic.drawString(manualInfo1, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 200);
-        graphic.drawString(manualInfo2, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 230);
-        graphic.drawString(manualInfo3, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 260);
+        for (int i = 0; i < manualInfo.length; i++) {
+        graphic.drawString(manualInfo[i], gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 200 + 30 * (i+1));
         }
     }
 
-    void drawItem () {
+    public final void drawItem () {
         Graphics graphic = gm.Rm.GetCurrentGraphic();
         BufferedImage itemBox = img.get("Item");
-        String itemBoxInfo1 = "When killing a enemy, item box is dropped ";
-        String itemBoxInfo2 = "with a certain probability. if you obtain a item box,";
-        String itemBoxInfo3 = "you can use one of four items randomly.";
-        String Ghost = "Ghost: you become a ghost and dodge enemies' attacks.";
-        String Auxiliary = "Auxiliary: you can shot auxiliary bullets.";
-        String Bomb = "Bomb: your next shot becomes ranged attack.";
-        String SpeedUp = "Speed Up: your speed increases.";
+        final String[] itemBoxInfo = {"When killing a enemy, item box is dropped ", 
+                "with a certain probability. if you obtain a item box,",
+                "you can use one of four items randomly."};
+        final String[] itemInfo = {"Ghost: you become a ghost and dodge enemies' attacks.", 
+                "Auxiliary: you can shot auxiliary bullets.",
+                "Bomb: your next shot becomes ranged attack.", 
+                "Speed Up: your speed increases."};
         graphic.drawImage(itemBox, gm.frame.getWidth() / 2 - 120, gm.frame.getHeight() / 2 - 170,
                 itemBox.getWidth() / 32, itemBox.getHeight() / 32, null);
         graphic.setColor(Color.CYAN); // Ghost
@@ -239,23 +239,22 @@ public class HelpPage implements GManager {
 
         FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.WHITE);
-        graphic.drawString(itemBoxInfo1, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 680);
-        graphic.drawString(itemBoxInfo2, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 650);
-        graphic.drawString(itemBoxInfo3, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 620);
-        graphic.drawString(Ghost, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 490);
-        graphic.drawString(Auxiliary, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 440);
-        graphic.drawString(Bomb, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 390);
-        graphic.drawString(SpeedUp, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 340);
+        for (int i = 0; i < itemBoxInfo.length; i++) {
+            graphic.drawString(itemBoxInfo[i], gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 680 + 30 * (i+1));
+        }
+        for (int i = 0; i < itemInfo.length; i++) {
+            graphic.drawString(itemInfo[i], gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 490 + 50 * i);
+        }
     }
 
-    void drawHardMode () {
+    public final void drawHardMode () {
         Graphics graphic = gm.Rm.GetCurrentGraphic();
         BufferedImage hardModeImg = img.get(imgString[1]);
         BufferedImage megazineImg = img.get(imgString[2]);
-        String hardModeInfo1 = "In the hard mode, reloding system exists.";
-        String hardModeInfo2 = "So you must shot carefully.";
-        String hardModeInfo3 = "If you don't have any magazines,";
-        String hardModeInfo4 = "you can't clear current stage.";
+        final String[] hardModeInfo = {"In the hard mode, reloding system exists.",
+                "So you must shot carefully.",
+                "If you don't have any magazines,",
+                "you can't clear current stage."};
 
         graphic.drawImage(hardModeImg, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() / 2 - 200,
                 hardModeImg.getWidth() / 2, hardModeImg.getHeight() / 2, null);
@@ -263,9 +262,8 @@ public class HelpPage implements GManager {
                 megazineImg.getWidth() + 50, megazineImg.getHeight() + 50, null);
         FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.WHITE);
-        graphic.drawString(hardModeInfo1, gm.frame.getWidth() / 2 - 105, gm.frame.getHeight() / 2 + 40);
-        graphic.drawString(hardModeInfo2, gm.frame.getWidth() / 2 - 105, gm.frame.getHeight() / 2 + 70);
-        graphic.drawString(hardModeInfo3, gm.frame.getWidth() / 2 - 105, gm.frame.getHeight() / 2 + 100);
-        graphic.drawString(hardModeInfo4, gm.frame.getWidth() / 2 - 105, gm.frame.getHeight() / 2 + 130);
+        for (int i = 0; i < hardModeInfo.length; i++) {
+            graphic.drawString(hardModeInfo[i], gm.frame.getWidth() / 2 - 105, gm.frame.getHeight() / 2 + 40 * (i+1));
+        }
     }
 }
