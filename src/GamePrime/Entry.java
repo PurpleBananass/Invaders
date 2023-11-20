@@ -21,6 +21,7 @@ public class Entry implements GManager{
         JSONObject res = FileManager.LoadJsonObject("Resource");
         gm.GlobalData.put("Resource", res);
         Font font = gm.Rm.LoadFont("Font" + File.separator +res.get("Font"));
+        gm.Rm.CreateFont(font, "Small", 12.0f);
         gm.Rm.CreateFont(font, "Regular", 14.0f);
         gm.Rm.CreateFont(font, "Big", 24.0f);
         GameManager.getInstance().SetInstance(new LoginPage());

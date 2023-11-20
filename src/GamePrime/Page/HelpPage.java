@@ -173,7 +173,7 @@ public class HelpPage implements GManager {
         String story2 = "have invaded space. Defeat them and make a name for yourself.";
         graphic.drawImage(curimg, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() / 2 - 200,
                 curimg.getWidth() / 2 + 80, curimg.getHeight() / 2 + 80, null);
-        FontMetrics matrix = gm.Rm.SetFont("small");
+        FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.WHITE);
         graphic.drawString(guide, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 200);
         graphic.drawString(story1, gm.frame.getWidth() / 2 - 125, gm.frame.getHeight() / 2 + 230);
@@ -212,7 +212,7 @@ public class HelpPage implements GManager {
             key = KeyEvent.getKeyText(((Number) key2.get(i)).intValue());
             graphics.drawString(key, x4 - fontmatrix.stringWidth(key) / 2, y + 20 * i);
         
-        FontMetrics matrix = gm.Rm.SetFont("small");
+        FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.GRAY);
         graphic.drawString(reloadInfo, gm.frame.getWidth() / 2 - 35, gm.frame.getHeight() / 2 + 100);
         graphic.setColor(Color.WHITE);
@@ -243,7 +243,7 @@ public class HelpPage implements GManager {
         graphic.setColor(Color.YELLOW); //SpeedUp
         graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 250, 5, 5);
 
-        FontMetrics matrix = gm.Rm.SetFont("small");
+        FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.WHITE);
         graphic.drawString(itemBoxInfo1, gm.frame.getWidth() / 2 - 130, gm.frame.getHeight() - 500);
         graphic.drawString(itemBoxInfo2, gm.frame.getWidth() / 2 - 130, gm.frame.getHeight() - 470);
@@ -267,7 +267,7 @@ public class HelpPage implements GManager {
                 hardModeImg.getWidth() / 2, hardModeImg.getHeight() / 2, null);
         graphic.drawImage(megazineImg, gm.frame.getWidth() / 2 - 90, gm.frame.getHeight() / 2 - 100,
                 megazineImg.getWidth() + 50, megazineImg.getHeight() + 50, null);
-        FontMetrics matrix = gm.Rm.SetFont("small");
+        FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.WHITE);
         graphic.drawString(hardModeInfo1, gm.frame.getWidth() / 2 - 105, gm.frame.getHeight() / 2 + 40);
         graphic.drawString(hardModeInfo2, gm.frame.getWidth() / 2 - 105, gm.frame.getHeight() / 2 + 70);
