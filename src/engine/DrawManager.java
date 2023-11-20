@@ -18,10 +18,7 @@ import engine.AchievementManager.Achievement;
 import java.lang.Integer;
 
 import entity.*;
-import screen.GameScreen;
-import screen.Screen;
-import screen.SelectScreen;
-import screen.SettingScreen;
+import screen.*;
 
 
 /**
@@ -1610,6 +1607,31 @@ public final class DrawManager {
 
 				// Increase the Y-coordinate for the next achievement entry.
 				y += 40;
+		}
+	}
+
+	public void drawGambleTitle(Screen screen, int playerCurrency){
+		String Currency = Integer.toString(playerCurrency);
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen,"GAMBLE", screen.getHeight()
+				/ 10 + fontRegularMetrics.getHeight() * 2 );
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString(Currency, screen.getWidth() / 10 * 8
+				- fontRegularMetrics.stringWidth(Currency) / 2 , screen.getHeight() / 8);
+	}
+	public void drawGambleMenu(Screen screen){
+
+	}
+
+	public void drawGambleEntity(Screen screen){
+		EnemyShip[] target = new EnemyShip[3];
+
+		for (int i = 0; i < 6; i++) {
+			EnemyShip dummyShip = new EnemyShip(0, 0, SpriteType.EnemyShipA1);
+			target[i] = dummyShip;
+			drawEntity(target[i], screen.getWidth() / 2 - 13, 172 + 50*i);
+
 		}
 	}
 }

@@ -65,6 +65,14 @@ public class EnemyShip extends Entity {
 		this.HP = this.gameState.getLevel();
 	}
 
+	/** 겜블 스크린 용 */
+	public EnemyShip(final int positionX, final int positionY,
+					 final SpriteType spriteType) {
+		super(positionX, positionY, 12 * 2, 8 * 2, Color.WHITE);
+		this.spriteType = spriteType;
+		this.isDestroyed = false;
+	}
+
 	/**
 	 * Constructor, establishes the ship's properties for a special ship, with
 	 * known starting properties.
