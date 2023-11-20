@@ -11,17 +11,12 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
-import EnginePrime.Entity;
 import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.Define.ItemDefine;
 import GamePrime.Define.KeyDefine;
-import GamePrime.Ship.Item;
 
 public class HelpPage implements GManager {
     SoundManager.PlayProp menuSoundProp;
@@ -59,28 +54,28 @@ public class HelpPage implements GManager {
             switch (itemCode) {
                 case 0:
                     drawGameGuide();
-                    if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         itemSelected = false;
                         gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 case 1:
                     drawHowToPlay ();
-                    if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         itemSelected = false;
                         gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 case 2:
                     drawItem();
-                    if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         itemSelected = false;
                         gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 case 3:
                     drawHardMode();
-                    if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         itemSelected = false;
                         gm.Sm.playSound(menuSoundProp);
                     }
@@ -99,15 +94,14 @@ public class HelpPage implements GManager {
                 itemSelected = true;
                 gm.Sm.playSound(menuSoundProp);
             }
-        }
-    };
-    
-    public void LateUpdate() {
-        if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
+            if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
             gm.Sm.playSound(menuSoundProp);
             gm.SetInstance(new MenuPage());
         }
+        }
     };
+    
+    public void LateUpdate() {};
     
     
     public void PreRender(){
@@ -235,23 +229,23 @@ public class HelpPage implements GManager {
         graphic.drawImage(itemBox, gm.frame.getWidth() / 2 - 120, gm.frame.getHeight() / 2 - 170,
                 itemBox.getWidth() / 32, itemBox.getHeight() / 32, null);
         graphic.setColor(Color.CYAN); // Ghost
-        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 400, 5, 5);
+        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 500, 5, 5);
         graphic.setColor(Color.green); // Auxiliary
-        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 350, 5, 5);
+        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 450, 5, 5);
         graphic.setColor(Color.red); //Bomb
-        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 300, 5, 5);
+        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 400, 5, 5);
         graphic.setColor(Color.YELLOW); //SpeedUp
-        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 250, 5, 5);
+        graphic.drawRect(gm.frame.getWidth() / 2 - 110, gm.frame.getHeight() - 350, 5, 5);
 
         FontMetrics matrix = gm.Rm.SetFont("Small");
         graphic.setColor(Color.WHITE);
-        graphic.drawString(itemBoxInfo1, gm.frame.getWidth() / 2 - 130, gm.frame.getHeight() - 500);
-        graphic.drawString(itemBoxInfo2, gm.frame.getWidth() / 2 - 130, gm.frame.getHeight() - 470);
-        graphic.drawString(itemBoxInfo3, gm.frame.getWidth() / 2 - 130, gm.frame.getHeight() - 440);
-        graphic.drawString(Ghost, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 390);
-        graphic.drawString(Auxiliary, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 340);
-        graphic.drawString(Bomb, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 290);
-        graphic.drawString(SpeedUp, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 240);
+        graphic.drawString(itemBoxInfo1, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 680);
+        graphic.drawString(itemBoxInfo2, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 650);
+        graphic.drawString(itemBoxInfo3, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 620);
+        graphic.drawString(Ghost, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 490);
+        graphic.drawString(Auxiliary, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 440);
+        graphic.drawString(Bomb, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 390);
+        graphic.drawString(SpeedUp, gm.frame.getWidth() / 2 - 80, gm.frame.getHeight() - 340);
     }
 
     void drawHardMode () {
