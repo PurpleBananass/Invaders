@@ -889,7 +889,7 @@ public final class DrawManager {
 				Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
 				shipskin[i] = dummyShip;
 				shipskin2[i] = dummyShip2;
-				// ì˜ˆ: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				// ?˜ˆ: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
 				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
 				if(i !=5) {
@@ -1006,7 +1006,7 @@ public final class DrawManager {
 			for (int i = 0; i < 6; i++) {
 				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 				shipskin[i] = dummyShip;
-				// ì˜ˆ: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				// ?˜ˆ: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
 				if(i !=5) {
 					try {
