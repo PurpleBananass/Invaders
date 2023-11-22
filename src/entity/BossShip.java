@@ -13,6 +13,10 @@ public class BossShip extends EnemyShip {
     private static final int WIDTH = 448;
     /** Height of current screen. */
     private static final int HEIGHT = 520;
+    /** Width of boss ship. */
+    private static final int BOSS_WIDTH = 50;
+    /** Height of boss ship. */
+    private static final int BOSS_HEIGHT = 30;
     private int splitLevel;
 
     public BossShip (final int positionX, final int positionY,
@@ -59,5 +63,29 @@ public class BossShip extends EnemyShip {
      */
     public void Move(){
 
+    }
+
+    /**
+     * move along the circle track
+     */
+    public void moveCircle() {
+    }
+
+    /**
+     * move along the cross track
+     */
+    public void moveCross() {
+    }
+
+    /**
+     * move along the diamond track
+     */
+    public void moveDiamond() {
+    }
+
+    /**
+     * Teleport randomly
+     */
+    public void moveTeleport() {
     }
 }
