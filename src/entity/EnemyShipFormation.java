@@ -92,8 +92,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
   private boolean moreDiff = false;
   /** speed of complex movements. */
   private int complexSpeed;
-  /** check the last stage. */
-  private boolean lastStage = false;
   /** setting the x position of the last stage ships. */
   private int setXpos;
   /** track the y position of the last stage ships. */
@@ -157,8 +155,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
         new ArrayList<EnemyShip>()
       );
 
-    if (nShipsWide > 7) lastStage = true;
-
     for (List<EnemyShip> column : this.enemyShips) {
       int ship_index = 0;
       for (int i = 0; i < this.nShipsHigh; i++) {
@@ -170,14 +166,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
         EnemyShip enemyShip = null;
 
-        // In the last stage, odd row ships initial position set differently.
-        if (lastStage) {
-          if (ship_index % 2 != 0) {
-            this.setXpos = 120;
-          } else {
-            this.setXpos = positionX;
-          }
-        }
 
         switch (spriteType) {
           case EnemyShipA1:
@@ -384,25 +372,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
         complexSpeed = -complexSpeed;
       }
 
-      // Change movementX value according to trackYpos variable only in last stage.
-      if (lastStage) {
-        if (trackYpos > 1) {
-          movementX = -movementX;
-        }
-      }
-
       for (List<EnemyShip> column : this.enemyShips) for (EnemyShip enemyShip : column) {
-        // In the last stage, the enemy's ships started out in different positions,
-        // so their coordinates changed accordingly.
-        if (lastStage) {
-          if ((int) ((enemyShip.getpositionY() - 100) / 40) % 2 != 0) {
-            enemyShip.move(-movementX, movementY);
-          } else {
-            enemyShip.move(movementX, movementY);
-          }
-        } else {
-          enemyShip.move(movementX, movementY);
-        }
+        enemyShip.move(movementX, movementY);
         enemyShip.update();
       }
     }

@@ -3,38 +3,50 @@ package entity;
 import engine.Cooldown;
 import engine.DrawManager;
 import engine.GameState;
-
 import java.util.Set;
 
 public class EnemyShipA extends EnemyShip {
-    /** HPÏùò Î∞∞Ïú® */
-    private final double HPPOWER = .8;
-    /** Ï¥ùÏïåÏùò ÏÜçÎèÑ Î∞∞Ïú® */
-    private final double BULLETSPEEDPOWER = 0.5;
-    /** ÏäàÌåÖ Ïø®Îã§Ïö¥ Î∞∞Ïú® */
-    private final double BULLETCOOLDOWN = 0;
-    /** Ï†úÍ±∞Ïãú Ïò¨ÎùºÍ∞ÄÎäî Ï†êÏàò */
-    private final int POINT = 30;
-    public EnemyShipA(final int positionX, final int positionY,
-                      final DrawManager.SpriteType spriteType, final GameState gameState) {
-        super(positionX, positionY, spriteType, gameState);
-        super.HP = (int)(super.HP * HPPOWER);
-        super.pointValue = POINT;
-    }
+  /** HP¿« πË¿≤ */
+  private final double HPPOWER = .8;
+  /** √—æÀ¿« º”µµ πË¿≤ */
+  private final double BULLETSPEEDPOWER = 5;
+  /** Ω¥∆√ ƒ¥ŸøÓ πË¿≤ */
+  private final double BULLETCOOLDOWN = 0;
+  /** ¡¶∞≈Ω√ ø√∂Û∞°¥¬ ¡°ºˆ */
+  private final int POINT = 30;
 
-    public final void update() {
-        if (this.animationCooldown.checkFinished()) {
-            this.animationCooldown.reset();
-            if (spriteType == DrawManager.SpriteType.EnemyShipA1)
-                spriteType = DrawManager.SpriteType.EnemyShipA2;
-            else
-                spriteType = DrawManager.SpriteType.EnemyShipA1;
-        }
-    }
-    public final void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown) {
-        bullets.add(BulletPool.getBullet(positionX
-                + width / 2, positionY, (int)(super.BULLET_SPEED * BULLETSPEEDPOWER),0));
-        shootingCooldown.timedown(BULLETCOOLDOWN);
-    }
+  public EnemyShipA(
+    final int positionX,
+    final int positionY,
+    final DrawManager.SpriteType spriteType,
+    final GameState gameState
+  ) {
+    super(positionX, positionY, spriteType, gameState);
+    super.HP = (int) (super.HP * HPPOWER);
+    super.pointValue = POINT;
+  }
 
+  public final void update() {
+    if (this.animationCooldown.checkFinished()) {
+      this.animationCooldown.reset();
+      if (spriteType == DrawManager.SpriteType.EnemyShipA1) spriteType =
+        DrawManager.SpriteType.EnemyShipA2; else spriteType =
+        DrawManager.SpriteType.EnemyShipA1;
+    }
+  }
+
+  public final void shoot(
+    final Set<Bullet> bullets,
+    Cooldown shootingCooldown
+  ) {
+    bullets.add(
+      BulletPool.getBullet(
+        positionX + width / 2,
+        positionY,
+        (int) (super.BULLET_SPEED * BULLETSPEEDPOWER),
+        0
+      )
+    );
+    shootingCooldown.timedown(BULLETCOOLDOWN);
+  }
 }

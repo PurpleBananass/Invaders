@@ -18,6 +18,7 @@ public class GameSettings {
 	private int shootingFrecuency;
 	/** Speed of item dropping. */
 	private double itemSpeed;
+	private boolean bossStage;
 	/**
 	 * Constructor.
 	 * 
@@ -31,12 +32,13 @@ public class GameSettings {
 	 *            Frecuency of enemy shootings, +/- 30%.
 	 */
 	public GameSettings(final int formationWidth, final int formationHeight,
-			final int baseSpeed, final int shootingFrecuency, final double itemSpeed) {
+			final int baseSpeed, final int shootingFrecuency, final double itemSpeed, final boolean bossStage) {
 		this.formationWidth = formationWidth;
 		this.formationHeight = formationHeight;
 		this.baseSpeed = baseSpeed;
 		this.shootingFrecuency = shootingFrecuency;
 		this.itemSpeed = itemSpeed;
+		this.bossStage = bossStage;
 	}
 
 	/**
