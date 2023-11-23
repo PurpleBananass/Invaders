@@ -66,21 +66,43 @@ public class BossShip extends EnemyShip {
     }
 
     /**
+     * tell the direction of boss ship in perspective of gamer
+     * @return true if turn right
+     */
+    public boolean isRight(){
+        double dValue = Math.random();
+        int lr = (int)(dValue * 2);
+        if (lr != 0){return true;} // right
+        else {return false;} // left
+    }
+
+    public int moveTrack(int nowShipX, int nowShipY){
+        double dValue = Math.random();
+        return (int)(dValue * Math.min((WIDTH - nowShipX), (HEIGHT - nowShipY)));
+    }
+
+    /**
      * move along the circle track
      */
     public void moveCircle() {
+        if(isRight()){}
+        else {}
     }
 
     /**
      * move along the cross track
      */
     public void moveCross() {
+        if(isRight()){}
+        else {}
     }
 
     /**
      * move along the diamond track
      */
     public void moveDiamond() {
+        if(isRight()){}
+        else {}
     }
 
     /**
