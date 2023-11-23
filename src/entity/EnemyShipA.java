@@ -4,6 +4,7 @@ import engine.Cooldown;
 import engine.DrawManager;
 import engine.GameState;
 
+import java.awt.*;
 import java.util.Set;
 
 public class EnemyShipA extends EnemyShip {
@@ -19,6 +20,7 @@ public class EnemyShipA extends EnemyShip {
                       final DrawManager.SpriteType spriteType, final GameState gameState) {
         super(positionX, positionY, spriteType, gameState);
         super.HP = (int)(super.HP * HPPOWER);
+        super.setColor(Color.CYAN);
         super.pointValue = POINT;
     }
 
