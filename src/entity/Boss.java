@@ -8,8 +8,13 @@ import engine.SoundManager;
 import screen.GameScreen;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implements a enemy ship, to be destroyed by the player.
@@ -18,6 +23,8 @@ import java.util.Set;
  * 
  */
 public class Boss extends Entity {
+
+	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
@@ -40,11 +47,13 @@ public class Boss extends Entity {
 	protected int firstHP;
 
 	/** 총알 속도 */
-	protected static final int BULLET_SPEED = 12;
+	protected static int BULLET_SPEED = 12;
 	/**패턴간의 간격 */
 	private Cooldown patternCooldown;
 	// 보스가 몇번째 패턴을 사용할지에 대한 랜덤 변수
 	public static int patternNumber;
+	// 보스가 특정 패턴 사용시 안전한곳의 위치
+	public static int[] safeArea = new int[3];
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -68,36 +77,128 @@ public class Boss extends Entity {
 		this.firstHP = this.HP;
 	}
 
+	/**
+	 * Update the boss's pattern.
+	 *
+	 * @param bullets
+	 *            Bullets set to add the bullet being shot.
+	 */
 
 	public final void doPattern(final Set<Bullet> bullets){
 		if(GameScreen.bossShootCheck && GameScreen.shootBetween.checkFinished()){
-			switch (3){//patternNumber
+			switch (patternNumber){//patternNumber
 				case 1:
 					for (int i =0; i < 64; i++){
-					bossShoot(bullets,i*6,80);}
+					bossShoot(bullets,i*6,80,12);}
 					GameScreen.bossShootCheck = false;
 					break;
 				case 2:
 					for (int i =0; i < 64; i++){
-						bossShoot(bullets,448-i*6,80);}
+						bossShoot(bullets,448-i*6,80,12);}
 					GameScreen.bossShootCheck = false;
 					break;
 				case 3:
 					for (int i =0; i < 34; i++){
-						bossShoot(bullets,i*6,80);
-						bossShoot(bullets,448-i*6,80);
+						bossShoot(bullets,i*6,80,12);
+						bossShoot(bullets,448-i*6,80,12);
 						}
 					GameScreen.bossShootCheck = false;
+					break;
+				case 4:
+					for (int i =0; i < 43; i++){
+						bossShoot(bullets,i*6,80,12);
+						bossShootAfter(bullets,448-i*6,80,1000,12);
+					}
+					GameScreen.bossShootCheck = false;
+					break;
+				case 5:
+					for (int i = 0; i < 51; i++){
+						bossShootAfter(bullets,i*6,80,i*50,4);
+						bossShootAfter(bullets,150+i*6,80,i*50,4);
+					}
+					for (int j = 0; j < 60; j++){
+						bossShootAfter(bullets,448-j*6,80,2500+j*50,4);
+						bossShootAfter(bullets,448-150-j*6,80,2500+j*50,4);
+					}
+					GameScreen.bossShootCheck = false;
+					this.patternCooldown.reset();
+					bossShootCheckAfter(3);
+					break;
+				case 6:
+					switch (Boss.safeArea[0]) {
+						case 1:
+							for (int i =0; i < 50; i++){
+								bossShootAfter(bullets,448/3+i*6,80,0,18);}
+							break;
+						case 2:
+							for (int i =0; i < 30; i++){
+								bossShootAfter(bullets,i*6,80,0,18);
+								bossShootAfter(bullets,448/3*2+i*6,80,0,18);
+							}
+							break;
+						case 3:
+							for (int i =0; i < 50; i++){
+								bossShootAfter(bullets,i*6,80,0,18);}
+							break;
+					}
+					switch (Boss.safeArea[1]) {
+						case 1:
+							for (int i =0; i < 50; i++){
+								bossShootAfter(bullets,448/3+i*6,80,2000,18);}
+							break;
+						case 2:
+							for (int i =0; i < 30; i++){
+								bossShootAfter(bullets,i*6,80,2000,18);
+								bossShootAfter(bullets,448/3*2+i*6,80,2000,18);
+							}
+							break;
+						case 3:
+							for (int i =0; i < 50; i++){
+								bossShootAfter(bullets,i*6,80,2000,18);}
+							break;
+					}
+					switch (Boss.safeArea[2]) {
+						case 1:
+							for (int i =0; i < 50; i++){
+								bossShootAfter(bullets,448/3+i*6,80,4000,18);}
+							break;
+						case 2:
+							for (int i =0; i < 30; i++){
+								bossShootAfter(bullets,i*6,80,4000,18);
+								bossShootAfter(bullets,448/3*2+i*6,80,4000,18);
+							}
+							break;
+						case 3:
+							for (int i =0; i < 50; i++){
+								bossShootAfter(bullets,i*6,80,4000,18);}
+							break;
+					}
+					GameScreen.bossShootCheck = false;
+					this.patternCooldown.reset();
+					bossShootCheckAfter(3);
 					break;
 			}
 		}
 		if(this.patternCooldown.checkFinished()&& !GameScreen.bossShootCheck){
 			this.patternCooldown.reset();
 			GameScreen.bossPatternDrawCheck = true;
-			Random random = new Random();
-			patternNumber = random.nextInt(2) + 1;
+			setPatternNumber();
+			}
 		}
+
+
+	private void setPatternNumber(){
+		Random random = new Random();
+		patternNumber = random.nextInt(6) + 1;
+		if(true){//patternNumber == 6
+			for (int i=0; i<3; i++){
+				int k = random.nextInt(3)+1;
+				safeArea[i] = k;
+			}
+		}
+
 	}
+	public static int getPatternNumber(){return patternNumber;}
 	/**
 	 * Getter for the score bonus if this ship is destroyed.
 	 * 
@@ -106,18 +207,16 @@ public class Boss extends Entity {
 	public final int getPointValue() {
 		return this.pointValue;
 	}
-	/**
-	 * Updates attributes, mainly used for animation purposes.
-	 */
-	public void update() {
-
-		return;
+	public void bossShoot(final Set<Bullet> bullets,int positionX, int positionY,int speed) {
+		bullets.add(BulletPool.getBullet(positionX, positionY, speed, 0));
+	}
+	public void bossShootAfter(final Set<Bullet> bullets,int positionX, int positionY,int delay, int speed) {
+		scheduler.schedule(() -> bossShoot(bullets, positionX, positionY,speed), delay, TimeUnit.MILLISECONDS);
 	}
 
-	public void bossShoot(final Set<Bullet> bullets,int positionX, int positionY) {
-		bullets.add(BulletPool.getBullet(positionX, positionY, BULLET_SPEED, 0));
+	private void bossShootCheckAfter(int time){
+		scheduler.schedule(() -> this.patternCooldown.reset(), time, TimeUnit.SECONDS);
 	}
-
 	/**
 	 * Destroys the ship, causing an explosion.
 	 */
@@ -142,8 +241,6 @@ public class Boss extends Entity {
 	 */
 	public final boolean isDestroyed() {return this.isDestroyed;}
 	public final int getpositionY() { return this.positionY; }
-
-
 
 	/**
 	 * 랜덤으로 Item을 가진 EnemyShip 생성*/

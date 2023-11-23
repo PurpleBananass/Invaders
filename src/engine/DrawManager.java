@@ -1602,6 +1602,7 @@ public final class DrawManager {
 						GameScreen.bossPatternDrawOverCheck = true;
 						break;}
 				}
+				break;
 			case 3:
 				for (int i= 0; i < ntimes; i++){
 					backBufferGraphics.fillRect(448-i*6,40,3,440);
@@ -1610,6 +1611,87 @@ public final class DrawManager {
 						GameScreen.bossPatternDrawOverCheck = true;
 						break;}
 				}
+				break;
+			case 4:
+				for (int i= 0; i < ntimes; i++){
+					backBufferGraphics.fillRect(i*6,40,3,440);
+					if(i>40) break;
+				}
+				if(ntimes > 30){
+					for(int j=0; j<ntimes-30; j++){
+						backBufferGraphics.fillRect(448-j*6,40,3,440);
+						if(j > 40){
+							GameScreen.bossPatternDrawOverCheck = true;
+							break;}
+					}
+				}
+				break;
+			case 5:
+				if(ntimes > 20){
+					for(int j=0; j<ntimes-20; j++){
+						backBufferGraphics.fillRect(448-j*12,40,3,440);
+						backBufferGraphics.fillRect(448-j*12+6,40,3,440);
+						if(j*12 > 400){
+							GameScreen.bossPatternDrawOverCheck = true;
+							break;}
+					}
+				}
+				if(ntimes < 36){
+					for (int i= 0; i < ntimes; i++){
+						if(i*12>400) break;
+						backBufferGraphics.fillRect(i*12-6,40,3,440);
+						backBufferGraphics.fillRect(i*12,40,3,440);
+					}
+				}
+				break;
+			case 6:
+				if(ntimes <15) {
+					switch (Boss.safeArea[0]) {
+						case 1:
+							backBufferGraphics.fillRect(448 / 3, 40, 448 / 3 * 2, 440);
+							break;
+						case 2:
+							backBufferGraphics.fillRect(0, 40, 448 / 3, 440);
+							backBufferGraphics.fillRect(448 / 3 * 2, 40, 448 / 3, 440);
+							break;
+						case 3:
+							backBufferGraphics.fillRect(0, 40, 448 / 3 * 2, 440);
+							break;
+					}
+				}
+				else if(ntimes < 30){
+					switch (Boss.safeArea[1]){
+						case 1:
+							backBufferGraphics.fillRect(448 / 3, 40, 448 / 3 * 2, 440);
+							break;
+						case 2:
+							backBufferGraphics.fillRect(0, 40, 448 / 3, 440);
+							backBufferGraphics.fillRect(448 / 3 * 2, 40, 448 / 3, 440);
+							break;
+						case 3:
+							backBufferGraphics.fillRect(0, 40, 448 / 3 * 2, 440);
+							break;
+					}
+
+				}
+				else if(ntimes < 45){
+					switch (Boss.safeArea[2]){
+						case 1:
+							backBufferGraphics.fillRect(448 / 3, 40, 448 / 3 * 2, 440);
+							break;
+						case 2:
+							backBufferGraphics.fillRect(0, 40, 448 / 3, 440);
+							backBufferGraphics.fillRect(448 / 3 * 2, 40, 448 / 3, 440);
+							break;
+						case 3:
+							backBufferGraphics.fillRect(0, 40, 448 / 3 * 2, 440);
+							break;
+					}
+				}
+				else {
+					GameScreen.bossPatternDrawOverCheck = true;
+					break;}
+				break;
 		}
 
 	}

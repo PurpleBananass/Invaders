@@ -211,6 +211,11 @@ public class GameScreen extends Screen {
 	 */
 	public final void initialize() {
 		super.initialize();
+		bossShootCheck = false;
+		bossPatternDrawCheck = false;
+		bossPatternDrawOverCheck = false;
+		bossCheck = false;
+		bossCountCheck = false;
 
 		boss = new Boss(0,40, DrawManager.SpriteType.Boss,this.gameState);
 		patternBetween = Core.getCooldown(20);
@@ -352,6 +357,7 @@ public class GameScreen extends Screen {
             this.haslifeItemUsed = true;
         }
 		if(System.currentTimeMillis()- bossStartTime > 4000){
+			System.out.println(System.currentTimeMillis()- bossStartTime);
 			bossCountCheck = false;
 			this.enemyShipFormation.update();}
 		if(bossPatternDrawOverCheck){
@@ -706,18 +712,12 @@ public class GameScreen extends Screen {
 				this.bossCheck = false;
 				this.screenFinishedCooldown.reset();
 			}
-			/*
 			if(this.enemyShipFormation.isEmpty() && !this.levelFinished && !this.bossCheck) {
 				this.bossCheck = true;
 				this.bossStartTime = System.currentTimeMillis();
 				this.bossCountCheck = true;
 				this.screenFinishedCooldown.reset();
-			}*/
-			if(!this.levelFinished && !this.bossCheck){
-			this.bossCheck = true;
-			this.bossStartTime = System.currentTimeMillis();
-			this.bossCountCheck = true;
-			this.screenFinishedCooldown.reset();}
+			}
 
 
 
@@ -774,10 +774,12 @@ public class GameScreen extends Screen {
 				ntimes ++;
 			}
 			if(bossPatternDrawCheck){
-				drawManager.drawBossPattern(this,3, ntimes);}
+				drawManager.drawBossPattern(this,Boss.getPatternNumber(), ntimes);}
 			drawManager.drawEntity(this.boss,this.boss.getPositionX(),this.boss.getPositionY());
 			drawManager.drawBossHp(this,this.boss.getHP(),this.boss.getFirstHP());
 		}
+		else{
+			enemyShipFormation.draw();}
 
 		if (this.gameState.getMode() == 1) {
 			if (this.lives > 0) {
@@ -804,14 +806,10 @@ public class GameScreen extends Screen {
 			}
 		}
 
-		if (this.enemyShipSpecial != null)
+		if (this.enemyShipSpecial != null){
 			drawManager.drawEntity(this.enemyShipSpecial,
 					this.enemyShipSpecial.getPositionX(),
-					this.enemyShipSpecial.getPositionY());
-
-
-		else{
-		enemyShipFormation.draw();}
+					this.enemyShipSpecial.getPositionY());}
 
 		for (Bullet bullet : this.bullets)
 			drawManager.drawEntity(bullet, bullet.getPositionX(),
