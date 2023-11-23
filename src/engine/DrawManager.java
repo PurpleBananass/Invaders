@@ -1581,6 +1581,44 @@ public final class DrawManager {
 	 * Draws achievement information on the screen based on the achievements map.
 	 *
 	 * @param screen      Screen to draw on.
+	 * @param patternNumber Draw the pattern corresponding to the boss's pattern number.
+	 */
+
+	public void drawBossPattern(final Screen screen, int patternNumber, int ntimes){
+		backBufferGraphics.setColor(Color.RED);
+		switch (patternNumber){
+			case 1:
+				for (int i= 0; i < ntimes; i++){
+						backBufferGraphics.fillRect(i*6,40,3,440);
+						if(i > 60){
+						GameScreen.bossPatternDrawOverCheck = true;
+						break;}
+					}
+				break;
+			case 2:
+				for (int i= 0; i < ntimes; i++){
+					backBufferGraphics.fillRect(448-i*6,40,3,440);
+					if(i > 60){
+						GameScreen.bossPatternDrawOverCheck = true;
+						break;}
+				}
+			case 3:
+				for (int i= 0; i < ntimes; i++){
+					backBufferGraphics.fillRect(448-i*6,40,3,440);
+					backBufferGraphics.fillRect(i*6,40,3,440);
+					if(i > 30){
+						GameScreen.bossPatternDrawOverCheck = true;
+						break;}
+				}
+		}
+
+	}
+
+
+	/**
+	 * Draws achievement information on the screen based on the achievements map.
+	 *
+	 * @param screen      Screen to draw on.
 	 * @param achievements Map of achievements with their completion status.
 	 */
 	public void drawAchievements(final Screen screen, Map<Achievement, Boolean> achievements) {

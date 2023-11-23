@@ -52,6 +52,10 @@ public class GameScreen extends Screen {
 	/** Boss */
 	private Boss boss;
 
+	/** The time after boss start the pattern */
+	private Cooldown patternBetween;
+	/** 보스 패턴 빨간줄이 다 그어지고 난 이후 총알이 발사 되기 까지의 간격 */
+	public static Cooldown shootBetween;
 	/** First Player's ship. */
 	private Ship ship;
 	/** Second Player's ship. **/
@@ -68,9 +72,16 @@ public class GameScreen extends Screen {
 	/** Time from finishing the level to screen change. */
 	private Cooldown screenFinishedCooldown;
 
+	/** 패턴간의 간격*/
+	public static int ntimes = 0;
 	/** Set of all bullets fired by on screen ships. */
 	private Set<Bullet> bullets;
-
+	// 보스의 패턴이 전부 그려졌는지 체크
+	public static boolean bossPatternDrawOverCheck = false;
+	//보스의 패턴을 그릴지 말지 체크
+	public static boolean bossPatternDrawCheck = false;
+	//보스가 총알을 발사 하는가에 대한 체크
+	public static boolean bossShootCheck = false;
 	private Set<Item> items;
 	/** Current score. */
 	private int score;
@@ -112,7 +123,7 @@ public class GameScreen extends Screen {
 
 	/** list of past high scores */
 	private int highScore;
-
+	// 보스가 처음 시작할때 나오는 warning이라는 문구를 출력할지를 결정하는 변수
 	private boolean bossCountCheck = false;
 	private boolean isPause = false;
 
@@ -202,6 +213,8 @@ public class GameScreen extends Screen {
 		super.initialize();
 
 		boss = new Boss(0,40, DrawManager.SpriteType.Boss,this.gameState);
+		patternBetween = Core.getCooldown(20);
+		shootBetween = Core.getCooldown(1000);
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings, this.gameState);
 		enemyShipFormation.attach(this);
 		Player player;
@@ -341,6 +354,12 @@ public class GameScreen extends Screen {
 		if(System.currentTimeMillis()- bossStartTime > 4000){
 			bossCountCheck = false;
 			this.enemyShipFormation.update();}
+		if(bossPatternDrawOverCheck){
+			bossShootCheck = true;
+			bossPatternDrawCheck = false;
+			ntimes = 0;
+			bossPatternDrawOverCheck = false;
+			shootBetween.reset();}
 		if (!isPause && !manual) {
             if (this.inputDelay.checkFinished() && !this.levelFinished && !this.bossCountCheck) {
 				bossStartTime = System.currentTimeMillis();
@@ -672,7 +691,7 @@ public class GameScreen extends Screen {
 				this.enemyShipFormation.update();
 				this.enemyShipFormation.shoot(this.bullets);}
 				else{
-					this.boss.update();
+					this.boss.doPattern(this.bullets);
 				}
 
 			}
@@ -687,12 +706,21 @@ public class GameScreen extends Screen {
 				this.bossCheck = false;
 				this.screenFinishedCooldown.reset();
 			}
+			/*
 			if(this.enemyShipFormation.isEmpty() && !this.levelFinished && !this.bossCheck) {
 				this.bossCheck = true;
 				this.bossStartTime = System.currentTimeMillis();
 				this.bossCountCheck = true;
 				this.screenFinishedCooldown.reset();
-			}
+			}*/
+			if(!this.levelFinished && !this.bossCheck){
+			this.bossCheck = true;
+			this.bossStartTime = System.currentTimeMillis();
+			this.bossCountCheck = true;
+			this.screenFinishedCooldown.reset();}
+
+
+
 			if (((this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
 					&& !this.levelFinished) {
 				this.bossCheck = false;
@@ -740,7 +768,16 @@ public class GameScreen extends Screen {
 				drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
 			}
 		}
-
+		if(this.bossCheck){
+			if(patternBetween.checkFinished()&& bossPatternDrawCheck && !bossCountCheck){
+				patternBetween.reset();
+				ntimes ++;
+			}
+			if(bossPatternDrawCheck){
+				drawManager.drawBossPattern(this,3, ntimes);}
+			drawManager.drawEntity(this.boss,this.boss.getPositionX(),this.boss.getPositionY());
+			drawManager.drawBossHp(this,this.boss.getHP(),this.boss.getFirstHP());
+		}
 
 		if (this.gameState.getMode() == 1) {
 			if (this.lives > 0) {
@@ -772,10 +809,7 @@ public class GameScreen extends Screen {
 					this.enemyShipSpecial.getPositionX(),
 					this.enemyShipSpecial.getPositionY());
 
-		if(this.bossCheck){
-			drawManager.drawEntity(this.boss,this.boss.getPositionX(),this.boss.getPositionY());
-			drawManager.drawBossHp(this,this.boss.getHP(),this.boss.getFirstHP());
-		}
+
 		else{
 		enemyShipFormation.draw();}
 

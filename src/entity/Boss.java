@@ -5,6 +5,7 @@ import engine.Core;
 import engine.DrawManager.SpriteType;
 import engine.GameState;
 import engine.SoundManager;
+import screen.GameScreen;
 
 import java.awt.*;
 import java.util.Random;
@@ -33,17 +34,17 @@ public class Boss extends Entity {
 	/** Values of the ship, in points, when destroyed. */
 	protected int pointValue;
 
-	private boolean hasItem;
-
-	private int itemRange;
-
 	/** 적의 체력 */
 	protected int HP;
 
 	protected int firstHP;
 
 	/** 총알 속도 */
-	protected static final int BULLET_SPEED = 4;
+	protected static final int BULLET_SPEED = 12;
+	/**패턴간의 간격 */
+	private Cooldown patternCooldown;
+	// 보스가 몇번째 패턴을 사용할지에 대한 랜덤 변수
+	public static int patternNumber;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -58,16 +59,45 @@ public class Boss extends Entity {
 	public Boss(final int positionX, final int positionY,
                 final SpriteType spriteType, final GameState gameState) {
 		super(positionX, positionY, 448, 20, Color.yellow);
+		this.patternCooldown = Core.getCooldown(5000);
 		this.gameState = gameState;
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
 		this.isDestroyed = false;
-		this.itemRange =  new Random().nextInt(RANDOM_BOUND);
-		this.hasItem = itemGenerator(itemRange);
 		this.HP = this.gameState.getLevel()*10;
 		this.firstHP = this.HP;
 	}
 
+
+	public final void doPattern(final Set<Bullet> bullets){
+		if(GameScreen.bossShootCheck && GameScreen.shootBetween.checkFinished()){
+			switch (3){//patternNumber
+				case 1:
+					for (int i =0; i < 64; i++){
+					bossShoot(bullets,i*6,80);}
+					GameScreen.bossShootCheck = false;
+					break;
+				case 2:
+					for (int i =0; i < 64; i++){
+						bossShoot(bullets,448-i*6,80);}
+					GameScreen.bossShootCheck = false;
+					break;
+				case 3:
+					for (int i =0; i < 34; i++){
+						bossShoot(bullets,i*6,80);
+						bossShoot(bullets,448-i*6,80);
+						}
+					GameScreen.bossShootCheck = false;
+					break;
+			}
+		}
+		if(this.patternCooldown.checkFinished()&& !GameScreen.bossShootCheck){
+			this.patternCooldown.reset();
+			GameScreen.bossPatternDrawCheck = true;
+			Random random = new Random();
+			patternNumber = random.nextInt(2) + 1;
+		}
+	}
 	/**
 	 * Getter for the score bonus if this ship is destroyed.
 	 * 
@@ -84,11 +114,8 @@ public class Boss extends Entity {
 		return;
 	}
 
-	public void shoot(final Set<Bullet> bullets,Cooldown shootingCooldown) {
-		bullets.add(BulletPool.getBullet(positionX
-				+ width / 2, positionY, BULLET_SPEED, 0));
-		shootingCooldown.timedown(0);
-
+	public void bossShoot(final Set<Bullet> bullets,int positionX, int positionY) {
+		bullets.add(BulletPool.getBullet(positionX, positionY, BULLET_SPEED, 0));
 	}
 
 	/**
@@ -117,6 +144,7 @@ public class Boss extends Entity {
 	public final int getpositionY() { return this.positionY; }
 
 
+
 	/**
 	 * 랜덤으로 Item을 가진 EnemyShip 생성*/
 	private boolean itemGenerator(int rand_int){
@@ -134,12 +162,4 @@ public class Boss extends Entity {
 	public int getFirstHP(){
 		return this.firstHP;
 	}
-
-
-	/** EnemyShip이 아이템을 지닌 객체인지 확인 */
-	public final boolean hasItem(){
-		return this.hasItem;
-	}
-
-	public int getItemRange(){return this.itemRange;}
 }
