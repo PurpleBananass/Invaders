@@ -168,7 +168,7 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing title screen.");
 				break;
-			case 7:
+			case 10:
 				// Game & score.
 				do {
 					SoundManager.stopSound("selection",2f);
@@ -309,13 +309,21 @@ public final class Core {
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing select screen.");
 				break;
-			case 8:
+			case 9:
 				// Select Skin.
 				currentScreen = new SkinSelectionScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " Skin Selection screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing SkinSelection screen.");
+				break;
+			case 7:
+				// Gamble.
+				currentScreen = new GambleScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " Gamble screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing Gamble screen.");
 				break;
 			default:
 				break;

@@ -12,7 +12,9 @@ import java.util.Set;
 
 public class GambleScreen extends Screen {
     private static final int SELECTION_TIME = 300;
+    private static final int CHANGE_DELAY = 500;
     private Cooldown selectionCooldown;
+    private Cooldown changeSpriteCooldown;
     private Ship ship;
     /** Height of the interface separation line. */
     private static final int SEPARATION_LINE_HEIGHT = 40;
@@ -21,18 +23,17 @@ public class GambleScreen extends Screen {
     /** Player's freedom. */
     private Replayability replayability = new Replayability(0);
     private int gambleMode = 0;
-    private boolean isRightBorder = this.ship.getPositionX()
-            + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
-    private boolean isLeftBorder = this.ship.getPositionX()
-            - this.ship.getSpeed() < 1;
-    public int bettingCurrency = 0;
+    private boolean isRightBorder;
+    private boolean isLeftBorder;
+    public static int bettingCurrency = 0;
     private int playerCurrency;
     private int mode = 1;
-    private boolean gamblePlaying = true;
     private boolean selected = false;
-    private EnemyShip[] gambleEntity = {new EnemyShip(0,0, DrawManager.SpriteType.EnemyShipA1),
-            new EnemyShip(0,0, DrawManager.SpriteType.EnemyShipA1),
-            new EnemyShip(0,0, DrawManager.SpriteType.EnemyShipA1)};
+    private boolean[] isDecidedEntity = {false,false,false};
+    private Entity[] gambleEntity = {new Entity(this.width/4,this.height/6,12 * 2, 8 * 2, Color.WHITE),
+            new Entity(this.width/2,this.height/6,12 * 2, 8 * 2, Color.WHITE),
+            new Entity(this.width/4 *3,this.height/6,12 * 2, 8 * 2, Color.WHITE)};
+    private DrawManager.SpriteType[] sprites = {DrawManager.SpriteType.EnemyShipA1, DrawManager.SpriteType.EnemyShipB1, DrawManager.SpriteType.EnemyShipC1, DrawManager.SpriteType.EnemyShipSpecial};
 
     /**
      * Implements the high scores screen, it shows player records.
@@ -41,11 +42,21 @@ public class GambleScreen extends Screen {
      */
     public GambleScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
-        this.returnCode = 10;
+        this.returnCode = 7;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
+    }
 
+    public final void initialize() {
+        super.initialize();
         this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
+        this.bullets = new HashSet<Bullet>();
+        this.inputDelay = Core.getCooldown(CHANGE_DELAY);
+        try{
+            playerCurrency = Core.getFileManager().getCurrentPlayer().getCurrency();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
         /**
@@ -64,69 +75,66 @@ public class GambleScreen extends Screen {
      */
     protected final void update() {
         super.update();
+        isRightBorder = this.ship.getPositionX()
+                + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
+        isLeftBorder = this.ship.getPositionX()
+                - this.ship.getSpeed() < 1;
         manageCollisions();
+        updateEntitySprite();
         cleanBullets();
-        try{
-            playerCurrency = Core.getFileManager().getCurrentPlayer().getCurrency();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
 
         draw();
-        switch (gambleMode){
-            //도박 들어 가기 전 베팅, 게임 선택 창
-            case 0:
-                if (this.selectionCooldown.checkFinished()
-                        && this.inputDelay.checkFinished()) {
-                    if (selected) {
-                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-                            selected = true;
-                        }
-                        if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
-                            this.returnCode = 1;
-                            this.isRunning = false;
-                        }
-                    } else {
-                        //겜블 종목 선택
-                        if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
-                            if (mode == 1) mode = 3;
-                            else mode--;
-                        }
-                        if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
-                            if (mode == 3) mode = 1;
-                            else mode++;
-                        }
-                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-                            gambleMode = mode;
-                        }
-                        if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
-                            selected = false;
-                        }
+        if(gambleMode == 0){
+            if (this.selectionCooldown.checkFinished()
+                    && this.inputDelay.checkFinished()) {
+                if (!selected) {
+                    if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+                        selected = true;
+                        this.selectionCooldown.reset();
                     }
-                }
-            //빠칭코
-            case 1:
-                if (this.selectionCooldown.checkFinished()
-                        && this.inputDelay.checkFinished()){
-                    if (!isLeftBorder && inputManager.isKeyDown(Core.getKeySettingCode(0))) {
-                        this.ship.moveLeft();
-                    }
-                    if (!isRightBorder && inputManager.isKeyDown(Core.getKeySettingCode(1))) {
-                        this.ship.moveRight();
-                    }
-                    if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
-                        this.ship.shoot(this.bullets, 1);
-                    }
-
-                    if(gamblePlaying && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){
+                    if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+                        this.returnCode = 1;
                         this.isRunning = false;
                     }
+                } else {
+                    //겜블 종목 선택
+                    if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+                        if (mode == 1) mode = 3;
+                        else mode--;
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+                        if (mode == 3) mode = 1;
+                        else mode++;
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+                        gambleMode = mode;
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+                        selected = false;
+                        this.selectionCooldown.reset();
+                    }
                 }
-                break;
-            default:
-                break;
+            }
         }
+        else if(gambleMode == 1){
+            if (this.selectionCooldown.checkFinished()
+                    && this.inputDelay.checkFinished()){
+                if (!isLeftBorder && inputManager.isKeyDown(Core.getKeySettingCode(0))) {
+                    this.ship.moveLeft();
+                }
+                if (!isRightBorder && inputManager.isKeyDown(Core.getKeySettingCode(1))) {
+                    this.ship.moveRight();
+                }
+                if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
+                    this.ship.shoot(this.bullets, 1);
+                }
 
+                if(isDecidedEntity[0] && isDecidedEntity[1] && isDecidedEntity[2] && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){
+                    this.isRunning = false;
+                }
+            }
+        }
     }
     /**
      * 해야할 것:
@@ -144,22 +152,20 @@ public class GambleScreen extends Screen {
         drawManager.initDrawing(this);
 
         drawManager.drawGambleTitle(this, playerCurrency);
-        switch (gambleMode){
-            case 0:
-                drawManager.drawGambleMenu(this);
-                break;
-            case 1:
-                drawManager.drawEntity(this.ship, this.ship.getPositionX(),
-                        this.ship.getPositionY());
-                drawManager.drawGambleEntity(this);
-                for (Bullet bullet : this.bullets)
-                    drawManager.drawEntity(bullet, bullet.getPositionX(),
-                            bullet.getPositionY());
-
-
-                break;
+        if(gambleMode == 0){
+            drawManager.drawGambleMenu(this, mode, selected);
         }
-
+        else if (gambleMode == 1) {
+            drawManager.drawEntity(this.ship, this.ship.getPositionX(),
+                    this.ship.getPositionY());
+            drawManager.drawGambleEntity(this, gambleEntity);
+            for (Bullet bullet : this.bullets)
+                drawManager.drawEntity(bullet, bullet.getPositionX(),
+                        bullet.getPositionY());
+            for(Entity entity : this.gambleEntity)
+                drawManager.drawEntity(entity, entity.getPositionX(),
+                        entity.getPositionY());
+        }
     }
 
     private void cleanBullets() {
@@ -202,15 +208,23 @@ public class GambleScreen extends Screen {
     private void manageCollisions() {
         Set<Bullet> recyclable = new HashSet<Bullet>();
         for (Bullet bullet : this.bullets) {
-            for (EnemyShip enemyShip : this.gambleEntity) {
+            for (Entity entities : this.gambleEntity) {
                 //총알이 적에게 닿으면 멈추기 구현해야함
-                if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                    
+                if (!entities.isDecideSprite && checkCollision(bullet, entities)) {
+                    entities.isDecideSprite = true;
                 }
                 recyclable.add(bullet);
             }
         }
-
+    }
+    private void updateEntitySprite(){
+        for (Entity entity : this.gambleEntity){
+            if(!entity.isDecideSprite){
+                if(entity.spriteNumber <3) entity.spriteNumber += 1;
+                else entity.spriteNumber = 0;
+                entity.changeEntitySprite(sprites[entity.spriteNumber]);
+            }
+        }
     }
 }
 

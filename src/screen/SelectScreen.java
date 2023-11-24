@@ -29,7 +29,7 @@ public class SelectScreen extends Screen{
      */
     public SelectScreen(int width, int height, int fps){
         super(width, height, fps);
-        this.returnCode = 8;
+        this.returnCode = 9;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }

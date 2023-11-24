@@ -486,6 +486,7 @@ public final class DrawManager {
 		String settingString = "Setting";
 		String exitString = "exit";
 		String achievementString = "Achievements";
+		String gambleString = "Gamble";
 
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
@@ -519,12 +520,18 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, achievementString, screen.getHeight() / 3
 				* 2 + fontRegularMetrics.getHeight() * 5-fontRegularMetrics.getHeight()*2);
+		if (option == 7)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, gambleString, screen.getHeight() / 3
+				* 2 + fontRegularMetrics.getHeight() * 7-fontRegularMetrics.getHeight()*2);
 		if (option == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString, screen.getHeight() / 3
-				* 2 + fontRegularMetrics.getHeight() * 7-fontRegularMetrics.getHeight()*2);
+				* 2 + fontRegularMetrics.getHeight() * 9-fontRegularMetrics.getHeight()*2);
 	}
 
 	/**
@@ -1620,18 +1627,33 @@ public final class DrawManager {
 		backBufferGraphics.drawString(Currency, screen.getWidth() / 10 * 8
 				- fontRegularMetrics.stringWidth(Currency) / 2 , screen.getHeight() / 8);
 	}
-	public void drawGambleMenu(Screen screen){
+	public void drawGambleMenu(Screen screen, int mode, boolean selected){
+		if(!selected) backBufferGraphics.setColor(Color.GREEN);
+		else backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredBigString(screen, Integer.toString(GambleScreen.bettingCurrency), screen.getHeight()/3);
 
+		backBufferGraphics.setFont(fontRegular);
+		if (mode == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("Pachinko", screen.getWidth()/4, screen.getHeight()/3 *2);
+		if (mode == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("2", screen.getWidth()/2, screen.getHeight()/3 *2);
+
+		if (mode == 3)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("3", screen.getWidth()/4 *3, screen.getHeight()/3 *2);
 	}
 
-	public void drawGambleEntity(Screen screen){
-		EnemyShip[] target = new EnemyShip[3];
-
-		for (int i = 0; i < 6; i++) {
-			EnemyShip dummyShip = new EnemyShip(0, 0, SpriteType.EnemyShipA1);
-			target[i] = dummyShip;
-			drawEntity(target[i], screen.getWidth() / 2 - 13, 172 + 50*i);
-
+	public void drawGambleEntity(Screen screen, Entity[] gambleEntity){
+		for (int i = 0; i < 3; i++) {
+			drawEntity(gambleEntity[i], screen.getWidth() / 4 * (i+1), screen.getHeight()/6);
 		}
 	}
 }
