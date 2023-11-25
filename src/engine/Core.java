@@ -55,6 +55,7 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500,4.8,true);
+
 	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
