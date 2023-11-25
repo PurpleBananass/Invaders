@@ -852,7 +852,7 @@ public class GameScreen extends Screen {
 		Set<Bullet> recyclable = new HashSet<Bullet>();
 		if (gameState.getMode() == 1) {
             for (Bullet bullet : this.bullets) {
-                if (bullet.getSpeed() > 0) {
+                if (bullet.getSpeed() > 0) {//enemy bullet
                     if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()) {
                         recyclable.add(bullet);
                         if (!this.ship.isDestroyed()) {
@@ -867,41 +867,41 @@ public class GameScreen extends Screen {
                             this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
                         }
                     }
-                } else {
-                    for (EnemyShip enemyShip : this.enemyShipFormation) {
-                        if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-                            if (this.isBomb) {
-                                List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
-								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
-                                for (EnemyShip enemy : enemyShips) {
-                                    this.score += enemy.getPointValue();
-                                    this.shipsDestroyed++;
-                                }
-                            } else {
-                                this.score += enemyShip.getPointValue();
-                                this.shipsDestroyed++;
-                                this.enemyShipFormation.destroy(enemyShip);
-                            }
+                } else {//player bullet
+						for (EnemyShip enemyShip : this.enemyShipFormation) {
+							if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
+								if (this.isBomb) {
+									List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+									SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
+									for (EnemyShip enemy : enemyShips) {
+										this.score += enemy.getPointValue();
+										this.shipsDestroyed++;
+									}
+								} else {
+									this.score += enemyShip.getPointValue();
+									this.shipsDestroyed++;
+									this.enemyShipFormation.destroy(enemyShip);
+								}
 
-							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-								SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
+								if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+									items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+									SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
+								}
+
+								setBomb(false);
+
+								recyclable.add(bullet);
 							}
+						}
 
-                            setBomb(false);
-
-                            recyclable.add(bullet);
-                        }
-                    }
-
-                    if (this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
-                            && checkCollision(bullet, this.enemyShipSpecial)) {
-                        shipsDestroyed++;
-                        this.score += this.enemyShipSpecial.getPointValue();
-                        this.enemyShipSpecial.destroy();
-                        this.enemyShipSpecialExplosionCooldown.reset();
-                        recyclable.add(bullet);
-                    }
+						if (!this.enemyShipFormation.getBossStage() && this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
+								&& checkCollision(bullet, this.enemyShipSpecial)) {
+							shipsDestroyed++;
+							this.score += this.enemyShipSpecial.getPointValue();
+							this.enemyShipSpecial.destroy();
+							this.enemyShipSpecialExplosionCooldown.reset();
+							recyclable.add(bullet);
+						}
                 }
             }
         }

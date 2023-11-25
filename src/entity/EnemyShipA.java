@@ -9,7 +9,7 @@ public class EnemyShipA extends EnemyShip {
   /** HP의 배율 */
   private final double HPPOWER = .8;
   /** 총알의 속도 배율 */
-  private final double BULLETSPEEDPOWER = 5;
+  private final double BULLETSPEEDPOWER = .5;
   /** 슈팅 쿨다운 배율 */
   private final double BULLETCOOLDOWN = 0;
   /** 제거시 올라가는 점수 */
