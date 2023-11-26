@@ -76,32 +76,54 @@ public class BossShip extends EnemyShip {
         else {return false;} // left
     }
 
-    public int moveTrack(int nowShipX, int nowShipY){
+    public int moveTrackSize(int nowShipX, int nowShipY){
         double dValue = Math.random();
-        return (int)(dValue * Math.min((WIDTH - nowShipX), (HEIGHT - nowShipY)));
+        int minimX = Math.min((WIDTH - nowShipX - BOSS_WIDTH), nowShipX);
+        return (int)(dValue * Math.min(minimX, (HEIGHT - nowShipY - BOSS_HEIGHT)));
     }
 
     /**
      * move along the circle track
      */
     public void moveCircle() {
-        if(isRight()){}
-        else {}
+        int r = moveTrackSize(positionX, positionY);
+        if (r <= 0){moveTeleport();}
+        else {
+            if(isRight()){int x = 1, y = -1;}
+            else {int x = -1, y = -1;}
+            for (int i = 1; i <= 360; i++) {
+                positionX += r * Math.sin((double) (i / (double) 360));
+                positionY += r * Math.cos((double) (i / (double) 360));
+                // 특정 조건에서 총도 쏘면 좋을 듯
+            }
+        }
     }
 
     /**
      * move along the cross track
      */
     public void moveCross() {
-        if(isRight()){}
-        else {}
+        int r = moveTrackSize(positionX, positionY);
+        if (r <= 0){moveTeleport();}
+        else {
+            int direction = 0;
+            if(isRight()){direction = 1;}
+            else {direction = -1;}
+            int i;
+            for (i = 1; i < r; i++){positionX += i;}
+            for (i = 1; i < r; i++){positionX -= i;}
+            for (i = 1; i < r; i++){positionY += direction * i;}
+            for (i = 1; i < 2*r-1; i++){positionY -= direction * i;}
+            for (i = 1; i < r; i++){positionY += direction * i;}
+        }
     }
 
     /**
      * move along the diamond track
      */
     public void moveDiamond() {
-        if(isRight()){}
+        int r = moveTrackSize(positionX, positionY);
+        if (r <= 0){moveTeleport();}
         else {}
     }
 
