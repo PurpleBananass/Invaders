@@ -21,6 +21,7 @@ public class EndPage implements GManager{
     JSONObject res = gm.GlobalData.get("Resource");
     JSONObject PlayData;
     SoundManager.PlayProp menuSoundProp;
+
     public void Initialize(){
         SelectIndex = 0;
         PlayData =  (JSONObject)gm.GlobalData.get("LocalData").get("PlayData");
@@ -139,6 +140,10 @@ public class EndPage implements GManager{
 
 	public void drawClear() {
 		String titleString ;
+        int score = ((Number) PlayData.get("Point")).intValue();
+        int shot = ((Number) PlayData.get("ShotCount")).intValue() +  ((Number) PlayData.get("ShotCount2")).intValue() ;
+        int shipsDestroyed =  ((Number) PlayData.get("KillCount")).intValue() + ((Number) PlayData.get("KillCount2")).intValue();
+        double accuracy = ((double) shipsDestroyed / (double) shot) * 100;
         if((boolean)PlayData.get("LevelClear")){
             titleString = "LEVEL  " + ((Number) PlayData.get("Level")).intValue() + "  Clear";
         }else{
@@ -148,7 +153,11 @@ public class EndPage implements GManager{
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         FontMetrics fontmatrix = gm.Rm.SetFont("Big");
 		grpahics.setColor(Color.GREEN);
-		drawCenteredBigString(titleString, gm.frame.getHeight() / 3 +  fontmatrix.getHeight() * 2);
+		drawCenteredBigString(titleString, gm.frame.getHeight() / 6 +  fontmatrix.getHeight() * 2);
+        drawCenteredRegularString("Your score: " + score, gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 1);
+        drawCenteredRegularString("Your total shots: " + shot, gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 2);
+        drawCenteredRegularString("Your destruction: " + shipsDestroyed, gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 3);
+        drawCenteredRegularString("Your Accuracy " + (Math.round(accuracy*10) / 10.0) +"%", gm.frame.getHeight() / 3 + fontmatrix.getHeight() * 4);
 
 		String continueString = "Continue";
 		String exitString = "Exit";

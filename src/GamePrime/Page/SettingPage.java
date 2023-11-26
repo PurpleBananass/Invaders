@@ -75,7 +75,7 @@ public class SettingPage implements GManager {
                                         * (float) gm.Et.GetElapsedSeconds();
                         gm.Sm.setMasterVolume(volume);
                     }
-                    if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         Itemselected = false;
                         gm.Sm.playSound(menuSoundProp);
                     }
@@ -87,13 +87,13 @@ public class SettingPage implements GManager {
                     if (gm.Im.isKeyDown(KeyEvent.VK_RIGHT)) {
                         gm.Sm.SetMute(!gm.Sm.IsMute());
                     }
-                    if (gm.Im.isKeyDown(KeyEvent.VK_SPACE)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         Itemselected = false;
                         gm.Sm.playSound(menuSoundProp);
                     }
                     break;
                 case 2:
-                    if (gm.Im.isKeyDown(KeyEvent.VK_LEFT)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         Itemselected = false;
                     }
                     if (gm.Im.isKeyDown(KeyEvent.VK_DOWN)) {
@@ -108,7 +108,7 @@ public class SettingPage implements GManager {
                     }
                     break;
                 case 3:
-                    if (gm.Im.isKeyDown(KeyEvent.VK_LEFT)) {
+                    if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         Itemselected = false;
                     }
                     if (gm.Im.isKeyDown(KeyEvent.VK_DOWN)) {
@@ -136,17 +136,16 @@ public class SettingPage implements GManager {
                 Itemselected = true;
                 gm.Sm.playSound(menuSoundProp);
             }
+            if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE) && !Itemselected) {
+            gm.Sm.playSound(menuSoundProp);
+            SaveSetting();
+            gm.SetInstance(new MenuPage());
+            }
         }
         Draw();
     }
 
-    public void LateUpdate() {
-        if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE) && !Itemselected) {
-            gm.Sm.playSound(menuSoundProp);
-            SaveSetting();
-            gm.SetInstance(new MenuPage());
-        }
-    };
+    public void LateUpdate() {};
 
     private void SaveSetting() {
 
@@ -205,7 +204,7 @@ public class SettingPage implements GManager {
             for (int i = 0; i < KeyDefine.KeyFunc.length; i++) {
                 graphic.setColor(Color.WHITE);
                 if (!(Keyselected && keyNum == i)) {
-                    graphic.drawString(keySettings[itemCode - 2].get(i).toString(),
+                    graphic.drawString(KeyEvent.getKeyText(((Number) keySettings[itemCode - 2].get(i)).intValue()),
                             (int) (gm.frame.getWidth() * 8 / 10.0f)
                                     - matrix.stringWidth(keySettings[itemCode - 2].get(i).toString()),
                             gm.frame.getHeight() / 4 + matrix.getHeight() * (2 * i + 1));

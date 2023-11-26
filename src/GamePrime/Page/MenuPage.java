@@ -15,7 +15,7 @@ public class MenuPage implements GManager {
     GameManager gm = GameManager.getInstance();
     JSONObject res = gm.GlobalData.get("Resource");
 
-    private final int MaxPage = 5;
+    private final int MaxPage = 6;
     private final int MinPage = 0;
     
     int PageIndex;
@@ -81,9 +81,12 @@ public class MenuPage implements GManager {
                     gm.SetInstance(new SettingPage());
                     break;
                 case 4:
-                    gm.SetInstance(new AchievementPage());
+                    gm.SetInstance(new HelpPage());
                     break;
                 case 5:
+                    gm.SetInstance(new AchievementPage());
+                    break;
+                case 6:
                     gm.running = false;
                     break;
                 default:
@@ -101,6 +104,7 @@ public class MenuPage implements GManager {
 		String highScoresString = "High scores";
 		String shopString = "Shop";
 		String settingString = "Setting";
+        String helpString = "Help";
 		String achievementString = "Achievements";
 		String exitString = "exit";
         Graphics graphic = gm.Rm.GetCurrentGraphic();
@@ -108,17 +112,19 @@ public class MenuPage implements GManager {
         FontMetrics matrix = gm.Rm.SetFont("Regular");
         List<Runnable> lambdaFunctions = new ArrayList<>();
         lambdaFunctions.add(() -> graphic.drawString(playString, gm.frame.getWidth() / 2
-                - matrix.stringWidth(playString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight() * 5));
+                - matrix.stringWidth(playString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight() * 6));
         lambdaFunctions.add(() -> graphic.drawString(highScoresString, gm.frame.getWidth() / 2
-                - matrix.stringWidth(highScoresString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight() * 3));
+                - matrix.stringWidth(highScoresString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight() * 4));
         lambdaFunctions.add(() -> graphic.drawString(shopString, gm.frame.getWidth() / 2
-                - matrix.stringWidth(shopString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight()));
+                - matrix.stringWidth(shopString) / 2, gm.frame.getHeight()* 2/3 - matrix.getHeight()*2));
         lambdaFunctions.add(() -> graphic.drawString(settingString, gm.frame.getWidth() / 2
-                - matrix.stringWidth(settingString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()));
+                - matrix.stringWidth(settingString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*0));
+        lambdaFunctions.add(() -> graphic.drawString(helpString, gm.frame.getWidth() / 2
+                - matrix.stringWidth(helpString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*2));
         lambdaFunctions.add(() ->graphic.drawString(achievementString, gm.frame.getWidth() / 2
-                - matrix.stringWidth(achievementString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*3));
+                - matrix.stringWidth(achievementString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*4));
         lambdaFunctions.add(() ->graphic.drawString(exitString, gm.frame.getWidth() / 2
-                - matrix.stringWidth(exitString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*5));
+                - matrix.stringWidth(exitString) / 2, gm.frame.getHeight()* 2/3 + matrix.getHeight()*6));
 
         for (int i =0; i<lambdaFunctions.size();i++){
 

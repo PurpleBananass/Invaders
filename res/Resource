@@ -24,6 +24,11 @@
         "MoveSpeed" : "Sakuya.png",
         "ShotSpeed" : "Sakuya.png"
     },
+    "GuideImplements":{
+        "PlayScreen" : "PlayScreen.png",
+        "HardMode" : "HardModeScreen.png",
+        "RemaningMagazine" : "MagazineDisplay.png"
+    },
 
     "BGM" : {
         "MenuPage" : "B_Main_a.wav",
