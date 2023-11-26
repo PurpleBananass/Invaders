@@ -15,11 +15,9 @@ import GamePrime.Page.GamePage;
 import GamePrime.Ship.EnemyController.EnemyType;
 
 public class Enemy extends Component {
-
     GameManager gm = GameManager.getInstance();
     JSONObject res = gm.GlobalData.get("Resource");
     GamePage gp = (GamePage) gm.CustomInstance;
-
     public float ShotSpeed;
     int life;
     int Point;
@@ -34,7 +32,6 @@ public class Enemy extends Component {
     SoundManager.PlayProp ShootSoundProp;
 
     public float ImgGetWidth() {
-
         return IdleImg.GetWidthFixHeight(((Number) gp.PlayData.get("ImgHeight")).intValue());
     }
 
@@ -56,8 +53,9 @@ public class Enemy extends Component {
     public void Awake() {
         this.CustomEvent.put("SetVector", this::SetVector);
         this.CustomEvent.put("SetInfo", this::SetInfo);
-        JSONObject SFX = (JSONObject)res.get("SFX");
-        ShootSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("EnemyShoot"), null);
+        JSONObject SFX = (JSONObject) res.get("SFX");
+        ShootSoundProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("EnemyShoot"), null);
     }
 
     public void Start() {

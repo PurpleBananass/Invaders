@@ -2,10 +2,11 @@ package GamePrime.ETC;
 
 import org.json.simple.JSONObject;
 
-public class Score implements Comparable<Score>{
+public class Score implements Comparable<Score> {
     public String name;
     public int value;
-    public Score(String name, int value){
+
+    public Score(String name, int value) {
         this.name = name;
         this.value = value;
     }
@@ -15,9 +16,8 @@ public class Score implements Comparable<Score>{
         return this.value - other.value;
     }
 
-
-    public static Score toScore(JSONObject obj){
-        return new Score((String)obj.get("name"), ((Number)obj.get("value")).intValue());
+    public static Score toScore(JSONObject obj) {
+        return new Score((String) obj.get("name"), ((Number) obj.get("value")).intValue());
     }
 
     public JSONObject toJSON() {
@@ -26,9 +26,4 @@ public class Score implements Comparable<Score>{
         json.put("value", this.value);
         return json;
     }
-
-
-
-
-
 }

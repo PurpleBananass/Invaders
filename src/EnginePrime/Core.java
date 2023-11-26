@@ -25,9 +25,9 @@ public final class Core {
             em.ProcMessage();
             gm.frame.Render();
         }
-        
         System.exit(0);
     }
-    
-    private Core() {}
+
+    private Core() {
+    }
 }

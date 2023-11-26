@@ -4,17 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.UUID;
+
 public class EventSystem {
-
     private static EventSystem instance = null;
-
     private static Map<String, Entity> EntityPool = new HashMap<>();
-
-
-    
     private static ArrayList<Message> MessagePool = new ArrayList<>();
 
-    private EventSystem(){};
+    private EventSystem() {
+    };
 
     public static EventSystem getInstance() {
         if (instance == null) {
@@ -23,34 +20,34 @@ public class EventSystem {
         return instance;
     }
 
-
-    public static void SendMessage(Message m){
+    public static void SendMessage(Message m) {
         MessagePool.add(m);
     }
-    public static Entity Initiate(String name){
+
+    public static Entity Initiate(String name) {
         Entity e = new Entity();
         e.name = name;
-        MessagePool.add(new Message(e,Message.MessageType.ADD));
+        MessagePool.add(new Message(e, Message.MessageType.ADD));
         return e;
     }
 
-    public static ArrayList<Entity> FindTagEntities(String tag){
-
+    public static ArrayList<Entity> FindTagEntities(String tag) {
         ArrayList<Entity> entities = new ArrayList<>();
         for (Entity entity : EntityPool.values()) {
-            if(entity.tag == tag && entity.isAlve){
+            if (entity.tag == tag && entity.isAlve) {
                 entities.add(entity);
-            }    
+            }
         }
         return entities;
     }
 
-    public static Entity Initiate(){
+    public static Entity Initiate() {
         Entity e = new Entity();
         e.name = UUID.randomUUID().toString();
-        MessagePool.add(new Message(e,Message.MessageType.ADD));
+        MessagePool.add(new Message(e, Message.MessageType.ADD));
         return e;
     }
+
     public static void DestroyAll() {
         for (Entity entity : EntityPool.values()) {
             entity.isAlve = false;
@@ -58,24 +55,23 @@ public class EventSystem {
         }
     }
 
-    public static Entity Destroy(Entity e){
+    public static Entity Destroy(Entity e) {
         e.isAlve = false;
-        MessagePool.add(new Message(e,Message.MessageType.Remove));
+        MessagePool.add(new Message(e, Message.MessageType.Remove));
         return e;
     }
 
-    public static Entity FindEntity(String name)
-    {
-        Entity e =  EntityPool.get(name);
-        if( e != null && e.isAlve ){
+    public static Entity FindEntity(String name) {
+        Entity e = EntityPool.get(name);
+        if (e != null && e.isAlve) {
             return EntityPool.get(name);
         }
         return null;
     }
 
-    public static void ProcMessage(){
+    public static void ProcMessage() {
         for (Message m : MessagePool) {
-            if(m.message == Message.MessageType.ADD){
+            if (m.message == Message.MessageType.ADD) {
                 EntityPool.put(m.e.name, m.e);
             }
             if (m.message == Message.MessageType.Remove) {
@@ -94,42 +90,42 @@ public class EventSystem {
 
     public static void Update() {
         for (Entity entity : EntityPool.values()) {
-            if(!entity.isAlve){
+            if (!entity.isAlve) {
                 continue;
             }
             for (Component c : entity.ComponentPool.values()) {
                 switch (c.LifeStep) {
-                    case 0:
-                        c.Awake();
-                        c.LifeStep +=1;
-                        break;
-                    case 1:
-                        c.Start();
-                        c.LifeStep +=1;
-                        break;
-                    case 2:
-                        c.ProcMessage();
-                        c.LifeStep +=1;
-                        break;
-                    case 3:
-                        c.ProcMessage();
-                        c.Update();
-                        break;
-                    default:
-                        break;
+                case 0:
+                    c.Awake();
+                    c.LifeStep += 1;
+                    break;
+                case 1:
+                    c.Start();
+                    c.LifeStep += 1;
+                    break;
+                case 2:
+                    c.ProcMessage();
+                    c.LifeStep += 1;
+                    break;
+                case 3:
+                    c.ProcMessage();
+                    c.Update();
+                    break;
+                default:
+                    break;
                 }
             }
         }
     }
-    public static void RenderEntity()
-    {
-        for (int i = 0; i <3; i++){
+
+    public static void RenderEntity() {
+        for (int i = 0; i < 3; i++) {
             for (Entity entity : EntityPool.values()) {
-                if(!entity.isAlve){
+                if (!entity.isAlve) {
                     continue;
                 }
                 for (Component c : entity.ComponentPool.values()) {
-                    if(c.LifeStep==3 && c.RenderPrior ==i){
+                    if (c.LifeStep == 3 && c.RenderPrior == i) {
                         c.Render();
                     }
                 }
