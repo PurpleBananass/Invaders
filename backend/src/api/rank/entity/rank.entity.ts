@@ -6,7 +6,7 @@ export class Crud {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('varchar', { name: 'password' })
+  @Column('varchar', { name: 'rank' })
   name: string;
 
   @Column('datetime', {

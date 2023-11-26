@@ -1,26 +1,13 @@
-/* eslint-disable indent */
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, BaseEntity } from 'typeorm';
 
-@Entity('user')
-export class User {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
-  id: number;
+@Entity('users')
+export class User extends BaseEntity {
+  @PrimaryColumn({ type: 'varchar', length: 10 })
+  id: string;
 
-  @Column('int', { name: 'username', unique: true })
-  username: string;
+  @Column({ type: 'varchar', length: 5 })
+  name: string;
 
-  @Column('varchar', { name: 'password' })
-  password: string;
-
-  @Column('datetime', {
-    name: 'created_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
-
-  @Column('datetime', {
-    name: 'updated_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
+  @Column({ type: 'int' })
+  score: number;
 }
