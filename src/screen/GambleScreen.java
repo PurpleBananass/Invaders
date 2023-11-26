@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Set;
 
 public class GambleScreen extends Screen {
-    private static final int SELECTION_TIME = 300;
+    private static final int SELECTION_TIME = 200;
     private static final int CHANGE_DELAY = 500;
     private Cooldown selectionCooldown;
-    private Cooldown changeSpriteCooldown;
     private Ship ship;
     /** Height of the interface separation line. */
     private static final int SEPARATION_LINE_HEIGHT = 40;
@@ -29,11 +28,18 @@ public class GambleScreen extends Screen {
     private int playerCurrency;
     private int mode = 1;
     private boolean selected = false;
-    private boolean[] isDecidedEntity = {false,false,false};
-    private Entity[] gambleEntity = {new Entity(this.width/4,this.height/6,12 * 2, 8 * 2, Color.WHITE),
-            new Entity(this.width/2,this.height/6,12 * 2, 8 * 2, Color.WHITE),
-            new Entity(this.width/4 *3,this.height/6,12 * 2, 8 * 2, Color.WHITE)};
-    private DrawManager.SpriteType[] sprites = {DrawManager.SpriteType.EnemyShipA1, DrawManager.SpriteType.EnemyShipB1, DrawManager.SpriteType.EnemyShipC1, DrawManager.SpriteType.EnemyShipSpecial};
+    private Entity[] gambleEntity;
+    private DrawManager.SpriteType[] sprites;
+    //잭팟인지
+    private boolean isJackpot = false;
+    //보상을 받아야 하는지
+    private boolean isGet = false;
+    //베팅금을 돌려 받아야 하는지
+    private boolean isGetBack = false;
+    //게임이 끝났는지
+    private boolean isGameEnd = false;
+    //보상을 지급 받았는지
+    private boolean isPrice = false;
 
     /**
      * Implements the high scores screen, it shows player records.
@@ -57,6 +63,10 @@ public class GambleScreen extends Screen {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.gambleEntity = new Entity[]{new Entity(this.width / 4 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0),
+                new Entity(this.width / 2 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0),
+                new Entity(this.width / 4 * 3 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0)};
+        this.sprites = new DrawManager.SpriteType[]{DrawManager.SpriteType.EnemyShipA1, DrawManager.SpriteType.EnemyShipB1, DrawManager.SpriteType.EnemyShipC1, DrawManager.SpriteType.EnemyShipSpecial};
     }
 
         /**
@@ -82,7 +92,8 @@ public class GambleScreen extends Screen {
         manageCollisions();
         updateEntitySprite();
         cleanBullets();
-
+        isGameEnd = gambleEntity[0].isDecideSprite() && gambleEntity[1].isDecideSprite() && gambleEntity[2].isDecideSprite();
+        if(isGameEnd) checkResult();
 
         draw();
         if(gambleMode == 0){
@@ -97,18 +108,43 @@ public class GambleScreen extends Screen {
                         this.returnCode = 1;
                         this.isRunning = false;
                     }
+                    if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+                        if(bettingCurrency - 10 < 0) bettingCurrency = 0;
+                        else bettingCurrency -= 10;
+                        this.selectionCooldown.reset();
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+                        if(bettingCurrency + 10 > playerCurrency) bettingCurrency = playerCurrency;
+                        else bettingCurrency += 10;
+                        this.selectionCooldown.reset();
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
+                        if(bettingCurrency + 100 > playerCurrency) bettingCurrency = playerCurrency;
+                        else bettingCurrency += 100;
+                        this.selectionCooldown.reset();
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_DOWN)) {
+                        if(bettingCurrency - 100 < 0) bettingCurrency = 0;
+                        else bettingCurrency -= 100;
+                        this.selectionCooldown.reset();
+                    }
+
                 } else {
                     //겜블 종목 선택
                     if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
                         if (mode == 1) mode = 3;
                         else mode--;
+                        this.selectionCooldown.reset();
                     }
                     if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
                         if (mode == 3) mode = 1;
                         else mode++;
+                        this.selectionCooldown.reset();
                     }
                     if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
                         gambleMode = mode;
+                        playerCurrency -= bettingCurrency;
+                        this.selectionCooldown.reset();
                     }
                     if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         selected = false;
@@ -129,8 +165,7 @@ public class GambleScreen extends Screen {
                 if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
                     this.ship.shoot(this.bullets, 1);
                 }
-
-                if(isDecidedEntity[0] && isDecidedEntity[1] && isDecidedEntity[2] && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){
+                if(isGameEnd && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){
                     this.isRunning = false;
                 }
             }
@@ -158,14 +193,15 @@ public class GambleScreen extends Screen {
         else if (gambleMode == 1) {
             drawManager.drawEntity(this.ship, this.ship.getPositionX(),
                     this.ship.getPositionY());
-            drawManager.drawGambleEntity(this, gambleEntity);
             for (Bullet bullet : this.bullets)
                 drawManager.drawEntity(bullet, bullet.getPositionX(),
                         bullet.getPositionY());
             for(Entity entity : this.gambleEntity)
                 drawManager.drawEntity(entity, entity.getPositionX(),
                         entity.getPositionY());
+            if(isGameEnd) drawManager.drawGambleResult(this, isJackpot, isGet, bettingCurrency);
         }
+        drawManager.completeDrawing(this);
     }
 
     private void cleanBullets() {
@@ -210,8 +246,8 @@ public class GambleScreen extends Screen {
         for (Bullet bullet : this.bullets) {
             for (Entity entities : this.gambleEntity) {
                 //총알이 적에게 닿으면 멈추기 구현해야함
-                if (!entities.isDecideSprite && checkCollision(bullet, entities)) {
-                    entities.isDecideSprite = true;
+                if (!entities.isDecideSprite() && checkCollision(bullet, entities)) {
+                    entities.setDecideSprite(true);
                 }
                 recyclable.add(bullet);
             }
@@ -219,10 +255,32 @@ public class GambleScreen extends Screen {
     }
     private void updateEntitySprite(){
         for (Entity entity : this.gambleEntity){
-            if(!entity.isDecideSprite){
-                if(entity.spriteNumber <3) entity.spriteNumber += 1;
-                else entity.spriteNumber = 0;
-                entity.changeEntitySprite(sprites[entity.spriteNumber]);
+            if(!entity.isDecideSprite()){
+                if(entity.getSpriteNumber() <3) entity.setSpriteNumber(entity.getSpriteNumber() +1);
+                else entity.setSpriteNumber(0);
+                entity.changeEntitySprite(sprites[entity.getSpriteNumber()]);
+            }
+        }
+    }
+    private void checkResult(){
+        int[] checkSprite = {0,0,0,0};
+        for (Entity entity : this.gambleEntity){
+            checkSprite[entity.getSpriteNumber()] += 1;
+        }
+        for(int i=0; i<3; i++){
+            if(checkSprite[i] > 1) this.isGetBack = true;
+            if(checkSprite[i] > 2) this.isGet = true;
+        }
+        if(checkSprite[3] > 2) this.isJackpot = true;
+        if(!isPrice) {
+            try{
+                if(this.isGet) Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency * 2);
+                else if(this.isGetBack) ;
+                else if(this.isJackpot) Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency * 7);
+                else Core.getFileManager().updateCurrencyOfCurrentPlayer(-bettingCurrency);
+                this.isPrice = true;
+            } catch (IOException e){
+                throw new RuntimeException("Currency Of Player is not updated.");
             }
         }
     }
