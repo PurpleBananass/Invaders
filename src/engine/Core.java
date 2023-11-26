@@ -55,7 +55,6 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500,4.8);
-	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -145,10 +144,8 @@ public final class Core {
 
 		int returnCode = 0;
 		do {
-			// TODO 1P mode와 2P mode 진입 구현
-			// TODO gameState 생성자에 따라 1P와 2P mode 구분
-			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
+			if(SelectScreen.gameMode == 1) gameState = new GameState(LevelSelectionScreen.levelCode, 0, MAX_LIVES, 0, 0);
+			else gameState = new GameState(LevelSelectionScreen.levelCode, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
                 case 0:
@@ -167,6 +164,54 @@ public final class Core {
 						+ " title screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing title screen.");
+				break;
+			case 2:
+				// Select Mode.
+				SoundManager.stopSound("menu",2f);
+				SoundManager.playSound("BGM/B_Main_c", "selection", true, true);
+				currentScreen = new SelectScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " select screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing select screen.");
+				break;
+			case 3:
+				// High scores.
+				SoundManager.stopSound("menu",1f);
+				SoundManager.playSound("BGM/B_HighScore", "highscore", true, true);
+				currentScreen = new HighScoreScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " high score screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing high score screen.");
+				SoundManager.stopSound("highscore",2f);
+				break;
+			case 4:
+				// Shop
+				currentScreen = new ItemShopScreen(width,height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " item shop screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing item shop screen");
+				break;
+			case 5:
+				// Setting.
+				currentScreen = new SettingScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " setting screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing setting screen.");
+				break;
+			case 6:
+				//  Achievement.
+				SoundManager.stopSound("menu",1f);
+				SoundManager.playSound("BGM/B_Achieve", "achievement", true, true);
+				currentScreen = new AchievementScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " achievement screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Closing Achievement screen.");
+				SoundManager.stopSound("achievement",2f);
 				break;
 			case 7:
 				// Game & score.
@@ -237,11 +282,11 @@ public final class Core {
 
 				if (gameState.getMode() == 1) {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " score screen at " + FPS + " fps, with a score of "
-						+ gameState.getScore() + ", "
-						+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
-						+ gameState.getBulletsShot1() + " bullets shot and "
-						+ gameState.getShipsDestroyed() + " ships destroyed.");
+							+ " score screen at " + FPS + " fps, with a score of "
+							+ gameState.getScore() + ", "
+							+ gameState.getLivesRemaining1p() + " lives remaining for 1p, "
+							+ gameState.getBulletsShot1() + " bullets shot and "
+							+ gameState.getShipsDestroyed() + " ships destroyed.");
 				} else {
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " score screen at " + FPS + " fps, with a score of "
@@ -261,54 +306,6 @@ public final class Core {
 				SoundManager.stopSound("B_gameover",2f);
 				LOGGER.info("Closing score screen.");
 				break;
-			case 3:
-				// High scores.
-				SoundManager.stopSound("menu",1f);
-				SoundManager.playSound("BGM/B_HighScore", "highscore", true, true);
-				currentScreen = new HighScoreScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " high score screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing high score screen.");
-				SoundManager.stopSound("highscore",2f);
-				break;
-			case 4:
-				// Shop
-				currentScreen = new ItemShopScreen(width,height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " item shop screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing item shop screen");
-				break;
-			case 5:
-				// Setting.
-				currentScreen = new SettingScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " setting screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing setting screen.");
-				break;
-			case 6:
-				//  Achievement.
-				SoundManager.stopSound("menu",1f);
-				SoundManager.playSound("BGM/B_Achieve", "achievement", true, true);
-				currentScreen = new AchievementScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " achievement screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing Achievement screen.");
-				SoundManager.stopSound("achievement",2f);
-				break;
-			case 2:
-				// Select Mode.
-				SoundManager.stopSound("menu",2f);
-				SoundManager.playSound("BGM/B_Main_c", "selection", true, true);
-				currentScreen = new SelectScreen(width, height, FPS);
-				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
-						+ " select screen at " + FPS + " fps.");
-				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing select screen.");
-				break;
 			case 8:
 				// Select Skin.
 				currentScreen = new SkinSelectionScreen(width, height, FPS);
@@ -316,6 +313,15 @@ public final class Core {
 						+ " Skin Selection screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing SkinSelection screen.");
+				break;
+			case 9:
+				//Select level.
+				currentScreen = new LevelSelectionScreen(width, height, FPS, gameSettings.size());
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+						+ " Level Selection screen at " + FPS + " fps.");
+				returnCode = frame.setScreen(currentScreen);
+				LOGGER.info("Selected level " + LevelSelectionScreen.levelCode + ".");
+				LOGGER.info("Closing LevelSelection screen.");
 				break;
 			default:
 				break;
