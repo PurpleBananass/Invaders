@@ -236,7 +236,7 @@ public final class FileManager {
         BufferedReader reader = null;
 
         try {
-            File scoresFile = new File("res" + File.separator + "scores");
+            File scoresFile = new File("src/main/resources" + File.separator + "scores");
             if (!scoresFile.exists())
                 scoresFile.createNewFile();
 
@@ -284,7 +284,7 @@ public final class FileManager {
             else
                 scoresPath += "scores_2p";
 
-            File scoresFile = new File("res" + File.separator + scoresPath);
+            File scoresFile = new File("src/main/resources" + File.separator + scoresPath);
             if (!scoresFile.exists())
                 scoresFile.createNewFile();
 
@@ -337,7 +337,7 @@ public final class FileManager {
             else
                 scoresPath += "scores_2p";
 
-            File scoresFile = new File("res" + File.separator + scoresPath);
+            File scoresFile = new File("src/main/resources" + File.separator + scoresPath);
             if (!scoresFile.exists())
                 scoresFile.createNewFile();
 
