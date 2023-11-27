@@ -3,8 +3,6 @@ import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { AuthRepository } from './auth.repository';
 import { LoginDTO } from './dto/login.dto';
-import { SingupDTO } from './dto/sign-up.dto';
-import { sign } from 'jsonwebtoken';
 
 @Service()
 export class AuthService {
