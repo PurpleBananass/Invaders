@@ -1,23 +1,14 @@
 /* eslint-disable indent */
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('crud')
-export class Crud {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
-  id: number;
+@Entity('rank')
+export class Rank {
+  @PrimaryColumn({ type: 'varchar', length: 10 })
+  id: string;
 
-  @Column('varchar', { name: 'rank' })
-  name: string;
+  @Column({ type: 'int' })
+  score: number;
 
-  @Column('datetime', {
-    name: 'created_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
-
-  @Column('datetime', {
-    name: 'updated_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
+  @Column({ type: 'int' })
+  rank: number;
 }

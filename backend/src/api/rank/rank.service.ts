@@ -1,19 +1,19 @@
 import { BaseException } from 'exceptions/base.exception';
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { CrudRepository } from './rank.repository';
+import { RankRepository } from './rank.repository';
 import { CreateDTO } from './dto/create.dto';
 
 @Service()
-export class CrudService {
+export class RankService {
   constructor(
     @InjectRepository()
-    private readonly crudRepo: CrudRepository,
+    private readonly repo: RankRepository,
   ) {}
 
   public async getAll() {
     try {
-      return await this.crudRepo.find();
+      return await this.repo.find();
     } catch (e) {
       throw new BaseException(400, 'get list error', e);
     }
@@ -21,7 +21,7 @@ export class CrudService {
 
   public async getById(id: number) {
     try {
-      return await this.crudRepo.findOne(id);
+      return await this.repo.findOne(id);
     } catch (e) {
       throw new BaseException(400, 'get by id error', e);
     }
@@ -29,7 +29,7 @@ export class CrudService {
 
   public async deleteById(id: number) {
     try {
-      return await this.crudRepo.delete(id);
+      return await this.repo.delete(id);
     } catch (e) {
       throw new BaseException(400, 'delete error', e);
     }
@@ -37,7 +37,7 @@ export class CrudService {
 
   public async create(createDTO: CreateDTO) {
     try {
-      await this.crudRepo.save(createDTO);
+      await this.repo.save(createDTO);
     } catch (e) {
       throw new BaseException(400, 'create error', e);
     }

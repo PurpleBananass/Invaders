@@ -10,4 +10,7 @@ export class User extends BaseEntity {
 
   @Column({ type: 'int' })
   score: number;
+
+  @Column({ type: 'int' })
+  rank: number;
 }
