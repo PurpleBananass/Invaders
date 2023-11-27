@@ -3,12 +3,11 @@ package entity;
 import engine.DrawManager;
 import engine.GameState;
 
-import java.util.ArrayList;
 import java.util.List;
 
+
 public class BossShip extends EnemyShip {
-    private List<BossShip> SplitList;
-    private final int SpeedX = -2;
+    private final int SpeedY = -2;
     /** Width of current screen. */
     private static final int WIDTH = 448;
     /** Height of current screen. */
@@ -20,35 +19,33 @@ public class BossShip extends EnemyShip {
     private int splitLevel;
 
     public BossShip (final int positionX, final int positionY,
-                     final DrawManager.SpriteType spriteType, final GameState gameState, final int splitLevel){
+                     final DrawManager.SpriteType spriteType, final GameState gameState, int splitLevel){
         super(positionX, positionY, spriteType, gameState);
-        super.HP = 0;//따로 수정;
-        super.pointValue = 0; //따로수정
+        super.HP = splitLevel;//따로 수정;
+        super.pointValue = 100*splitLevel; //따로수정
         this.splitLevel = splitLevel;
-        SplitList = new ArrayList<>();
-        SplitList.add(this);
     }
 
     /**
      * when slime Boss dead this function
      */
-    public void split() {
+    public void split(List<EnemyShip> enemyShipList) {
         int currentX = this.positionX, currentY = this.positionY;
-        if (this.splitLevel <= 0) return;
+        if (splitLevel <= 0) return;
         currentX += 10;
-        if (currentY < 20) currentY += 50;
-        if (WIDTH - 20 < currentY) currentY -= 50;
-        int firstY = currentY - 20, secondY = currentY + 20;
-        BossShip first = new BossShip(currentX, firstY, DrawManager.SpriteType.EnemyShipA1, this.gameState, this.splitLevel - 1);
-        BossShip second = new BossShip(currentX, secondY, DrawManager.SpriteType.EnemyShipA1, this.gameState, this.splitLevel - 1);
-        SplitList.add(first);
-        SplitList.add(second);
+        if (currentX < 20) currentX += 50;
+        if (WIDTH - 20 < currentX) currentX -= 50;
+        int firstX = currentX - 20, secondX = currentX + 20;
+        BossShip first = new BossShip(firstX, currentY, DrawManager.SpriteType.EnemyShipA1, this.gameState, this.splitLevel - 1);
+        BossShip second = new BossShip(secondX, currentY, DrawManager.SpriteType.EnemyShipA1, this.gameState, this.splitLevel - 1);
+        enemyShipList.add(first);
+        enemyShipList.add(second);
     }
     /**
      * when Boss Die this function execute
      */
-    public void Death(){
-
+    public void Death(List<EnemyShip> enemyShipList){
+        split(enemyShipList);
     }
 
     /**

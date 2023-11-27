@@ -68,5 +68,6 @@ public class GameSettings {
 	public final int getShootingFrecuency() {
 		return shootingFrecuency;
 	}
+	public final boolean getBossStage(){return bossStage;}
 
 }
