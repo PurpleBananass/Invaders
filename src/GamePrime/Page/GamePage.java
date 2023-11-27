@@ -41,11 +41,11 @@ public class GamePage implements GManager {
         HardMode = (boolean) gm.GlobalData.get("LocalData").get("HardMode");
         PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
         FileManager fm = new FileManager();
-        JSONObject Entity =  (JSONObject)res.get("Entity");
-        JSONObject ShipType1 = (JSONObject)Entity.get("ShipType1");
-        JSONObject ShipType2 = (JSONObject)Entity.get("ShipType2");
-        JSONObject EnemyType1 = (JSONObject)Entity.get("EnemyType1");
-        JSONObject EnemyType2 = (JSONObject)Entity.get("EnemyType2");
+        JSONObject Entity = (JSONObject) res.get("Entity");
+        JSONObject ShipType1 = (JSONObject) Entity.get("ShipType1");
+        JSONObject ShipType2 = (JSONObject) Entity.get("ShipType2");
+        JSONObject EnemyType1 = (JSONObject) Entity.get("EnemyType1");
+        JSONObject EnemyType2 = (JSONObject) Entity.get("EnemyType2");
         ImgRes.put("Bullet", new Image(fm.GetImage("Img" + File.separator + Entity.get("Bullet"))));
         ImgRes.put("Item", new Image(fm.GetImage("Img" + File.separator + Entity.get("Item"))));
         ImgRes.put("ShipType1.Idle", new Image(fm.GetImage("Img" + File.separator + ShipType1.get("Idle"))));
@@ -53,9 +53,11 @@ public class GamePage implements GManager {
         ImgRes.put("ShipType2.Idle", new Image(fm.GetImage("Img" + File.separator + ShipType2.get("Idle"))));
         ImgRes.put("ShipType2.Destroyed", new Image(fm.GetImage("Img" + File.separator + ShipType2.get("Destroyed"))));
         ImgRes.put("EnemyType1.Idle", new Image(fm.GetImage("Img" + File.separator + EnemyType1.get("Idle"))));
-        ImgRes.put("EnemyType1.Destroyed", new Image(fm.GetImage("Img" + File.separator + EnemyType1.get("Destroyed"))));
+        ImgRes.put("EnemyType1.Destroyed",
+                new Image(fm.GetImage("Img" + File.separator + EnemyType1.get("Destroyed"))));
         ImgRes.put("EnemyType2.Idle", new Image(fm.GetImage("Img" + File.separator + EnemyType2.get("Idle"))));
-        ImgRes.put("EnemyType2.Destroyed", new Image(fm.GetImage("Img" + File.separator + EnemyType2.get("Destroyed"))));
+        ImgRes.put("EnemyType2.Destroyed",
+                new Image(fm.GetImage("Img" + File.separator + EnemyType2.get("Destroyed"))));
         PlayData.put("ScreenIndex", -1);
         PlayData.put("LevelClear", false);
         PlaySetting();
@@ -76,7 +78,6 @@ public class GamePage implements GManager {
             PlayData.put("ShotCount2", 0);
             PlayData.put("KillCount", 0);
             PlayData.put("KillCount2", 0);
-
             JSONObject ItemData = (JSONObject) gm.GlobalData.get("LocalData").get("StoreItem");
             if (ItemData != null) {
                 if ((boolean) ItemData.get("BonusLife")) {
@@ -120,7 +121,6 @@ public class GamePage implements GManager {
     }
 
     private void ProcCollision() {
-
         for (Entity ItemEntity : EventSystem.FindTagEntities("Item")) {
             Item item = ItemEntity.GetComponent(Item.class);
             if (item.pos.getY() > gm.frame.getHeight()) {
@@ -131,7 +131,6 @@ public class GamePage implements GManager {
                 player2.CheckCollsion(item);
             }
         }
-
         for (Entity bulletEntity : EventSystem.FindTagEntities("PBullet")) {
             Bullet bullet = bulletEntity.GetComponent(Bullet.class);
             if (bullet == null) {
@@ -209,8 +208,7 @@ public class GamePage implements GManager {
         int rectWidth = gm.frame.getWidth();
         int rectHeight = gm.frame.getHeight() / 6;
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 90,
-                rectWidth, rectHeight + 180);
+        graphics.fillRect(0, gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 90, rectWidth, rectHeight + 180);
         graphics.setColor(Color.CYAN);
         drawManualMenu();
         drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 90);
@@ -223,12 +221,10 @@ public class GamePage implements GManager {
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         JSONArray key1 = (JSONArray) gm.GlobalData.get("Setting").get("KeySetting_1p");
         JSONArray key2 = (JSONArray) gm.GlobalData.get("Setting").get("KeySetting_2p");
-
-        graphics.drawString("Play manual", gm.frame.getWidth() / 2
-                - fontmatrix.stringWidth("Play manual") / 2, gm.frame.getHeight() / 2 - 105);
+        graphics.drawString("Play manual", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Play manual") / 2,
+                gm.frame.getHeight() / 2 - 105);
         graphics.drawString("Player1", gm.frame.getWidth() / 2 - 140, gm.frame.getHeight() / 2 - 60);
         graphics.drawString("Player2", gm.frame.getWidth() / 2 + 65, gm.frame.getHeight() / 2 - 60);
-
         graphics.setColor(Color.WHITE);
         int y = gm.frame.getHeight() / 2 - 30;
         int x1 = gm.frame.getWidth() / 2 - 150; // player1_manual
@@ -268,7 +264,6 @@ public class GamePage implements GManager {
         Draw();
         drawScore();
         drawItems();
-
         drawAmmo();
         drawLives();
         drawHorizontalLine(40 - 1, Color.GREEN);
@@ -284,7 +279,6 @@ public class GamePage implements GManager {
             int magazine = ((Number) PlayData.get("Magazine1")).intValue();
             graphics.drawString("Ammo : ", 200, 0);
             graphics.drawString(bullet + "/" + magazine, 300, fontmatrix.getHeight());
-
             if (PlayMode == 1) {
                 bullet = ((Number) PlayData.get("Bullet2")).intValue();
                 magazine = ((Number) PlayData.get("Magazine2")).intValue();
@@ -292,7 +286,6 @@ public class GamePage implements GManager {
                         gm.frame.getWidth() / 4 - fontmatrix.stringWidth(bullet + "/" + magazine + "Ammo : "), 0);
                 graphics.drawString(bullet + "/" + magazine, gm.frame.getWidth() / 4, fontmatrix.getHeight());
             }
-
         }
     }
 
@@ -314,7 +307,6 @@ public class GamePage implements GManager {
             }
             graphics.drawRect(100 + 35 * i, gm.frame.getHeight() - 10, 5, 5);
         }
-
         item = (JSONArray) PlayData.get("ActiveItem2");
         graphics.drawString(Integer.toString(item.size()), 205, gm.frame.getHeight() + 25);
         for (int i = 0; i < item.size(); i++) {
@@ -341,13 +333,13 @@ public class GamePage implements GManager {
         graphics.fillRect(0, gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 40, rectWidth, rectHeight + 40);
         graphics.setColor(Color.YELLOW);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
-        graphics.drawString("Pause", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Pause") / 2, 
-            gm.frame.getHeight() / 2 - 80);
+        graphics.drawString("Pause", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Pause") / 2,
+                gm.frame.getHeight() / 2 - 80);
         graphics.drawString("Quit", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Quit") / 2,
-            gm.frame.getHeight() / 2 - 10);
+                gm.frame.getHeight() / 2 - 10);
         graphics.setColor(Color.GRAY);
-        graphics.drawString(informationString, gm.frame.getWidth() / 2
-            - fontmatrix.stringWidth(informationString) / 2, gm.frame.getHeight() / 2 + fontmatrix.getHeight() / 10 + 20);
+        graphics.drawString(informationString, gm.frame.getWidth() / 2 - fontmatrix.stringWidth(informationString) / 2,
+                gm.frame.getHeight() / 2 + fontmatrix.getHeight() / 10 + 20);
         drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12 - 40);
         drawHorizontalLine(gm.frame.getHeight() / 2 - gm.frame.getHeight() / 12);
         drawHorizontalLine(gm.frame.getHeight() / 2 + gm.frame.getHeight() / 12);

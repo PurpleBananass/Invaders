@@ -1,8 +1,5 @@
 package EnginePrime;
 
 public enum KeyState {
-    Released,
-    Down, 
-    Pressed, 
-    Up, 
+    Released, Down, Pressed, Up,
 }

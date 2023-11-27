@@ -1,11 +1,8 @@
-
 package EnginePrime;
+
 import javax.swing.JFrame;
 
-
-public class Frame  extends JFrame {
-	
-	
+public class Frame extends JFrame {
 	public Frame() {
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -13,15 +10,13 @@ public class Frame  extends JFrame {
 		setVisible(true);
 	}
 
-    public void SetSize(final int width, final int height){
-        super.setSize(width, height);
+	public void SetSize(final int width, final int height) {
+		super.setSize(width, height);
 		setLocationRelativeTo(null);
-		RenderManager.getInstance().Resize(width,height);
+		RenderManager.getInstance().Resize(width, height);
+	}
 
-    }
-
-
-	public void Render(){
+	public void Render() {
 		RenderManager.getInstance().Render(this);
 	}
 }

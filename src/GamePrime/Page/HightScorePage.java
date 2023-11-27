@@ -1,4 +1,5 @@
 package GamePrime.Page;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,97 +15,85 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.FontMetrics;
+
 public class HightScorePage implements GManager {
-
     public static final int MaxNum = 10;
-
-
     GameManager gm = GameManager.getInstance();
     JSONObject res = gm.GlobalData.get("Resource");
-
     List<Score> scoreList[] = new List[] { new ArrayList<>(), new ArrayList<>() };
-
     private SoundManager.PlayProp menuSoundProp;
 
     public void Initialize() {
-        
-        JSONObject BGM = (JSONObject)res.get("BGM");
-        JSONObject SFX = (JSONObject)res.get("SFX");
-        menuSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("MenuSelect"), null);
-        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp("Sound" + File.separator + "BGM" + File.separator + (String)BGM.get("HighScorePage"), "BGM");
+        JSONObject BGM = (JSONObject) res.get("BGM");
+        JSONObject SFX = (JSONObject) res.get("SFX");
+        menuSoundProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("MenuSelect"), null);
+        SoundManager.PlayProp BgmProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "BGM" + File.separator + (String) BGM.get("HighScorePage"), "BGM");
         BgmProp.count = -1;
-        gm.Sm.stopClip("BGM",1);
+        gm.Sm.StopClip("BGM", 1);
         gm.Sm.playSound(BgmProp);
         FileManager fm = new FileManager();
         JSONObject database = fm.LoadJsonObject("DataBase");
-        JSONArray scores1 = (JSONArray)((JSONObject) database.get("Scores")).get("Scores_1p");
-        JSONArray scores2 = (JSONArray)((JSONObject) database.get("Scores")).get("Scores_2p");
-
+        JSONArray scores1 = (JSONArray) ((JSONObject) database.get("Scores")).get("Scores_1p");
+        JSONArray scores2 = (JSONArray) ((JSONObject) database.get("Scores")).get("Scores_2p");
         for (int i = 0; i < scores1.size(); i++) {
-            scoreList[0].add(Score.toScore((JSONObject)scores1.get(i)));
+            scoreList[0].add(Score.toScore((JSONObject) scores1.get(i)));
         }
         Collections.sort(scoreList[0], Collections.reverseOrder());
-
         for (int i = 0; i < scores2.size(); i++) {
-            scoreList[1].add(Score.toScore((JSONObject)scores2.get(i)));
+            scoreList[1].add(Score.toScore((JSONObject) scores2.get(i)));
         }
         Collections.sort(scoreList[1], Collections.reverseOrder());
     };
-    public void Exit(){
+
+    public void Exit() {
         gm.Sm.StopClip("BGM");
     };
+
     public void PreUpdate() {
         Draw();
-
     };
-    public void PreRender(){};
-    
-    public void LateRender(){};
+
+    public void PreRender() {
+    };
+
+    public void LateRender() {
+    };
+
     public void LateUpdate() {
         if (gm.Im.isKeyDown(KeyEvent.VK_ESCAPE)) {
             gm.Sm.playSound(menuSoundProp);
             gm.SetInstance(new MenuPage());
         }
-
     };
 
     private void Draw() {
-
         String highScoreString = "High Scores";
         String instructionsString = "Press Space to return";
         String gameMode_1 = "1P_Mode";
         String gameMode_2 = "2P_Mode";
-
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
         FontMetrics fontmatrix = gm.Rm.SetFont("Big");
         grpahics.setColor(Color.GREEN);
-        grpahics.drawString(highScoreString, gm.frame.getWidth() / 2
-                - fontmatrix.stringWidth(highScoreString) / 2, gm.frame.getHeight() / 8);
-
+        grpahics.drawString(highScoreString, gm.frame.getWidth() / 2 - fontmatrix.stringWidth(highScoreString) / 2,
+                gm.frame.getHeight() / 8);
         fontmatrix = gm.Rm.SetFont("Regular");
-
         grpahics.setColor(Color.GRAY);
-        grpahics.drawString(instructionsString, gm.frame.getWidth() / 2
-                - fontmatrix.stringWidth(instructionsString) / 2, gm.frame.getHeight() / 5);
-
-        grpahics.drawString(gameMode_1, gm.frame.getWidth() * 3 / 13
-                - fontmatrix.stringWidth(gameMode_1) / 2, gm.frame.getHeight() * 4 / 15);
-
-        grpahics.drawString(gameMode_2, gm.frame.getWidth() * 10 / 13
-                - fontmatrix.stringWidth(gameMode_2) / 2, gm.frame.getHeight() * 4 / 15);
-
+        grpahics.drawString(instructionsString,
+                gm.frame.getWidth() / 2 - fontmatrix.stringWidth(instructionsString) / 2, gm.frame.getHeight() / 5);
+        grpahics.drawString(gameMode_1, gm.frame.getWidth() * 3 / 13 - fontmatrix.stringWidth(gameMode_1) / 2,
+                gm.frame.getHeight() * 4 / 15);
+        grpahics.drawString(gameMode_2, gm.frame.getWidth() * 10 / 13 - fontmatrix.stringWidth(gameMode_2) / 2,
+                gm.frame.getHeight() * 4 / 15);
         grpahics.setColor(Color.WHITE);
-
-
         String scoreString = "";
-
         for (int i = 0; i < scoreList.length; i++) {
             for (int j = 0; j < scoreList[i].size(); j++) {
-                Score score =  scoreList[i].get(j);
-                scoreString = String.format("%s        %04d", score.name,
-                        score.value);
-                grpahics.drawString(scoreString, gm.frame.getWidth() * (3+i*7) / 13
-                        - fontmatrix.stringWidth(scoreString) / 2,
+                Score score = scoreList[i].get(j);
+                scoreString = String.format("%s        %04d", score.name, score.value);
+                grpahics.drawString(scoreString,
+                        gm.frame.getWidth() * (3 + i * 7) / 13 - fontmatrix.stringWidth(scoreString) / 2,
                         gm.frame.getHeight() / 4 + fontmatrix.getHeight() * (j + 1) * 2);
             }
         }
