@@ -114,23 +114,23 @@ public class AchievementPage implements GManager {
 		}
 
 		// Check if the player didn't hit enemy's ships in 1p mode
-		if (gamemode == 1 && shot > 0 && accuracy == 0) {
+		if (gamemode == 0 && shot > 0 && accuracy == 0) {
             Achievement.put("AVIOPHOBIA",true);
 		}
 
 		// Check if two players didn't hit enemy's ships
-		if (gamemode == 2 && shot > 0 && accuracy == 0) {
+		if (gamemode == 1 && shot > 0 && accuracy == 0) {
             
             Achievement.put("PAT_AND_MAT",true);
 		}
 
 		// Check if two players clear level or gameover with same lives
-		if (gamemode == 2 && life_1 == life_2) {
+		if (gamemode == 1 && life_1 == life_2) {
             Achievement.put("SOUL_MATES",true);
 		}
 
 		// Check one player has max life but the partner doesn't have
-		if (gamemode == 2 && (life_1 - life_2 == 3 || life_2 - life_1 == 3)) {
+		if (gamemode == 1 && (life_1 - life_2 == 3 || life_2 - life_1 == 3)) {
             Achievement.put("BUDDY_FXXKER",true);
 		}
 		if (Score == LuckyScore) {
