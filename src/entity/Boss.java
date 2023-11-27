@@ -55,6 +55,14 @@ public class Boss extends Entity {
 	// 보스가 특정 패턴 사용시 안전한곳의 위치
 	public static int[] safeArea = new int[3];
 
+	private Cooldown patternCooldown_5;
+
+	private Cooldown patternCooldown_6;
+
+	private int positionOfPattern_4 = 0;
+
+	private int positionOfPattern_6 = 0;
+
 	/**
 	 * Constructor, establishes the ship's properties.
 	 *
@@ -69,6 +77,8 @@ public class Boss extends Entity {
                 final SpriteType spriteType, final GameState gameState) {
 		super(positionX, positionY, 448, 20, Color.yellow);
 		this.patternCooldown = Core.getCooldown(5000);
+		this.patternCooldown_5 = Core.getCooldown(50);
+		this.patternCooldown_6 = Core.getCooldown(2000);
 		this.gameState = gameState;
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
@@ -112,71 +122,51 @@ public class Boss extends Entity {
 					GameScreen.bossShootCheck = false;
 					break;
 				case 5:
-					for (int i = 0; i < 51; i++){
-						bossShootAfter(bullets,i*6,80,i*50,4);
-						bossShootAfter(bullets,150+i*6,80,i*50,4);
+					if(this.patternCooldown_5.checkFinished()){
+						patternCooldown_5.reset();
+						positionOfPattern_4++;
+						if(positionOfPattern_4 < 51){
+						bossShoot(bullets,positionOfPattern_4*6,80,4);
+						bossShoot(bullets,positionOfPattern_4*6+150,80,4);}
+						else{
+							if(positionOfPattern_4>111){
+								positionOfPattern_4 = 0;
+								GameScreen.bossShootCheck = false;
+								this.patternCooldown.reset();
+								break;
+							}
+							bossShoot(bullets,448-(positionOfPattern_4-51)*6,80,4);
+							bossShoot(bullets,448-150-(positionOfPattern_4-51)*6,80,4);
+						}
 					}
-					for (int j = 0; j < 60; j++){
-						bossShootAfter(bullets,448-j*6,80,2500+j*50,4);
-						bossShootAfter(bullets,448-150-j*6,80,2500+j*50,4);
-					}
-					GameScreen.bossShootCheck = false;
-					this.patternCooldown.reset();
-					bossShootCheckAfter(3);
+
 					break;
 				case 6:
-					switch (Boss.safeArea[0]) {
-						case 1:
-							for (int i =0; i < 50; i++){
-								bossShootAfter(bullets,448/3+i*6,80,0,18);}
-							break;
-						case 2:
-							for (int i =0; i < 30; i++){
-								bossShootAfter(bullets,i*6,80,0,18);
-								bossShootAfter(bullets,448/3*2+i*6,80,0,18);
-							}
-							break;
-						case 3:
-							for (int i =0; i < 50; i++){
-								bossShootAfter(bullets,i*6,80,0,18);}
-							break;
+					if(patternCooldown_6.checkFinished()){
+						patternCooldown_6.reset();
+						switch (Boss.safeArea[positionOfPattern_6]) {
+							case 1:
+								for (int i =0; i < 50; i++){
+									bossShoot(bullets,448/3+i*6,80,18);}
+								break;
+							case 2:
+								for (int i =0; i < 30; i++){
+									bossShoot(bullets,i*6,80,18);
+									bossShoot(bullets,448/3*2+i*6,80,18);}
+								break;
+							case 3:
+								for (int i =0; i < 50; i++){
+									bossShoot(bullets,i*6,80,18);}
+								break;
+						}
+						positionOfPattern_6++;
+						if(positionOfPattern_6 >= 3){
+							positionOfPattern_6 = 0;
+							GameScreen.bossShootCheck = false;
+							this.patternCooldown.reset();
+						}
+						break;
 					}
-					switch (Boss.safeArea[1]) {
-						case 1:
-							for (int i =0; i < 50; i++){
-								bossShootAfter(bullets,448/3+i*6,80,2000,18);}
-							break;
-						case 2:
-							for (int i =0; i < 30; i++){
-								bossShootAfter(bullets,i*6,80,2000,18);
-								bossShootAfter(bullets,448/3*2+i*6,80,2000,18);
-							}
-							break;
-						case 3:
-							for (int i =0; i < 50; i++){
-								bossShootAfter(bullets,i*6,80,2000,18);}
-							break;
-					}
-					switch (Boss.safeArea[2]) {
-						case 1:
-							for (int i =0; i < 50; i++){
-								bossShootAfter(bullets,448/3+i*6,80,4000,18);}
-							break;
-						case 2:
-							for (int i =0; i < 30; i++){
-								bossShootAfter(bullets,i*6,80,4000,18);
-								bossShootAfter(bullets,448/3*2+i*6,80,4000,18);
-							}
-							break;
-						case 3:
-							for (int i =0; i < 50; i++){
-								bossShootAfter(bullets,i*6,80,4000,18);}
-							break;
-					}
-					GameScreen.bossShootCheck = false;
-					this.patternCooldown.reset();
-					bossShootCheckAfter(3);
-					break;
 			}
 		}
 		if(this.patternCooldown.checkFinished()&& !GameScreen.bossShootCheck){

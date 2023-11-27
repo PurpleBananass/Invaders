@@ -357,7 +357,6 @@ public class GameScreen extends Screen {
             this.haslifeItemUsed = true;
         }
 		if(System.currentTimeMillis()- bossStartTime > 4000){
-			System.out.println(System.currentTimeMillis()- bossStartTime);
 			bossCountCheck = false;
 			this.enemyShipFormation.update();}
 		if(bossPatternDrawOverCheck){
