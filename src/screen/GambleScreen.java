@@ -51,6 +51,12 @@ public class GambleScreen extends Screen {
         this.returnCode = 7;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
+        try{
+            playerCurrency = Core.getFileManager().getCurrentPlayer().getCurrency();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public final void initialize() {
@@ -58,11 +64,13 @@ public class GambleScreen extends Screen {
         this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
         this.bullets = new HashSet<Bullet>();
         this.inputDelay = Core.getCooldown(CHANGE_DELAY);
-        try{
-            playerCurrency = Core.getFileManager().getCurrentPlayer().getCurrency();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        isJackpot = false;
+        isGet = false;
+        isGetBack = false;
+        isGameEnd = false;
+        isPrice = false;
+        if(bettingCurrency > playerCurrency) bettingCurrency = playerCurrency;
         this.gambleEntity = new Entity[]{new Entity(this.width / 4 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0),
                 new Entity(this.width / 2 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0),
                 new Entity(this.width / 4 * 3 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0)};
@@ -96,90 +104,85 @@ public class GambleScreen extends Screen {
         if(isGameEnd) checkResult();
 
         draw();
-        if(gambleMode == 0){
-            if (this.selectionCooldown.checkFinished()
-                    && this.inputDelay.checkFinished()) {
-                if (!selected) {
-                    if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-                        selected = true;
-                        this.selectionCooldown.reset();
+        switch(gambleMode) {
+            case 0:
+                if (this.selectionCooldown.checkFinished()
+                        && this.inputDelay.checkFinished()) {
+                    if (!selected) {
+                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+                            selected = true;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+                            this.returnCode = 1;
+                            this.isRunning = false;
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+                            if (bettingCurrency - 10 < 0) bettingCurrency = 0;
+                            else bettingCurrency -= 10;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+                            if (bettingCurrency + 10 > playerCurrency) bettingCurrency = playerCurrency;
+                            else bettingCurrency += 10;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
+                            if (bettingCurrency + 100 > playerCurrency) bettingCurrency = playerCurrency;
+                            else bettingCurrency += 100;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_DOWN)) {
+                            if (bettingCurrency - 100 < 0) bettingCurrency = 0;
+                            else bettingCurrency -= 100;
+                            this.selectionCooldown.reset();
+                        }
+
+                    } else {
+                        //겜블 종목 선택
+                        if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+                            if (mode == 1) mode = 3;
+                            else mode--;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+                            if (mode == 3) mode = 1;
+                            else mode++;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && bettingCurrency > 0) {
+                            gambleMode = mode;
+                            playerCurrency -= bettingCurrency;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+                            selected = false;
+                            this.selectionCooldown.reset();
+                        }
                     }
-                    if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
-                        this.returnCode = 1;
+                }
+                break;
+            case 1:
+                if (this.selectionCooldown.checkFinished()
+                        && this.inputDelay.checkFinished()) {
+                    if (!isLeftBorder && inputManager.isKeyDown(Core.getKeySettingCode(0))) {
+                        this.ship.moveLeft();
+                    }
+                    if (!isRightBorder && inputManager.isKeyDown(Core.getKeySettingCode(1))) {
+                        this.ship.moveRight();
+                    }
+                    if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
+                        this.ship.shoot(this.bullets, 1);
+                    }
+                    if (isGameEnd && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
                         this.isRunning = false;
                     }
-                    if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
-                        if(bettingCurrency - 10 < 0) bettingCurrency = 0;
-                        else bettingCurrency -= 10;
-                        this.selectionCooldown.reset();
-                    }
-                    if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
-                        if(bettingCurrency + 10 > playerCurrency) bettingCurrency = playerCurrency;
-                        else bettingCurrency += 10;
-                        this.selectionCooldown.reset();
-                    }
-                    if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
-                        if(bettingCurrency + 100 > playerCurrency) bettingCurrency = playerCurrency;
-                        else bettingCurrency += 100;
-                        this.selectionCooldown.reset();
-                    }
-                    if (inputManager.isKeyDown(KeyEvent.VK_DOWN)) {
-                        if(bettingCurrency - 100 < 0) bettingCurrency = 0;
-                        else bettingCurrency -= 100;
-                        this.selectionCooldown.reset();
-                    }
-
-                } else {
-                    //겜블 종목 선택
-                    if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
-                        if (mode == 1) mode = 3;
-                        else mode--;
-                        this.selectionCooldown.reset();
-                    }
-                    if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
-                        if (mode == 3) mode = 1;
-                        else mode++;
-                        this.selectionCooldown.reset();
-                    }
-                    if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-                        gambleMode = mode;
-                        playerCurrency -= bettingCurrency;
-                        this.selectionCooldown.reset();
-                    }
-                    if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
-                        selected = false;
-                        this.selectionCooldown.reset();
-                    }
                 }
-            }
-        }
-        else if(gambleMode == 1){
-            if (this.selectionCooldown.checkFinished()
-                    && this.inputDelay.checkFinished()){
-                if (!isLeftBorder && inputManager.isKeyDown(Core.getKeySettingCode(0))) {
-                    this.ship.moveLeft();
-                }
-                if (!isRightBorder && inputManager.isKeyDown(Core.getKeySettingCode(1))) {
-                    this.ship.moveRight();
-                }
-                if (replayability.getReplay() == 0 && inputManager.isKeyDown(Core.getKeySettingCode(2))) {
-                    this.ship.shoot(this.bullets, 1);
-                }
-                if(isGameEnd && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){
-                    this.isRunning = false;
-                }
-            }
+                break;
+            default:
+                break;
         }
     }
-    /**
-     * 해야할 것:
-     * 빠칭코 엔티티 그려넣기
-     * 엔티티와 총알의 거리를 재고 엔티티 멈추게 하기
-     * drawManager에서 도박 메뉴창 그리기
-     * Currency와 베팅 연결하기
-     */
-
-
     /**
      * Draws the elements associated with the screen.
      */
@@ -199,7 +202,7 @@ public class GambleScreen extends Screen {
             for(Entity entity : this.gambleEntity)
                 drawManager.drawEntity(entity, entity.getPositionX(),
                         entity.getPositionY());
-            if(isGameEnd) drawManager.drawGambleResult(this, isJackpot, isGet, bettingCurrency);
+            if(isGameEnd) drawManager.drawGambleResult(this, isJackpot, isGet, isGetBack, bettingCurrency);
         }
         drawManager.completeDrawing(this);
     }
@@ -267,16 +270,36 @@ public class GambleScreen extends Screen {
         for (Entity entity : this.gambleEntity){
             checkSprite[entity.getSpriteNumber()] += 1;
         }
-        for(int i=0; i<3; i++){
-            if(checkSprite[i] > 1) this.isGetBack = true;
-            if(checkSprite[i] > 2) this.isGet = true;
+        for(int i=0; i<4; i++){
+            switch (checkSprite[i]){
+                case 2:
+                    this.isGetBack = true;
+                    break;
+                case 3:
+                    this.isGet = true;
+                    break;
+                default:
+                    break;
+            }
         }
-        if(checkSprite[3] > 2) this.isJackpot = true;
+        if(checkSprite[3] > 2){
+            this.isGet = false;
+            this.isJackpot = true;
+        }
         if(!isPrice) {
             try{
-                if(this.isGet) Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency * 2);
-                else if(this.isGetBack) ;
-                else if(this.isJackpot) Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency * 7);
+                if(this.isGet) {
+                    playerCurrency += bettingCurrency*3;
+                    Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency*2);
+                }
+                else if(this.isGetBack) {
+                    playerCurrency += (int)(bettingCurrency*(1.2));
+                    Core.getFileManager().updateCurrencyOfCurrentPlayer((int)(bettingCurrency*(0.2)));
+                }
+                else if(this.isJackpot){
+                    playerCurrency += bettingCurrency*7;
+                    Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency * 6);
+                }
                 else Core.getFileManager().updateCurrencyOfCurrentPlayer(-bettingCurrency);
                 this.isPrice = true;
             } catch (IOException e){

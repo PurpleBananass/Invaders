@@ -1664,7 +1664,7 @@ public final class DrawManager {
 		}
 	}
 
-	public void drawGambleResult(Screen screen, boolean isJackpot, boolean isGet, int bettingCurrency){
+	public void drawGambleResult(Screen screen, boolean isJackpot, boolean isGet, boolean isGetBack, int bettingCurrency){
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics.fillRect(0, screen.getHeight()/2, screen.getWidth()-1, screen.getHeight()/4);
 		backBufferGraphics.setColor(Color.GREEN);
@@ -1675,7 +1675,11 @@ public final class DrawManager {
 		}
 		else if(isGet){
 			drawCenteredBigString(screen, "Congratulations", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 2);
-			drawCenteredBigString(screen, "+ " + Integer.toString(bettingCurrency*2), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
+			drawCenteredBigString(screen, "+ " + Integer.toString(bettingCurrency*3), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
+		}
+		else if(isGetBack){
+			drawCenteredBigString(screen, "Hmm... Not Bad", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 2);
+			drawCenteredBigString(screen, "+ " + Integer.toString((int) (bettingCurrency*1.2)), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
 		}
 		else {
 			drawCenteredBigString(screen, "How about next time?", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
