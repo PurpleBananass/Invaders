@@ -1,4 +1,5 @@
 package GamePrime.Ship;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.awt.Graphics;
@@ -19,7 +20,6 @@ import GamePrime.Page.GamePage;
 import java.awt.Graphics2D;
 
 public class Player extends Component {
-
     String State[] = { "Idle", "Die" };
     public float PosX;
     public float PosY;
@@ -37,7 +37,6 @@ public class Player extends Component {
     SoundManager.PlayProp ShootSoundProp2;
     SoundManager.PlayProp ShootSoundProp3;
     SoundManager.PlayProp ShootSoundProp4;
-
     SoundManager.PlayProp DestroyedProp;
     SoundManager.PlayProp DestroyedProp2;
     SoundManager.PlayProp ItemGetProp;
@@ -45,23 +44,32 @@ public class Player extends Component {
     SoundManager.PlayProp SpeedUpProp;
     SoundManager.PlayProp InvicibleProp;
     SoundManager.PlayProp BombEquipProp;
-        public void Awake() {
+
+    public void Awake() {
         gp = (GamePage) gm.CustomInstance;
-
-        JSONObject SFX = (JSONObject)res.get("SFX");
-        SubshipProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("Auxiliary"), null);
-        SpeedUpProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("SpeedUp"), null);
-        InvicibleProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("Ghost"), null);
-        BombEquipProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("BombAquip"), null);
-
-        ShootSoundProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot1"), null);
-        ShootSoundProp2 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot2"), null);
-        ShootSoundProp3 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot3"), null);
-        ShootSoundProp4 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerShoot4"), null);
-
-        DestroyedProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerDestroyed"), null);
-        DestroyedProp2 = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("PlayerDestroyed2"), null);
-        ItemGetProp = gm.Sm.new PlayProp("Sound" + File.separator + "SFX" + File.separator + (String)SFX.get("GetItem"), null);
+        JSONObject SFX = (JSONObject) res.get("SFX");
+        SubshipProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("Auxiliary"), null);
+        SpeedUpProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("SpeedUp"), null);
+        InvicibleProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("Ghost"), null);
+        BombEquipProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("BombAquip"), null);
+        ShootSoundProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("PlayerShoot1"), null);
+        ShootSoundProp2 = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("PlayerShoot2"), null);
+        ShootSoundProp3 = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("PlayerShoot3"), null);
+        ShootSoundProp4 = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("PlayerShoot4"), null);
+        DestroyedProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("PlayerDestroyed"), null);
+        DestroyedProp2 = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("PlayerDestroyed2"), null);
+        ItemGetProp = gm.Sm.new PlayProp(
+                "Sound" + File.separator + "SFX" + File.separator + (String) SFX.get("GetItem"), null);
         String ship = null;
         JSONObject data = gm.GlobalData.get("Setting");
         PlayData = (JSONObject) gm.GlobalData.get("LocalData").get("PlayData");
@@ -93,15 +101,12 @@ public class Player extends Component {
         double itemMaxX = item.pos.getX() + item.size / 2;
         double itemMinY = item.pos.getY() - item.size / 2;
         double itemMaxY = item.pos.getY() + item.size / 2;
-
         Image curimg = img.get(State[StateIndex]);
-
         double PlayerMinX = PosX - curimg.GetWidthFixHeight(height) / 2;
         double PlayerMaxX = PosX + curimg.GetWidthFixHeight(height) / 2;
         double PlayerMinY = PosY - height / 2;
         double PlayerMaxY = PosY + height / 2;
-        if ((PlayerMaxX >= itemMinX && PlayerMinX <= itemMaxX) &&
-                (PlayerMaxY >= itemMinY && PlayerMinY <= itemMaxY)) {
+        if ((PlayerMaxX >= itemMinX && PlayerMinX <= itemMaxX) && (PlayerMaxY >= itemMinY && PlayerMinY <= itemMaxY)) {
             EventSystem.Destroy(item.Obj);
             AquiredItem(item.itemIndex);
         }
@@ -109,7 +114,7 @@ public class Player extends Component {
 
     void AquiredItem(int item) {
         JSONArray itemList = (JSONArray) PlayData.get("ActiveItem");
-        if(this.Obj.name == "Player2"){
+        if (this.Obj.name == "Player2") {
             itemList = (JSONArray) PlayData.get("ActiveItem2");
         }
         if (itemList.size() < 3) {
@@ -122,21 +127,18 @@ public class Player extends Component {
         if (ActiveItem[0]) {
             return;
         }
-
         int height = ((Number) gp.PlayData.get("ImgHeight")).intValue();
         double bulletMinX = bullet.pos.getX() - bullet.size / 2;
         double bulletMaxX = bullet.pos.getX() + bullet.size / 2;
         double bulletMinY = bullet.pos.getY() - bullet.size / 2;
         double bulletMaxY = bullet.pos.getY() + bullet.size / 2;
-
         Image curimg = img.get(State[StateIndex]);
-
         double PlayerMinX = PosX - curimg.GetWidthFixHeight(height) / 2;
         double PlayerMaxX = PosX + curimg.GetWidthFixHeight(height) / 2;
         double PlayerMinY = PosY - height / 2;
         double PlayerMaxY = PosY + height / 2;
-        if ((PlayerMaxX >= bulletMinX && PlayerMinX <= bulletMaxX) &&
-                (PlayerMaxY >= bulletMinY && PlayerMinY <= bulletMaxY)) {
+        if ((PlayerMaxX >= bulletMinX && PlayerMinX <= bulletMaxX)
+                && (PlayerMaxY >= bulletMinY && PlayerMinY <= bulletMaxY)) {
             EventSystem.Destroy(bullet.Obj);
             Attacked();
         }
@@ -156,7 +158,7 @@ public class Player extends Component {
             if (life == 0) {
                 gm.Sm.playSound(DestroyedProp2);
                 EventSystem.Destroy(this.Obj);
-            }else{
+            } else {
                 gm.Sm.playSound(DestroyedProp);
             }
         }
@@ -172,8 +174,6 @@ public class Player extends Component {
         }
         return basicspeed;
     }
-
-    
 
     public void Start() {
         Shotdelay = 0;
@@ -203,29 +203,29 @@ public class Player extends Component {
         int size = itemList.size();
         if (size > 0) {
             int item = ((Number) itemList.get(size - 1)).intValue();
-            if(ActiveItem[item]== true){
+            if (ActiveItem[item] == true) {
                 return;
             }
             itemList.remove(size - 1);
             switch (ItemDefine.ActiveItem[item]) {
-                case "Ghost":
-                    activeItem(0, 7);
-                    gm.Sm.playSound(InvicibleProp);
-                    break;
-                case "Auxiliary":
-                    activeItem(1, 5);
-                    gm.Sm.playSound(SubshipProp);
-                    break;
-                case "Bomb":
-                    ActiveItem[2] = true;
-                    gm.Sm.playSound(BombEquipProp);
-                    break;
-                case "SpeedUp":
-                    activeItem(3, 7);
-                    gm.Sm.playSound(SpeedUpProp);
-                    break;
-                default:
-                    break;
+            case "Ghost":
+                activeItem(0, 7);
+                gm.Sm.playSound(InvicibleProp);
+                break;
+            case "Auxiliary":
+                activeItem(1, 5);
+                gm.Sm.playSound(SubshipProp);
+                break;
+            case "Bomb":
+                ActiveItem[2] = true;
+                gm.Sm.playSound(BombEquipProp);
+                break;
+            case "SpeedUp":
+                activeItem(3, 7);
+                gm.Sm.playSound(SpeedUpProp);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -246,13 +246,11 @@ public class Player extends Component {
             PosX += movespeed * gm.Et.GetElapsedSeconds();
             Image curimg = img.get(State[StateIndex]);
             float max = PosX + curimg.GetHeightFixWidth(((Number) gp.PlayData.get("ImgHeight")).intValue() / 2);
-
             if (max > gm.frame.getWidth()) {
                 PosX = gm.frame.getWidth()
                         - curimg.GetHeightFixWidth(((Number) gp.PlayData.get("ImgHeight")).intValue() / 2);
             }
         }
-
         if (gm.Im.isKeyPressed(KeyFunc.get("LEFT"))) {
             int movespeed = GetMoveSpeed();
             PosX -= movespeed * gm.Et.GetElapsedSeconds();
@@ -262,11 +260,9 @@ public class Player extends Component {
                 PosX = curimg.GetHeightFixWidth(((Number) gp.PlayData.get("ImgHeight")).intValue() / 2);
             }
         }
-
         if (gm.Im.isKeyDown(KeyFunc.get("ITEM"))) {
             UseItem();
         }
-
         if (gm.Im.isKeyPressed(KeyFunc.get("ATTACK"))) {
             if (Shotdelay == 0) {
                 if (gp.HardMode && GetBullet() == 0) {
@@ -274,22 +270,19 @@ public class Player extends Component {
                 } else {
                     MakeBullet(new Point2D.Float(PosX, PosY), new Point2D.Float(0, -1.0f),
                             (float) PlayData.get("ShotSpeed"));
-                    if(this.Obj.name == "Player1"){
+                    if (this.Obj.name == "Player1") {
                         gm.Sm.playSound(ShootSoundProp);
-
-                    }else{
+                    } else {
                         gm.Sm.playSound(ShootSoundProp3);
                     }
-
                     if (ActiveItem[1]) {
                         MakeBullet(new Point2D.Float(PosX + 50, PosY), new Point2D.Float(0, -1.0f),
                                 (float) PlayData.get("ShotSpeed"));
                         MakeBullet(new Point2D.Float(PosX - 50, PosY), new Point2D.Float(0, -1.0f),
                                 (float) PlayData.get("ShotSpeed"));
-                        if(this.Obj.name == "Player1"){
+                        if (this.Obj.name == "Player1") {
                             gm.Sm.playSound(ShootSoundProp2);
-
-                        }else{
+                        } else {
                             gm.Sm.playSound(ShootSoundProp4);
                         }
                     }
@@ -299,27 +292,22 @@ public class Player extends Component {
                     if (gp.HardMode) {
                         SetBullet(GetBullet() - 1);
                     }
-
                     if (Obj.name == "Player1") {
-                        PlayData.put("ShotCount",((Number) gp.PlayData.get("ShotCount")).intValue()+1);
-                    }else{
-                        PlayData.put("ShotCount",((Number) gp.PlayData.get("ShotCount2")).intValue()+1);
+                        PlayData.put("ShotCount", ((Number) gp.PlayData.get("ShotCount")).intValue() + 1);
+                    } else {
+                        PlayData.put("ShotCount", ((Number) gp.PlayData.get("ShotCount2")).intValue() + 1);
                     }
                     Shotdelay = ((Number) PlayData.get("ShotDelay")).floatValue();
-
                 }
             }
         }
-
         Shotdelay -= gm.Et.GetElapsedSeconds();
         if (Shotdelay <= 0) {
             Shotdelay = 0;
         }
-
         if (gm.Im.isKeyPressed(KeyFunc.get("RELOAD"))) {
             if (gp.HardMode) {
-                if (GetBullet() == 0 &&
-                        GetMegazine() != 0) {
+                if (GetBullet() == 0 && GetMegazine() != 0) {
                     SetBullet(10);
                     SetMegazine(GetMegazine() - 1);
                 }
@@ -329,9 +317,7 @@ public class Player extends Component {
 
     void SetMegazine(int m) {
         if (Obj.name == "Player1") {
-
             PlayData.put("Magazine1", m);
-
         } else {
             PlayData.put("Magazine2", m);
         }
@@ -339,9 +325,7 @@ public class Player extends Component {
 
     int GetMegazine() {
         if (Obj.name == "Player1") {
-
             return ((Number) PlayData.get("Magazine1")).intValue();
-
         } else {
             return ((Number) PlayData.get("Magazine2")).intValue();
         }
@@ -349,9 +333,7 @@ public class Player extends Component {
 
     void SetBullet(int m) {
         if (Obj.name == "Player1") {
-
             PlayData.put("Bullet1", m);
-
         } else {
             PlayData.put("Bullet2", m);
         }
@@ -359,9 +341,7 @@ public class Player extends Component {
 
     int GetBullet() {
         if (Obj.name == "Player1") {
-
             return ((Number) PlayData.get("Bullet1")).intValue();
-
         } else {
             return ((Number) PlayData.get("Bullet2")).intValue();
         }
@@ -369,9 +349,9 @@ public class Player extends Component {
 
     public void MakeBullet(Point2D pos, Point2D dir, float ShotSpeed) {
         if (ActiveItem[2]) {
-            Bomb.MakeBomb(pos, dir, ShotSpeed, "PBullet",Obj.name);
+            Bomb.MakeBomb(pos, dir, ShotSpeed, "PBullet", Obj.name);
         } else {
-            Bullet.MakeBullet(pos, dir, ShotSpeed, "PBullet",Obj.name);
+            Bullet.MakeBullet(pos, dir, ShotSpeed, "PBullet", Obj.name);
         }
     }
 

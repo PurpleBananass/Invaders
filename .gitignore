@@ -181,3 +181,6 @@ outg
 out/
 scores_1p
 scores_2p
+
+# backend
+backend/node_modules
