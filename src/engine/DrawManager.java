@@ -1,10 +1,6 @@
 package engine;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -23,6 +19,8 @@ import screen.Screen;
 import screen.SelectScreen;
 import screen.SettingScreen;
 
+import javax.swing.*;
+
 
 /**
  * Manages screen drawing.
@@ -31,7 +29,6 @@ import screen.SettingScreen;
  *
  */
 public final class DrawManager {
-
 	/** Singleton instance of the class. */
 	private static DrawManager instance;
 	/** Current frame. */
@@ -684,6 +681,7 @@ public final class DrawManager {
 	public void drawUsernameInput(final Screen screen, final char[] name,
 							  final int nameCharSelected) {
 		String introduceUsernameString = "Username:";
+
 
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, introduceUsernameString,
@@ -1584,7 +1582,7 @@ public final class DrawManager {
 	 * @param patternNumber Draw the pattern corresponding to the boss's pattern number.
 	 */
 
-	public void drawBossPattern(final Screen screen, int patternNumber, int ntimes){
+	public void drawBossPattern1(final Screen screen, int patternNumber, int ntimes){
 		backBufferGraphics.setColor(Color.RED);
 		switch (patternNumber){
 			case 1:
@@ -1696,6 +1694,37 @@ public final class DrawManager {
 
 	}
 
+	public void drawBossPattern2(final Screen screen, int number, int ntimes, int x1, int y1){
+		switch(number){
+			case 7:
+				backBufferGraphics.setColor(Color.WHITE);
+				if(ntimes < 10){
+					backBufferGraphics.drawLine(0,80,x1,y1);
+				}
+				else if(ntimes < 20){
+					backBufferGraphics.drawLine(0,80,x1,y1);
+					backBufferGraphics.drawLine(448,80,x1,y1);
+				}
+				else if(ntimes < 30){
+					backBufferGraphics.drawLine(0,80,x1,y1);
+					backBufferGraphics.drawLine(448,80,x1,y1);
+					backBufferGraphics.drawLine(224,80,x1,y1);
+				}
+				else if(ntimes < 40){
+					backBufferGraphics.setColor(Color.RED);
+					backBufferGraphics.drawLine(0,80,x1,y1);
+					backBufferGraphics.drawLine(448,80,x1,y1);
+					backBufferGraphics.drawLine(224,80,x1,y1);
+				}
+				else{
+					GameScreen.bossPatternDrawOverCheck = true;
+				}
+				break;
+
+		}
+
+
+	}
 
 	/**
 	 * Draws achievement information on the screen based on the achievements map.
