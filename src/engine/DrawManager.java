@@ -136,9 +136,6 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.EnemyShipC1, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipC2, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipSpecial, new boolean[16][7]);
-			spriteMap.put(SpriteType.BossShip, new boolean[50][30]);
-			spriteMap.put(SpriteType.BossShipDestroyed, new boolean[50][30]);
-			spriteMap.put(SpriteType.BossShipMoved, new boolean[50][30]);
 			spriteMap.put(SpriteType.Explosion, new boolean[13][7]);
 			spriteMap.put(SpriteType.Item, new boolean[3][3]);
 			spriteMap.put(SpriteType.Life, new boolean[7][7]);
@@ -147,6 +144,9 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.InvincibleShape, new boolean[5][5]);
 			spriteMap.put(SpriteType.SpeedUpShape, new boolean[5][4]);
 			spriteMap.put(SpriteType.AuxiliaryShape, new boolean[5][4]);
+			spriteMap.put(SpriteType.BossShip, new boolean[50][30]);
+			spriteMap.put(SpriteType.BossShipDestroyed, new boolean[50][30]);
+			spriteMap.put(SpriteType.BossShipMoved, new boolean[50][30]);
 
 			fileManager.loadSprite(spriteMap);
 
@@ -889,7 +889,7 @@ public final class DrawManager {
 				Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
 				shipskin[i] = dummyShip;
 				shipskin2[i] = dummyShip2;
-				// ?˜ˆ: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				// ?ï¿½ï¿½: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
 				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
 				if(i !=5) {
@@ -1006,7 +1006,7 @@ public final class DrawManager {
 			for (int i = 0; i < 6; i++) {
 				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 				shipskin[i] = dummyShip;
-				// ?˜ˆ: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				// ?ï¿½ï¿½: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
 				if(i !=5) {
 					try {
