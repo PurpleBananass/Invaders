@@ -24,6 +24,7 @@ public class BossShip extends EnemyShip {
         super.HP = splitLevel;//따로 수정;
         super.pointValue = 100*splitLevel; //따로수정
         this.splitLevel = splitLevel;
+        this.Move();
     }
 
     /**
@@ -59,7 +60,23 @@ public class BossShip extends EnemyShip {
      * when Boss attack this function execute
      */
     public void Move(){
-
+        while (this.HP > 0) {
+            int select = (int) (Math.random() * 7);
+            switch (select) {
+                case 0:
+                case 1:
+                    moveCircle();
+                case 2:
+                case 3:
+                    moveCross();
+                case 4:
+                case 5:
+                    moveDiamond();
+                case 6:
+                case 7:
+                    moveTeleport();
+            }
+        }
     }
 
     /**
@@ -89,8 +106,8 @@ public class BossShip extends EnemyShip {
             if(isRight()){int x = 1, y = -1;}
             else {int x = -1, y = -1;}
             for (int i = 1; i <= 360; i++) {
-                positionX += r * Math.sin((double) (i / (double) 360));
-                positionY += r * Math.cos((double) (i / (double) 360));
+                positionX += (int)(r * Math.sin((double) (i / (double) 360)));
+                positionY += (int)(r * Math.sin((double) (i / (double) 360)));
                 // 특정 조건에서 총도 쏘면 좋을 듯
             }
         }
@@ -103,15 +120,15 @@ public class BossShip extends EnemyShip {
         int r = moveTrackSize(positionX, positionY);
         if (r <= 0){moveTeleport();}
         else {
-            int direction = 0;
-            if(isRight()){direction = 1;}
-            else {direction = -1;}
+            int forward;
+            if(isRight()){forward = 1;}
+            else {forward = -1;}
             int i;
-            for (i = 1; i < r; i++){positionX += i;}
-            for (i = 1; i < r; i++){positionX -= i;}
-            for (i = 1; i < r; i++){positionY += direction * i;}
-            for (i = 1; i < 2*r-1; i++){positionY -= direction * i;}
-            for (i = 1; i < r; i++){positionY += direction * i;}
+            for (i = 1; i < r; i++){positionX += 1;}
+            for (i = 1; i < r; i++){positionX -= 1;}
+            for (i = 1; i < r; i++){positionY += forward;}
+            for (i = 1; i < 2*r-1; i++){positionY -= forward;}
+            for (i = 1; i < r; i++){positionY += forward;}
         }
     }
 
@@ -121,12 +138,22 @@ public class BossShip extends EnemyShip {
     public void moveDiamond() {
         int r = moveTrackSize(positionX, positionY);
         if (r <= 0){moveTeleport();}
-        else {}
+        else {
+            int i;
+            for (i = 1; i < r/2; i++){positionX += 1;positionY += 1;}
+            for (i = 1; i < r/2; i++){positionX -= 1;positionY += 1;}
+            for (i = 1; i < r/2; i++){positionX -= 1;positionY -= 1;}
+            for (i = 1; i < r/2; i++){positionX += 1;positionY -= 1;}
+        }
     }
 
     /**
      * Teleport randomly
      */
     public void moveTeleport() {
+        double randomX = Math.random();
+        double randomY = Math.random();
+        positionX = (int) (randomX * (WIDTH - BOSS_WIDTH));
+        positionY = (int) (randomY * (HEIGHT - BOSS_HEIGHT));
     }
 }
