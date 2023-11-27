@@ -327,8 +327,13 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
 		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Life, false);
+		//hyeontae kim
+		Ship dummyShipYellow = new Ship(0, 0, Color.YELLOW, SpriteType.Life, false);
 		for (int i = 0; i < lives; i++)
-			drawEntity(dummyShip, 40 + 30 * i, 13);
+			if (lives > 1)
+				drawEntity(dummyShip, 40 + 30 * i, 13);
+			else
+				drawEntity(dummyShipYellow, 40 + 30 * i, 13);
 	}
 
 
@@ -345,8 +350,13 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives2), 160, 25);
 		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Life, false);
+		//hyeontae kim
+		Ship dummyShipYellow = new Ship(0, 0, Color.YELLOW, SpriteType.Life, false);
 		for (int i = 0; i < lives2; i++)
-			drawEntity(dummyShip, 180 + 30 * i, 13);
+			if (lives2 > 1)
+				drawEntity(dummyShip, 180 + 30 * i, 13);
+			else
+				drawEntity(dummyShipYellow, 180 + 30 * i, 13);
 	}
 
 
@@ -438,6 +448,22 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString("BUL: " + Integer.toString(10-bullet_count2) + "/" + Integer.toString(magazine2), 224, screen.getHeight() + 25);
+	}
+
+	//hyeontae kim
+	public void drawWarn(final Screen screen) {
+		for (int i=0; i<6; i++) {
+			backBufferGraphics.setColor(Color.RED);
+			backBufferGraphics.fillRect(0,40+80*i,10,40);
+			backBufferGraphics.fillRect(425,40+80*i,10,40);
+		}
+		for (int i=0; i<5; i++) {
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.fillRect(0,80+80*i,10,40);
+			backBufferGraphics.fillRect(425,80+80*i,10,40);
+		}
+		backBufferGraphics.setColor(Color.RED);
+		backBufferGraphics.drawString("!!! WARNING !!!",170,450);
 	}
 
 	/**

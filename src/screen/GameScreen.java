@@ -342,6 +342,10 @@ public class GameScreen extends Screen {
                             + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
                     boolean isLeftBorder = this.ship.getPositionX()
                             - this.ship.getSpeed() < 1;
+					//hyeontae kim
+					if (this.lives == 1) {
+						SoundManager.playSound("SFX/S_Warning", "Warning", false, false);
+					}
 
                     if (moveRight && !isRightBorder) {
                         this.ship.moveRight();
@@ -440,6 +444,11 @@ public class GameScreen extends Screen {
                             + this.ship2.getWidth() + this.ship2.getSpeed() > this.width - 1;
                     boolean isLeftBorder2p = this.ship2.getPositionX()
                             - this.ship2.getSpeed() < 1;
+
+					//hyeontae kim
+					if (this.lives == 1 || this.lives2 == 1) {
+						SoundManager.playSound("SFX/S_Warning", "Warning", false, false);
+					}
 
                     if (moveRight1p && !isRightBorder1p && (this.lives > 0)) {
                         this.ship.moveRight();
@@ -764,6 +773,11 @@ public class GameScreen extends Screen {
 			for (Ship auxiliaryShip : this.ship2.getAuxiliaryShips()) {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
+		}
+
+		//hyeontae kim
+		if (this.lives == 1 || this.lives2 == 1) {
+			drawManager.drawWarn(this);
 		}
 
 		drawManager.drawScore(this, this.score);
