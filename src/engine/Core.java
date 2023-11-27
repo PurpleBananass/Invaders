@@ -176,8 +176,7 @@ public final class Core {
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
 
-					if (mode == 1) {
-						// 1P mode
+					if (mode == 1) {// 1P mode
 						bonusLife = bonusLife && gameState.getLivesRemaining1p() < MAX_LIVES;
 					} else {
 						// 2P mode (Give bonusLife if either player has less than max lives.)

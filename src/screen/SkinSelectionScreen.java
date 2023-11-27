@@ -15,6 +15,9 @@ public class SkinSelectionScreen extends Screen{
     private Cooldown selectionCooldown;
     private int skincode_1p=0;
     private int skincode_2p=0;
+    private static int colorCode_1P = 0;
+    private static int colorCode_2P = 0;
+    private boolean isColorSelection = false;
     private FileManager fileManager;
 
     private static Map<DrawManager.SpriteType, boolean[][]> spriteMap;
@@ -53,6 +56,22 @@ public class SkinSelectionScreen extends Screen{
                 skincode_2p++;
                 this.selectionCooldown.reset();
             }
+            if (inputManager.isKeyDown(KeyEvent.VK_LEFT) && colorCode_1P> 0) {
+                colorCode_1P--;
+                this.selectionCooldown.reset();
+            }
+            if (inputManager.isKeyDown(KeyEvent.VK_RIGHT) && colorCode_1P< 5) {
+                colorCode_1P++;
+                this.selectionCooldown.reset();
+            }
+            if (inputManager.isKeyDown(KeyEvent.VK_A) && colorCode_2P > 0) {
+                colorCode_2P--;
+                this.selectionCooldown.reset();
+            }
+            if (inputManager.isKeyDown(KeyEvent.VK_D) && colorCode_2P < 5) {
+                colorCode_2P++;
+                this.selectionCooldown.reset();
+            }
             if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
                 SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                 this.isRunning = false;
@@ -63,6 +82,15 @@ public class SkinSelectionScreen extends Screen{
     public void draw(){
         drawManager.initDrawing(this);
         drawManager.drawSkinSelectionMenu(this, skincode_1p,skincode_2p);
+        drawManager.drawColorSelectionMenu(this, colorCode_1P,colorCode_2P);
         drawManager.completeDrawing(this);
+    }
+
+    public static int getColorCode_1P(){
+        return colorCode_1P;
+    }
+
+    public static int getColorCode_2P(){
+        return colorCode_2P;
     }
 }
