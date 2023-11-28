@@ -715,7 +715,7 @@ public final class DrawManager {
 	}
 
 	// Item Shop's Item holder
-	public void drawItemShopMenu(final Screen screen,final int selectedItem) {
+	public void drawItemShopMenu(final Screen screen,final int selectedItem, final int respond) {
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredItemInfo(screen, "", screen.getHeight() / 8);
 
@@ -803,9 +803,24 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, "*If Player has the item already, Can't buy.*", screen.getHeight() / 5);
 		backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, "Press Esc to Go to Menu", screen.getHeight() / 1);
-		backBufferGraphics.setColor(Color.GRAY);
+
+		// The indicator of confirming item purchase or not:
+		if (respond == 3){
+			backBufferGraphics.setColor(Color.BLUE);
+			drawCenteredRegularString(screen, "Player has the item already", 400 );
+		}else if (respond == 1){
+			backBufferGraphics.setColor(Color.GREEN);
+			drawCenteredRegularString(screen, "Purchase has been completed", 400 );
+		}else if (respond == 2){
+			backBufferGraphics.setColor(Color.RED);
+			drawCenteredRegularString(screen, "Insufficient Balance", 400 );
+		}else {
+			//nothing
+		}
+
 
 		try{
+			backBufferGraphics.setColor(Color.GREEN);
 			drawCenteredRegularString(screen, "Current credits : " + Core.getFileManager().getCurrentPlayer().getCurrency(), screen.getHeight() / 3);
 		}catch(IOException e){
 			throw new RuntimeException(e);
