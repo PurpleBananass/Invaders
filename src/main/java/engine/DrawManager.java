@@ -1670,4 +1670,18 @@ public final class DrawManager {
 				y += 40;
 		}
 	}
+	public void drawTimer(final Screen screen, final long elapsedTime) {
+
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.WHITE);
+		String timeString = formatTime(elapsedTime);
+		backBufferGraphics.drawString(timeString, 380, 506);
+	}
+	private String formatTime(long elapsedTime) {
+		long totalSeconds = elapsedTime / 1000;
+		long minutes = totalSeconds / 60;
+		long seconds = totalSeconds % 60;
+
+		return String.format("%02d:%02d", minutes, seconds);
+	}
 }

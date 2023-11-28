@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.List;
 
 import engine.*;
+import engine.Timer;
 import entity.*;
 
 /**
@@ -119,7 +120,8 @@ public class GameScreen extends Screen {
 	/** Checks life increase item is used. **/
 	private boolean haslifeItemUsed = false;
 
-
+	/** Timer to count ingame play time **/
+	private Timer timer;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -150,6 +152,7 @@ public class GameScreen extends Screen {
 		this.lives = gameState.getLivesRemaining1p();
 		this.bulletsShot1 = gameState.getBulletsShot1();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
+		this.timer = new Timer();
 		if(gameState.getMode() == 2){
 			this.shipsDestroyed2 = gameState.getShipsDestroyed2();
 		}
@@ -290,6 +293,7 @@ public class GameScreen extends Screen {
 				this.ship2.setOriginalSpeed(2);
 			}
 		}
+		timer.start();
 	}
 
 	/**
@@ -306,7 +310,7 @@ public class GameScreen extends Screen {
 			this.score += LIFE_SCORE * Math.max(0,(this.lives + this.lives2 - 1));
 		}
 		this.logger.info("Screen cleared with a score of " + this.score);
-
+		timer.stop();
 		return this.returnCode;
 	}
 
@@ -667,6 +671,8 @@ public class GameScreen extends Screen {
 			manageCollisions();
 			cleanBullets();
 			updateItems();
+			timer.resume();
+
 			//draw();
 
 			if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
@@ -677,8 +683,8 @@ public class GameScreen extends Screen {
 
 			if (this.levelFinished && this.screenFinishedCooldown.checkFinished())
 				this.isRunning = false;
-
 		} else {
+			timer.pause();
 			if (inputManager.isKeyDown(KeyEvent.VK_CONTROL)) {
 				pauseCnt++;
 				try {
@@ -812,6 +818,9 @@ public class GameScreen extends Screen {
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}
+		long elapsedTime = timer.elapsed();
+		// Convert elapsedTime to a readable format and display it
+		drawManager.drawTimer(this, elapsedTime);
 
 		drawManager.completeDrawing(this);
 	}
