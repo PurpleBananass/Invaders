@@ -16,6 +16,7 @@ import java.util.List;
 public class ItemShopScreen extends Screen {
 
     private static final int SELECTION_TIME = 300;
+    private int respond;
 
     public ItemShopScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
@@ -58,6 +59,7 @@ public class ItemShopScreen extends Screen {
                 // Determine the selected item
                 int selectedItem = this.returnCode;
                 int itemPrice = 0;
+                respond = 0;
 
                 // Update currency and item based on the selected item
                 if (selectedItem == 70) {
@@ -65,6 +67,7 @@ public class ItemShopScreen extends Screen {
                     try {
                         if (Core.getFileManager().getCurrentPlayer().getItem().get(0) == true) {
                             logger.info("Player already has the item");
+                            respond = 3;
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
                             try {
@@ -75,8 +78,10 @@ public class ItemShopScreen extends Screen {
                                 throw new RuntimeException(e);
                             }
                             logger.info("Player bought Speed item successfully");
+                            respond = 1;
                         } else {
                             logger.info("Player has Insufficient Balance");
+                            respond = 2;
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -87,6 +92,7 @@ public class ItemShopScreen extends Screen {
                     try {
                         if (Core.getFileManager().getCurrentPlayer().getItem().get(1) == true) {
                             logger.info("Player already has the item");
+                            respond = 3;
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
                             try {
@@ -97,8 +103,10 @@ public class ItemShopScreen extends Screen {
                                 throw new RuntimeException(e);
                             }
                             logger.info("Player bought Additional Health item successfully");
+                            respond = 1;
                         } else {
                             logger.info("Player has Insufficient Balance");
+                            respond = 2;
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -110,6 +118,7 @@ public class ItemShopScreen extends Screen {
                     try {
                         if (Core.getFileManager().getCurrentPlayer().getItem().get(2) == true) {
                             logger.info("Player already has the item");
+                            respond = 3;
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
                             try {
@@ -120,8 +129,10 @@ public class ItemShopScreen extends Screen {
                                 throw new RuntimeException(e);
                             }
                             logger.info("Player bought Shooting Faster item successfully");
+                            respond = 1;
                         } else {
                             logger.info("Player has Insufficient Balance");
+                            respond = 2;
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -168,7 +179,7 @@ public class ItemShopScreen extends Screen {
      */
     private void draw() {
         drawManager.initDrawing(this);
-        drawManager.drawItemShopMenu(this, this.returnCode);
+        drawManager.drawItemShopMenu(this, this.returnCode, respond);
 
         drawManager.completeDrawing(this);
     }
