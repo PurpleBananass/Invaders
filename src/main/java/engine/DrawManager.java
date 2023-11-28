@@ -1,10 +1,6 @@
 package engine;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -57,6 +53,9 @@ public final class DrawManager {
 
 	/** Sprite types mapped to their images. */
 	private static Map<SpriteType, boolean[][]> spriteMap;
+	private int lineConstant = 0;
+	private Cooldown bgTimerInit = new Cooldown(3000);
+	private Cooldown bgTimerLines = new Cooldown(500);
 
 	/** Sprite types. */
 	public static enum SpriteType {
@@ -1128,6 +1127,50 @@ public final class DrawManager {
 					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
 			i++;
 		}
+	}
+
+	/**
+	 * Draws in game background
+	 *
+	 * @param screen
+	 * 		screen to draw on
+	 * @param spaceHeight
+	 *
+	 */
+	public void drawBackground(final Screen screen, int spaceHeight){
+		int padTop = 1000;
+		int countLine = 30;
+		int padBot = -500;
+
+		backBufferGraphics.setColor(new Color(20,20,250,70));
+		Graphics2D lines = (Graphics2D)backBufferGraphics;
+		Stroke defaultStroke=lines.getStroke();
+		lines.setStroke(new BasicStroke(5.0f, BasicStroke.CAP_SQUARE,  BasicStroke.JOIN_MITER, 10.0f, new float[] {10.0f,9.0f,3.0f,9.0f},10.0f));
+		for (int i = 0; i<countLine; i++){
+			lines.drawLine(padTop + (screen.getWidth()-padTop-padTop)/(countLine-1) * i , spaceHeight, padBot + (screen.getWidth()-padBot-padBot)/(countLine-1) * i, screen.getHeight());
+		}
+		GradientPaint colour = new GradientPaint(0, spaceHeight, new Color(10, 0, 0, 255), 0, screen.getHeight(), new Color(255,255,255,0));
+		lines.setPaint(colour);
+		lines.fillRect(0, spaceHeight, screen.getWidth(), screen.getHeight());
+		lines.setStroke(new BasicStroke(5.0f, BasicStroke.CAP_SQUARE,  BasicStroke.JOIN_MITER, 10.0f, new float[] { 10.0f, 5.0f, 5.0f, 5.0f},10.0f));
+		backBufferGraphics.setColor(new Color(20,25,250,70));
+		for (int i = 0; i<countLine; i++){
+			int max_opacity = 130;
+			int opacity = (i*10<=max_opacity?i*10:max_opacity);
+			backBufferGraphics.setColor(new Color(20,25,255,opacity));
+			backBufferGraphics.drawLine(0, spaceHeight+lineConstant+i*30, screen.getWidth(), spaceHeight+lineConstant+i*30);
+		}
+		((Graphics2D) backBufferGraphics).setStroke(defaultStroke);
+		if (bgTimerLines.checkFinished()) {
+			lineConstant++;
+			bgTimerLines.reset();
+		}
+		if (lineConstant >= 30) lineConstant = 0;
+	}
+
+	public void BgTimer(final Screen screen, int spaceHeight){
+		bgTimerInit.reset();
+		bgTimerLines.reset();
 	}
 
 	/**
