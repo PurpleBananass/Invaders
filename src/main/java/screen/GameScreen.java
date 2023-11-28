@@ -706,6 +706,7 @@ public class GameScreen extends Screen {
 	 */
 	private void draw() {
 		drawManager.initDrawing(this);
+		drawManager.drawBackground(this, SEPARATION_LINE_HEIGHT);
 
 		if (SelectScreen.skillModeOn) {
 			drawManager.drawAmmo(this, this.magazine, this.bullet_count);
