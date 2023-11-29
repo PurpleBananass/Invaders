@@ -105,9 +105,10 @@ public class BossShip extends EnemyShip {
         else {
             if(isRight()){int x = 1, y = -1;}
             else {int x = -1, y = -1;}
-            for (int i = 1; i <= 360; i++) {
-                positionX += (int)(r * Math.sin((double) (i / (double) 360)));
-                positionY += (int)(r * Math.sin((double) (i / (double) 360)));
+            for (int i = 1; i <= 36; i++) {
+                this.setPositionX(positionX += (int)(r * Math.sin((double) (i / (double) 36))));
+                this.setPositionY(positionY += (int)(r * Math.sin((double) (i / (double) 36))));
+                this.update();
                 // 특정 조건에서 총도 쏘면 좋을 듯
             }
         }
@@ -124,11 +125,11 @@ public class BossShip extends EnemyShip {
             if(isRight()){forward = 1;}
             else {forward = -1;}
             int i;
-            for (i = 1; i < r; i++){positionX += 1;}
-            for (i = 1; i < r; i++){positionX -= 1;}
-            for (i = 1; i < r; i++){positionY += forward;}
-            for (i = 1; i < 2*r-1; i++){positionY -= forward;}
-            for (i = 1; i < r; i++){positionY += forward;}
+            for (i = 1; i < r/10; i++){positionX += 10;this.update();}
+            for (i = 1; i < r/10; i++){positionX -= 10;this.update();}
+            for (i = 1; i < r/10; i++){positionY += forward*10;this.update();}
+            for (i = 1; i < r/5 - 1; i++){positionY -= forward*10;this.update();}
+            for (i = 1; i < r/10; i++){positionY += forward*10;this.update();}
         }
     }
 
@@ -140,10 +141,10 @@ public class BossShip extends EnemyShip {
         if (r <= 0){moveTeleport();}
         else {
             int i;
-            for (i = 1; i < r/2; i++){positionX += 1;positionY += 1;}
-            for (i = 1; i < r/2; i++){positionX -= 1;positionY += 1;}
-            for (i = 1; i < r/2; i++){positionX -= 1;positionY -= 1;}
-            for (i = 1; i < r/2; i++){positionX += 1;positionY -= 1;}
+            for (i = 1; i < r/20; i++){positionX += 10;positionY += 10;this.update();}
+            for (i = 1; i < r/20; i++){positionX -= 10;positionY += 10;this.update();}
+            for (i = 1; i < r/20; i++){positionX -= 10;positionY -= 10;this.update();}
+            for (i = 1; i < r/20; i++){positionX += 10;positionY -= 10;this.update();}
         }
     }
 
@@ -155,5 +156,6 @@ public class BossShip extends EnemyShip {
         double randomY = Math.random();
         positionX = (int) (randomX * (WIDTH - BOSS_WIDTH));
         positionY = (int) (randomY * (HEIGHT - BOSS_HEIGHT));
+        this.update();
     }
 }
