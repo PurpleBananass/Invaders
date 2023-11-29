@@ -905,7 +905,7 @@ public class GameScreen extends Screen {
 							}
 						}
 						setBomb(false);
-						if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
+						if (enemyShip.hasItem() && enemyShip.isDestroyed() && !enemyShipFormation.getBossStage()) {
 							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
 							SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
 						}
