@@ -153,7 +153,4 @@ public class GameState {
 		return shipsDestroyed2;
 	}
 
-	public int livesRemaining1() {
-		return 0;
-	}
 }
