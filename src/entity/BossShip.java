@@ -60,23 +60,25 @@ public class BossShip extends EnemyShip {
      * when Boss attack this function execute
      */
     public void Move(){
+        /*
         while (this.HP > 0) {
             int select = (int) (Math.random() * 7);
             switch (select) {
                 case 0:
                 case 1:
-                    moveCircle();
+                    moveCircle(); break;
                 case 2:
                 case 3:
-                    moveCross();
+                    moveCross(); break;
                 case 4:
                 case 5:
-                    moveDiamond();
+                    moveDiamond(); break;
                 case 6:
                 case 7:
-                    moveTeleport();
+                    moveTeleport(); break;
             }
         }
+         */
     }
 
     /**

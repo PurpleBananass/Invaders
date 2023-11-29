@@ -88,8 +88,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
   private int shipCount;
   /** check where the last ship is. */
   private int flag = 1;
-  /** Speed of the bullets shot by the members. */
-  private int bulletSpeed = 4;
   /** need to make complex movements. */
   private boolean moreDiff = false;
   /** speed of complex movements. */
@@ -118,10 +116,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
    * @param gameSettings
    *            Current game settings.
    */
-  public EnemyShipFormation(
-    final GameSettings gameSettings,
-    final GameState gameState
-  ) {
+  public EnemyShipFormation(final GameSettings gameSettings, final GameState gameState) {
     this.gameState = gameState;
     this.drawManager = Core.getDrawManager();
     this.logger = Core.getLogger();
@@ -132,8 +127,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
     this.nShipsWide = gameSettings.getFormationWidth();
     this.nShipsHigh = gameSettings.getFormationHeight();
     this.shootingInterval = gameSettings.getShootingFrecuency();
-    this.shootingVariance =
-      (int) (gameSettings.getShootingFrecuency() * SHOOTING_VARIANCE);
+    this.shootingVariance = (int) (gameSettings.getShootingFrecuency() * SHOOTING_VARIANCE);
     this.baseSpeed = gameSettings.getBaseSpeed();
     this.movementSpeed = this.baseSpeed;
     this.positionX = INIT_POS_X;
@@ -158,10 +152,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
       for (List<EnemyShip> column : this.enemyShips) {
         int ship_index = 0;
         for (int i = 0; i < this.nShipsHigh; i++) {
-          if (i / (float) this.nShipsHigh < PROPORTION_C) spriteType =
-                  SpriteType.EnemyShipC1; else if (
-                  i / (float) this.nShipsHigh < PROPORTION_B + PROPORTION_C
-          ) spriteType = SpriteType.EnemyShipB1; else spriteType = SpriteType.EnemyShipA1;
+          if (i / (float) this.nShipsHigh < PROPORTION_C)
+            spriteType = SpriteType.EnemyShipC1;
+          else if (i / (float) this.nShipsHigh < PROPORTION_B + PROPORTION_C)
+            spriteType = SpriteType.EnemyShipB1;
+          else
+            spriteType = SpriteType.EnemyShipA1;
 
           EnemyShip enemyShip = null;
           switch (spriteType) {
@@ -214,6 +210,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
    * Draws every individual component of the formation.
    */
   public final void draw() {
+    if (isBossStage)
+      drawManager.drawEntity(Boss,Boss.getPositionX(),Boss.getPositionY());
     for (List<EnemyShip> column : this.enemyShips) for (EnemyShip enemyShip : column)
       drawManager.drawEntity(enemyShip, enemyShip.getPositionX(), enemyShip.getPositionY());
   }
@@ -237,7 +235,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
     this.movementSpeed += MINIMUM_SPEED;
 
     /** If the number of remain enemyShip is one, it moves quickly in odd row. */
-    if (shipCount == 1 && flag == 1) {
+    if (shipCount == 1 && flag == 1 && !isBossStage) {
       if (checkFirst == 1) {
         this.movementSpeed = 5;
         this.logger.info("The last enemy ship moves faster");
@@ -279,7 +277,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
           /** if ship remains one switch flag.
            * it works only on odd row
            * */
-          if (shipCount == 1) flag *= -1;
+          if (shipCount == 1 && !isBossStage) flag *= -1;
         }
       } else {
         if (isAtRightSide) {
@@ -295,13 +293,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
           /** if ship remains one switch flag.
            * it works only on odd row
            * */
-          if (shipCount == 1) flag *= -1;
+          if (shipCount == 1 && !isBossStage) flag *= -1;
         }
       }
 
-      if (currentDirection == Direction.RIGHT) movementX = X_SPEED; else if (
-        currentDirection == Direction.LEFT
-      ) movementX = -X_SPEED; else movementY = Y_SPEED;
+      if (currentDirection == Direction.RIGHT) movementX = X_SPEED;
+      else if (currentDirection == Direction.LEFT) movementX = -X_SPEED;
+      else movementY = Y_SPEED;
 
       positionX += movementX;
       positionY += movementY;
@@ -319,9 +317,16 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
         column.removeAll(destroyed);
       }
 
-      for (List<EnemyShip> column : this.enemyShips) for (EnemyShip enemyShip : column) {
-        enemyShip.move(movementX, movementY);
-        enemyShip.update();
+      //Move
+      if (isBossStage){
+        Boss.Move();
+      }
+      else {
+        for (List<EnemyShip> column : this.enemyShips)
+          for (EnemyShip enemyShip : column) {
+            enemyShip.move(movementX, movementY);
+            enemyShip.update();
+          }
       }
     }
   }
@@ -373,19 +378,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
    */
   public final void shoot(final Set<Bullet> bullets) {
     // For now, only ships in the bottom row are able to shoot.
-    if (isBossStage){
-      if (Boss!=null) Boss.Attack();
-      return;
-    }
     if (this.shootingCooldown.checkFinished()) {
       this.shootingCooldown.reset();
-      /** if shipcount remains one, Bullet_speed is speed up. */
-      if (shipCount == 1) {
-        if (flag == 1) {
-          bulletSpeed = 8;
-        } else {
-          bulletSpeed = 4;
-        }
+      if (isBossStage&&Boss!=null){
+        Boss.Attack();
+        SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
+        return;
       }
       ArrayList<Boolean> shot = new ArrayList<>();
       for (int i = 0; i < this.shooters.size(); i++) shot.add(false);
