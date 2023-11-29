@@ -405,20 +405,37 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
    *            Ship to be destroyed.
    */
   public final void destroy(final EnemyShip destroyedShip) {
-    if (isBossStage){
-      Boss=null;
-      this.shipCount=0;
-      for (int i=0;i<this.enemyShips.get(0).size();i++){
-        if (this.enemyShips.get(0).get(i).equals(destroyedShip)){
-          this.enemyShips.get(0).get(i).destroy();
-          Boss = (BossShip) this.enemyShips.get(0).get(i);
-          if (Boss.isDestroyed())
-            Boss.Death(this.enemyShips.get(0));
+    if (isBossStage) {
+      if (Boss.equals(destroyedShip)) {
+        Boss.destroy();
+        if (Boss.isDestroyed()) {
+          Boss.Death(this.enemyShips.get(0));
         }
-        if (!this.enemyShips.get(0).get(i).isDestroyed())
-          this.shipCount++;
       }
-      return;
+      for (int i = 0; i < this.enemyShips.get(0).size(); i++) {
+        EnemyShip ship = enemyShips.get(0).get(i);
+        if (ship.equals(destroyedShip)) {
+          ship.destroy();
+          try {//split Boss
+            BossShip hitBoss = (BossShip) ship;
+            if (hitBoss.isDestroyed()) {
+              hitBoss.Death(this.enemyShips.get(0));
+            }
+          } catch (Exception e) {
+          }
+        }
+      }
+      this.shipCount = 0;
+      for (EnemyShip ship : this.enemyShips.get(0)) {
+        if (!ship.isDestroyed()) {
+          this.shipCount++;
+          if (Boss.isDestroyed()){
+          try {
+            Boss = (BossShip) ship;
+          } catch (Exception e) {}
+        }
+      }
+    }
     }
     for (List<EnemyShip> column : this.enemyShips) for (int i = 0; i < column.size(); i++) if (column.get(i).equals(destroyedShip)) {
       column.get(i).destroy();

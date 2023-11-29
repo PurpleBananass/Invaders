@@ -158,4 +158,5 @@ public class BossShip extends EnemyShip {
         positionX = (int) (randomX * (WIDTH - BOSS_WIDTH));
         positionY = (int) (randomY * (HEIGHT - BOSS_HEIGHT));
     }
+    public int getSplitLevel(){return this.splitLevel;}
 }
