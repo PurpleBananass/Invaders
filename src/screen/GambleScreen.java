@@ -7,13 +7,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
+import static java.lang.Math.random;
 
 public class GambleScreen extends Screen {
     private static final int SELECTION_TIME = 200;
     private static final int CHANGE_DELAY = 500;
     private Cooldown selectionCooldown;
+    private Cooldown rpsDelay;
     private Ship ship;
     /** Height of the interface separation line. */
     private static final int SEPARATION_LINE_HEIGHT = 40;
@@ -21,14 +23,21 @@ public class GambleScreen extends Screen {
     private Set<Bullet> bullets;
     /** Player's freedom. */
     private Replayability replayability = new Replayability(0);
+    //겜블 모드 0 == 선택창, 1 == 파칭코, 2 == 가위바위보
     private int gambleMode = 0;
     private boolean isRightBorder;
     private boolean isLeftBorder;
+    //플레이어의 베팅금
     public static int bettingCurrency = 0;
+    //플레이어의 재화
     private int playerCurrency;
+    //선택창에서의 겜블 모드 1 == 파칭코, 2 == 가위바위보
     private int mode = 1;
-    private boolean selected = false;
+    //베팅금을 정했는지
+    private boolean bettingSelected = false;
+    //파칭코에 나오는 엔티티
     private Entity[] gambleEntity;
+    //엔티티들의 스프라이트 0,1,2 == 일반, 3 == 잭팟
     private DrawManager.SpriteType[] sprites;
     //잭팟인지
     private boolean isJackpot = false;
@@ -40,6 +49,16 @@ public class GambleScreen extends Screen {
     private boolean isGameEnd = false;
     //보상을 지급 받았는지
     private boolean isPrice = false;
+    //컴퓨터가 고르는 가위바위보 0 == 바위, 1 == 보, 2 == 가위
+    private int computerSelect = 0;
+    //플레이어가 고른 가위바위보
+    private int playerSelect = 0;
+    //플레이어가 가위바위보 선택했는지
+    private boolean rpsSelected = false;
+    //가위바위보 상금의 배율
+    private final double[] rpsPriceRate = {1,2,3,5,1,1.5,1.5,2,1.2,7};
+    private double selectedPriceRate;
+    private boolean checkLoop = false;
 
     /**
      * Implements the high scores screen, it shows player records.
@@ -51,6 +70,7 @@ public class GambleScreen extends Screen {
         this.returnCode = 7;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
+        this.rpsDelay = Core.getCooldown(1000);
         try{
             playerCurrency = Core.getFileManager().getCurrentPlayer().getCurrency();
         } catch (IOException e) {
@@ -65,11 +85,6 @@ public class GambleScreen extends Screen {
         this.bullets = new HashSet<Bullet>();
         this.inputDelay = Core.getCooldown(CHANGE_DELAY);
 
-        isJackpot = false;
-        isGet = false;
-        isGetBack = false;
-        isGameEnd = false;
-        isPrice = false;
         if(bettingCurrency > playerCurrency) bettingCurrency = playerCurrency;
         this.gambleEntity = new Entity[]{new Entity(this.width / 4 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0),
                 new Entity(this.width / 2 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0),
@@ -93,24 +108,37 @@ public class GambleScreen extends Screen {
      */
     protected final void update() {
         super.update();
-        isRightBorder = this.ship.getPositionX()
-                + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
-        isLeftBorder = this.ship.getPositionX()
-                - this.ship.getSpeed() < 1;
-        manageCollisions();
-        updateEntitySprite();
-        cleanBullets();
-        isGameEnd = gambleEntity[0].isDecideSprite() && gambleEntity[1].isDecideSprite() && gambleEntity[2].isDecideSprite();
-        if(isGameEnd) checkResult();
-
+        switch (gambleMode){
+            case 1:
+                isRightBorder = this.ship.getPositionX()
+                        + this.ship.getWidth() + this.ship.getSpeed() > this.width - 1;
+                isLeftBorder = this.ship.getPositionX()
+                        - this.ship.getSpeed() < 1;
+                manageCollisions();
+                updateEntitySprite();
+                cleanBullets();
+                isGameEnd = gambleEntity[0].isDecideSprite() && gambleEntity[1].isDecideSprite() && gambleEntity[2].isDecideSprite();
+                if(isGameEnd) checkResult();
+                break;
+            case 2:
+                updateComputerSelect();
+                if(!isGameEnd && rpsSelected) checkRPSResult();
+                if(isGameEnd){
+                    if(!isPrice)randomRPSPrice();
+                    checkResult();
+                }
+                break;
+            default:
+                break;
+        }
         draw();
         switch(gambleMode) {
             case 0:
                 if (this.selectionCooldown.checkFinished()
                         && this.inputDelay.checkFinished()) {
-                    if (!selected) {
+                    if (!bettingSelected) {
                         if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-                            selected = true;
+                            bettingSelected = true;
                             this.selectionCooldown.reset();
                         }
                         if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
@@ -141,13 +169,11 @@ public class GambleScreen extends Screen {
                     } else {
                         //겜블 종목 선택
                         if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
-                            if (mode == 1) mode = 3;
-                            else mode--;
+                            if (mode == 2) mode--;
                             this.selectionCooldown.reset();
                         }
                         if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
-                            if (mode == 3) mode = 1;
-                            else mode++;
+                            if (mode == 1) mode++;
                             this.selectionCooldown.reset();
                         }
                         if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && bettingCurrency > 0) {
@@ -156,7 +182,7 @@ public class GambleScreen extends Screen {
                             this.selectionCooldown.reset();
                         }
                         if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
-                            selected = false;
+                            bettingSelected = false;
                             this.selectionCooldown.reset();
                         }
                     }
@@ -179,6 +205,26 @@ public class GambleScreen extends Screen {
                     }
                 }
                 break;
+            case 2:
+                if (this.selectionCooldown.checkFinished()
+                        && this.inputDelay.checkFinished()) {
+                    if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+                        if (playerSelect >0) playerSelect--;
+                        this.selectionCooldown.reset();
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+                        if (playerSelect<2) playerSelect++;
+                        this.selectionCooldown.reset();
+                    }
+                    if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && this.rpsDelay.checkFinished()) {
+                        rpsSelected = true;
+                        this.selectionCooldown.reset();
+                    }
+                    if (isGameEnd && inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+                        this.isRunning = false;
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -190,19 +236,42 @@ public class GambleScreen extends Screen {
         drawManager.initDrawing(this);
 
         drawManager.drawGambleTitle(this, playerCurrency);
-        if(gambleMode == 0){
-            drawManager.drawGambleMenu(this, mode, selected);
-        }
-        else if (gambleMode == 1) {
-            drawManager.drawEntity(this.ship, this.ship.getPositionX(),
-                    this.ship.getPositionY());
-            for (Bullet bullet : this.bullets)
-                drawManager.drawEntity(bullet, bullet.getPositionX(),
-                        bullet.getPositionY());
-            for(Entity entity : this.gambleEntity)
-                drawManager.drawEntity(entity, entity.getPositionX(),
-                        entity.getPositionY());
-            if(isGameEnd) drawManager.drawGambleResult(this, isJackpot, isGet, isGetBack, bettingCurrency);
+        switch (gambleMode){
+            case 0:
+                drawManager.drawGambleMenu(this, mode, bettingSelected);
+                break;
+            case 1:
+                drawManager.drawEntity(this.ship, this.ship.getPositionX(),
+                        this.ship.getPositionY());
+                for (Bullet bullet : this.bullets)
+                    drawManager.drawEntity(bullet, bullet.getPositionX(),
+                            bullet.getPositionY());
+                for(Entity entity : this.gambleEntity)
+                    drawManager.drawEntity(entity, entity.getPositionX(),
+                            entity.getPositionY());
+                if(isGameEnd) drawManager.drawGambleResult(this, isJackpot, isGet, isGetBack, bettingCurrency, 3);
+                break;
+            case 2:
+                drawManager.drawRockPaperScissors(this,computerSelect,playerSelect);
+                if(isGameEnd){
+                    rpsDelay.reset();
+                    int i=0;
+                    while(!rpsDelay.checkFinished() && !checkLoop){
+                        if(isGet){
+                            drawManager.drawRPSPriceRate(this,selectedPriceRate);
+                            drawManager.completeDrawing(this);
+                        }
+                    }
+                    checkLoop = true;
+                    drawManager.drawGambleResult(this, isJackpot, isGet, isGetBack, bettingCurrency, selectedPriceRate);
+                }
+                if(!rpsDelay.checkFinished() && !isGameEnd){
+                    drawManager.drawDrawString(this);
+                    drawManager.completeDrawing(this);
+                }
+                break;
+            default:
+                break;
         }
         drawManager.completeDrawing(this);
     }
@@ -248,7 +317,6 @@ public class GambleScreen extends Screen {
         Set<Bullet> recyclable = new HashSet<Bullet>();
         for (Bullet bullet : this.bullets) {
             for (Entity entities : this.gambleEntity) {
-                //총알이 적에게 닿으면 멈추기 구현해야함
                 if (!entities.isDecideSprite() && checkCollision(bullet, entities)) {
                     entities.setDecideSprite(true);
                 }
@@ -266,46 +334,85 @@ public class GambleScreen extends Screen {
         }
     }
     private void checkResult(){
-        int[] checkSprite = {0,0,0,0};
-        for (Entity entity : this.gambleEntity){
-            checkSprite[entity.getSpriteNumber()] += 1;
-        }
-        for(int i=0; i<4; i++){
-            switch (checkSprite[i]){
-                case 2:
-                    this.isGetBack = true;
-                    break;
-                case 3:
-                    this.isGet = true;
-                    break;
-                default:
-                    break;
-            }
-        }
-        if(checkSprite[3] > 2){
-            this.isGet = false;
-            this.isJackpot = true;
-        }
-        if(!isPrice) {
-            try{
-                if(this.isGet) {
-                    playerCurrency += bettingCurrency*3;
-                    Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency*2);
+        switch (gambleMode){
+            case 1:
+                int[] checkSprite = {0,0,0,0};
+                for (Entity entity : this.gambleEntity){
+                    checkSprite[entity.getSpriteNumber()] += 1;
                 }
-                else if(this.isGetBack) {
-                    playerCurrency += (int)(bettingCurrency*(1.2));
-                    Core.getFileManager().updateCurrencyOfCurrentPlayer((int)(bettingCurrency*(0.2)));
+                for(int i=0; i<4; i++){
+                    switch (checkSprite[i]){
+                        case 2:
+                            this.isGetBack = true;
+                            break;
+                        case 3:
+                            this.isGet = true;
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                else if(this.isJackpot){
-                    playerCurrency += bettingCurrency*7;
-                    Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency * 6);
+                if(checkSprite[3] > 2){
+                    this.isGet = false;
+                    this.isJackpot = true;
                 }
-                else Core.getFileManager().updateCurrencyOfCurrentPlayer(-bettingCurrency);
-                this.isPrice = true;
-            } catch (IOException e){
-                throw new RuntimeException("Currency Of Player is not updated.");
-            }
+                if(!isPrice) {
+                    try{
+                        if(this.isGet) {
+                            playerCurrency += bettingCurrency*3;
+                            Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency*2);
+                        }
+                        else if(this.isGetBack) {
+                            playerCurrency += (int)(bettingCurrency*(1.2));
+                            Core.getFileManager().updateCurrencyOfCurrentPlayer((int)(bettingCurrency*(0.2)));
+                        }
+                        else if(this.isJackpot){
+                            playerCurrency += bettingCurrency*7;
+                            Core.getFileManager().updateCurrencyOfCurrentPlayer(bettingCurrency * 6);
+                        }
+                        else Core.getFileManager().updateCurrencyOfCurrentPlayer(-bettingCurrency);
+                        this.isPrice = true;
+                    } catch (IOException e){
+                        throw new RuntimeException("Currency Of Player is not updated.");
+                    }
+                }
+                break;
+            case 2:
+                if(!isPrice) {
+                    try{
+                        if(this.isGet) {
+                            playerCurrency += (int) (bettingCurrency* selectedPriceRate);
+                            Core.getFileManager().updateCurrencyOfCurrentPlayer((int)(bettingCurrency*(selectedPriceRate -1)));
+                        }
+                        else Core.getFileManager().updateCurrencyOfCurrentPlayer(-bettingCurrency);
+                        this.isPrice = true;
+                    } catch (IOException e){
+                        throw new RuntimeException("Currency Of Player is not updated.");
+                    }
+                }
+                break;
+            default:
+                break;
         }
+
+    }
+    private void updateComputerSelect(){
+        if(!rpsSelected && this.rpsDelay.checkFinished()) computerSelect = (computerSelect+1)%3;
+    }
+    private void checkRPSResult(){
+        if(computerSelect == playerSelect){
+            rpsDelay.reset();
+            rpsSelected = false;
+        }
+        else if(playerSelect == computerSelect+1 || playerSelect == computerSelect -2){
+            isGameEnd = true;
+            isGet = true;
+        }
+        else isGameEnd = true;
+    }
+    private void randomRPSPrice(){
+        int i = (int) (random()*random()*random()*100 %10);
+        selectedPriceRate = rpsPriceRate[i];
     }
 }
 

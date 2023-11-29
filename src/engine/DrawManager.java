@@ -1633,8 +1633,7 @@ public final class DrawManager {
 			backBufferGraphics.setFont(fontRegular);
 			backBufferGraphics.setColor(Color.WHITE);
 			backBufferGraphics.drawString("Pachinko", screen.getWidth()/4 - fontRegularMetrics.stringWidth("Pachinko") / 2, screen.getHeight()/3 *2);
-			backBufferGraphics.drawString("2", screen.getWidth()/2 - fontRegularMetrics.stringWidth("2") / 2, screen.getHeight()/3 *2);
-			backBufferGraphics.drawString("3", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("3") / 2, screen.getHeight()/3 *2);
+			backBufferGraphics.drawString("Rock Paper Scissors", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("Rock Paper Scissors") / 3 *2, screen.getHeight()/3 *2);
 		} else{
 			backBufferGraphics.setColor(Color.WHITE);
 			drawCenteredBigString(screen, Integer.toString(GambleScreen.bettingCurrency), screen.getHeight()/2);
@@ -1648,41 +1647,59 @@ public final class DrawManager {
 				backBufferGraphics.setColor(Color.GREEN);
 			else
 				backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawString("2", screen.getWidth()/2 - fontRegularMetrics.stringWidth("2") / 2, screen.getHeight()/3 *2);
-
-			if (mode == 3)
-				backBufferGraphics.setColor(Color.GREEN);
-			else
-				backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawString("3", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("3") / 2, screen.getHeight()/3 *2);
+			backBufferGraphics.drawString("Rock Paper Scissors", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("Rock Paper Scissors") / 3 *2, screen.getHeight()/3 *2);
 		}
 	}
-
-	public void drawGambleEntity(Screen screen, Entity[] gambleEntity){
-		for (int i = 0; i < 3; i++) {
-			drawEntity(gambleEntity[i], screen.getWidth() / 4 * (i+1), screen.getHeight()/6);
-		}
-	}
-
-	public void drawGambleResult(Screen screen, boolean isJackpot, boolean isGet, boolean isGetBack, int bettingCurrency){
+	public void drawGambleResult(Screen screen, boolean isJackpot, boolean isGet, boolean isGetBack, int bettingCurrency, double priceRate){
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics.fillRect(0, screen.getHeight()/2, screen.getWidth()-1, screen.getHeight()/4);
 		backBufferGraphics.setColor(Color.GREEN);
 		backBufferGraphics.drawRect(0, screen.getHeight()/2, screen.getWidth()-1, screen.getHeight()/4);
 		if(isJackpot){
 			drawCenteredBigString(screen, "!!! JACKPOT !!!", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 2);
-			drawCenteredBigString(screen, "+ " + Integer.toString(bettingCurrency*7), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
+			drawCenteredBigString(screen, "+ " + Integer.toString(bettingCurrency*7), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 4);
 		}
 		else if(isGet){
 			drawCenteredBigString(screen, "Congratulations", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 2);
-			drawCenteredBigString(screen, "+ " + Integer.toString(bettingCurrency*3), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
+			drawCenteredBigString(screen, "+ " + Integer.toString((int)(bettingCurrency*priceRate)), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 4);
 		}
 		else if(isGetBack){
 			drawCenteredBigString(screen, "Hmm... Not Bad", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 2);
-			drawCenteredBigString(screen, "+ " + Integer.toString((int) (bettingCurrency*1.2)), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
+			drawCenteredBigString(screen, "+ " + Integer.toString((int) (bettingCurrency*1.2)), screen.getHeight()/2 + fontRegularMetrics.getHeight() * 4);
 		}
 		else {
 			drawCenteredBigString(screen, "How about next time?", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
 		}
+	}
+	public void drawRockPaperScissors(Screen screen, int computer, int player){
+		String[] computerString = {"Rock","Paper","Scissors"};
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredRegularString(screen, computerString[computer], screen.getHeight()/2 - fontRegularMetrics.getHeight() * 3);
+		if (player == 0)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("Rock", screen.getWidth()/4 - fontRegularMetrics.stringWidth("Rock") / 2, screen.getHeight()/3 *2);
+		if (player == 1)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("Paper", screen.getWidth()/2 - fontRegularMetrics.stringWidth("Paper") / 2, screen.getHeight()/3 *2);
+
+		if (player == 2)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("Scissors", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("Scissors") / 2, screen.getHeight()/3 *2);
+	}
+	public void drawRPSPriceRate(Screen screen, double priceRate){
+		backBufferGraphics.setColor(Color.BLACK);
+		backBufferGraphics.fillRect(screen.getWidth()/2 -50, screen.getHeight()/2, 100, fontBigMetrics.getHeight());
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen,"X"+ priceRate, screen.getHeight()/2);
+	}
+	public void drawDrawString(Screen screen){
+		backBufferGraphics.setColor(Color.GREEN);
+		drawCenteredBigString(screen,"Draw", screen.getHeight()/2 + fontBigMetrics.getHeight());
 	}
 }
