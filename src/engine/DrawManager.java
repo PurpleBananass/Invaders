@@ -1661,7 +1661,22 @@ public final class DrawManager {
 			backBufferGraphics.drawString("Rock Paper Scissors", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("Rock Paper Scissors") / 3 *2, screen.getHeight()/3 *2);
 		}
 	}
-
+	public void drawPachinkoRate(){
+		boolean[][] image;
+		SpriteType[] sprites = {SpriteType.EnemyShipA1, SpriteType.EnemyShipB1, SpriteType.EnemyShipC1, SpriteType.EnemyShipSpecial};
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setFont(fontRegular);
+		for(int k=0; k<4;k++) {
+			image = spriteMap.get(sprites[k]);
+			for (int i = 0; i < image.length; i++)
+				for (int j = 0; j < image[i].length; j++)
+					if (image[i][j])
+						backBufferGraphics.drawRect( 1 + i * 2,
+								1 + 20*k + j * 2, 1, 1);
+			if(k == 3) backBufferGraphics.drawString(": x7",40, 17+ 20*k);
+			else backBufferGraphics.drawString(": x3",40, 17+ 20*k);
+		}
+	}
 	/**
 	 *  Draw Gamble Result on screen
 	 * @param screen
@@ -1719,6 +1734,9 @@ public final class DrawManager {
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString("Scissors", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("Scissors") / 2, screen.getHeight()/3 *2);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString("Random Rate: x1, x1.2, x1.5, x2, x3, x5, x7",2,40);
 	}
 
 	/**
@@ -1730,7 +1748,7 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics.fillRect(screen.getWidth()/2 -50, screen.getHeight()/2, 100, fontBigMetrics.getHeight());
 		backBufferGraphics.setColor(Color.GREEN);
-		drawCenteredBigString(screen,"X"+ priceRate, screen.getHeight()/2);
+		drawCenteredBigString(screen,"x"+ priceRate, screen.getHeight()/2);
 	}
 
 	/**

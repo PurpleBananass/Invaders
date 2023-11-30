@@ -17,6 +17,7 @@ public class GambleScreen extends Screen {
     private Cooldown selectionCooldown;
     /** Rock Paper Scissors' inner delay*/
     private Cooldown rpsDelay;
+    private Cooldown changeDelay;
     private Ship ship;
     /** Height of the interface separation line. */
     private static final int SEPARATION_LINE_HEIGHT = 40;
@@ -73,6 +74,7 @@ public class GambleScreen extends Screen {
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
         this.rpsDelay = Core.getCooldown(1000);
+        this.changeDelay = Core.getCooldown(30);
         try{
             playerCurrency = Core.getFileManager().getCurrentPlayer().getCurrency();
         } catch (IOException e) {
@@ -136,7 +138,7 @@ public class GambleScreen extends Screen {
                 if (this.selectionCooldown.checkFinished()
                         && this.inputDelay.checkFinished()) {
                     if (!bettingSelected) {
-                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && bettingCurrency > 0) {
                             bettingSelected = true;
                             this.selectionCooldown.reset();
                         }
@@ -175,7 +177,7 @@ public class GambleScreen extends Screen {
                             if (mode == 1) mode++;
                             this.selectionCooldown.reset();
                         }
-                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE) && bettingCurrency > 0) {
+                        if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
                             gambleMode = mode;
                             playerCurrency -= bettingCurrency;
                             this.selectionCooldown.reset();
@@ -244,6 +246,7 @@ public class GambleScreen extends Screen {
                 break;
             // 파칭코
             case 1:
+                drawManager.drawPachinkoRate();
                 drawManager.drawEntity(this.ship, this.ship.getPositionX(),
                         this.ship.getPositionY());
                 for (Bullet bullet : this.bullets)
@@ -335,12 +338,15 @@ public class GambleScreen extends Screen {
      * Update gamble entities' sprites
      */
     private void updateEntitySprite(){
-        for (Entity entity : this.gambleEntity){
-            if(!entity.isDecideSprite()){
-                if(entity.getSpriteNumber() <3) entity.setSpriteNumber(entity.getSpriteNumber() +1);
-                else entity.setSpriteNumber(0);
-                entity.changeEntitySprite(sprites[entity.getSpriteNumber()]);
+        if(this.changeDelay.checkFinished()) {
+            for (Entity entity : this.gambleEntity) {
+                if (!entity.isDecideSprite()) {
+                    if (entity.getSpriteNumber() < 3) entity.setSpriteNumber(entity.getSpriteNumber() + 1);
+                    else entity.setSpriteNumber(0);
+                    entity.changeEntitySprite(sprites[entity.getSpriteNumber()]);
+                }
             }
+            this.changeDelay.reset();
         }
     }
     /**
@@ -414,7 +420,10 @@ public class GambleScreen extends Screen {
      * Update Computer's selection in {Rock,Paper,Scissors}
      */
     private void updateComputerSelect(){
-        if(!rpsSelected && this.rpsDelay.checkFinished()) computerSelect = (computerSelect+1)%3;
+        if(!rpsSelected && this.rpsDelay.checkFinished() && this.changeDelay.checkFinished()) {
+            computerSelect = (computerSelect + 1) % 3;
+            this.changeDelay.reset();
+        }
     }
     /**
      * Check Rock Paper Scissors' Result
