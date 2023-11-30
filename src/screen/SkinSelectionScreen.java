@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 import java.util.Map;
 
 public class SkinSelectionScreen extends Screen{
-    private static final int SELECTION_TIME = 100;
+    private static final int SELECTION_TIME = 150;
     private Cooldown selectionCooldown;
     private int skincode_1p=0;
     private int skincode_2p=0;

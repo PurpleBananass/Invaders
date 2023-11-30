@@ -1093,6 +1093,8 @@ public final class DrawManager {
 				if (i == colorCode1P) {
 					backBufferGraphics.setColor(Color.GREEN);
 					backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+					backBufferGraphics.drawOval(xPosition-1, yPosition-1, colorButtonSize+2, colorButtonSize+2);
+
 				}
 			}
 			for (int i = 0; i < colors.length; i++) {
@@ -1108,6 +1110,8 @@ public final class DrawManager {
 				if (i == colorCode2P) {
 					backBufferGraphics.setColor(Color.GREEN);
 					backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+					backBufferGraphics.drawOval(xPosition-1, yPosition-1, colorButtonSize+2, colorButtonSize+2);
+
 				}
 			}
 
@@ -1126,6 +1130,7 @@ public final class DrawManager {
 				if (i == colorCode1P) {
 					backBufferGraphics.setColor(Color.GREEN);
 					backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+					backBufferGraphics.drawOval(xPosition-1, yPosition-1, colorButtonSize+2, colorButtonSize+2);
 				}
 
 			}
