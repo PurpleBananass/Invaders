@@ -209,7 +209,7 @@ public class GameScreen extends Screen {
 	/**
 	 * Initializes basic screen properties, and adds necessary elements.
 	 */
-	public final void initialize() {
+	public final void initialize(){
 		super.initialize();
 		bossShootCheck = false;
 		bossPatternDrawCheck = false;
@@ -231,8 +231,11 @@ public class GameScreen extends Screen {
 			throw new RuntimeException(e);
 		}
 		// 게임 모드 별 함선 생성 제어
+		Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(128, 0, 128)};
+
 		if (gameState.getMode() == 1){
-			this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
+
+			this.ship = new Ship(this.width / 2, this.height - 30, colors[SkinSelectionScreen.getColorCode_1P()], DrawManager.SpriteType.Ship, false);
 			if(existShopItems.get(0)){
 				this.ship.buyItemSpeed();
 			}
@@ -244,8 +247,8 @@ public class GameScreen extends Screen {
 			}
 		}
 		if (gameState.getMode() == 2) {
-			this.ship = new Ship(this.width / 2 - 85, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
-			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, Color.RED, DrawManager.SpriteType.Ship2, false);
+			this.ship = new Ship(this.width / 2 - 85, this.height - 30, colors[SkinSelectionScreen.getColorCode_1P()], DrawManager.SpriteType.Ship, false);
+			this.ship2 = new Ship(this.width / 2 + 60, this.height - 30, colors[SkinSelectionScreen.getColorCode_2P()], DrawManager.SpriteType.Ship2, false);
 			if(existShopItems.get(0)){
 				this.ship.buyItemSpeed();
 				this.ship2.buyItemSpeed();

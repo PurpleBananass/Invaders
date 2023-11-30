@@ -18,10 +18,9 @@ import engine.AchievementManager.Achievement;
 import java.lang.Integer;
 
 import entity.*;
-import screen.GameScreen;
-import screen.Screen;
-import screen.SelectScreen;
-import screen.SettingScreen;
+import screen.*;
+
+import javax.swing.*;
 
 
 /**
@@ -328,7 +327,8 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
-		Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Life, false);
+		Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(128, 0, 128)};
+		Ship dummyShip = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_1P()], SpriteType.Life, false);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 30 * i, 13);
 	}
@@ -346,7 +346,8 @@ public final class DrawManager {
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString(Integer.toString(lives2), 160, 25);
-		Ship dummyShip = new Ship(0, 0, Color.RED, SpriteType.Life, false);
+		Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(128, 0, 128)};
+		Ship dummyShip = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_2P()], SpriteType.Life, false);
 		for (int i = 0; i < lives2; i++)
 			drawEntity(dummyShip, 180 + 30 * i, 13);
 	}
@@ -861,8 +862,11 @@ public final class DrawManager {
 		String SkinString = "Select Your Ship Design!";
 		String skin1p = "1P";
 		String skin2p = "2P";
+
 		Ship[] shipskin = new Ship[6];
 		Ship[] shipskin2 = new Ship[6];
+
+		Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(128, 0, 128)};
 
 
 		if (SelectScreen.gameMode == 2) {
@@ -878,8 +882,8 @@ public final class DrawManager {
 				logger.warning("Loading failed.");
 			}
 			for (int i = 0; i < 6; i++) {
-				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
-				Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
+				Ship dummyShip = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_1P()], SpriteType.Ship, false);
+				Ship dummyShip2 = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_2P()], SpriteType.Ship, true);
 				shipskin[i] = dummyShip;
 				shipskin2[i] = dummyShip2;
 				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
@@ -997,7 +1001,7 @@ public final class DrawManager {
 				logger.warning("Loading failed.");
 			}
 			for (int i = 0; i < 6; i++) {
-				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+				Ship dummyShip = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_1P()], SpriteType.Ship, false);
 				shipskin[i] = dummyShip;
 				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
@@ -1068,7 +1072,73 @@ public final class DrawManager {
 		}
 			backBufferGraphics.setColor(Color.GREEN);
 			drawCenteredBigString(screen, SkinString, screen.getHeight() / 8);
+	}
+
+	public void drawColorSelectionMenu(final Screen screen, final int colorCode1P, final int colorCode2P) {
+		Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(128, 0, 128)}; // RGB 값 사용
+
+		int colorButtonSize = 22;
+		int initialXPosition = screen.getWidth() / 4; // 화면 가운데 정렬을 위한 초기 X 위치 계산
+		int yPosition = 500; // 색상 버튼이 배치될 Y 위치
+
+		if (SelectScreen.gameMode == 2) {
+			for (int i = 0; i < colors.length; i++) {
+				int xPosition = initialXPosition/2 - 30 + 30 * i;
+
+				// 동그라미 색상 버튼 그리기
+				backBufferGraphics.setColor(colors[i]);
+				backBufferGraphics.fillOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+
+				// 선택된 색상 표시를 위한 테두리 그리기
+				if (i == colorCode1P) {
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+					backBufferGraphics.drawOval(xPosition-1, yPosition-1, colorButtonSize+2, colorButtonSize+2);
+
+				}
+			}
+			for (int i = 0; i < colors.length; i++) {
+				int xPosition = (initialXPosition/2)*5 - 30 + 30 * i;
+
+				// 동그라미 색상 버튼 그리기
+				backBufferGraphics.setColor(colors[i]);
+				backBufferGraphics.fillOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+
+				// 선택된 색상 표시를 위한 테두리 그리기
+				if (i == colorCode2P) {
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+					backBufferGraphics.drawOval(xPosition-1, yPosition-1, colorButtonSize+2, colorButtonSize+2);
+
+				}
+			}
+
 		}
+		else {
+			for (int i = 0; i < colors.length; i++) {
+				int xPosition = initialXPosition - 12 + 45 * i;
+
+				// 동그라미 색상 버튼 그리기
+				backBufferGraphics.setColor(colors[i]);
+				backBufferGraphics.fillOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+
+				// 선택된 색상 표시를 위한 테두리 그리기
+				if (i == colorCode1P) {
+					backBufferGraphics.setColor(Color.GREEN);
+					backBufferGraphics.drawOval(xPosition, yPosition, colorButtonSize, colorButtonSize);
+					backBufferGraphics.drawOval(xPosition-1, yPosition-1, colorButtonSize+2, colorButtonSize+2);
+				}
+
+			}
+		}
+	}
+
 
 
 	public void drawHighScoreMenu(final Screen screen) {
