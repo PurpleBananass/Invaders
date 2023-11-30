@@ -101,7 +101,9 @@ public final class DrawManager {
 
 		SpeedUpShape,
 
-		AuxiliaryShape
+		AuxiliaryShape,
+
+		Boss
 
 
 	};
@@ -137,9 +139,9 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.InvincibleShape, new boolean[5][5]);
 			spriteMap.put(SpriteType.SpeedUpShape, new boolean[5][4]);
 			spriteMap.put(SpriteType.AuxiliaryShape, new boolean[5][4]);
+			spriteMap.put(SpriteType.Boss, new boolean[448][20]);
 
 			fileManager.loadSprite(spriteMap);
-
 			fileManager.changeSprite(spriteMap,SpriteType.Bullet,0);
 			fileManager.changeSprite(spriteMap,SpriteType.Ship,0);
 			fileManager.changeSprite(spriteMap,SpriteType.Ship2,0);
@@ -1527,10 +1529,16 @@ public final class DrawManager {
 			}
 
 		}
-
-
-
 	}
+
+	public void drawBossHp(Screen screen, int hp,int firstHp){
+		backBufferGraphics.setColor(Color.RED);
+		backBufferGraphics.drawRect(screen.getWidth() / 4+20, screen.getHeight() / 10 - fontRegularMetrics.getHeight()*13/7,
+				screen.getWidth() / 3 + 30, fontRegularMetrics.getHeight());
+		backBufferGraphics.fillRect(screen.getWidth() / 4+20, screen.getHeight() / 10-fontRegularMetrics.getHeight()*13/7,
+				(screen.getWidth() / 3 + 30 )* hp / firstHp , fontRegularMetrics.getHeight());
+	}
+
 	private void drawKeyString(Screen screen, String s1,String s2,String s3,String s4,String s5,String s6,String s7,String s8,int num){
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.WHITE);
@@ -1638,6 +1646,126 @@ public final class DrawManager {
 					/ 8 * 5 + fontRegularMetrics.getHeight() * 2);
 		}
 	}
+
+	/**
+	 * Draws achievement information on the screen based on the achievements map.
+	 *
+	 * @param screen      Screen to draw on.
+	 * @param patternNumber Draw the pattern corresponding to the boss's pattern number.
+	 */
+
+	public void drawBossPattern(final Screen screen, int patternNumber, int ntimes){
+		backBufferGraphics.setColor(Color.RED);
+		switch (patternNumber){
+			case 1:
+				for (int i= 0; i < ntimes; i++){
+						backBufferGraphics.fillRect(i*6,40,3,440);
+						if(i > 60){
+						GameScreen.bossPatternDrawOverCheck = true;
+						break;}
+					}
+				break;
+			case 2:
+				for (int i= 0; i < ntimes; i++){
+					backBufferGraphics.fillRect(448-i*6,40,3,440);
+					if(i > 60){
+						GameScreen.bossPatternDrawOverCheck = true;
+						break;}
+				}
+				break;
+			case 3:
+				for (int i= 0; i < ntimes; i++){
+					backBufferGraphics.fillRect(448-i*6,40,3,440);
+					backBufferGraphics.fillRect(i*6,40,3,440);
+					if(i > 30){
+						GameScreen.bossPatternDrawOverCheck = true;
+						break;}
+				}
+				break;
+			case 4:
+				for (int i= 0; i < ntimes; i++){
+					backBufferGraphics.fillRect(i*6,40,3,440);
+					if(i>40) break;
+				}
+				if(ntimes > 30){
+					for(int j=0; j<ntimes-30; j++){
+						backBufferGraphics.fillRect(448-j*6,40,3,440);
+						if(j > 40){
+							GameScreen.bossPatternDrawOverCheck = true;
+							break;}
+					}
+				}
+				break;
+			case 5:
+				if(ntimes > 20){
+					for(int j=0; j<ntimes-20; j++){
+						backBufferGraphics.fillRect(448-j*12,40,3,440);
+						backBufferGraphics.fillRect(448-j*12+6,40,3,440);
+						if(j*12 > 400){
+							GameScreen.bossPatternDrawOverCheck = true;
+							break;}
+					}
+				}
+				if(ntimes < 36){
+					for (int i= 0; i < ntimes; i++){
+						if(i*12>400) break;
+						backBufferGraphics.fillRect(i*12-6,40,3,440);
+						backBufferGraphics.fillRect(i*12,40,3,440);
+					}
+				}
+				break;
+			case 6:
+				if(ntimes <15) {
+					switch (Boss.safeArea[0]) {
+						case 1:
+							backBufferGraphics.fillRect(448 / 3, 40, 448 / 3 * 2, 440);
+							break;
+						case 2:
+							backBufferGraphics.fillRect(0, 40, 448 / 3, 440);
+							backBufferGraphics.fillRect(448 / 3 * 2, 40, 448 / 3, 440);
+							break;
+						case 3:
+							backBufferGraphics.fillRect(0, 40, 448 / 3 * 2, 440);
+							break;
+					}
+				}
+				else if(ntimes < 30){
+					switch (Boss.safeArea[1]){
+						case 1:
+							backBufferGraphics.fillRect(448 / 3, 40, 448 / 3 * 2, 440);
+							break;
+						case 2:
+							backBufferGraphics.fillRect(0, 40, 448 / 3, 440);
+							backBufferGraphics.fillRect(448 / 3 * 2, 40, 448 / 3, 440);
+							break;
+						case 3:
+							backBufferGraphics.fillRect(0, 40, 448 / 3 * 2, 440);
+							break;
+					}
+
+				}
+				else if(ntimes < 45){
+					switch (Boss.safeArea[2]){
+						case 1:
+							backBufferGraphics.fillRect(448 / 3, 40, 448 / 3 * 2, 440);
+							break;
+						case 2:
+							backBufferGraphics.fillRect(0, 40, 448 / 3, 440);
+							backBufferGraphics.fillRect(448 / 3 * 2, 40, 448 / 3, 440);
+							break;
+						case 3:
+							backBufferGraphics.fillRect(0, 40, 448 / 3 * 2, 440);
+							break;
+					}
+				}
+				else {
+					GameScreen.bossPatternDrawOverCheck = true;
+					break;}
+				break;
+		}
+
+	}
+
 
 	/**
 	 * Draws achievement information on the screen based on the achievements map.
