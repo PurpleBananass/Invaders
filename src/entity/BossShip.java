@@ -4,6 +4,7 @@ import engine.DrawManager;
 import engine.GameState;
 
 import java.util.List;
+import java.util.Set;
 
 
 public class BossShip extends EnemyShip {
@@ -42,6 +43,15 @@ public class BossShip extends EnemyShip {
         enemyShipList.add(first);
         enemyShipList.add(second);
     }
+
+    /**
+     * when Boss uses beam pattern
+     */
+    public void beam(final Set<LaserBeam> laserBeams) {
+        int randomX = (int)(Math.random() * 448);
+        laserBeams.add(new LaserBeam(randomX, 44));
+    }
+
     /**
      * when Boss Die this function execute
      */
@@ -51,14 +61,12 @@ public class BossShip extends EnemyShip {
 
     /**
      * when Boss attack this function execute
+     * There is only one attack pattern yet
      */
-    public void Attack() {
-
+    public void Attack(final Set<LaserBeam> laserBeams) {
+        beam(laserBeams);
     }
 
-    /**
-     * when Boss attack this function execute
-     */
     public void Move(){
         /*
         while (this.HP > 0) {
