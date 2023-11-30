@@ -15,6 +15,7 @@ public class GambleScreen extends Screen {
     private static final int SELECTION_TIME = 200;
     private static final int CHANGE_DELAY = 500;
     private Cooldown selectionCooldown;
+    /** Rock Paper Scissors' inner delay*/
     private Cooldown rpsDelay;
     private Ship ship;
     /** Height of the interface separation line. */
@@ -57,6 +58,7 @@ public class GambleScreen extends Screen {
     private boolean rpsSelected = false;
     //가위바위보 상금의 배율
     private final double[] rpsPriceRate = {1,2,3,5,1,1.5,1.5,2,1.2,7};
+    //가위바위보 상금이 정해졌는지
     private double selectedPriceRate;
     private boolean checkLoop = false;
 
@@ -78,7 +80,6 @@ public class GambleScreen extends Screen {
         }
 
     }
-
     public final void initialize() {
         super.initialize();
         this.ship = new Ship(this.width / 2, this.height - 30, Color.GREEN, DrawManager.SpriteType.Ship, false);
@@ -91,7 +92,6 @@ public class GambleScreen extends Screen {
                 new Entity(this.width / 4 * 3 -12, this.height / 3, 12 * 2, 8 * 2, Color.WHITE, false, 0)};
         this.sprites = new DrawManager.SpriteType[]{DrawManager.SpriteType.EnemyShipA1, DrawManager.SpriteType.EnemyShipB1, DrawManager.SpriteType.EnemyShipC1, DrawManager.SpriteType.EnemyShipSpecial};
     }
-
         /**
      * Starts the action.
      *
@@ -102,7 +102,6 @@ public class GambleScreen extends Screen {
 
         return this.returnCode;
     }
-
     /**
      * Updates the elements on screen and checks for events.
      */
@@ -188,6 +187,7 @@ public class GambleScreen extends Screen {
                     }
                 }
                 break;
+            //파칭코
             case 1:
                 if (this.selectionCooldown.checkFinished()
                         && this.inputDelay.checkFinished()) {
@@ -205,6 +205,7 @@ public class GambleScreen extends Screen {
                     }
                 }
                 break;
+            //가위바위보
             case 2:
                 if (this.selectionCooldown.checkFinished()
                         && this.inputDelay.checkFinished()) {
@@ -237,9 +238,11 @@ public class GambleScreen extends Screen {
 
         drawManager.drawGambleTitle(this, playerCurrency);
         switch (gambleMode){
+            // 메뉴창
             case 0:
                 drawManager.drawGambleMenu(this, mode, bettingSelected);
                 break;
+            // 파칭코
             case 1:
                 drawManager.drawEntity(this.ship, this.ship.getPositionX(),
                         this.ship.getPositionY());
@@ -251,6 +254,7 @@ public class GambleScreen extends Screen {
                             entity.getPositionY());
                 if(isGameEnd) drawManager.drawGambleResult(this, isJackpot, isGet, isGetBack, bettingCurrency, 3);
                 break;
+            // 가위바위보
             case 2:
                 drawManager.drawRockPaperScissors(this,computerSelect,playerSelect);
                 if(isGameEnd){
@@ -275,7 +279,9 @@ public class GambleScreen extends Screen {
         }
         drawManager.completeDrawing(this);
     }
-
+    /**
+     * Delete bullets if they get out screen
+     */
     private void cleanBullets() {
         Set<Bullet> recyclable = new HashSet<Bullet>();
         for (Bullet bullet : this.bullets) {
@@ -287,7 +293,6 @@ public class GambleScreen extends Screen {
         this.bullets.removeAll(recyclable);
         BulletPool.recycle(recyclable);
     }
-
     /**
      * Checks if two entities are colliding.
      *
@@ -309,10 +314,12 @@ public class GambleScreen extends Screen {
         // Calculates distance.
         int distanceX = Math.abs(centerAX - centerBX);
         int distanceY = Math.abs(centerAY - centerBY);
-
         return distanceX < maxDistanceX && distanceY < maxDistanceY;
     }
-
+    /**
+     * Check collisions between gamble entities and bullets
+     * If collisions occur, gamble entities are decided their sprite.
+     */
     private void manageCollisions() {
         Set<Bullet> recyclable = new HashSet<Bullet>();
         for (Bullet bullet : this.bullets) {
@@ -324,6 +331,9 @@ public class GambleScreen extends Screen {
             }
         }
     }
+    /**
+     * Update gamble entities' sprites
+     */
     private void updateEntitySprite(){
         for (Entity entity : this.gambleEntity){
             if(!entity.isDecideSprite()){
@@ -333,8 +343,12 @@ public class GambleScreen extends Screen {
             }
         }
     }
+    /**
+     * Check gamble's result and Update players' currency
+     */
     private void checkResult(){
         switch (gambleMode){
+            //파칭코
             case 1:
                 int[] checkSprite = {0,0,0,0};
                 for (Entity entity : this.gambleEntity){
@@ -377,6 +391,7 @@ public class GambleScreen extends Screen {
                     }
                 }
                 break;
+            //가위바위보
             case 2:
                 if(!isPrice) {
                     try{
@@ -394,11 +409,17 @@ public class GambleScreen extends Screen {
             default:
                 break;
         }
-
     }
+    /**
+     * Update Computer's selection in {Rock,Paper,Scissors}
+     */
     private void updateComputerSelect(){
         if(!rpsSelected && this.rpsDelay.checkFinished()) computerSelect = (computerSelect+1)%3;
     }
+    /**
+     * Check Rock Paper Scissors' Result
+     * If draw, give delay.
+     */
     private void checkRPSResult(){
         if(computerSelect == playerSelect){
             rpsDelay.reset();
@@ -410,6 +431,9 @@ public class GambleScreen extends Screen {
         }
         else isGameEnd = true;
     }
+    /**
+     * Select Rock Paper Scissors' Price randomly
+     */
     private void randomRPSPrice(){
         int i = (int) (random()*random()*random()*100 %10);
         selectedPriceRate = rpsPriceRate[i];

@@ -1612,6 +1612,11 @@ public final class DrawManager {
 		}
 	}
 
+	/**
+	 *  Draw GAMBLE Title and Player's Currency
+	 * @param screen
+	 * @param playerCurrency player's Currency
+	 */
 	public void drawGambleTitle(Screen screen, int playerCurrency){
 		String Currency = Integer.toString(playerCurrency);
 		backBufferGraphics.setColor(Color.GREEN);
@@ -1624,6 +1629,12 @@ public final class DrawManager {
 				screen.getHeight() / 7 + fontRegularMetrics.getHeight() * 3);
 	}
 
+	/**
+	 *  Draw Gamble's menu ( Betting Currency, Gamble Mode)
+	 * @param screen
+	 * @param mode Gamble Mode ( 1 == Pachinko, 2 == Rock Paper Scissors)
+	 * @param selected Did players decide Betting Currency?
+	 */
 	public void drawGambleMenu(Screen screen, int mode, boolean selected){
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, "Betting Currency", screen.getHeight()/2 - fontRegularMetrics.getHeight() * 3);
@@ -1650,6 +1661,16 @@ public final class DrawManager {
 			backBufferGraphics.drawString("Rock Paper Scissors", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("Rock Paper Scissors") / 3 *2, screen.getHeight()/3 *2);
 		}
 	}
+
+	/**
+	 *  Draw Gamble Result on screen
+	 * @param screen
+	 * @param isJackpot Is Jackpot?
+	 * @param isGet Should player get price?
+	 * @param isGetBack Should player get back betting currency?
+	 * @param bettingCurrency Betting Currency decided
+	 * @param priceRate Price = Betting Currency * Price Rate
+	 */
 	public void drawGambleResult(Screen screen, boolean isJackpot, boolean isGet, boolean isGetBack, int bettingCurrency, double priceRate){
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics.fillRect(0, screen.getHeight()/2, screen.getWidth()-1, screen.getHeight()/4);
@@ -1671,6 +1692,13 @@ public final class DrawManager {
 			drawCenteredBigString(screen, "How about next time?", screen.getHeight()/2 + fontRegularMetrics.getHeight() * 3);
 		}
 	}
+
+	/**
+	 * Draw Rock Paper Scissors Screen
+	 * @param screen
+	 * @param computer selected by computer in {Rock, Paper, Scissors} 0==Rock, 1==Paper, 2==Scissors
+	 * @param player selected by player
+	 */
 	public void drawRockPaperScissors(Screen screen, int computer, int player){
 		String[] computerString = {"Rock","Paper","Scissors"};
 		backBufferGraphics.setColor(Color.GREEN);
@@ -1692,12 +1720,23 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		backBufferGraphics.drawString("Scissors", screen.getWidth()/4 *3 - fontRegularMetrics.stringWidth("Scissors") / 2, screen.getHeight()/3 *2);
 	}
+
+	/**
+	 * Draw Rock Paper Scissors' Price Rate
+	 * @param screen
+	 * @param priceRate
+	 */
 	public void drawRPSPriceRate(Screen screen, double priceRate){
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics.fillRect(screen.getWidth()/2 -50, screen.getHeight()/2, 100, fontBigMetrics.getHeight());
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen,"X"+ priceRate, screen.getHeight()/2);
 	}
+
+	/**
+	 * Draw "Draw" String
+	 * @param screen
+	 */
 	public void drawDrawString(Screen screen){
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen,"Draw", screen.getHeight()/2 + fontBigMetrics.getHeight());
