@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public class BossShip extends EnemyShip {
-    private final int SpeedY = -2;
+    private final int SpeedY = 2;
     /** Width of current screen. */
     private static final int WIDTH = 448;
     /** Height of current screen. */
@@ -24,7 +24,6 @@ public class BossShip extends EnemyShip {
         super.HP = splitLevel;//따로 수정;
         super.pointValue = 100*splitLevel; //따로수정
         this.splitLevel = splitLevel;
-        this.Move();
     }
 
     /**
@@ -60,6 +59,8 @@ public class BossShip extends EnemyShip {
      * when Boss attack this function execute
      */
     public void Move(){
+        this.setPositionY(this.positionY+this.SpeedY);
+        /*
         while (this.HP > 0) {
             int select = (int) (Math.random() * 7);
             switch (select) {
@@ -77,6 +78,8 @@ public class BossShip extends EnemyShip {
                     moveTeleport();
             }
         }
+
+         */
     }
 
     /**

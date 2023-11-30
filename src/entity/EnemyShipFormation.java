@@ -146,7 +146,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
     SpriteType spriteType;
     if (this.isBossStage){
       this.enemyShips.add(new ArrayList<EnemyShip>());
-      this.Boss = new BossShip(setXpos,positionY,SpriteType.EnemyShipA1,gameState,3);
+      this.Boss = new BossShip((int)(setXpos*10),positionY,SpriteType.EnemyShipA1,gameState,3);
       this.enemyShips.get(0).add(Boss);
       this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh + " BossShip formation in (" + positionX + "," + positionY + ")");
       this.shipCount++;
@@ -318,7 +318,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
         }
         column.removeAll(destroyed);
       }
-
+      if (isBossStage) {
+        for (EnemyShip splitBoss: this.enemyShips.get(0))
+          ((BossShip)splitBoss).Move();
+        return;
+      }
       for (List<EnemyShip> column : this.enemyShips) for (EnemyShip enemyShip : column) {
         enemyShip.move(movementX, movementY);
         enemyShip.update();
