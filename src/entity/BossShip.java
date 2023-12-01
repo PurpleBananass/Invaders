@@ -8,6 +8,7 @@ import java.util.List;
 
 public class BossShip extends EnemyShip {
     private final int SpeedY = 2;
+    private final double PI = Math.acos(-1);
     /** Width of current screen. */
     private static final int WIDTH = 448;
     /** Height of current screen. */
@@ -17,13 +18,16 @@ public class BossShip extends EnemyShip {
     /** Height of boss ship. */
     private static final int BOSS_HEIGHT = 30;
     private int splitLevel;
-
+    private int TARX = this.positionX;
+    private int TARY = this.positionY;
+    private int Rotate, MoveType,Radius;
     public BossShip (final int positionX, final int positionY,
                      final DrawManager.SpriteType spriteType, final GameState gameState, int splitLevel){
         super(positionX, positionY, spriteType, gameState);
         super.HP = splitLevel;//따로 수정;
         super.pointValue = 100*splitLevel; //따로수정
         this.splitLevel = splitLevel;
+        MoveType = -1;Rotate=0;Radius=0;
     }
 
     /**
@@ -59,27 +63,29 @@ public class BossShip extends EnemyShip {
      * when Boss attack this function execute
      */
     public void Move(){
-        this.setPositionY(this.positionY+this.SpeedY);
-        /*
-        while (this.HP > 0) {
-            int select = (int) (Math.random() * 7);
-            switch (select) {
+        if (this.HP > 0) {
+            if (MoveType==-1){
+                this.Radius = moveTrackSize(TARX, TARY);
+                moveTeleport();
+                MoveType = 1;
+                Rotate=0;
+            }
+            switch (MoveType) {
                 case 0:
                 case 1:
-                    moveCircle();
+                    moveCircle(); break;
                 case 2:
                 case 3:
-                    moveCross();
+                    moveCross();break;
                 case 4:
                 case 5:
-                    moveDiamond();
+                    moveDiamond();break;
                 case 6:
                 case 7:
-                    moveTeleport();
+                    moveTeleport();break;
             }
         }
 
-         */
     }
 
     /**
@@ -98,23 +104,22 @@ public class BossShip extends EnemyShip {
         int minimX = Math.min((WIDTH - nowShipX - BOSS_WIDTH), nowShipX);
         return (int)(dValue * Math.min(minimX, (HEIGHT - nowShipY - BOSS_HEIGHT)));
     }
+    private void moveIntoTrack(EnemyShip enemyShip){
 
+    }
     /**
      * move along the circle track
      */
     public void moveCircle() {
-        int r = moveTrackSize(positionX, positionY);
-        if (r <= 0){moveTeleport();}
-        else {
-            if(isRight()){int x = 1, y = -1;}
-            else {int x = -1, y = -1;}
-            for (int i = 1; i <= 36; i++) {
-                this.setPositionX(positionX += (int)(r * Math.sin((double) (i / (double) 36))));
-                this.setPositionY(positionY += (int)(r * Math.sin((double) (i / (double) 36))));
-                this.update();
-                // 특정 조건에서 총도 쏘면 좋을 듯
-            }
+        if (Rotate>=36){
+            Rotate=0;
+            MoveType=-1;
+            return;
         }
+
+        this.setPositionX((int)(TARX + Radius * Math.sin(Rotate*10/180.0*PI)));
+        this.setPositionY((int)(TARY + Radius * Math.cos(Rotate*10/180.0*PI)));
+        Rotate++;
     }
 
     /**
@@ -159,6 +164,5 @@ public class BossShip extends EnemyShip {
         double randomY = Math.random();
         positionX = (int) (randomX * (WIDTH - BOSS_WIDTH));
         positionY = (int) (randomY * (HEIGHT - BOSS_HEIGHT));
-        this.update();
     }
 }
