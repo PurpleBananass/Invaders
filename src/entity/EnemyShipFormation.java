@@ -379,7 +379,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
    * @param bullets
    *            Bullets set to add the bullet being shot.
    */
-  public final void shoot(final Set<Bullet> bullets) {
+  public final void shoot(final Set<Bullet> bullets,
+                          final Set<LaserBeam> laserBeams) {
     // For now, only ships in the bottom row are able to shoot.
     if (this.shootingCooldown.checkFinished()) {
       this.shootingCooldown.reset();
@@ -388,7 +389,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
           enemyShip.shoot(bullets,shootingCooldown);
           SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
         }
-        Boss.Attack(this.enemyShips.get(1));
+        Boss.Attack(laserBeams, this.enemyShips.get(1));
+        SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
         return;
       }
       ArrayList<Boolean> shot = new ArrayList<>();
