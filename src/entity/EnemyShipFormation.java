@@ -384,11 +384,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
     if (this.shootingCooldown.checkFinished()) {
       this.shootingCooldown.reset();
       if (isBossStage&&Boss!=null){
-        Boss.Attack();
         for (EnemyShip enemyShip : this.enemyShips.get(1)){
           enemyShip.shoot(bullets,shootingCooldown);
           SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
         }
+        Boss.Attack(this.enemyShips.get(1));
         return;
       }
       ArrayList<Boolean> shot = new ArrayList<>();

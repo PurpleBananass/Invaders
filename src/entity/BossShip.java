@@ -65,7 +65,8 @@ public class BossShip extends EnemyShip {
     /**
      * when Boss attack this function execute
      */
-    public void Attack() {
+    public void Attack(List<EnemyShip> enemyShipList) {
+        summon(enemyShipList);
     }
 
     /**
