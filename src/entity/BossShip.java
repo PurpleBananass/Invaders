@@ -27,7 +27,20 @@ public class BossShip extends EnemyShip {
         this.splitLevel = splitLevel;
         this.Move();
     }
-
+    private void summon(List<EnemyShip> enemyShipList){//enemyships.get(1) is Boss stage's small enemy
+        int rand = (int)(Math.random()*3);
+        EnemyShip enemyShip;
+        switch (rand){
+            case 0:
+                enemyShip = new EnemyShipA(0,0, DrawManager.SpriteType.EnemyShipA1,gameState); break;
+            case 1:
+                enemyShip = new EnemyShipB(0,0, DrawManager.SpriteType.EnemyShipB1,gameState); break;
+            default:
+                enemyShip = new EnemyShipC(0,0, DrawManager.SpriteType.EnemyShipC1,gameState);break;
+        }
+        scatter(enemyShip);
+        enemyShipList.add(enemyShip);
+    }
     /**
      * when slime Boss dead this function
      */
@@ -63,8 +76,8 @@ public class BossShip extends EnemyShip {
      * when Boss attack this function execute
      * There is only one attack pattern yet
      */
-    public void Attack(final Set<LaserBeam> laserBeams) {
-        beam(laserBeams);
+    public void Attack(final Set<LaserBeam> laserBeams, List<EnemyShip> enemyShipList) {
+        beam(laserBeams,enemyShipList);
     }
 
     public void Move(){
@@ -99,7 +112,10 @@ public class BossShip extends EnemyShip {
         if (lr != 0){return true;} // right
         else {return false;} // left
     }
-
+    private void scatter(EnemyShip target){
+        target.setPositionX((int)((WIDTH-BOSS_WIDTH)*Math.random()));
+        target.setPositionY((int)(HEIGHT*0.6*Math.random())+52);
+    }
     public int moveTrackSize(int nowShipX, int nowShipY){
         double dValue = Math.random();
         int minimX = Math.min((WIDTH - nowShipX - BOSS_WIDTH), nowShipX);
