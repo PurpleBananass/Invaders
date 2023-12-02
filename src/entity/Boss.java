@@ -168,9 +168,9 @@ public class Boss extends Entity {
 						break;
 					}
 				case 7:
-					boosShootWithX(bullets,0,80,getXMovement(0,8),12);
-					boosShootWithX(bullets,224,80,getXMovement(224,8),12);
-					boosShootWithX(bullets,448,80,getXMovement(448,8),12);
+					boosShootWithX(bullets,0,80,getXMovement(0,16),16);
+					boosShootWithX(bullets,224,80,getXMovement(224,16),16);
+					boosShootWithX(bullets,448,80,getXMovement(448,16),16);
 					GameScreen.bossShootCheck = false;
 					break;
 			}
