@@ -18,10 +18,7 @@ import engine.AchievementManager.Achievement;
 import java.lang.Integer;
 
 import entity.*;
-import screen.GameScreen;
-import screen.Screen;
-import screen.SelectScreen;
-import screen.SettingScreen;
+import screen.*;
 
 
 /**
@@ -875,7 +872,7 @@ public final class DrawManager {
 			} catch (IOException e) {
 				logger.warning("Loading failed.");
 			}
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < SkinSelectionScreen.skinlockcode; i++) {
 				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 				Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
 				shipskin[i] = dummyShip;
@@ -994,7 +991,7 @@ public final class DrawManager {
 			} catch (IOException e) {
 				logger.warning("Loading failed.");
 			}
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < SkinSelectionScreen.skinlockcode; i++) {
 				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 				shipskin[i] = dummyShip;
 				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);

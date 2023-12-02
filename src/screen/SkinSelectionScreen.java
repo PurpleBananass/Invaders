@@ -15,7 +15,7 @@ public class SkinSelectionScreen extends Screen{
     private Cooldown selectionCooldown;
     private int skincode_1p=0;
     private int skincode_2p=0;
-    private int skinlockcode = 0;
+    public static int skinlockcode =1;
     private FileManager fileManager;
 
     private static Map<DrawManager.SpriteType, boolean[][]> spriteMap;
@@ -42,7 +42,7 @@ public class SkinSelectionScreen extends Screen{
                 skincode_1p--;
                 this.selectionCooldown.reset();
             }
-            if (inputManager.isKeyDown(KeyEvent.VK_DOWN) && skincode_1p < skinlockcode) {
+            if (inputManager.isKeyDown(KeyEvent.VK_DOWN) && skincode_1p < skinlockcode-1) {
                 skincode_1p++;
                 this.selectionCooldown.reset();
             }
@@ -50,7 +50,7 @@ public class SkinSelectionScreen extends Screen{
                 skincode_2p--;
                 this.selectionCooldown.reset();
             }
-            if (inputManager.isKeyDown(KeyEvent.VK_S) && skincode_2p < skinlockcode) {
+            if (inputManager.isKeyDown(KeyEvent.VK_S) && skincode_2p < skinlockcode-1) {
                 skincode_2p++;
                 this.selectionCooldown.reset();
             }
