@@ -424,7 +424,7 @@ public class GameScreen extends Screen {
                     }
 
 
-                } else if (gameState.getMode() == 2 && !(this.ship.isDestroyed() && this.ship2.isDestroyed())) {
+                } else if (gameState.getMode() == 2) {
                     boolean moveRight1p = inputManager.isKeyDown(Core.getKeySettingCode(1));
                     boolean moveLeft1p = inputManager.isKeyDown(Core.getKeySettingCode(0));
 
@@ -441,16 +441,16 @@ public class GameScreen extends Screen {
                     boolean isLeftBorder2p = this.ship2.getPositionX()
                             - this.ship2.getSpeed() < 1;
 
-                    if (moveRight1p && !isRightBorder1p && (this.lives > 0)) {
+                    if (moveRight1p && !isRightBorder1p && !this.ship.isDestroyed() && (this.lives > 0)) {
                         this.ship.moveRight();
                     }
-                    if (moveRight2p && !isRightBorder2p && (this.lives2 > 0)) {
+                    if (moveRight2p && !isRightBorder2p && !this.ship2.isDestroyed() && (this.lives2 > 0)) {
                         this.ship2.moveRight();
                     }
-                    if (moveLeft1p && !isLeftBorder1p && (this.lives > 0)) {
+                    if (moveLeft1p && !isLeftBorder1p && !this.ship.isDestroyed() && (this.lives > 0)) {
                         this.ship.moveLeft();
                     }
-                    if (moveLeft2p && !isLeftBorder2p && (this.lives2 > 0)) {
+                    if (moveLeft2p && !isLeftBorder2p && !this.ship2.isDestroyed() && (this.lives2 > 0)) {
                         this.ship2.moveLeft();
                     }
 					if (this.ship.getItemImpact() || this.ship2.getItemImpact()) {
@@ -459,7 +459,7 @@ public class GameScreen extends Screen {
 					}
 
                     if (replayability.getReplay() == 0) {
-                        if (inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
+                        if (inputManager.isKeyDown(Core.getKeySettingCode(2)) && !this.ship.isDestroyed() && (this.lives > 0)) {
                             if (this.ship.shoot(this.bullets, 1)) {
                                 this.bulletsShot1++;
                                 this.bullet_count++;
@@ -475,7 +475,7 @@ public class GameScreen extends Screen {
 								this.ship2.itemImpactUpdate();
 							}
                         }
-                        if (inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
+                        if (inputManager.isKeyDown(Core.getKeySettingCode(10)) && !this.ship2.isDestroyed() && (this.lives2 > 0)) {
                             if (this.ship2.shoot(this.bullets, 2)) {
                                 this.bulletsShot2++;
                                 this.bullet_count2++;
