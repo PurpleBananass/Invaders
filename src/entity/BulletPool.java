@@ -47,6 +47,7 @@ public final class BulletPool {
 			pool.get(shooter).remove(bullet);
 			bullet.setPositionX(positionX - bullet.getWidth() / 2);
 			bullet.setPositionY(positionY);
+			bullet.setXspeed(0);
 			bullet.setSpeed(speed);
 			bullet.setSprite();
 			// Will add a function to select the Bigger version and the base version later.
@@ -66,6 +67,7 @@ public final class BulletPool {
 	 */
 	public static void recycle(final Set<Bullet> bullets) {
 		for (Bullet bullet : bullets) {
+
 			int shooter = bullet.getShooter();
 			if (!pool.containsKey(shooter)) {
 				pool.put(shooter, new HashSet<Bullet>());

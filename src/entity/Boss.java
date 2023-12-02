@@ -165,13 +165,15 @@ public class Boss extends Entity {
 							GameScreen.bossShootCheck = false;
 							this.patternCooldown.reset();
 						}
-						break;
 					}
+					break;
 				case 7:
 					boosShootWithX(bullets,0,80,getXMovement(0,16),16);
 					boosShootWithX(bullets,224,80,getXMovement(224,16),16);
 					boosShootWithX(bullets,448,80,getXMovement(448,16),16);
+
 					GameScreen.bossShootCheck = false;
+					this.patternCooldown.reset();
 					break;
 			}
 		}
@@ -219,6 +221,7 @@ public class Boss extends Entity {
 		bullet.setXspeed(xspeed);
 		bullets.add(bullet);
 	}
+
 	public void bossShootAfter(final Set<Bullet> bullets,int positionX, int positionY,int delay, int speed) {
 		scheduler.schedule(() -> bossShoot(bullets, positionX, positionY,speed), delay, TimeUnit.MILLISECONDS);
 	}
