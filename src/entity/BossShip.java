@@ -63,26 +63,19 @@ public class BossShip extends EnemyShip {
      * when Boss attack this function execute
      */
     public void Move(){
-        if (this.HP > 0) {
+        if (this.HP >= 0) {
             if (MoveType==-1){
                 this.Radius = moveTrackSize(TARX, TARY);
                 moveTeleport();
-                MoveType = 1;
+                MoveType = (int)(Math.random()*2);
+                if (MoveType==2)MoveType=1;
                 Rotate=0;
             }
             switch (MoveType) {
                 case 0:
-                case 1:
                     moveCircle(); break;
-                case 2:
-                case 3:
-                    moveCross();break;
-                case 4:
-                case 5:
+                case 1:
                     moveDiamond();break;
-                case 6:
-                case 7:
-                    moveTeleport();break;
             }
         }
 
@@ -103,9 +96,6 @@ public class BossShip extends EnemyShip {
         double dValue = Math.random();
         int minimX = Math.min((WIDTH - nowShipX - BOSS_WIDTH), nowShipX);
         return (int)(dValue * Math.min(minimX, (HEIGHT - nowShipY - BOSS_HEIGHT)));
-    }
-    private void moveIntoTrack(EnemyShip enemyShip){
-
     }
     /**
      * move along the circle track
@@ -145,21 +135,43 @@ public class BossShip extends EnemyShip {
      * move along the diamond track
      */
     public void moveDiamond() {
-        int r = moveTrackSize(positionX, positionY);
-        if (r <= 0){moveTeleport();}
-        else {
-            int i;
-            for (i = 1; i < r/20; i++){positionX += 10;positionY += 10;this.update();}
-            for (i = 1; i < r/20; i++){positionX -= 10;positionY += 10;this.update();}
-            for (i = 1; i < r/20; i++){positionX -= 10;positionY -= 10;this.update();}
-            for (i = 1; i < r/20; i++){positionX += 10;positionY -= 10;this.update();}
+        if (Rotate>=36){
+            Rotate=0;
+            MoveType=-1;
+            return;
         }
+        int Radius = this.Radius/9;
+        if (Rotate<9){
+            this.setPositionX(TARX+(Rotate-9)*Radius);
+            this.setPositionY(TARY+Rotate*Radius);
+        }
+        else if (Rotate<18){
+            int Rotate=this.Rotate%9;
+            this.setPositionX(TARX+Rotate*Radius);
+            this.setPositionY(TARY+(9-Rotate)*Radius);
+        }
+        else if (Rotate<27){
+            int Rotate=this.Rotate%9;
+            this.setPositionX(TARX+(9-Rotate)*Radius);
+            this.setPositionY(TARY-Rotate*Radius);
+        }
+        else{
+            int Rotate=this.Rotate%9;
+            this.setPositionX(TARX-Rotate*Radius);
+            this.setPositionY(TARY+(Rotate-9)*Radius);
+        }
+        Rotate++;
     }
 
     /**
      * Teleport randomly
      */
     public void moveTeleport() {
+        if (Rotate>=10){
+            Rotate=0;
+            MoveType=-1;
+            return ;
+        }
         double randomX = Math.random();
         double randomY = Math.random();
         positionX = (int) (randomX * (WIDTH - BOSS_WIDTH));
