@@ -4,6 +4,7 @@ import engine.DrawManager;
 import engine.GameState;
 
 import java.util.List;
+import java.util.Set;
 
 
 public class BossShip extends EnemyShip {
@@ -29,7 +30,20 @@ public class BossShip extends EnemyShip {
         this.splitLevel = splitLevel;
         MoveType = -1;Rotate=0;Radius=0;
     }
-
+    private void summon(List<EnemyShip> enemyShipList){//enemyships.get(1) is Boss stage's small enemy
+        int rand = (int)(Math.random()*3);
+        EnemyShip enemyShip;
+        switch (rand){
+            case 0:
+                enemyShip = new EnemyShipA(0,0, DrawManager.SpriteType.EnemyShipA1,gameState); break;
+            case 1:
+                enemyShip = new EnemyShipB(0,0, DrawManager.SpriteType.EnemyShipB1,gameState); break;
+            default:
+                enemyShip = new EnemyShipC(0,0, DrawManager.SpriteType.EnemyShipC1,gameState);break;
+        }
+        scatter(enemyShip);
+        enemyShipList.add(enemyShip);
+    }
     /**
      * when slime Boss dead this function
      */
@@ -45,6 +59,15 @@ public class BossShip extends EnemyShip {
         enemyShipList.add(first);
         enemyShipList.add(second);
     }
+
+    /**
+     * when Boss uses beam pattern
+     */
+    public void beam(final Set<LaserBeam> laserBeams) {
+        int randomX = (int)(Math.random() * 448);
+        laserBeams.add(new LaserBeam(randomX, 44));
+    }
+
     /**
      * when Boss Die this function execute
      */
@@ -54,14 +77,12 @@ public class BossShip extends EnemyShip {
 
     /**
      * when Boss attack this function execute
+     * There is only one attack pattern yet
      */
-    public void Attack() {
-
+    public void Attack(final Set<LaserBeam> laserBeams, List<EnemyShip> enemyShipList) {
+        beam(laserBeams,enemyShipList);
     }
 
-    /**
-     * when Boss attack this function execute
-     */
     public void Move(){
         if (this.HP >= 0) {
             if (MoveType==-1){
@@ -78,7 +99,6 @@ public class BossShip extends EnemyShip {
                     moveDiamond();break;
             }
         }
-
     }
 
     /**
@@ -91,7 +111,10 @@ public class BossShip extends EnemyShip {
         if (lr != 0){return true;} // right
         else {return false;} // left
     }
-
+    private void scatter(EnemyShip target){
+        target.setPositionX((int)((WIDTH-BOSS_WIDTH)*Math.random()));
+        target.setPositionY((int)(HEIGHT*0.6*Math.random())+52);
+    }
     public int moveTrackSize(int nowShipX, int nowShipY){
         double dValue = Math.random();
         int minimX = Math.min((WIDTH - nowShipX - BOSS_WIDTH), nowShipX);
@@ -177,4 +200,5 @@ public class BossShip extends EnemyShip {
         positionX = (int) (randomX * (WIDTH - BOSS_WIDTH));
         positionY = (int) (randomY * (HEIGHT - BOSS_HEIGHT));
     }
+    public int getSplitLevel(){return this.splitLevel;}
 }

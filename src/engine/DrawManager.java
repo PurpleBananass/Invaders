@@ -89,28 +89,22 @@ public final class DrawManager {
 		/** Bonus ship. */
 		EnemyShipSpecial,
 		/** Destroyed enemy ship. */
-		BossShip,
-		/** Boss enemy ship. */
-		BossShipDestroyed,
-		/** Boss enemy ship destroyed */
-		BossShipMoved,
-		/** Boss enemy ship movement */
 		Explosion,
 		Item,
-
 		Life,
-
 		AuxiliaryShips,
-
 		BombShape,
-
 		InvincibleShape,
-
 		SpeedUpShape,
-
-		AuxiliaryShape
-
-
+		AuxiliaryShape,
+		/** Boss enemy ship. */
+		BossShip,
+		/** Boss enemy ship destroyed */
+		BossShipDestroyed,
+		/** Boss enemy ship movement */
+		BossShipMoved,
+		/** Boss enemy ship beam effect */
+		LaserBeam
 	};
 
 	/**
@@ -147,6 +141,7 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.BossShip, new boolean[50][30]);
 			spriteMap.put(SpriteType.BossShipDestroyed, new boolean[50][30]);
 			spriteMap.put(SpriteType.BossShipMoved, new boolean[50][30]);
+			spriteMap.put(SpriteType.LaserBeam, new boolean[10][225]);
 
 			fileManager.loadSprite(spriteMap);
 

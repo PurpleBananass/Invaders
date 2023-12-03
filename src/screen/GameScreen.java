@@ -69,6 +69,10 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 
 	private Set<Item> items;
+
+	/** Set of all laser beams fire by on boss ship */
+	private Set<LaserBeam> laserBeams;
+
 	/** Current score. */
 	private int score;
 	/** First Player's lives left. */
@@ -242,6 +246,7 @@ public class GameScreen extends Screen {
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
+		this.laserBeams = new HashSet<LaserBeam>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -660,13 +665,14 @@ public class GameScreen extends Screen {
 				}
 
 				this.enemyShipFormation.update();
-				this.enemyShipFormation.shoot(this.bullets);
+				this.enemyShipFormation.shoot(this.bullets, this.laserBeams);
 			}
 
 			useSkill();
 			manageCollisions();
 			cleanBullets();
 			updateItems();
+			updateLaserBeams();
 			//draw();
 
 			if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
@@ -741,13 +747,6 @@ public class GameScreen extends Screen {
 			}
 		}
 
-		if (this.enemyShipSpecial != null)
-			drawManager.drawEntity(this.enemyShipSpecial,
-					this.enemyShipSpecial.getPositionX(),
-					this.enemyShipSpecial.getPositionY());
-
-		enemyShipFormation.draw();
-
 		for (Bullet bullet : this.bullets)
 			drawManager.drawEntity(bullet, bullet.getPositionX(),
 					bullet.getPositionY());
@@ -755,6 +754,18 @@ public class GameScreen extends Screen {
 		for (Item item : this.items)
 			drawManager.drawEntity(item, item.getPositionX(),
 					item.getPositionY());
+
+		for (LaserBeam laserBeam : this.laserBeams)
+			drawManager.drawEntity(laserBeam, laserBeam.getPositionX(),
+					laserBeam.getPositionY());
+
+		if (this.enemyShipSpecial != null)
+			drawManager.drawEntity(this.enemyShipSpecial,
+					this.enemyShipSpecial.getPositionX(),
+					this.enemyShipSpecial.getPositionY());
+
+		enemyShipFormation.draw();
+
 		if (this.ship.isExistAuxiliaryShips()) {
 			for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
@@ -845,167 +856,102 @@ public class GameScreen extends Screen {
 		ItemPool.recycle(recyclableItem);
 	}
 
+	/** update & clean laserBeams */
+	private void updateLaserBeams() {
+		Set<LaserBeam> laserBeamsToDelete = new HashSet<LaserBeam>();
+		for (LaserBeam laserBeam : this.laserBeams) {
+			laserBeam.update();
+			if (laserBeam.getState() == LaserBeam.State.End) {
+				drawManager.clearEntity(laserBeam,
+						laserBeam.getPositionX(),
+						laserBeam.getPositionY());
+				laserBeamsToDelete.add(laserBeam);
+			}
+		}
+		this.laserBeams.removeAll(laserBeamsToDelete);
+	}
+
 	/**
 	 * Manages collisions between bullets and ships.
 	 */
 	private void manageCollisions() {
 		Set<Bullet> recyclable = new HashSet<Bullet>();
-		if (gameState.getMode() == 1) {
-            for (Bullet bullet : this.bullets) {
-                if (bullet.getSpeed() > 0) {//enemy bullet
-                    if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()) {
-                        recyclable.add(bullet);
-                        if (!this.ship.isDestroyed()) {
-                            this.ship.destroy();
-                            if (this.lives > 0) {
-                                this.lives--;
-                            }
-							if (this.lives <= 0)
-								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
-							else
-								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
-                            this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
-                        }
-                    }
-                } else {//player bullet
-						for (EnemyShip enemyShip : this.enemyShipFormation) {
-							if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-								if (this.isBomb) {
-									List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
-									SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
-									for (EnemyShip enemy : enemyShips) {
-										this.score += enemy.getPointValue();
-										this.shipsDestroyed++;
-									}
-								} else {
-									this.score += enemyShip.getPointValue();
+		for (Bullet bullet: this.bullets){
+			if (bullet.getSpeed() > 0){//enemy bullet
+				if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()) {//1p hit check
+					recyclable.add(bullet);
+					if (!this.ship.isDestroyed()) {
+						this.ship.destroy();
+						if (this.lives > 0) {
+							this.lives--;
+						}
+						if (this.lives <= 0)
+							SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+						else
+							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+						this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
+					}
+				}
+				else if (gameState.getMode() == 2 && checkCollision(bullet, this.ship2) && !this.levelFinished && !this.ship2.isInvincible()){//2p hit check
+					recyclable.add(bullet);
+					if (!this.ship2.isDestroyed()) {
+						this.ship2.destroy();
+						if (this.lives2 > 0) {
+							this.lives2--;
+						}
+						if (this.lives2 <= 0)
+							SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+						else
+							SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+						this.logger.info("Hit on player2 ship, " + this.lives + " lives remaining.");
+					}
+				}
+			}else {//player bullet
+				for (EnemyShip enemyShip: this.enemyShipFormation){
+					if (!enemyShip.isDestroyed() && checkCollision(bullet,enemyShip)) {
+						recyclable.add(bullet);
+						if (this.isBomb) {
+							List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
+							SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
+							for (EnemyShip enemy : enemyShips) {
+								this.score += enemy.getPointValue();
+								if (bullet.getShooter() == 1)
+									this.shipsDestroyed+=enemyShips.size();
+								else
+									this.shipsDestroyed2+=enemyShips.size();
+							}
+						} else {
+							this.enemyShipFormation.destroy(enemyShip);
+							if (enemyShip.isDestroyed()) {
+								this.score += enemyShip.getPointValue();
+								if (bullet.getShooter() == 1)
 									this.shipsDestroyed++;
-									this.enemyShipFormation.destroy(enemyShip);
-								}
-
-								if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
-									items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-									SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
-								}
-
-								setBomb(false);
-
-								recyclable.add(bullet);
+								else
+									this.shipsDestroyed2++;
 							}
 						}
-
-						if (!this.enemyShipFormation.getBossStage() && this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
-								&& checkCollision(bullet, this.enemyShipSpecial)) {
+						setBomb(false);
+						if (enemyShip.hasItem() && enemyShip.isDestroyed() && !enemyShipFormation.getBossStage()) {
+							items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
+							SoundManager.playSound("SFX/S_Item_Create", "itemCreate", false, false);
+						}
+					}
+					else if (this.enemyShipSpecial != null && !this.enemyShipSpecial.isDestroyed()
+							&& checkCollision(bullet, this.enemyShipSpecial)) {
+						recyclable.add(bullet);
+						if (bullet.getShooter() == 1)
 							shipsDestroyed++;
-							this.score += this.enemyShipSpecial.getPointValue();
-							this.enemyShipSpecial.destroy();
-							this.enemyShipSpecialExplosionCooldown.reset();
-							recyclable.add(bullet);
-						}
-                }
-            }
-        }
+						else
+							shipsDestroyed2++;
+						this.score += this.enemyShipSpecial.getPointValue();
+						this.enemyShipSpecial.destroy();
+						this.enemyShipSpecialExplosionCooldown.reset();
 
-		if (gameState.getMode() == 2) {
-			for (Bullet bullet : this.bullets) {
-				if (bullet.getSpeed() > 0) {
-					if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()) {
-						recyclable.add(bullet);
-						if (!this.ship.isDestroyed()) {
-							this.ship.destroy();
-							if (this.lives > 0) {
-								this.lives--;
-							}
-							if (this.lives <= 0)
-								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
-							else
-								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
-							this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
-						}
 					}
-					if (checkCollision(bullet, this.ship2) && !this.levelFinished && !this.ship2.isInvincible()) {
-						recyclable.add(bullet);
-						if (!this.ship2.isDestroyed()) {
-							this.ship2.destroy();
-							if (this.lives2 > 0) {
-								this.lives2--;
-							}
-							if (this.lives2 <= 0)
-								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
-							else
-								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
-							this.logger.info("Hit on player2 ship, " + this.lives2 + " lives remaining.");
-						}
-					}
-				} else {
-					for (EnemyShip enemyShip : this.enemyShipFormation) {
-						if (bullet.getShooter() == 1 && !enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
+				}
+			}
+		}
 
-                            if (this.isBomb){
-                                List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
-								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
-                                for(EnemyShip enemy : enemyShips) {
-                                    this.score += enemy.getPointValue();
-                                    this.shipsDestroyed++;
-                                }
-                            }
-                            else {
-                                this.score += enemyShip.getPointValue();
-                                this.shipsDestroyed++;
-                                this.enemyShipFormation.destroy(enemyShip);
-                            }
-
-							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-							}
-
-                            setBomb(false);
-							recyclable.add(bullet);
-						} else if(!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
-
-                            if (this.isBomb){
-                                List<EnemyShip> enemyShips = this.enemyShipFormation.destroyByBomb(enemyShip);
-								SoundManager.playSound("SFX/S_Item_Bomb", "Bomb", false, false);
-                                for(EnemyShip enemy : enemyShips) {
-                                    this.score += enemy.getPointValue();
-                                    this.shipsDestroyed++;
-                                }
-                            }
-                            else {
-                                this.score += enemyShip.getPointValue();
-                                this.shipsDestroyed2++;
-                                this.enemyShipFormation.destroy(enemyShip);
-                            }
-
-							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
-								items.add(new Item(enemyShip.getPositionX(), enemyShip.getPositionY(), enemyShip.getItemRange(), level));
-							}
-
-                            setBomb(false);
-							recyclable.add(bullet);
-						}
-					}
-
-                    if (this.enemyShipSpecial != null && bullet.getShooter() == 1 && !this.enemyShipSpecial.isDestroyed()
-                            && checkCollision(bullet, this.enemyShipSpecial)) {
-                        shipsDestroyed++;
-                        this.score += this.enemyShipSpecial.getPointValue();
-                        this.enemyShipSpecial.destroy();
-                        this.enemyShipSpecialExplosionCooldown.reset();
-                        recyclable.add(bullet);
-                    }
-
-                    if (this.enemyShipSpecial != null && bullet.getShooter() == 2 && !this.enemyShipSpecial.isDestroyed()
-                            && checkCollision(bullet, this.enemyShipSpecial)) {
-                        shipsDestroyed2++;
-                        this.score += this.enemyShipSpecial.getPointValue();
-                        this.enemyShipSpecial.destroy();
-                        this.enemyShipSpecialExplosionCooldown.reset();
-                        recyclable.add(bullet);
-                    }
-                }
-            }
-        }
 
 		Set<Item> recyclableItem = new HashSet<Item>();
 
@@ -1041,6 +987,42 @@ public class GameScreen extends Screen {
 						SoundManager.playSound("SFX/S_Item_Get", "ItemGet", false, false);
 						this.ship2.getItemQueue().enque(item);
 					}
+				}
+			}
+		}
+
+		for (LaserBeam laserBeam : this.laserBeams) {
+			if (laserBeam.getState() != LaserBeam.State.Attack)
+				continue;
+			boolean isOnePlayerCollision = checkCollision(laserBeam, this.ship) &&
+											!this.levelFinished && !this.ship.isInvincible();
+			boolean isTwoPlayerCollision = gameState.getMode() == 2 &&
+											checkCollision(laserBeam, this.ship2) &&
+											!this.levelFinished && !this.ship2.isInvincible();
+			if (isOnePlayerCollision) {
+				if (!this.ship.isDestroyed()) {
+					this.ship.destroy();
+					if (this.lives > 0) {
+						this.lives--;
+					}
+					if (this.lives <= 0)
+						SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+					else
+						SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+					this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
+				}
+			}
+			if (isTwoPlayerCollision) {
+				if (!this.ship2.isDestroyed()) {
+					this.ship2.destroy();
+					if (this.lives2 > 0) {
+						this.lives2--;
+					}
+					if (this.lives2 <= 0)
+						SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+					else
+						SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+					this.logger.info("Hit on player2 ship, " + this.lives + " lives remaining.");
 				}
 			}
 		}

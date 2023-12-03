@@ -68,6 +68,15 @@ public class GameSettings {
 	public final int getShootingFrecuency() {
 		return shootingFrecuency;
 	}
+
+	/**
+	 * @return the bossStage
+	 */
 	public final boolean getBossStage(){return bossStage;}
+
+	/**
+	 * @return the itemSpeed
+	 */
+	public final double getItemSpeed(){return itemSpeed;}
 
 }
