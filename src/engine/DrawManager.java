@@ -888,6 +888,22 @@ public final class DrawManager {
 					}
 				}
 			}
+			for (int i = 5; i > SkinSelectionScreen.skinlockcode-1; i--) {
+				Ship dummyShip = new Ship(0, 0, Color.GRAY, SpriteType.Ship, false);
+				Ship dummyShip2 = new Ship(0, 0, Color.GRAY, SpriteType.Ship, true);
+				shipskin[i] = dummyShip;
+				shipskin2[i] = dummyShip2;
+				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
+				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
+				if(i !=5) {
+					try {
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+					} catch (IOException e) {
+						logger.warning("Loading failed.");
+					}
+				}
+			}
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
@@ -996,6 +1012,19 @@ public final class DrawManager {
 				shipskin[i] = dummyShip;
 				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
+				if(i !=5) {
+					try {
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+					} catch (IOException e) {
+						logger.warning("Loading failed.");
+					}
+				}
+			}
+			for (int i = 5; i > SkinSelectionScreen.skinlockcode-1; i--) {
+				Ship dummyShip = new Ship(0, 0, Color.GRAY, SpriteType.Ship, false);
+				shipskin[i] = dummyShip;
+				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50 * i);
 				if(i !=5) {
 					try {
 						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
