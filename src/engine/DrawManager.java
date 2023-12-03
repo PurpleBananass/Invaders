@@ -789,6 +789,11 @@ public final class DrawManager {
 		int priceX3 = itemX3 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(priceText3)) / 2;
 		backBufferGraphics.drawString(priceText3, priceX3, screen.getHeight() / 2 + 90);
 
+		if(selectedItem == 73){
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
 		// The title/guide for the item shop:
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, "Item Shop", screen.getHeight() / 10);
@@ -801,6 +806,9 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, "Press Esc to Go to Menu", screen.getHeight() / 1);
 		backBufferGraphics.setColor(Color.GRAY);
+
+
+
 
 		try{
 			drawCenteredRegularString(screen, "Current credits : " + Core.getFileManager().getCurrentPlayer().getCurrency(), screen.getHeight() / 3);

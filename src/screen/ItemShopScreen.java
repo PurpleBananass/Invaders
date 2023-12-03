@@ -143,12 +143,14 @@ public class ItemShopScreen extends Screen {
      * Shifts the focus to the next menu item (horizontally).
      */
     private void nextMenuItem() {
-        if (this.returnCode == 72)
+        if (this.returnCode == 73)
             this.returnCode = 70;
         else if (this.returnCode == 70)
             this.returnCode = 71;
         else if (this.returnCode == 71)
             this.returnCode = 72;
+        else if(this.returnCode == 72)
+            this.returnCode = 73;
     }
 
     /**
@@ -156,10 +158,12 @@ public class ItemShopScreen extends Screen {
      */
     private void previousMenuItem() {
         if (this.returnCode == 70)
+            this.returnCode = 73;
+        else if (this.returnCode == 73)
             this.returnCode = 72;
         else if (this.returnCode == 72)
             this.returnCode = 71;
-        else if (this.returnCode == 71)
+        else if(this.returnCode == 71)
             this.returnCode = 70;
     }
 
