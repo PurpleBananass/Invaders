@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -99,32 +100,62 @@ public class AchievementManager {
 		// if the player play with good accuracy
 		if (shot > 0 && accuracy >= 90.0 && level >= 3) {
 			markAchievementAsAchieved(Achievement.SHARP_SHOOTER);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(90);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		// Check if the players recorded perfect accuracy, if the player want to clear
 		// level 1, he has to shot 20 times at least
 		if (shot >= 20 && accuracy == 100) {
 			markAchievementAsAchieved(Achievement.DEADLY_ACCURACY);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(150);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		// Check if the player didn't hit enemy's ships in 1p mode
 		if (gamemode == 1 && shot > 0 && accuracy == 0) {
 			markAchievementAsAchieved(Achievement.AVIOPHOBIA);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(50);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		// Check if two players didn't hit enemy's ships
 		if (gamemode == 2 && shot > 0 && accuracy == 0) {
 			markAchievementAsAchieved(Achievement.PAT_AND_MAT);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(20);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		// Check if two players clear level or gameover with same lives
 		if (gamemode == 2 && life_1 == life_2) {
 			markAchievementAsAchieved(Achievement.SOUL_MATES);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(30);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		// Check one player has max life but the partner doesn't have
 		if (gamemode == 2 && (life_1 - life_2 == 3 || life_2 - life_1 == 3)) {
 			markAchievementAsAchieved(Achievement.BUDDY_FXXKER);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(30);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 	}
@@ -137,14 +168,29 @@ public class AchievementManager {
 	public void checkScore(int score) {
 		if (score == LuckyScore) {
 			markAchievementAsAchieved(Achievement.LUCKY_GUY);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(100);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		else if (score == UnluckyScore) {
 			markAchievementAsAchieved(Achievement.UNLUCKY_GUY);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(50);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		else if (score == AceScore) {
 			markAchievementAsAchieved(Achievement.GAME_ACE);
+			try {
+				Core.getFileManager().updateCurrencyOfCurrentPlayer(250);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }
