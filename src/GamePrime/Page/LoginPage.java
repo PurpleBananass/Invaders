@@ -4,6 +4,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
+import GamePrime.DatabaseAPI;
 import GamePrime.Define.AchievDefine;
 import GamePrime.Define.ItemDefine;
 import GamePrime.Define.KeyDefine;
@@ -97,14 +98,6 @@ public class LoginPage implements GManager {
     private void LoadSetting() {
         FileManager fm = new FileManager();
         JSONObject database = fm.LoadJsonObject("DataBase");
-        JSONObject scores = (JSONObject) database.get("Scores");
-        if (scores == null) {
-            scores = new JSONObject();
-            scores.put("Scores_1p", new JSONArray());
-            scores.put("Scores_2p", new JSONArray());
-            database.put("Scores", scores);
-            fm.SaveString("DataBase", database.toJSONString(), true);
-        }
         JSONObject UserData = (JSONObject) database.get(new String(name));
         if (UserData == null) {
             UserData = GenUserData();

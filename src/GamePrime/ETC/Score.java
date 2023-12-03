@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 public class Score implements Comparable<Score> {
     public String name;
     public int value;
+    public int rank;
 
     public Score(String name, int value) {
         this.name = name;
@@ -24,6 +25,7 @@ public class Score implements Comparable<Score> {
         JSONObject json = new JSONObject();
         json.put("name", this.name);
         json.put("value", this.value);
+        json.put("rank", this.rank);
         return json;
     }
 }
