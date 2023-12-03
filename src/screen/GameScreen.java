@@ -57,9 +57,13 @@ public class GameScreen extends Screen {
 	/** 보스 패턴 빨간줄이 다 그어지고 난 이후 총알이 발사 되기 까지의 간격 */
 	public static Cooldown shootBetween;
 	/** First Player's ship. */
-	private Ship ship;
+	private static Ship ship;
 	/** Second Player's ship. **/
-	private Ship ship2;
+	private static Ship ship2;
+
+	public static int x1;
+
+	private int y1;
 
 	private int shipWidth = 13*2;
 
@@ -693,7 +697,7 @@ public class GameScreen extends Screen {
 
 				this.ship.update();
 				if (this.gameState.getMode() == 2) {
-					this.ship2.update();
+					this.ship2.update_2();
 				}
 				if(!this.bossCheck){
 				this.enemyShipFormation.update();
@@ -775,8 +779,15 @@ public class GameScreen extends Screen {
 				patternBetween.reset();
 				ntimes ++;
 			}
-			if(bossPatternDrawCheck){
-				drawManager.drawBossPattern(this,Boss.getPatternNumber(), ntimes);}
+			if(bossPatternDrawCheck && Boss.patternNumber <= 6){
+				drawManager.drawBossPattern1(this,Boss.getPatternNumber(), ntimes);}
+			else if (bossPatternDrawCheck){//
+				if(ntimes < 30){
+					x1= realGetPositionX();
+					y1 = realGetPositionY();}
+				drawManager.drawBossPattern2(this,Boss.getPatternNumber(),ntimes,x1,y1);//Boss.getPatternNumber()
+			}
+
 			drawManager.drawEntity(this.boss,this.boss.getPositionX(),this.boss.getPositionY());
 			drawManager.drawBossHp(this,this.boss.getHP(),this.boss.getFirstHP());
 		}
@@ -1330,5 +1341,8 @@ public class GameScreen extends Screen {
 	public void setBomb(boolean isBomb){
 		this.isBomb = isBomb;
 	}
+
+	public static int realGetPositionX(){return ship.getPositionX();}
+	public static int realGetPositionY(){return ship.getPositionY();}
 
 }

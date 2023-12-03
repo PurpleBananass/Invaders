@@ -165,8 +165,16 @@ public class Boss extends Entity {
 							GameScreen.bossShootCheck = false;
 							this.patternCooldown.reset();
 						}
-						break;
 					}
+					break;
+				case 7:
+					boosShootWithX(bullets,0,80,getXMovement(0,16),16);
+					boosShootWithX(bullets,224,80,getXMovement(224,16),16);
+					boosShootWithX(bullets,448,80,getXMovement(448,16),16);
+
+					GameScreen.bossShootCheck = false;
+					this.patternCooldown.reset();
+					break;
 			}
 		}
 		if(this.patternCooldown.checkFinished()&& !GameScreen.bossShootCheck){
@@ -179,7 +187,7 @@ public class Boss extends Entity {
 
 	private void setPatternNumber(){
 		Random random = new Random();
-		patternNumber = random.nextInt(6) + 1;
+		patternNumber = random.nextInt(7) + 1;
 		if(true){//patternNumber == 6
 			for (int i=0; i<3; i++){
 				int k = random.nextInt(3)+1;
@@ -187,6 +195,13 @@ public class Boss extends Entity {
 			}
 		}
 
+	}
+
+	private int getXMovement(int xspot,int yspeed){
+		double movementX, movementY;
+		movementY = (520-80)/yspeed;
+		movementX = (GameScreen.x1-xspot)/movementY;
+		return (int) movementX;
 	}
 	public static int getPatternNumber(){return patternNumber;}
 	/**
@@ -200,6 +215,13 @@ public class Boss extends Entity {
 	public void bossShoot(final Set<Bullet> bullets,int positionX, int positionY,int speed) {
 		bullets.add(BulletPool.getBullet(positionX, positionY, speed, 0));
 	}
+
+	public void boosShootWithX(final Set<Bullet> bullets,int positionX, int positionY,int xspeed, int yspeed){
+		Bullet bullet = BulletPool.getBullet(positionX, positionY, yspeed, 0);
+		bullet.setXspeed(xspeed);
+		bullets.add(bullet);
+	}
+
 	public void bossShootAfter(final Set<Bullet> bullets,int positionX, int positionY,int delay, int speed) {
 		scheduler.schedule(() -> bossShoot(bullets, positionX, positionY,speed), delay, TimeUnit.MILLISECONDS);
 	}
