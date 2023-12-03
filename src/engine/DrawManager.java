@@ -896,13 +896,13 @@ public final class DrawManager {
 				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
 				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
-				if(i !=5) {
+
 					try {
 						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
 					} catch (IOException e) {
 						logger.warning("Loading failed.");
 					}
-				}
+
 			}
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
@@ -1025,13 +1025,13 @@ public final class DrawManager {
 				shipskin[i] = dummyShip;
 				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50 * i);
-				if(i !=5) {
+
 					try {
 						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
 					} catch (IOException e) {
 						logger.warning("Loading failed.");
 					}
-				}
+
 			}
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
