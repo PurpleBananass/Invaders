@@ -116,7 +116,7 @@ public class EnemyShip extends Entity {
 	/**
 	 * Destroys the ship, causing an explosion.
 	 */
-	public final void destroy() {
+	public void destroy() {
 		this.HP--;
 		if (this.HP <= 0) {
 			SoundManager.playSound("SFX/S_Enemy_Destroy_a", "Enemy_destroyed", false, false);
