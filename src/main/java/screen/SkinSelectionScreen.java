@@ -23,7 +23,7 @@ public class SkinSelectionScreen extends Screen{
 
         super(width, height, fps);
 
-        this.returnCode = 7;
+        this.returnCode = 10;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
 

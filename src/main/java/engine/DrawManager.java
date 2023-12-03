@@ -45,6 +45,11 @@ public final class DrawManager {
 	/** Normal sized font. */
 	private static Font fontRegular;
 	/** Normal sized font properties. */
+
+	private static Font fontSmall;
+	/** Small sized font properties. */
+	private static FontMetrics fontSmallMetrics;
+	/** Small sized font. */
 	private static FontMetrics fontRegularMetrics;
 	/** Big sized font. */
 	private static Font fontBig;
@@ -148,6 +153,7 @@ public final class DrawManager {
 			// Font loading.
 			fontRegular = fileManager.loadFont(14f);
 			fontBig = fileManager.loadFont(24f);
+			fontSmall = fileManager.loadFont(10f);
 			logger.info("Finished loading the fonts.");
 
 		} catch (IOException e) {
@@ -196,6 +202,7 @@ public final class DrawManager {
 		backBufferGraphics
 				.fillRect(0, 0, screen.getWidth(), screen.getHeight() + frame.getBottomHudHeight());
 
+		fontSmallMetrics = backBufferGraphics.getFontMetrics(fontSmall);
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
 
@@ -830,6 +837,41 @@ public final class DrawManager {
 	private void drawCenteredItemInfo(Screen screen, String text, int yPosition) {
 		int xPosition = (screen.getWidth() - backBufferGraphics.getFontMetrics().stringWidth(text)) / 2;
 		backBufferGraphics.drawString(text, xPosition, yPosition);
+	}
+
+	/**
+	 * Draws introduction story after selecting the play button
+	 *
+	 * @param screen
+	 * 			Screen to draw on.
+	 *
+	 */
+
+	public void drawStoryScreen(final Screen screen) {
+		// Set background color
+		backBufferGraphics.setColor(Color.BLACK);
+
+		// Set text color
+		backBufferGraphics.setColor(Color.YELLOW);
+		drawCenteredRegularString(screen,"A long time ago in a galaxy far, far away...",60);
+		drawCenteredStoryString(screen,"The Galactic Coalition faces an unprecedented threat.",130);
+		drawCenteredStoryString(screen,"The Vortarian Dominion, led by Warlord Zethrax, emerges",160);
+		drawCenteredStoryString(screen,"to conquer and assimilate all civilizations into its dark embrace.",190);
+		drawCenteredStoryString(screen,"As the galaxy trembles, the Starfire Sentinels, elite pilots",260);
+		drawCenteredStoryString(screen,"chosen from each member planet, rise to defend against",290);
+		drawCenteredStoryString(screen,"the impending doom and restore peace to the cosmos.",320);
+		drawCenteredStoryString(screen,"Join the battle. The fate of the galaxy rests in your hands.",400);
+
+		// Display additional information
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, "Press Space to Start", screen.getHeight() / 1);
+	}
+
+	public void drawCenteredStoryString(final Screen screen,
+										  final String string, final int height) {
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.drawString(string, screen.getWidth() / 2
+				- fontSmallMetrics.stringWidth(string) / 2, height);
 	}
 
 	/**
