@@ -82,6 +82,7 @@ public class ItemShopScreen extends Screen {
                         } else {
                             logger.info("Player has Insufficient Balance");
                             respond = 2;
+                            SoundManager.playSound("SFX/S_NoBalance", "itemShop", false, false);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -107,6 +108,7 @@ public class ItemShopScreen extends Screen {
                         } else {
                             logger.info("Player has Insufficient Balance");
                             respond = 2;
+                            SoundManager.playSound("SFX/S_NoBalance", "itemShop", false, false);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -133,6 +135,7 @@ public class ItemShopScreen extends Screen {
                         } else {
                             logger.info("Player has Insufficient Balance");
                             respond = 2;
+                            SoundManager.playSound("SFX/S_NoBalance", "itemShop", false, false);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);

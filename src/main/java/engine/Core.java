@@ -171,7 +171,7 @@ public final class Core {
 			case 7:
 				// Game & score.
 				do {
-					SoundManager.stopSound("selection",2f);
+					SoundManager.stopSound("story",1f);
 					// One extra live every few levels.
 					int mode = gameState.getMode();
 					boolean bonusLife = gameState.getLevel() % EXTRA_LIFE_FRECUENCY == 0;
@@ -318,6 +318,7 @@ public final class Core {
 				LOGGER.info("Closing SkinSelection screen.");
 				break;
 			case 10:
+				SoundManager.stopSound("selection",2f);
 				currentScreen = new StoryScreen(width,height,FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " Story screen at " + FPS + " fps.");

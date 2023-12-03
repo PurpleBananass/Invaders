@@ -818,6 +818,7 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.GREEN);
 			drawCenteredRegularString(screen, "Purchase has been completed", 400 );
 		}else if (respond == 2){
+
 			backBufferGraphics.setColor(Color.RED);
 			drawCenteredRegularString(screen, "Insufficient Balance", 400 );
 		}else {
@@ -848,6 +849,7 @@ public final class DrawManager {
 	 */
 
 	public void drawStoryScreen(final Screen screen) {
+		SoundManager.playSound("BGM/StoryScreen", "story", true, true, 2f);
 		// Set background color
 		backBufferGraphics.setColor(Color.BLACK);
 
