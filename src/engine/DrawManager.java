@@ -917,37 +917,45 @@ public final class DrawManager {
 			} catch (IOException e) {
 				logger.warning("Loading failed.");
 			}
-			for (int i = 0; i < SkinSelectionScreen.skinlockcode; i++) {
-				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
-				Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
-				shipskin[i] = dummyShip;
-				shipskin2[i] = dummyShip2;
-				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
-				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
-				if(i !=5) {
+			try {
+				for (int i = 0; i < Core.getFileManager().getCurrentPlayer().getSkincode(); i++) {
+					Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+					Ship dummyShip2 = new Ship(0, 0, Color.RED, SpriteType.Ship, true);
+					shipskin[i] = dummyShip;
+					shipskin2[i] = dummyShip2;
+					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+					drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50 * i);
+					drawEntity(shipskin2[i], 3 * screen.getWidth() / 4 - 13, 172 + 50 * i);
+
 					try {
-						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
 					} catch (IOException e) {
 						logger.warning("Loading failed.");
 					}
+
 				}
+			}catch(IOException e) {
+				logger.warning("Loading failed.");
 			}
-			for (int i = 5; i > SkinSelectionScreen.skinlockcode-1; i--) {
-				Ship dummyShip = new Ship(0, 0, Color.GRAY, SpriteType.Ship, false);
-				Ship dummyShip2 = new Ship(0, 0, Color.GRAY, SpriteType.Ship, true);
-				shipskin[i] = dummyShip;
-				shipskin2[i] = dummyShip2;
-				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-				drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50*i);
-				drawEntity(shipskin2[i], 3*screen.getWidth() / 4 - 13, 172 + 50*i);
+			try {
+				for (int i = 5; i > Core.getFileManager().getCurrentPlayer().getSkincode()-1; i--) {
+					Ship dummyShip = new Ship(0, 0, Color.GRAY, SpriteType.Ship, false);
+					Ship dummyShip2 = new Ship(0, 0, Color.GRAY, SpriteType.Ship, true);
+					shipskin[i] = dummyShip;
+					shipskin2[i] = dummyShip2;
+					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+					drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50 * i);
+					drawEntity(shipskin2[i], 3 * screen.getWidth() / 4 - 13, 172 + 50 * i);
 
 					try {
-						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
 					} catch (IOException e) {
 						logger.warning("Loading failed.");
 					}
 
+				}
+			}catch (IOException e) {
+				logger.warning("Loading failed.");
 			}
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
@@ -1052,31 +1060,38 @@ public final class DrawManager {
 			} catch (IOException e) {
 				logger.warning("Loading failed.");
 			}
-			for (int i = 0; i < SkinSelectionScreen.skinlockcode; i++) {
-				Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
-				shipskin[i] = dummyShip;
-				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50*i);
-				if(i !=5) {
+			try {
+				for (int i = 0; i < Core.getFileManager().getCurrentPlayer().getSkincode(); i++) {
+					Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
+					shipskin[i] = dummyShip;
+					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+					drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50 * i);
+
 					try {
-						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
 					} catch (IOException e) {
 						logger.warning("Loading failed.");
 					}
 				}
+			}catch(IOException e) {
+				logger.warning("Loading failed.");
 			}
-			for (int i = 5; i > SkinSelectionScreen.skinlockcode-1; i--) {
-				Ship dummyShip = new Ship(0, 0, Color.GRAY, SpriteType.Ship, false);
-				shipskin[i] = dummyShip;
-				// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-				drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50 * i);
+			try {
+				for (int i = 5; i > Core.getFileManager().getCurrentPlayer().getSkincode()-1; i--) {
+					Ship dummyShip = new Ship(0, 0, Color.GRAY, SpriteType.Ship, false);
+					shipskin[i] = dummyShip;
+					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
+					drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50 * i);
 
 					try {
-						fileManager.changeSprite(spriteMap, SpriteType.Ship, i+1);
+						fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
 					} catch (IOException e) {
 						logger.warning("Loading failed.");
 					}
 
+				}
+			}catch (IOException e) {
+				logger.warning("Loading failed.");
 			}
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);

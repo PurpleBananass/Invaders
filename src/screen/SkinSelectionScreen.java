@@ -8,6 +8,7 @@ import engine.DrawManager;
 import engine.FileManager;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.Map;
 
 public class SkinSelectionScreen extends Screen{
@@ -15,7 +16,6 @@ public class SkinSelectionScreen extends Screen{
     private Cooldown selectionCooldown;
     private int skincode_1p=0;
     private int skincode_2p=0;
-    public static int skinlockcode =1;
     private FileManager fileManager;
 
     private static Map<DrawManager.SpriteType, boolean[][]> spriteMap;
@@ -36,28 +36,35 @@ public class SkinSelectionScreen extends Screen{
     protected final void update() {
         super.update();
         draw();
-        if (this.selectionCooldown.checkFinished() && this.inputDelay.checkFinished()) {
-            if(inputManager.isKeyDown(KeyEvent.VK_ESCAPE)){this.returnCode = 2; isRunning = false;}
-            if (inputManager.isKeyDown(KeyEvent.VK_UP) && skincode_1p> 0) {
-                skincode_1p--;
-                this.selectionCooldown.reset();
+        try {
+            if (this.selectionCooldown.checkFinished() && this.inputDelay.checkFinished()) {
+                if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)) {
+                    this.returnCode = 2;
+                    isRunning = false;
+                }
+                if (inputManager.isKeyDown(KeyEvent.VK_UP) && skincode_1p > 0) {
+                    skincode_1p--;
+                    this.selectionCooldown.reset();
+                }
+                if (inputManager.isKeyDown(KeyEvent.VK_DOWN) && skincode_1p < Core.getFileManager().getCurrentPlayer().getSkincode() - 1) {
+                    skincode_1p++;
+                    this.selectionCooldown.reset();
+                }
+                if (inputManager.isKeyDown(KeyEvent.VK_W) && skincode_2p > 0) {
+                    skincode_2p--;
+                    this.selectionCooldown.reset();
+                }
+                if (inputManager.isKeyDown(KeyEvent.VK_S) && skincode_2p < Core.getFileManager().getCurrentPlayer().getSkincode() - 1) {
+                    skincode_2p++;
+                    this.selectionCooldown.reset();
+                }
+                if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+                    SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
+                    this.isRunning = false;
+                }
             }
-            if (inputManager.isKeyDown(KeyEvent.VK_DOWN) && skincode_1p < skinlockcode-1) {
-                skincode_1p++;
-                this.selectionCooldown.reset();
-            }
-            if (inputManager.isKeyDown(KeyEvent.VK_W) && skincode_2p > 0) {
-                skincode_2p--;
-                this.selectionCooldown.reset();
-            }
-            if (inputManager.isKeyDown(KeyEvent.VK_S) && skincode_2p < skinlockcode-1) {
-                skincode_2p++;
-                this.selectionCooldown.reset();
-            }
-            if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
-                SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
-                this.isRunning = false;
-            }
+        }catch (IOException e) {
+            logger.warning("Loading failed.");
         }
     }
 

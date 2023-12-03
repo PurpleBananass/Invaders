@@ -130,20 +130,23 @@ public class ItemShopScreen extends Screen {
                 }
                 else if(selectedItem == 73){
                     itemPrice = 50;
-                    if (SkinSelectionScreen.skinlockcode == 6) {
-                        logger.info("Player already has all Skins!");
-                    }
-                    else if (SkinSelectionScreen.skinlockcode < 6){
-                        try {
-                            SkinSelectionScreen.skinlockcode++;
-                            Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
-                            SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                    try {
+                        if (Core.getFileManager().getCurrentPlayer().getSkincode() == 6) {
+                            logger.info("Player already has all Skins!");
+                        } else if (Core.getFileManager().getCurrentPlayer().getSkincode() < 6) {
+                            try {
+                                Core.getFileManager().updateskincodeOfCurrentPlayer();
+                                Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
+                                SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            logger.info("Player unlock new skin");
+                        } else {
+                            logger.info("Player has Insufficient Balance");
                         }
-                        logger.info("Player unlock new skin");
-                    } else {
-                        logger.info("Player has Insufficient Balance");
+                    }catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
                 this.selectionCooldown.reset();
