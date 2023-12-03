@@ -1,5 +1,5 @@
-import { Crud } from './entity/rank.entity';
+import { Rank } from './entity/rank.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
-@EntityRepository(Crud)
-export class CrudRepository extends Repository<Crud> {}
+@EntityRepository(Rank)
+export class RankRepository extends Repository<Rank> {}
