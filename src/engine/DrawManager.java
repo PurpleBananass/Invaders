@@ -717,6 +717,7 @@ public final class DrawManager {
 		drawCenteredItemInfo(screen, "", screen.getHeight() / 8);
 
 		String[] itemNames = {"Speed", "Additional Health", "Shooting Faster"};
+		String buyskin = "Unlock Next Skin";
 		int[] itemPrices = {10, 15, 20};
 
 		int startX = screen.getWidth() / 10; // Starting X position for the first item
@@ -794,6 +795,8 @@ public final class DrawManager {
 		} else {
 			backBufferGraphics.setColor(Color.LIGHT_GRAY);
 		}
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString(buyskin, screen.getWidth()/2 -80, screen.getHeight()/2 + 150);
 		// The title/guide for the item shop:
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, "Item Shop", screen.getHeight() / 10);
