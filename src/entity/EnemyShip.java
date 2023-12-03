@@ -64,7 +64,6 @@ public class EnemyShip extends Entity {
 		this.hasItem = itemGenerator(itemRange);
 		this.HP = this.gameState.getLevel();
 	}
-
 	/**
 	 * Constructor, establishes the ship's properties for a special ship, with
 	 * known starting properties.
