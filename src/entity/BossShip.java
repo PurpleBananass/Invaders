@@ -22,27 +22,33 @@ public class BossShip extends EnemyShip {
     private int TARX = this.positionX;
     private int TARY = this.positionY;
     private int Rotate, MoveType,Radius;
+    private int summonTime;
     public BossShip (final int positionX, final int positionY,
                      final DrawManager.SpriteType spriteType, final GameState gameState, int splitLevel){
         super(positionX, positionY, spriteType, gameState);
         super.HP = splitLevel;//따로 수정;
         super.pointValue = 100*splitLevel; //따로수정
         this.splitLevel = splitLevel;
-        MoveType = -1;Rotate=0;Radius=0;
+        MoveType = -1;Rotate=0;Radius=0;summonTime=0;
     }
     private void summon(List<EnemyShip> enemyShipList){//enemyships.get(1) is Boss stage's small enemy
-        int rand = (int)(Math.random()*3);
-        EnemyShip enemyShip;
-        switch (rand){
-            case 0:
-                enemyShip = new EnemyShipA(0,0, DrawManager.SpriteType.EnemyShipA1,gameState); break;
-            case 1:
-                enemyShip = new EnemyShipB(0,0, DrawManager.SpriteType.EnemyShipB1,gameState); break;
-            default:
-                enemyShip = new EnemyShipC(0,0, DrawManager.SpriteType.EnemyShipC1,gameState);break;
+        if (summonTime>=3) {
+            summonTime=0;
+            int rand = (int)(Math.random()*3);
+            EnemyShip enemyShip;
+            switch (rand){
+                case 0:
+                    enemyShip = new EnemyShipA(0,0, DrawManager.SpriteType.EnemyShipA1,gameState); break;
+                case 1:
+                    enemyShip = new EnemyShipB(0,0, DrawManager.SpriteType.EnemyShipB1,gameState); break;
+                default:
+                    enemyShip = new EnemyShipC(0,0, DrawManager.SpriteType.EnemyShipC1,gameState);break;
+            }
+            scatter(enemyShip);
+            enemyShipList.add(enemyShip);
+            return;
         }
-        scatter(enemyShip);
-        enemyShipList.add(enemyShip);
+        summonTime++;
     }
     /**
      * when slime Boss dead this function
@@ -80,7 +86,8 @@ public class BossShip extends EnemyShip {
      * There is only one attack pattern yet
      */
     public void Attack(final Set<LaserBeam> laserBeams, List<EnemyShip> enemyShipList) {
-        beam(laserBeams,enemyShipList);
+        beam(laserBeams);
+        summon(enemyShipList);
     }
 
     public void Move(){
@@ -190,15 +197,10 @@ public class BossShip extends EnemyShip {
      * Teleport randomly
      */
     public void moveTeleport() {
-        if (Rotate>=10){
-            Rotate=0;
-            MoveType=-1;
-            return ;
-        }
         double randomX = Math.random();
         double randomY = Math.random();
         positionX = (int) (randomX * (WIDTH - BOSS_WIDTH));
-        positionY = (int) (randomY * (HEIGHT - BOSS_HEIGHT));
+        positionY = (int) (randomY * (HEIGHT*0.6 - BOSS_HEIGHT)+300);
     }
     public int getSplitLevel(){return this.splitLevel;}
 }

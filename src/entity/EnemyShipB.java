@@ -12,7 +12,7 @@ public class EnemyShipB extends EnemyShip {
     /** 총알의 속도 배율 */
     private final double BULLETSPEEDPOWER = 1;
     /** 슈팅 쿨다운 배율 */
-    private final double BULLETCOOLDOWN = 0.25;
+    private final double BULLETCOOLDOWN = 0.2;
     /** 제거시 올라가는 점수 */
     private final int POINT = 10;
     public EnemyShipB(final int positionX, final int positionY,
