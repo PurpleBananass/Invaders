@@ -718,7 +718,7 @@ public final class DrawManager {
 
 		String[] itemNames = {"Speed", "Additional Health", "Shooting Faster"};
 		String buyskin = "Unlock Next Skin";
-		int[] itemPrices = {10, 15, 20};
+		int[] itemPrices = {10, 15, 20, 50};
 
 		int startX = screen.getWidth() / 10; // Starting X position for the first item
 		int itemWidth = 100; // Width of each item box
@@ -742,12 +742,20 @@ public final class DrawManager {
 		}
 		backBufferGraphics.drawRect(itemX1, screen.getHeight() / 2 - 50, itemWidth, itemWidth);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		if (selectedItem == 70) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
 		String itemName1 = itemNames[0];
 		int itemNameX1 = itemX1 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(itemName1)) / 2;
 		backBufferGraphics.drawString(itemName1, itemNameX1, screen.getHeight() / 2 + 70);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		if (selectedItem == 70) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
 		String priceText1 = "Price: $" + itemPrices[0];
 		int priceX1 = itemX1 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(priceText1)) / 2;
 		backBufferGraphics.drawString(priceText1, priceX1, screen.getHeight() / 2 + 90);
@@ -761,12 +769,20 @@ public final class DrawManager {
 		}
 		backBufferGraphics.drawRect(itemX2, screen.getHeight() / 2 - 50, itemWidth, itemWidth);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		if (selectedItem == 71) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
 		String itemName2 = itemNames[1];
 		int itemNameX2 = itemX2 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(itemName2)) / 2;
 		backBufferGraphics.drawString(itemName2, itemNameX2, screen.getHeight() / 2 + 70);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		if (selectedItem == 71) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
 		String priceText2 = "Price: $" + itemPrices[1];
 		int priceX2 = itemX2 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(priceText2)) / 2;
 		backBufferGraphics.drawString(priceText2, priceX2, screen.getHeight() / 2 + 90);
@@ -780,12 +796,20 @@ public final class DrawManager {
 		}
 		backBufferGraphics.drawRect(itemX3, screen.getHeight() / 2 - 50, itemWidth, itemWidth);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		if (selectedItem == 72) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
 		String itemName3 = itemNames[2];
 		int itemNameX3 = itemX3 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(itemName3)) / 2;
 		backBufferGraphics.drawString(itemName3, itemNameX3, screen.getHeight() / 2 + 70);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		if (selectedItem == 72) {
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
 		String priceText3 = "Price: $" + itemPrices[2];
 		int priceX3 = itemX3 + (itemWidth - backBufferGraphics.getFontMetrics().stringWidth(priceText3)) / 2;
 		backBufferGraphics.drawString(priceText3, priceX3, screen.getHeight() / 2 + 90);
@@ -797,6 +821,16 @@ public final class DrawManager {
 		}
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.drawString(buyskin, screen.getWidth()/2 -80, screen.getHeight()/2 + 150);
+		if(selectedItem == 73){
+			backBufferGraphics.setColor(Color.GREEN);
+		} else {
+			backBufferGraphics.setColor(Color.LIGHT_GRAY);
+		}
+		String priceText4 = "Price: $" + itemPrices[3];
+		backBufferGraphics.drawString(priceText4, screen.getWidth()/2 - 45, screen.getHeight() / 2 + 170);
+
+
+
 		// The title/guide for the item shop:
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, "Item Shop", screen.getHeight() / 10);
