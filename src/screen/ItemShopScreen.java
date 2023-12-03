@@ -63,7 +63,7 @@ public class ItemShopScreen extends Screen {
                 if (selectedItem == 70) {
                     itemPrice = 10;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(0) == true) {
+                        if (Core.getFileManager().getCurrentPlayer().getItem().get(0)) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
@@ -85,7 +85,7 @@ public class ItemShopScreen extends Screen {
                 } else if (selectedItem == 71) {
                     itemPrice = 15;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(1) == true) {
+                        if (Core.getFileManager().getCurrentPlayer().getItem().get(1)) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
@@ -108,7 +108,7 @@ public class ItemShopScreen extends Screen {
                 } else if (selectedItem == 72) {
                     itemPrice = 20;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(2) == true) {
+                        if (Core.getFileManager().getCurrentPlayer().getItem().get(2)) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
@@ -127,6 +127,24 @@ public class ItemShopScreen extends Screen {
                         throw new RuntimeException(e);
                     }
 
+                }
+                else if(selectedItem == 73){
+                    itemPrice = 1;
+                    if (SkinSelectionScreen.skinlockcode == 6) {
+                        logger.info("Player already has all Skins!");
+                    }
+                    else if (SkinSelectionScreen.skinlockcode < 6){
+                        try {
+                            SkinSelectionScreen.skinlockcode++;
+                            Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
+                            SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        logger.info("Player unlock new skin");
+                    } else {
+                        logger.info("Player has Insufficient Balance");
+                    }
                 }
                 this.selectionCooldown.reset();
 
