@@ -20,7 +20,7 @@ public class ItemShopScreen extends Screen {
     public ItemShopScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
         //defaults to center
-        this.returnCode = 71;
+        this.returnCode = 70;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
@@ -129,7 +129,7 @@ public class ItemShopScreen extends Screen {
 
                 }
                 else if(selectedItem == 73){
-                    itemPrice = 1;
+                    itemPrice = 50;
                     if (SkinSelectionScreen.skinlockcode == 6) {
                         logger.info("Player already has all Skins!");
                     }
