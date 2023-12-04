@@ -14,9 +14,13 @@ const typeorm_1 = require("typeorm");
 let Rank = class Rank {
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)({ type: 'varchar', length: 10 }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: 'int' }),
     __metadata("design:type", String)
 ], Rank.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 10 }),
+    __metadata("design:type", String)
+], Rank.prototype, "username", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int' }),
     __metadata("design:type", Number)
@@ -24,7 +28,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'int' }),
     __metadata("design:type", Number)
-], Rank.prototype, "rank", void 0);
+], Rank.prototype, "mode", void 0);
 Rank = __decorate([
     (0, typeorm_1.Entity)('rank')
 ], Rank);

@@ -29,6 +29,14 @@ let RankService = class RankService {
             throw new base_exception_1.BaseException(400, 'get list error', e);
         }
     }
+    async getByMode(mode) {
+        try {
+            return await this.repo.find({ mode });
+        }
+        catch (e) {
+            throw new base_exception_1.BaseException(400, 'get list error', e);
+        }
+    }
     async getById(id) {
         try {
             return await this.repo.findOne(id);
@@ -48,6 +56,24 @@ let RankService = class RankService {
     async create(createDTO) {
         try {
             await this.repo.save(createDTO);
+        }
+        catch (e) {
+            throw new base_exception_1.BaseException(400, 'create error', e);
+        }
+    }
+    async createRank(createDTO) {
+        try {
+            const currentRanks = (await this.repo.find({ mode: createDTO.mode })).sort((a, b) => b.score - a.score);
+            if (currentRanks.length === 10 && currentRanks[9].score > createDTO.score) {
+                return currentRanks;
+            }
+            else {
+                if (currentRanks.length === 10) {
+                    await this.repo.delete(currentRanks[9].id);
+                }
+                await this.repo.save(createDTO);
+            }
+            return (await this.repo.find()).sort((a, b) => b.score - a.score);
         }
         catch (e) {
             throw new base_exception_1.BaseException(400, 'create error', e);
