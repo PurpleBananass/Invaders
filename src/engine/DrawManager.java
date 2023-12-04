@@ -911,8 +911,8 @@ public final class DrawManager {
 			backBufferGraphics.drawLine(screen.getWidth()/2, screen.getHeight()/5, screen.getWidth()/2, 450);
 			backBufferGraphics.setFont(fontBig);
 			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
-			backBufferGraphics.drawString(skin2p, 3 * screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 2, 130);
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 2, 130);
+			backBufferGraphics.drawString(skin2p, 3 * screen.getWidth() / 4 - fontRegularMetrics.stringWidth(skin1p) / 2 - 6, 130);
 			try {
 				fileManager.changeSprite(spriteMap, SpriteType.Ship, 0);
 			} catch (IOException e) {
@@ -929,8 +929,8 @@ public final class DrawManager {
 						dummyShip.setColor(Color.GRAY);
 						dummyShip2.setColor(Color.GRAY);
 					}
-					drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 172 + 50 * i);
-					drawEntity(shipskin2[i], 3 * screen.getWidth() / 4 - 13, 172 + 50 * i);
+					drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 160 + 47 * i);
+					drawEntity(shipskin2[i], 3 * screen.getWidth() / 4 - 13, 160 + 47 * i);
 					if(i != 6) {
 						try {
 							fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
@@ -944,89 +944,103 @@ public final class DrawManager {
 			}
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 150, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 165, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 150, 31, 30);
 
 			}
 			if (skincode1p == 1) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 197, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 215, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 197, 31, 30);
 			}
 			if (skincode1p == 2) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 244, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 265, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 244, 31, 30);
 			}
 			if (skincode1p == 3) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 291, 31, 30);
 
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 315, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 291, 31, 30);
 			}
 			if (skincode1p == 4) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 338, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 365, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 338, 31, 30);
 			}
 			if (skincode1p == 5) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 385, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 4 - 15, 415, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 385, 31, 30);
+			}
+			if (skincode1p == 6) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 432, 31, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 432, 31, 30);
 			}
 			if (skincode2p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 150, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 165, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 150, 31, 30);
 			}
 			if (skincode2p == 1) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 215, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 197, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 215, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 197, 31, 30);
 			}
 			if (skincode2p == 2) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 265, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 244, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 265, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 244, 31, 30);
 			}
 			if (skincode2p == 3) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 315, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 291, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 315, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 291, 31, 30);
 			}
 			if (skincode2p == 4) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 365, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 338, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 365, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 338, 31, 30);
 			}
 			if (skincode2p == 5) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 385, 31, 30);
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 15, 415, 30, 30);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 385, 31, 30);
+			}
+			if (skincode2p == 6) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 432, 31, 30);
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 432, 31, 30);
 			}
 			try {
 				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
@@ -1053,7 +1067,7 @@ public final class DrawManager {
 						dummyShip.setColor(Color.gray);
 					}
 					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-					drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 172 + 50 * i);
+					drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 160 + 47 * i);
 
 					if(i != 6) {
 						try {
@@ -1069,55 +1083,63 @@ public final class DrawManager {
 
 			if (skincode1p == 0) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 165, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 150, 31, 30);
 
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 165, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 150, 31, 30);
 			}
 			if (skincode1p == 1) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 215, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 197, 31, 30);
 
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 215, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 197, 31, 30);
 			}
 			if (skincode1p == 2) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 265, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 244, 31, 30);
 
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 265, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 244, 31, 30);
 			}
 			if (skincode1p == 3) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 315, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 291, 31, 30);
 
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 315, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 291, 31, 30);
 			}
 			if (skincode1p == 4) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 365, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 338, 31, 30);
 
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 365, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 338, 31, 30);
 			}
 			if (skincode1p == 5) {
 				backBufferGraphics.setColor(Color.GREEN);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 415, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 385, 31, 30);
 
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
-				backBufferGraphics.drawRect(screen.getWidth() / 2 - 15, 415, 30, 30);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 385, 31, 30);
+			}
+			if (skincode1p == 6) {
+				backBufferGraphics.setColor(Color.GREEN);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 432, 31, 30);
+
+			} else {
+				backBufferGraphics.setColor(Color.WHITE);
+				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 432, 31, 30);
 			}
 			backBufferGraphics.setFont(fontBig);
 			backBufferGraphics.setColor(Color.WHITE);
-			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2 - 1, 130);
+			backBufferGraphics.drawString(skin1p, screen.getWidth() / 2 - fontRegularMetrics.stringWidth(skin1p) / 2 - 3, 130);
 			try {
 				fileManager.changeSprite(spriteMap, SpriteType.Ship, skincode1p);
 			} catch (IOException e) {
