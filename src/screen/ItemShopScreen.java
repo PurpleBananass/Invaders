@@ -131,9 +131,9 @@ public class ItemShopScreen extends Screen {
                 else if(selectedItem == 73){
                     itemPrice = 50;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getSkincode() == 6) {
+                        if (Core.getFileManager().getCurrentPlayer().getSkincode() == 7) {
                             logger.info("Player already has all Skins!");
-                        } else if (Core.getFileManager().getCurrentPlayer().getSkincode() < 6) {
+                        } else if (Core.getFileManager().getCurrentPlayer().getSkincode() < 7) {
                             try {
                                 Core.getFileManager().updateskincodeOfCurrentPlayer();
                                 Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
