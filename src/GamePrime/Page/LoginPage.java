@@ -4,7 +4,6 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.DatabaseAPI;
 import GamePrime.Define.AchievDefine;
 import GamePrime.Define.ItemDefine;
 import GamePrime.Define.KeyDefine;
@@ -17,11 +16,21 @@ import org.json.simple.JSONObject;
 import java.awt.FontMetrics;
 
 public class LoginPage implements GManager {
-    public void PreRender() {
-    };
 
-    public void LateRender() {
-    };
+    /*
+     * 로그인 시 해당 유저의 정보를 Global Data의 Json 형태로 저장 구조는 다음과 같음.
+      "GlobalData": 
+        "LocalData": 
+            "Player"
+            "Money"
+            "StoreItem"
+            "Setting"
+                "Volume"
+                "IsMute"
+                "KeySetting_1p"
+                "KeySetting_2p"
+            "Achievement"
+     */
 
     GameManager gm = GameManager.getInstance();
     JSONObject res = gm.GlobalData.get("Resource");
@@ -133,6 +142,11 @@ public class LoginPage implements GManager {
         }
     }
 
+    public void PreRender() {
+    };
+
+    public void LateRender() {
+    };
     public void Exit() {
     };
 }

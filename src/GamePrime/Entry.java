@@ -13,10 +13,6 @@ public class Entry implements GManager {
 
     public void Initialize() {
 
-        DatabaseAPI.GetRank("");
-
-
-
         gm.frame.SetSize(800, 1000);
         gm.Et.SetMaxFps(60);
         JSONObject res = FileManager.LoadJsonObject("Resource");
