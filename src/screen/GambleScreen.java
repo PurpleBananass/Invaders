@@ -58,7 +58,7 @@ public class GambleScreen extends Screen {
     //플레이어가 가위바위보 선택했는지
     private boolean rpsSelected = false;
     //가위바위보 상금의 배율
-    private final double[] rpsPriceRate = {1,2,3,5,1,1.5,1.5,2,1.2,7};
+    private final double[] rpsPriceRate = {1.2,1.5,3,5,2,1.5,1.5,2,1.2,7};
     //가위바위보 상금이 정해졌는지
     private double selectedPriceRate;
     private boolean checkLoop = false;
@@ -147,23 +147,21 @@ public class GambleScreen extends Screen {
                             this.isRunning = false;
                         }
                         if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
-                            if (bettingCurrency - 10 < 0) bettingCurrency = 0;
-                            else bettingCurrency -= 10;
+                            if (bettingCurrency>0) bettingCurrency--;
                             this.selectionCooldown.reset();
                         }
                         if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+                            if (bettingCurrency < playerCurrency) bettingCurrency++;
+                            this.selectionCooldown.reset();
+                        }
+                        if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
                             if (bettingCurrency + 10 > playerCurrency) bettingCurrency = playerCurrency;
                             else bettingCurrency += 10;
                             this.selectionCooldown.reset();
                         }
-                        if (inputManager.isKeyDown(KeyEvent.VK_UP)) {
-                            if (bettingCurrency + 100 > playerCurrency) bettingCurrency = playerCurrency;
-                            else bettingCurrency += 100;
-                            this.selectionCooldown.reset();
-                        }
                         if (inputManager.isKeyDown(KeyEvent.VK_DOWN)) {
-                            if (bettingCurrency - 100 < 0) bettingCurrency = 0;
-                            else bettingCurrency -= 100;
+                            if (bettingCurrency < 10) bettingCurrency = 0;
+                            else bettingCurrency -= 10;
                             this.selectionCooldown.reset();
                         }
 
