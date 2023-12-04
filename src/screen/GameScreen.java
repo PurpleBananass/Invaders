@@ -534,7 +534,7 @@ public class GameScreen extends Screen {
                         }
                     } else if (replayability.getReplay() == 1) {
                         //player1
-                        if (this.bullet_count <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
+                        if (this.bullet_count <= 9 && !this.ship.isDestroyed() && inputManager.isKeyDown(Core.getKeySettingCode(2)) && (this.lives > 0)) {
                             if (this.ship.shoot(this.bullets, 1)) {
                                 SoundManager.playSound("SFX/S_Ally_Shoot_a", "AllyShoota", false, false);
                                 this.bulletsShot1++;
@@ -589,7 +589,7 @@ public class GameScreen extends Screen {
                         }
 
                         //player2
-                        if (this.bullet_count2 <= 9 && inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
+                        if (this.bullet_count2 <= 9 && !this.ship2.isDestroyed() && inputManager.isKeyDown(Core.getKeySettingCode(10)) && (this.lives2 > 0)) {
 							if (this.ship2.shoot(this.bullets, 2)) {
 								this.bulletsShot2++;
 								this.bullet_count2++;
