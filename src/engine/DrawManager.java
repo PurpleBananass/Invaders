@@ -925,7 +925,7 @@ public final class DrawManager {
 					shipskin[i] = dummyShip;
 					shipskin2[i] = dummyShip2;
 					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-					if(i>Core.getFileManager().getCurrentPlayer().getSkincode()){
+					if(i>=Core.getFileManager().getCurrentPlayer().getSkincode()){
 						dummyShip.setColor(Color.GRAY);
 						dummyShip2.setColor(Color.GRAY);
 					}
@@ -1049,7 +1049,7 @@ public final class DrawManager {
 				for (int i = 0; i < maxskin; i++) {
 					Ship dummyShip = new Ship(0, 0, Color.GREEN, SpriteType.Ship, false);
 					shipskin[i] = dummyShip;
-					if(i>Core.getFileManager().getCurrentPlayer().getSkincode()){
+					if(i>=Core.getFileManager().getCurrentPlayer().getSkincode()){
 						dummyShip.setColor(Color.gray);
 					}
 					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
