@@ -42,7 +42,7 @@ public class SkinSelectPage implements GManager {
             }
         }
         FileManager fm = new FileManager();
-        img.put("Reimu&Marisa", fm.GetImage(File.separator + "Img" + File.separator + "Reimu&Marisa.png"));
+        img.put("Reimu&Marisa", fm.GetImage(File.separator + "Img" + File.separator + "Starset.png"));
         JSONObject Entity = (JSONObject) res.get("Entity");
         JSONObject ShipType1 = (JSONObject) Entity.get("ShipType1");
         JSONObject ShipType2 = (JSONObject) Entity.get("ShipType2");
