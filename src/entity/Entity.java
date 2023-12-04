@@ -26,6 +26,10 @@ public class Entity {
 	private Color color;
 	/** Sprite type assigned to the entity. */
 	protected SpriteType spriteType;
+	/** 겜블-빠칭코에서 엔티티의 스프라이트가 확정됐는지 확인 */
+	private boolean isDecideSprite;
+	/** 겜블-빠칭코에서 엔티티의 스프라이트 번호*/
+	private int spriteNumber;
 
 	/**
 	 * Constructor, establishes the entity's generic properties.
@@ -49,6 +53,18 @@ public class Entity {
 		this.height = height;
 		this.origin_color = color;
 		this.color = color;
+	}
+
+	public Entity(final int positionX, final int positionY, final int width,
+				  final int height, final Color color, boolean isDecideSprite, int spriteNumber) {
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.width = width;
+		this.height = height;
+		this.origin_color = color;
+		this.color = color;
+		this.isDecideSprite = isDecideSprite;
+		this.spriteNumber = spriteNumber;
 	}
 
 	/**
@@ -141,4 +157,10 @@ public class Entity {
 	public final void changeColor(Color color) {
 		this.color = color;
 	}
+	public void changeEntitySprite(SpriteType sprite){this.spriteType = sprite;}
+	public boolean isDecideSprite(){return this.isDecideSprite;}
+	public void setDecideSprite(boolean isDecideSprite){this.isDecideSprite = isDecideSprite;}
+	public int getSpriteNumber(){return this.spriteNumber;}
+	public void setSpriteNumber(int spriteNumber){this.spriteNumber = spriteNumber;}
+
 }
