@@ -16,7 +16,7 @@ class CreateDTO {
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateDTO.prototype, "id", void 0);
+], CreateDTO.prototype, "username", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
@@ -24,6 +24,6 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateDTO.prototype, "rank", void 0);
+], CreateDTO.prototype, "mode", void 0);
 exports.CreateDTO = CreateDTO;
 //# sourceMappingURL=create.dto.js.map

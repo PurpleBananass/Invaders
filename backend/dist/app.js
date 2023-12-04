@@ -46,10 +46,14 @@ class App {
     }
     async createDatabaseConnection() {
         const connectionOpts = {
-            type: 'sqlite',
-            database: 'test.db',
+            type: 'mysql',
             entities: [(0, path_1.join)(__dirname + `/api/**/*.entity.${config_1.IS_DEV ? 'ts' : 'js'}`)],
             synchronize: true,
+            host: process.env.DB_HOST || 'localhost',
+            port: 3306,
+            database: process.env.DB_NAME || 'test',
+            username: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD || 'root',
         };
         (0, typeorm_1.useContainer)(typedi_1.default);
         await (0, typeorm_1.createConnection)(connectionOpts);
