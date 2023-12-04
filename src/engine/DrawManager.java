@@ -1164,7 +1164,7 @@ public final class DrawManager {
 
 		int colorButtonSize = 22;
 		int initialXPosition = screen.getWidth() / 4; // 화면 가운데 정렬을 위한 초기 X 위치 계산
-		int yPosition = 500; // 색상 버튼이 배치될 Y 위치
+		int yPosition = 480; // 색상 버튼이 배치될 Y 위치
 
 		if (SelectScreen.gameMode == 2) {
 			for (int i = 0; i < colors.length; i++) {
