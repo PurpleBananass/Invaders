@@ -45,7 +45,7 @@ public class SkinSelectionScreen extends Screen{
                 if (inputManager.isKeyDown(KeyEvent.VK_UP) && skincode_1p > 0) {
                     skincode_1p--;
                     this.selectionCooldown.reset();
-                }
+                } //해금하지 못한 스킨이 있는 경우 이동 제한
                 if (inputManager.isKeyDown(KeyEvent.VK_DOWN) && skincode_1p < Core.getFileManager().getCurrentPlayer().getSkincode() - 1) {
                     skincode_1p++;
                     this.selectionCooldown.reset();
@@ -53,7 +53,7 @@ public class SkinSelectionScreen extends Screen{
                 if (inputManager.isKeyDown(KeyEvent.VK_W) && skincode_2p > 0) {
                     skincode_2p--;
                     this.selectionCooldown.reset();
-                }
+                } //해금하지 못한 스킨이 있는 경우 이동 제한
                 if (inputManager.isKeyDown(KeyEvent.VK_S) && skincode_2p < Core.getFileManager().getCurrentPlayer().getSkincode() - 1) {
                     skincode_2p++;
                     this.selectionCooldown.reset();

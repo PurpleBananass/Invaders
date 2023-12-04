@@ -129,20 +129,20 @@ public class ItemShopScreen extends Screen {
 
                 }
                 else if(selectedItem == 73){
-                    itemPrice = 50;
+                    itemPrice = 50; //스킨의 가격
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getSkincode() == 7) {
-                            logger.info("Player already has all Skins!");
-                        } else if (Core.getFileManager().getCurrentPlayer().getSkincode() < 7) {
+                        if (Core.getFileManager().getCurrentPlayer().getSkincode() == 7) { //스킨이 최대치일 경우
+                            logger.info("Player already has all Skins!"); //메세지 출력
+                        } else if (Core.getFileManager().getCurrentPlayer().getSkincode() < 7 && Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) { //해금할 스킨이 남아있고, 돈이 충분한 경우
                             try {
-                                Core.getFileManager().updateskincodeOfCurrentPlayer();
-                                Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice);
+                                Core.getFileManager().updateskincodeOfCurrentPlayer(); //스킨값 업데이트
+                                Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice); //플레이어 재화 차감
                                 SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                             logger.info("Player unlock new skin");
-                        } else {
+                        } else { //돈이 부족한 경우
                             logger.info("Player has Insufficient Balance");
                         }
                     }catch (IOException e) {

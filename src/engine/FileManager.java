@@ -585,7 +585,7 @@ public final class FileManager {
             bufferedWriter.newLine();
             bufferedWriter.write("false, false, false");
             bufferedWriter.newLine();
-            bufferedWriter.write("1");
+            bufferedWriter.write("1"); //플레이어 정보에 스킨 정보 추가, 초기값은 1
             bufferedWriter.newLine();
             bufferedWriter.flush();
             loadPlayer(name); //I know I can make a separate function to overwrite it but I have to set priorities on other things
@@ -699,7 +699,7 @@ public final class FileManager {
             throw e;
         }
     }
-    public void updateskincodeOfCurrentPlayer() throws IOException {
+    public void updateskincodeOfCurrentPlayer() throws IOException { //플레이어의 스킨 정보 업데이트하는 메소드
 
         // Get the path to the JAR file
         String jarPath = FileManager.class.getProtectionDomain()

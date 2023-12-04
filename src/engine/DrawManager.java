@@ -928,20 +928,20 @@ public final class DrawManager {
 			} catch (IOException e) {
 				logger.warning("Loading failed.");
 			}
-			try {
+			try { //maxskin은 스킨의 최대 개수
 				for (int i = 0; i < maxskin; i++) {
 					Ship dummyShip = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_1P()], SpriteType.Ship, false);
 					Ship dummyShip2 = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_2P()], SpriteType.Ship, true);
 					shipskin[i] = dummyShip;
 					shipskin2[i] = dummyShip2;
 					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
-					if(i>=Core.getFileManager().getCurrentPlayer().getSkincode()){
+					if(i>=Core.getFileManager().getCurrentPlayer().getSkincode()){ //내가 해금하지 않은 스킨은 회색 처리
 						dummyShip.setColor(Color.GRAY);
 						dummyShip2.setColor(Color.GRAY);
 					}
 					drawEntity(shipskin[i], screen.getWidth() / 4 - 13, 160 + 47 * i);
 					drawEntity(shipskin2[i], 3 * screen.getWidth() / 4 - 13, 160 + 47 * i);
-					if(i != 6) {
+					if(i != 6) { //스킨의 인덱스가 0~6까지라 7인 경우 제외
 						try {
 							fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
 						} catch (IOException e) {
@@ -996,7 +996,7 @@ public final class DrawManager {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 385, 31, 30);
 			}
-			if (skincode1p == 6) {
+			if (skincode1p == 6) { //스킨의 개수가 늘어남에 따라 추가
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 4 - 16, 432, 31, 30);
 			} else {
@@ -1045,7 +1045,7 @@ public final class DrawManager {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 385, 31, 30);
 			}
-			if (skincode2p == 6) {
+			if (skincode2p == 6) { //스킨의 개수가 늘어남에 따라 추가
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(3 * screen.getWidth() / 4 - 16, 432, 31, 30);
 			} else {
@@ -1069,17 +1069,17 @@ public final class DrawManager {
 			} catch (IOException e) {
 				logger.warning("Loading failed.");
 			}
-			try {
+			try { //maxskin은 스킨의 최대 개수
 				for (int i = 0; i < maxskin; i++) {
 					Ship dummyShip = new Ship(0, 0, colors[SkinSelectionScreen.getColorCode_1P()], SpriteType.Ship, false);
 					shipskin[i] = dummyShip;
-					if(i>=Core.getFileManager().getCurrentPlayer().getSkincode()){
+					if(i>=Core.getFileManager().getCurrentPlayer().getSkincode()){ //본인이 해금하지 못한 스킨들은 회색으로 표시
 						dummyShip.setColor(Color.gray);
 					}
 					// 예: ships[i] = new Ship(i * 50, 100, Color.GREEN, SpriteType.Ship, spriteData, false);
 					drawEntity(shipskin[i], screen.getWidth() / 2 - 13, 160 + 47 * i);
 
-					if(i != 6) {
+					if(i != 6) { //스킨의 인덱스가 0~6까지라 7일때 제외
 						try {
 							fileManager.changeSprite(spriteMap, SpriteType.Ship, i + 1);
 						} catch (IOException e) {
@@ -1137,7 +1137,7 @@ public final class DrawManager {
 			} else {
 				backBufferGraphics.setColor(Color.WHITE);
 				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 385, 31, 30);
-			}
+			} //스킨 개수가 늘어남에 따라 추가
 			if (skincode1p == 6) {
 				backBufferGraphics.setColor(Color.GREEN);
 				backBufferGraphics.drawRect(screen.getWidth() / 2 - 16, 432, 31, 30);

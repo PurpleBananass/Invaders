@@ -20,7 +20,7 @@ public class Player implements Comparable<Player> {
 	/** item list */
 	private List<Boolean> item;
 
-	private int skincode;
+	private int skincode; //플레이어의 정보에 스킨코드값 추가
 
 	/**
 	 * Constructor.
@@ -66,7 +66,7 @@ public class Player implements Comparable<Player> {
 
 	public final int getSkincode(){
 		return this.skincode;
-	}
+	} //스킨코드를 반환해주는 메소드
 	public void setName(String name) {
 		this.name = name;
 	}
