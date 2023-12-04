@@ -21,7 +21,7 @@ public class EnemyShip extends Entity {
 	/** Point value of a bonus enemy. */
 	private static final int BONUS_TYPE_POINTS = 100;
 
-	public static final double ITEM_PROPORTION = 0.1;
+	public static final double ITEM_PROPORTION = 1;
 	public static final int RANDOM_BOUND = 10000;
 
 	/** Cooldown between sprite changes. */
@@ -64,7 +64,6 @@ public class EnemyShip extends Entity {
 		this.hasItem = itemGenerator(itemRange);
 		this.HP = this.gameState.getLevel();
 	}
-
 	/**
 	 * Constructor, establishes the ship's properties for a special ship, with
 	 * known starting properties.
