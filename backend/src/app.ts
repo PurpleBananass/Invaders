@@ -7,10 +7,10 @@ import { join } from 'path';
 import { createConnection, useContainer as useDBContainer } from 'typeorm';
 import bodyParser from 'body-parser';
 import { GlobalErrorHandler } from 'middleware/global-error.handler';
-import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
 import { AuthorizationHandler } from 'middleware/authorization.handler';
 import { IS_DEV } from 'config';
 import cors from 'cors';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 export class App {
   public app: Application;
@@ -51,11 +51,15 @@ export class App {
   }
 
   private async createDatabaseConnection() {
-    const connectionOpts: SqliteConnectionOptions = {
-      type: 'sqlite',
-      database: 'test.db',
+    const connectionOpts: MysqlConnectionOptions = {
+      type: 'mysql',
       entities: [join(__dirname + `/api/**/*.entity.${IS_DEV ? 'ts' : 'js'}`)],
       synchronize: true,
+      host: process.env.DB_HOST || 'localhost',
+      port: 3306,
+      database: process.env.DB_NAME || 'test',
+      username: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || 'root',
     };
 
     useDBContainer(Container);
