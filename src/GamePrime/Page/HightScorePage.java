@@ -10,7 +10,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
-import GamePrime.DatabaseAPI;
+import GamePrime.RankAPIService;
 import GamePrime.ETC.Score;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -38,14 +38,13 @@ public class HightScorePage implements GManager {
         LoadScore(1);
     };
 
-    void LoadScore(int index){
+    void LoadScore(int index) {
         JSONArray scores;
-        if(index ==0){
-            scores = DatabaseAPI.GetRank("1p");
-        }else{
-            scores = DatabaseAPI.GetRank("2p");
+        if (index == 0) {
+            scores = RankAPIService.GetRank("1p");
+        } else {
+            scores = RankAPIService.GetRank("2p");
         }
-        
         for (int i = 0; i < scores.size(); i++) {
             scoreList[index].add(Score.toScore((JSONObject) scores.get(i)));
         }
@@ -59,10 +58,7 @@ public class HightScorePage implements GManager {
             s.rank = rankIndex;
             rankIndex++;
         }
-
-
     }
-
 
     public void Exit() {
         gm.Sm.StopClip("BGM");

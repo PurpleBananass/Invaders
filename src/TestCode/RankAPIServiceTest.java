@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
 import EnginePrime.FileManager;
 
-public class DatabaseAPITest {
+public class RankAPIServiceTest {
     @Test
     static void GetApi() {
         try {

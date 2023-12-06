@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import EnginePrime.SoundManager;
-import GamePrime.DatabaseAPI;
+import GamePrime.RankAPIService;
 import GamePrime.ETC.Score;
 import GamePrime.Ship.EnemyController;
 import java.awt.event.KeyEvent;
@@ -95,8 +95,7 @@ public class EndPage implements GManager {
     }
 
     static void SaveScore(String name) {
-
-        JSONArray scores = DatabaseAPI.GetRank(name);
+        JSONArray scores = RankAPIService.GetRank(name);
         List<Score> scoreList = new ArrayList<>();
         for (int i = 0; i < scores.size(); i++) {
             scoreList.add(Score.toScore((JSONObject) scores.get(i)));
@@ -109,7 +108,7 @@ public class EndPage implements GManager {
             scoreList.remove(scoreList.size() - 1);
         }
         for (Score s : scoreList) {
-            DatabaseAPI.PostRank(s.toJSONString(name));
+            RankAPIService.PostRank(s.toJSONString(name));
         }
     };
 
