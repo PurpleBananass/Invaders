@@ -18,14 +18,14 @@ public class Score implements Comparable<Score> {
     }
 
     public static Score toScore(JSONObject obj) {
-        return new Score((String) obj.get("name"), ((Number) obj.get("value")).intValue());
+        return new Score((String) obj.get("username"), ((Number) obj.get("score")).intValue());
     }
 
-    public JSONObject toJSON() {
+    public String toJSONString(String mode) {
         JSONObject json = new JSONObject();
-        json.put("name", this.name);
-        json.put("value", this.value);
-        json.put("rank", this.rank);
-        return json;
+        json.put("username", this.name);
+        json.put("score", this.value);
+        json.put("mode", mode);
+        return json.toString();
     }
 }

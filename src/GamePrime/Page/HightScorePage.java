@@ -34,29 +34,35 @@ public class HightScorePage implements GManager {
         BgmProp.count = -1;
         gm.Sm.StopClip("BGM", 1);
         gm.Sm.playSound(BgmProp);
-        FileManager fm = new FileManager();
+        LoadScore(0);
+        LoadScore(1);
+    };
 
-
-
-        JSONArray scores = DatabaseAPI.GetRank("");
-        List<Score> scoreList = new ArrayList<>();
-        for (int i = 0; i < scores.size(); i++) {
-            scoreList.add(Score.toScore((JSONObject) scores.get(i)));
+    void LoadScore(int index){
+        JSONArray scores;
+        if(index ==0){
+            scores = DatabaseAPI.GetRank("1p");
+        }else{
+            scores = DatabaseAPI.GetRank("2p");
         }
-        JSONObject PlayData = (JSONObject) GameManager.getInstance().GlobalData.get("LocalData").get("PlayData");
-        int point = ((Number) PlayData.get("Point")).intValue();
-        scoreList.add(new Score((String) GameManager.getInstance().GlobalData.get("LocalData").get("Player"), point));
-        Collections.sort(scoreList, Collections.reverseOrder());
-        if (scoreList.size() > 10) {
-            scoreList.remove(scoreList.size() - 1);
+        
+        for (int i = 0; i < scores.size(); i++) {
+            scoreList[index].add(Score.toScore((JSONObject) scores.get(i)));
+        }
+        Collections.sort(scoreList[index], Collections.reverseOrder());
+        if (scoreList[index].size() > 10) {
+            scoreList[index].remove(scoreList[index].size() - 1);
         }
         int rankIndex = 1;
         scores = new JSONArray();
-        for (Score s : scoreList) {
+        for (Score s : scoreList[index]) {
             s.rank = rankIndex;
             rankIndex++;
         }
-    };
+
+
+    }
+
 
     public void Exit() {
         gm.Sm.StopClip("BGM");

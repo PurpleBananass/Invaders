@@ -7,11 +7,10 @@ import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import GamePrime.Page.LoginPage;
 import java.awt.Font;
-
 public class Entry implements GManager {
     GameManager gm = GameManager.getInstance();
-
     public void Initialize() {
+
 
         gm.frame.SetSize(800, 1000);
         gm.Et.SetMaxFps(60);

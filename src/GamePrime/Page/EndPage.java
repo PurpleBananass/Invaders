@@ -108,36 +108,9 @@ public class EndPage implements GManager {
         if (scoreList.size() > 10) {
             scoreList.remove(scoreList.size() - 1);
         }
-        int rankIndex = 1;
-        scores = new JSONArray();
         for (Score s : scoreList) {
-            s.rank = rankIndex;
-            scores.add(s.toJSON());
-            rankIndex++;
+            DatabaseAPI.PostRank(s.toJSONString(name));
         }
-        
-
-        // List<Score> scoreList = new ArrayList<>();
-        // FileManager fm = new FileManager();
-        // JSONObject database = fm.LoadJsonObject("DataBase");
-        // JSONObject Scoreobj = (JSONObject) database.get("Scores");
-        // JSONArray scores = (JSONArray) Scoreobj.get(scoreAttr);
-        // for (int i = 0; i < scores.size(); i++) {
-        //     scoreList.add(Score.toScore((JSONObject) scores.get(i)));
-        // }
-        // JSONObject PlayData = (JSONObject) GameManager.getInstance().GlobalData.get("LocalData").get("PlayData");
-        // int point = ((Number) PlayData.get("Point")).intValue();
-        // scoreList.add(new Score((String) GameManager.getInstance().GlobalData.get("LocalData").get("Player"), point));
-        // Collections.sort(scoreList, Collections.reverseOrder());
-        // if (scoreList.size() > 10) {
-        //     scoreList.remove(scoreList.size() - 1);
-        // }
-        // scores = new JSONArray();
-        // Scoreobj.put(scoreAttr, scores);
-        // for (Score s : scoreList) {
-        //     scores.add(s.toJSON());
-        // }
-        // fm.SaveString("DataBase", database.toJSONString(), true);
     };
 
     public void LateUpdate() {
