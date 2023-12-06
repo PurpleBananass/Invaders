@@ -20,6 +20,8 @@ public class Player implements Comparable<Player> {
 	/** item list */
 	private List<Boolean> item;
 
+	private int skincode; //플레이어의 정보에 스킨코드값 추가
+
 	/**
 	 * Constructor.
 	 *
@@ -28,11 +30,12 @@ public class Player implements Comparable<Player> {
 	 * @param currency
 	 *            Player currency.
 	 */
-	public Player(final String name, final int currency, final String loginTime, final List<Boolean> item) {
+	public Player(final String name, final int currency, final String loginTime, final List<Boolean> item, final int skincode) {
 		this.name = name;
 		this.currency = currency;
 		this.loginTime = loginTime;
 		this.item = item;
+		this.skincode = skincode;
 	}
 
 	/**
@@ -61,6 +64,9 @@ public class Player implements Comparable<Player> {
 		return this.item;
 	}
 
+	public final int getSkincode(){
+		return this.skincode;
+	} //스킨코드를 반환해주는 메소드
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -74,6 +80,7 @@ public class Player implements Comparable<Player> {
 	public void setItem(List<Boolean> item) {
 		this.item = item;
 	}
+	public void setSkincode(int skincode) {this.skincode = skincode;}
 
 	@Override
 	public int compareTo(Player o) {

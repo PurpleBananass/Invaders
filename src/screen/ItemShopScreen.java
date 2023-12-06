@@ -20,7 +20,7 @@ public class ItemShopScreen extends Screen {
     public ItemShopScreen(final int width, final int height, final int fps) {
         super(width, height, fps);
         //defaults to center
-        this.returnCode = 71;
+        this.returnCode = 70;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
     }
@@ -63,7 +63,7 @@ public class ItemShopScreen extends Screen {
                 if (selectedItem == 70) {
                     itemPrice = 10;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(0) == true) {
+                        if (Core.getFileManager().getCurrentPlayer().getItem().get(0)) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
@@ -85,7 +85,7 @@ public class ItemShopScreen extends Screen {
                 } else if (selectedItem == 71) {
                     itemPrice = 15;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(1) == true) {
+                        if (Core.getFileManager().getCurrentPlayer().getItem().get(1)) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
@@ -108,7 +108,7 @@ public class ItemShopScreen extends Screen {
                 } else if (selectedItem == 72) {
                     itemPrice = 20;
                     try {
-                        if (Core.getFileManager().getCurrentPlayer().getItem().get(2) == true) {
+                        if (Core.getFileManager().getCurrentPlayer().getItem().get(2)) {
                             logger.info("Player already has the item");
                             SoundManager.playSound("SFX/S_MenuClick", "menu_select", false, false);
                         } else if (Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) {
@@ -128,6 +128,27 @@ public class ItemShopScreen extends Screen {
                     }
 
                 }
+                else if(selectedItem == 73){
+                    itemPrice = 50; //스킨의 가격
+                    try {
+                        if (Core.getFileManager().getCurrentPlayer().getSkincode() == 7) { //스킨이 최대치일 경우
+                            logger.info("Player already has all Skins!"); //메세지 출력
+                        } else if (Core.getFileManager().getCurrentPlayer().getSkincode() < 7 && Core.getFileManager().getCurrentPlayer().getCurrency() >= itemPrice) { //해금할 스킨이 남아있고, 돈이 충분한 경우
+                            try {
+                                Core.getFileManager().updateskincodeOfCurrentPlayer(); //스킨값 업데이트
+                                Core.getFileManager().updateCurrencyOfCurrentPlayer(-itemPrice); //플레이어 재화 차감
+                                SoundManager.playSound("SFX/S_Achievement", "S_achievement", false, false);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            logger.info("Player unlock new skin");
+                        } else { //돈이 부족한 경우
+                            logger.info("Player has Insufficient Balance");
+                        }
+                    }catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 this.selectionCooldown.reset();
 
             }
@@ -143,12 +164,14 @@ public class ItemShopScreen extends Screen {
      * Shifts the focus to the next menu item (horizontally).
      */
     private void nextMenuItem() {
-        if (this.returnCode == 72)
+        if (this.returnCode == 73)
             this.returnCode = 70;
         else if (this.returnCode == 70)
             this.returnCode = 71;
         else if (this.returnCode == 71)
             this.returnCode = 72;
+        else if(this.returnCode == 72)
+            this.returnCode = 73;
     }
 
     /**
@@ -156,10 +179,12 @@ public class ItemShopScreen extends Screen {
      */
     private void previousMenuItem() {
         if (this.returnCode == 70)
+            this.returnCode = 73;
+        else if (this.returnCode == 73)
             this.returnCode = 72;
         else if (this.returnCode == 72)
             this.returnCode = 71;
-        else if (this.returnCode == 71)
+        else if(this.returnCode == 71)
             this.returnCode = 70;
     }
 

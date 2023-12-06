@@ -523,11 +523,11 @@ public final class FileManager {
             String currency = bufferedReader.readLine();
             String loginTime = bufferedReader.readLine();
             String itemList = bufferedReader.readLine();
-
+            String skincode = bufferedReader.readLine();
             while ((loadedName != null) && (currency != null) && (loginTime != null) && (itemList != null)) {
                 if (loadedName.equals(String.valueOf(name))) {
                     List<Boolean> items = convertStringToBooleanList(itemList);
-                    player = new Player(loadedName, Integer.parseInt(currency), loginTime, items);
+                    player = new Player(loadedName, Integer.parseInt(currency), loginTime, items, Integer.parseInt(skincode));
                     bufferedWriter.write(loadedName);
                     bufferedWriter.newLine();
                     bufferedWriter.write(currency);
@@ -536,7 +536,8 @@ public final class FileManager {
                     bufferedWriter.newLine();
                     bufferedWriter.write(itemList);
                     bufferedWriter.newLine();
-
+                    bufferedWriter.write(skincode);
+                    bufferedWriter.newLine();
                     bufferedWriter.flush();
                     break;
                 } else {
@@ -544,6 +545,7 @@ public final class FileManager {
                     currency = bufferedReader.readLine();
                     loginTime = bufferedReader.readLine();
                     itemList = bufferedReader.readLine();
+                    skincode = bufferedReader.readLine();
                 }
             }
 
@@ -582,6 +584,8 @@ public final class FileManager {
             bufferedWriter.write(currentDate());
             bufferedWriter.newLine();
             bufferedWriter.write("false, false, false");
+            bufferedWriter.newLine();
+            bufferedWriter.write("1"); //플레이어 정보에 스킨 정보 추가, 초기값은 1
             bufferedWriter.newLine();
             bufferedWriter.flush();
             loadPlayer(name); //I know I can make a separate function to overwrite it but I have to set priorities on other things
@@ -626,7 +630,7 @@ public final class FileManager {
             String currency = currentBufferedReader.readLine();
             String loginTime = currentBufferedReader.readLine();
             String itemList = currentBufferedReader.readLine();
-
+            String skincode = currentBufferedReader.readLine();
             if (loadedName == null || currency == null || loginTime == null || itemList == null) {
                 logger.warning("Invalid data in current player file");
                 return;
@@ -635,8 +639,8 @@ public final class FileManager {
             Player player = loadPlayer(loadedName.toCharArray());
             List<Boolean> items = player.getItem();
             String inputStr = inputBuffer.toString().replace(
-                    loadedName + "\n" + player.getCurrency() + "\n" + player.getLoginTime() + "\n" + items.get(0) + ", " + items.get(1) + ", " + items.get(2) + "\n",
-                    loadedName + "\n" + currency + "\n" + loginTime + "\n" + itemList + "\n");
+                    loadedName + "\n" + player.getCurrency() + "\n" + player.getLoginTime() + "\n" + items.get(0) + ", " + items.get(1) + ", " + items.get(2) + "\n" + player.getSkincode(),
+                    loadedName + "\n" + currency + "\n" + loginTime + "\n" + itemList + "\n" + skincode);
 
             try (BufferedWriter bufferedWriter = Files.newBufferedWriter(playerPath, StandardCharsets.UTF_8)) {
                 bufferedWriter.write(inputStr);
@@ -668,7 +672,7 @@ public final class FileManager {
             return;
         }
 
-        int linesBelongingToAPlayer = 4;
+        int linesBelongingToAPlayer = 5;
         List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
         if (lines.size() < linesBelongingToAPlayer) {
             logger.warning("Invalid data in current player file");
@@ -690,6 +694,49 @@ public final class FileManager {
         try {
             Files.write(playerPath, lines, StandardCharsets.UTF_8);
             logger.info("Successfully changed amount of player: " + loadedName + " to " + newBalance);
+        } catch (IOException e) {
+            logger.warning("Failed to write updated player data to file: " + e.getMessage());
+            throw e;
+        }
+    }
+    public void updateskincodeOfCurrentPlayer() throws IOException { //플레이어의 스킨 정보 업데이트하는 메소드
+
+        // Get the path to the JAR file
+        String jarPath = FileManager.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+
+        // Construct the path to the player data file
+        Path playerPath = Paths.get(new File(jarPath).getParent(), "currentPlayer");
+
+        // Check if the player data file exists
+        if (!Files.exists(playerPath)) {
+            logger.warning("Player file not found at: " + playerPath);
+            return;
+        }
+
+        int linesBelongingToAPlayer = 4;
+        List<String> lines = Files.readAllLines(playerPath, StandardCharsets.UTF_8);
+        if (lines.size() < linesBelongingToAPlayer) {
+            logger.warning("Invalid data in current player file");
+            return;
+        }
+
+        String loadedName = lines.get(0);
+        int skincode;
+        try {
+            skincode = Integer.parseInt(lines.get(4));
+        } catch (NumberFormatException e) {
+            logger.warning("Invalid currency value in current player file");
+            return;
+        }
+
+        int newcode = skincode + 1;
+        lines.set(4, String.valueOf(newcode));
+
+        try {
+            Files.write(playerPath, lines, StandardCharsets.UTF_8);
+            logger.info("Successfully changed amount of player: " + loadedName + " to " + newcode);
         } catch (IOException e) {
             logger.warning("Failed to write updated player data to file: " + e.getMessage());
             throw e;
@@ -800,7 +847,7 @@ public final class FileManager {
         Player player;
         try {
             // Parse the player data from the file
-            player = new Player(lines.get(0), Integer.parseInt(lines.get(1)), lines.get(2), convertStringToBooleanList(lines.get(3)));
+            player = new Player(lines.get(0), Integer.parseInt(lines.get(1)), lines.get(2), convertStringToBooleanList(lines.get(3)), Integer.parseInt(lines.get(4)));
         } catch (NumberFormatException e) {
             logger.warning("Invalid value in current player file");
             throw new NumberFormatException("Invalid value in current player file");
