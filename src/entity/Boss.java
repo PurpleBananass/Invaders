@@ -240,12 +240,6 @@ public class Boss extends Entity {
 			this.spriteType = SpriteType.Explosion;
 		}
 	}
-
-	public final void destroyByBomb(){
-		this.HP = 0;
-		this.isDestroyed = true;
-		this.spriteType = SpriteType.Explosion;
-	}
 	/**
 	 * Checks if the ship has been destroyed.
 	 * 

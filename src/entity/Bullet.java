@@ -89,6 +89,9 @@ public class Bullet extends Entity {
 		return this.y_speed;
 	}
 
+	public final int getX_speed(){
+		return this.x_speed;
+	}
 	public final int getShooter() {
 		return this.shooter;
 	}
