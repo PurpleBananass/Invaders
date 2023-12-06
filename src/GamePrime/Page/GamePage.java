@@ -334,7 +334,7 @@ public class GamePage implements GManager {
         graphics.setColor(Color.YELLOW);
         FontMetrics fontmatrix = gm.Rm.SetFont("Regular");
         graphics.drawString("Pause", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Pause") / 2,
-                gm.frame.getHeight() / 2 - 80);
+                gm.frame.getHeight() / 2 - 100);
         graphics.drawString("Quit", gm.frame.getWidth() / 2 - fontmatrix.stringWidth("Quit") / 2,
                 gm.frame.getHeight() / 2 - 10);
         graphics.setColor(Color.GRAY);
