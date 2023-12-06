@@ -10,6 +10,7 @@ import EnginePrime.FileManager;
 import EnginePrime.GManager;
 import EnginePrime.GameManager;
 import EnginePrime.SoundManager;
+import GamePrime.RankAPIService;
 import GamePrime.ETC.Score;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -33,19 +34,31 @@ public class HightScorePage implements GManager {
         BgmProp.count = -1;
         gm.Sm.StopClip("BGM", 1);
         gm.Sm.playSound(BgmProp);
-        FileManager fm = new FileManager();
-        JSONObject database = fm.LoadJsonObject("DataBase");
-        JSONArray scores1 = (JSONArray) ((JSONObject) database.get("Scores")).get("Scores_1p");
-        JSONArray scores2 = (JSONArray) ((JSONObject) database.get("Scores")).get("Scores_2p");
-        for (int i = 0; i < scores1.size(); i++) {
-            scoreList[0].add(Score.toScore((JSONObject) scores1.get(i)));
-        }
-        Collections.sort(scoreList[0], Collections.reverseOrder());
-        for (int i = 0; i < scores2.size(); i++) {
-            scoreList[1].add(Score.toScore((JSONObject) scores2.get(i)));
-        }
-        Collections.sort(scoreList[1], Collections.reverseOrder());
+        LoadScore(0);
+        LoadScore(1);
     };
+
+    void LoadScore(int index) {
+        JSONArray scores;
+        if (index == 0) {
+            scores = RankAPIService.GetRank("1p");
+        } else {
+            scores = RankAPIService.GetRank("2p");
+        }
+        for (int i = 0; i < scores.size(); i++) {
+            scoreList[index].add(Score.toScore((JSONObject) scores.get(i)));
+        }
+        Collections.sort(scoreList[index], Collections.reverseOrder());
+        if (scoreList[index].size() > 10) {
+            scoreList[index].remove(scoreList[index].size() - 1);
+        }
+        int rankIndex = 1;
+        scores = new JSONArray();
+        for (Score s : scoreList[index]) {
+            s.rank = rankIndex;
+            rankIndex++;
+        }
+    }
 
     public void Exit() {
         gm.Sm.StopClip("BGM");

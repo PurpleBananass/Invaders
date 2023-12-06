@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import EnginePrime.SoundManager;
+import GamePrime.RankAPIService;
 import GamePrime.ETC.Score;
 import GamePrime.Ship.EnemyController;
 import java.awt.event.KeyEvent;
@@ -87,18 +88,15 @@ public class EndPage implements GManager {
                 (JSONObject) GameManager.getInstance().GlobalData.get("LocalData").get("Achievement"));
         fm.SaveString("DataBase", SaveData.toJSONString(), true);
         if (((Number) GameManager.getInstance().GlobalData.get("LocalData").get("PlayMode")).intValue() == 1) {
-            SaveScore("Scores_2p");
+            SaveScore("2p");
         } else {
-            SaveScore("Scores_1p");
+            SaveScore("1p");
         }
     }
 
-    static void SaveScore(String scoreAttr) {
+    static void SaveScore(String name) {
+        JSONArray scores = RankAPIService.GetRank(name);
         List<Score> scoreList = new ArrayList<>();
-        FileManager fm = new FileManager();
-        JSONObject database = fm.LoadJsonObject("DataBase");
-        JSONObject Scoreobj = (JSONObject) database.get("Scores");
-        JSONArray scores = (JSONArray) Scoreobj.get(scoreAttr);
         for (int i = 0; i < scores.size(); i++) {
             scoreList.add(Score.toScore((JSONObject) scores.get(i)));
         }
@@ -109,12 +107,9 @@ public class EndPage implements GManager {
         if (scoreList.size() > 10) {
             scoreList.remove(scoreList.size() - 1);
         }
-        scores = new JSONArray();
-        Scoreobj.put(scoreAttr, scores);
         for (Score s : scoreList) {
-            scores.add(s.toJSON());
+            RankAPIService.PostRank(s.toJSONString(name));
         }
-        fm.SaveString("DataBase", database.toJSONString(), true);
     };
 
     public void LateUpdate() {
