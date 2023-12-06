@@ -1,28 +1,28 @@
-import { Body, Delete, Get, JsonController, Param, Post } from 'routing-controllers';
-import { CrudService } from './rank.service';
+import { Get, Post, JsonController, Body } from 'routing-controllers';
+import { RankService } from './rank.service';
 import { CreateDTO } from './dto/create.dto';
 
-@JsonController('/crud')
-export class CrudController {
-  constructor(private readonly crudService: CrudService) {}
+@JsonController('/rank')
+export class RankController {
+  constructor(private readonly crudService: RankService) {}
 
   @Get()
   public async get() {
     return this.crudService.getAll();
   }
 
-  @Get('/:id')
-  public async getOne(@Param('id') id: number) {
-    return this.crudService.getById(id);
+  @Get('/1p')
+  public async getPlayer1() {
+    return this.crudService.getByMode(1);
+  }
+
+  @Get('/2p')
+  public async getPlayer2() {
+    return this.crudService.getByMode(2);
   }
 
   @Post()
-  public async create(@Body() body: CreateDTO) {
-    return this.crudService.create(body);
-  }
-
-  @Delete('/:id')
-  public async deleteOne(@Param('id') id: number) {
-    return this.crudService.deleteById(id);
+  public async postPlayer1(@Body() body: CreateDTO) {
+    return this.crudService.createRank(body);
   }
 }

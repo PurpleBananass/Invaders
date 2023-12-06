@@ -1,28 +1,28 @@
 {
     "Entity":{
         "ShipType1":{
-            "Idle":"Reimu.png",
-            "Destroyed" : "Marisa.png"
+            "Idle":"BatDrone.png",
+            "Destroyed" : "explosion.png"
         },
         "ShipType2":{
-            "Idle":"Marisa.png",
-            "Destroyed" : "Reimu.png"
+            "Idle":"Player.png",
+            "Destroyed" : "explosion.png"
         },
         "EnemyType1":{
-            "Idle":"Cirno.png",
-            "Destroyed" : "Cirno.png"
+            "Idle":"Turret.png",
+            "Destroyed" : "explosion.png"
         },
         "EnemyType2":{
-            "Idle":"Flandre.png",
-            "Destroyed" : "Flan_Fuck.png"
+            "Idle":"dreadnaught.png",
+            "Destroyed" : "explosion.png"
         },
-        "Bullet": "Magic.png",
-        "Item" : "Magic2.png"
+        "Bullet": "new_bullet.png",
+        "Item" : "orb_purple.png"
     },
     "StoreItem":{
-        "BonusLife" : "Flan's Shadow.png",
-        "MoveSpeed" : "Sakuya.png",
-        "ShotSpeed" : "Sakuya.png"
+        "BonusLife" : "orb_red.png",
+        "MoveSpeed" : "orb_yellow.png",
+        "ShotSpeed" : "orb_green.png"
     },
     "GuideImplements":{
         "PlayScreen" : "PlayScreen.png",
