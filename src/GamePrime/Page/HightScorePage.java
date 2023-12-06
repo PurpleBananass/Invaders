@@ -83,7 +83,7 @@ public class HightScorePage implements GManager {
 
     private void Draw() {
         String highScoreString = "High Scores";
-        String instructionsString = "Press Esc to return";
+        String instructionsString = "Press Space to return";
         String gameMode_1 = "1P_Mode";
         String gameMode_2 = "2P_Mode";
         Graphics grpahics = gm.Rm.GetCurrentGraphic();
