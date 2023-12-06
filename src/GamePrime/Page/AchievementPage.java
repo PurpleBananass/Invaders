@@ -96,6 +96,7 @@ public class AchievementPage implements GManager {
         int LuckyScore = 770; // '7' means the lucky number
         int UnluckyScore = 440; // '4' means the unlucky number
         int AceScore = 1110; // '1' means the ace in one card
+<<<<<<< HEAD
 		// if the player play with good accuracy
 
         
@@ -145,4 +146,40 @@ public class AchievementPage implements GManager {
             Achievement.put("GAME_ACE",true);
 		}
 	}
+=======
+        // if the player play with good accuracy
+        Achievement.put("ADVENTURE_START", true);
+        if (shot > 0 && accuracy >= 90.0 && level >= 3) {
+            Achievement.put("SHARP_SHOOTER", true);
+        }
+        // Check if the players recorded perfect accuracy, if the player want to clear
+        // level 1, he has to shot 20 times at least
+        if (shot >= 20 && accuracy == 100) {
+            Achievement.put("DEADLY_ACCURACY", true);
+        }
+        // Check if the player didn't hit enemy's ships in 1p mode
+        if (gamemode == 1 && shot > 0 && accuracy == 0) {
+            Achievement.put("AVIOPHOBIA", true);
+        }
+        // Check if two players didn't hit enemy's ships
+        if (gamemode == 2 && shot > 0 && accuracy == 0) {
+            Achievement.put("PAT_AND_MAT", true);
+        }
+        // Check if two players clear level or gameover with same lives
+        if (gamemode == 2 && life_1 == life_2) {
+            Achievement.put("SOUL_MATES", true);
+        }
+        // Check one player has max life but the partner doesn't have
+        if (gamemode == 2 && (life_1 - life_2 == 3 || life_2 - life_1 == 3)) {
+            Achievement.put("BUDDY_FXXKER", true);
+        }
+        if (Score == LuckyScore) {
+            Achievement.put("LUCKY_GUY", true);
+        } else if (Score == UnluckyScore) {
+            Achievement.put("UNLUCKY_GUY", true);
+        } else if (Score == AceScore) {
+            Achievement.put("GAME_ACE", true);
+        }
+    }
+>>>>>>> ea7e815fe717dbf80d369ae27cf703c70bd259e2
 }
